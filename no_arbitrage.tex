@@ -32,7 +32,7 @@
 \begin{equation*}
 	x^2 - 3 = 0 \implies x = \pm \sqrt{3}
 \end{equation*}	
-	no matter how many times I solve this equation.
+	$x$ stays the same no matter how many times I solve this equation.
 \end{frame}
 
 \begin{frame}{Random Variables}
@@ -40,7 +40,7 @@
 	\begin{equation*}
 		X(\omega):\Omega\rightarrow \mathbb{R}\quad \forall\omega\in\Omega
 	\end{equation*}
-	such that $X(\omega)$ represents the occurrence probability of the "outcome" $\omega$. $\Omega$ is called \textcolor{red}{sample space} and is the set of all possible future states (or outcomes) of a process.
+	such that $X(\omega)$ represents the occurrence probability of the "outcome" $\omega$. $\Omega$ is called \textcolor{red}{sample space} and is the set of all possible future states (or outcomes) of the random process.
 	\pause
 	\vspace{0.5cm}
         
@@ -164,6 +164,7 @@
 		\begin{aligned}
 			dX(t) = \mu(t,X(t)) dt &+ \sigma(t,X(t)) dW(t) =\\  & =\underbrace{\mu(t,X(t))dt}_{\textrm{deterministic}} + \underbrace{\sigma(t,X(t)) \mathcal{N}(0,1)\sqrt{dt}}_{\textrm{stochastic}}
 		\end{aligned}
+	\label{eq:sde}
 	\end{equation*}
 	
 	\begin{tabular}{cl}  
@@ -173,15 +174,71 @@
 		& \begin{tabular}{l}
 			\parbox{0.45\linewidth}{
 				\begin{itemize}
-					\item The mean of $dW$ is zero and its variance is $dt$
-					\item the standard deviation grows with the square root of time: $W(t) \simeq \mathcal{N}(0, t)$ because each $dW$ is distributed like independent standard Gaussian.
+					% FIXME CONTROLLARE
+					\item $W(t)$ is called a \emph{Wiener Process}, is normally distributed and independent of everything has happened up to time $t$;
+					\item for $s< t$ the stochastic variable $W(t)-W(s)$ has a Gaussian distribution $\mathcal{N}(0, t)$, i.e. the standard deviation grows with the square root of time.
 				\end{itemize}  
 			}
 		\end{tabular}  \\
 	\end{tabular}
 \end{frame}
 
+\begin{frame}{Wiener Process}
+	\begin{itemize}
+		\item Using simple properties of the normal distributions we can obtain the following results:
+			\begin{equation*}
+				\begin{gathered}
+					\mathbb{E}[\Delta W] = 0 \\
+					\mathbb{E}[(\Delta W)^2] = \Delta t \\
+					\text{Var}[\Delta W] = \Delta t \\
+					\text{Var}[(\Delta W)^2] = 2(\Delta t)^2 \\
+				\end{gathered}
+			\end{equation*}
+		\item The striking fact is that as $\Delta t$ tends to 0, $[(\Delta W)^2$ goes to 0, but its variance will approach 0 much faster.
+		\item Thus, heuristically, we can say that $[(\Delta W)^2$ looks more and more "deterministic" and in the limit we can naively say:
+			\begin{equation*}
+				[dW(t)]^2 = dt
+			\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Stochastic Differential Equation}
+	\begin{itemize}
+		% FIXME find again how to make the link clickable
+		\item It is possible to interpret Eq.~\ref{eq:sde} as a shorthand for 
+			\begin{equation*}
+				X(t) = X(0) + \int_0^t \mu(s,X(s)) ds + \int_0^t \sigma(s,X(s)) dW(s)
+			\end{equation*}
+		where the last term is the so-called \emph{It$\hat{o}$'s integral}.
+		\item Without entering into the details of stochastic calculus we can state the two most important properties of an It$\hat{o}$ integral:
+			\begin{equation*}
+				\begin{gathered}
+					\mathbb{E}\left[\int_a^b g(s) dW(s)\right] = 0 \\
+					\mathbb{E}\left[\left(\int_a^b g(s) dW(s)\right)^2\right] = \int_a^b\mathbb{E}[g^2(s)]ds\\
+				\end{gathered}
+			\end{equation*}
+	\end{itemize}  
+\end{frame}
+
 \subsection{Martingales}
+\begin{frame}{Conditional Expectation}
+	\begin{itemize}
+		\item Given the information (filtration) $\mathcal{F}_t$, for any stochastic variable $X$ consider
+			\begin{equation*}
+				\mathbb{E}[X|\mathcal{F}_t]
+			\end{equation*}
+			which represent the \emph{conditional expectation} of $X$.
+		\item Given $X$ and $Y$ stochastic variables with $Y$ $\mathcal{F}_t$-measurable:
+			\begin{equation*}
+				\mathbb{E}[Y\cdot X|\mathcal{F}_t] =  Y\cdot\mathbb[X|\mathcal{F}_t]
+			\end{equation*}
+		\item If $X$ is a stochastic varibale and $s<t$ (\emph{law of iterated expectations}):
+			\begin{equation*}
+				\mathbb{E}[\mathbb{E}[X|\mathcal{F}_t]|\mathcal{F}_s] = \mathbb{E}[X|\mathcal{F}_s]
+			\end{equation*}
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{Martingale}
 	\begin{block}{Definition}
 		A \textcolor{red}{martingale} is a (integrable and adapted) stochastic process which models a fair game with the following remarkable feature
