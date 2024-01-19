@@ -5,6 +5,11 @@
 \usepackage{cancel}
 \usepackage{xcolor}
 \usepackage{pifont}
+
+\newsavebox\MBox
+\newcommand\Cline[2][red]{{\sbox\MBox{$#2$}%
+  \rlap{\usebox\MBox}\color{#1}\rule[-1.2\dp\MBox]{\wd\MBox}{0.5pt}}}
+
 \newcommand{\goodcheck}{\color{green}\ding{52}}
 \newcommand{\badcheck}{\color{red}\ding{56}}
 
@@ -60,8 +65,8 @@
 \newcommand{\footlinepayoff}[1]{\renewcommand{\atfootlinepayoff}{#1}}
 %Define footline content
 \setbeamertemplate{footline}{%
-	\begin{beamercolorbox}[wd=\textwidth,ht=5mm,dp=3mm,rightskip=1cm,leftskip=1cm]{footline}
-		\insertframenumber/\inserttotalframenumber
+	\begin{beamercolorbox}[wd=\textwidth,ht=5mm,dp=3mm,rightskip=1cm,leftskip=0.3cm]{footline}
+		\insertframenumber/\inserttotalframenumber\hskip20pt
 		\ifstrempty{\atfootlinepayoff}{}{%
 			\usebeamerfont{footline}\hfill\atfootlinepayoff
 		}

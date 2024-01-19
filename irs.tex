@@ -13,7 +13,7 @@
 
 \begin{frame}{Single Curve Approach}
   What follows is a detailed exposition of the classic \textcolor{red}{single curve}
-  approach for interest derivatives. Today a \textcolor{red}{multicurve approach} is
+  approach for interest rate derivatives. Today a \textcolor{red}{multicurve approach} is
   used in practical applications. Nevertheless you need to understand
   deeply this basic approach as a prerequisite for the extension to the
   multi-curve model.
@@ -34,8 +34,11 @@
 \begin{frame}{Forward Rate Agreement}
 	\begin{itemize}
 	\item<1-> A FRA is an agreement that enables a user to \emph{hedge} itself against unfavorable movements in interest rates by fixing a rate on a notional amount that is (usually) of the same size and term as its exposure that starts sometime in the future. 
-	\item<2-> Consider a $3\times 6$ FRA (3-month into 6-month): the 3 in the $3\times 6$ refers to 3 months' time when settlement (fixing) takes place, and the 6 to the expiry date of the FRA from deal date, i.e. the rate quoted for the FRA is a 3-month rate at the time of settlement
+	\item<2-> Consider a $1\times 3$ FRA (1-month into 3-month): the 1 in the $1\times 3$ refers to 1 month' time when settlement (fixing) takes place, and the 3 to the expiry date of the FRA from deal date, i.e. the rate quoted for the FRA is a 1-month rate at the time of settlement
 	\end{itemize}
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{fra_timeline}
+	\end{center}
 \end{frame}
 
 \begin{frame}{FRA Example}
@@ -1660,23 +1663,23 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Reverse Floater Bond}
-	\begin{itemize}
-		\item<1-> As with all investments that employ leverage, inverse floaters introduce a significant amount of interest rate risk. 
-		\begin{columns}[t]
-		\column{0.4\linewidth}
-		\item<2-> When short-term interest rates fall, both MV and yield of the reverse floater increases, magnifying the fluctuation in the bond's price.
-		\column{0.4\linewidth}
-		\item<3-> When short-term interest rates rise, bond value can drop significantly, and holders may end up with a security that pays little interest (i.e. magnified interest rate risk).
-		\end{columns}
-		\item<4-> Other typical investors are long vega, if $K$ is close to the forward rates, vega is much higher.
-		\item<5-> A long Vega portfolio means there is positive exposure to increases in implied volatility, while a short Vega portfolio is indicative of volatility vulnerability.
-			\begin{tikzpicture}[remember picture,overlay]
-			\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
-			\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/wK368}{shorturl.at/wK368}}};
-		\end{tikzpicture}	
-	\end{itemize}
-\end{frame}
+%\begin{frame}{Reverse Floater Bond}
+%	\begin{itemize}
+%		\item<1-> As with all investments that employ leverage, inverse floaters introduce a significant amount of interest rate risk. 
+%		\begin{columns}[t]
+%		\column{0.4\linewidth}
+%		\item<2-> When short-term interest rates fall, both MV and yield of the reverse floater increases, magnifying the fluctuation in the bond's price.
+%		\column{0.4\linewidth}
+%		\item<3-> When short-term interest rates rise, bond value can drop significantly, and holders may end up with a security that pays little interest (i.e. magnified interest rate risk).
+%		\end{columns}
+%		\item<4-> Other typical investors are long vega, if $K$ is close to the forward rates, vega is much higher.
+%		\item<5-> A long Vega portfolio means there is positive exposure to increases in implied volatility, while a short Vega portfolio is indicative of volatility vulnerability.
+%			\begin{tikzpicture}[remember picture,overlay]
+%			\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
+%			\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/wK368}{shorturl.at/wK368}}};
+%		\end{tikzpicture}	
+%	\end{itemize}
+%\end{frame}
 
 %\begin{frame}{Reverse Floater Bond}
 %	\begin{itemize}
