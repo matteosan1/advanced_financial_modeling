@@ -3,7 +3,7 @@
 
 \title{Interest Rate Derivatives}
 \subtitle{Main IR Contracts Theory}
-\course{Advanced Financial Modeling}
+\course{Advanced Financial Modelling}
 \author{\href{mailto:matteo.sani@unisi.it}{Matteo Sani}}
 
 \begin{document}
@@ -13,7 +13,7 @@
 
 \begin{frame}{Single Curve Approach}
   What follows is a detailed exposition of the classic \textcolor{red}{single curve}
-  approach for interest rate derivatives. Today a \textcolor{red}{multicurve approach} is
+  approach for interest rate derivatives. Today a \textcolor{red}{multi-curve approach} is
   used in practical applications. Nevertheless you need to understand
   deeply this basic approach as a prerequisite for the extension to the
   multi-curve model.
@@ -33,7 +33,7 @@
 
 \begin{frame}{Forward Rate Agreement}
 	\begin{itemize}
-	\item<1-> A FRA is an agreement that enables a user to \emph{hedge} itself against unfavorable movements in interest rates by fixing a rate on a notional amount that is (usually) of the same size and term as its exposure that starts sometime in the future. 
+	\item<1-> A FRA is an agreement that enables a user to \emph{hedge} itself against unfavourable movements in interest rates by fixing a rate on a notional amount that is (usually) of the same size and term as its exposure that starts sometime in the future. 
 	\item<2-> Consider a $1\times 3$ FRA (1-month into 3-month): the 1 in the $1\times 3$ refers to 1 month' time when settlement (fixing) takes place, and the 3 to the expiry date of the FRA from deal date, i.e. the rate quoted for the FRA is a 1-month rate at the time of settlement
 	\end{itemize}
 	\begin{center}
@@ -50,7 +50,7 @@
 \begin{frame}{FRA: Formalization of the Contract}
 	\begin{itemize}
 		\item<1-> Formally, at time $S$ one receives $\tau(T, S)KN$ units of currency and pays the amount $\tau(T,S)L(T,S)N$, where $N$ is the contract nominal value.
-		\item<2-> Thus, at time $S$, the future (and today unknown) payout of the contract is: 
+		\item<2-> Thus, at time $S$, the future (and \textbf{today unknown}) payout of the contract is: 
 		\begin{equation}
 			N\tau(T,S)(K-L(T,S))
 			\label{eq:fra_payoff}
@@ -76,16 +76,15 @@
 %\end{frame}
 
 \subsection{FRA Valuation}
-\begin{frame}{FRA: the Standard Derivation}
+\begin{frame}{FRA: Brigo-Mercurio Approach}
 	\begin{itemize}
-		\item<1-> Following the approach reported in Brigo-Mercurio (2006) we can proceed as follows.		
-		\only<2-2>{
+		\only<1->{
 		\item Substitute in \cref{eq:fra_payoff} $L(T,S)$ with its expression as a function of the zero-coupon bond price $P$ and get
 		\begin{equation*}
 			N\bigg[\tau K + 1 - \frac{1}{P(T, S)}\bigg]
 		\end{equation*}
 		}
-		\only<3-3>{
+		\only<2-2>{
 		\item Substitute in \cref{eq:fra_payoff} $L(T,S)$ with its expression as a function of the zero-coupon bond price $P$ and get
 		\begin{equation*}
 			N\bigg[\tau K + 1 - \underbrace{\frac{1}{P(T, S)}}_{A}\bigg]
@@ -102,20 +101,19 @@
 	\end{itemize}
 \end{frame}
 
-\subsection{FRA Valuation}
-\begin{frame}{FRA: the Standard Derivation}
+\begin{frame}{FRA: Brigo-Mercurio Approach}
 	\begin{itemize}
-		\item<1-> Following the approach reported in Brigo-Mercurio (2006) we can proceed as follows.		
 		\item Substitute in \cref{eq:fra_payoff} $L(T,S)$ with its expression as a function of the zero-coupon bond price $P$ and get
 		\begin{equation*}
 			N\bigg[\underbrace{\tau K + 1}_{B} - \underbrace{\frac{1}{P(T, S)}}_{A}\bigg]
 		\end{equation*}
 		\item<1-> On the other hand $B$ in $S$ becomes at time $t$:
 		$P(t,S)\tau K + P(t, S)$.
-		\item<3-> Collecting the terms we get
+		\item<2-> Collecting the terms we get
 		\begin{equation}
 			\textbf{FRA}(t,T,S,\tau,N,K)=N[P(t,S)\tau K–P(t,T)+P(t,S)]
 		\end{equation}
+			\myendproof
 	\end{itemize}
 \end{frame}
 
@@ -130,8 +128,8 @@
 				\text{borrow}~P(t,S)(1+\tau(T,S)K)
 			\end{cases};
 		\end{equation*}
-		\item<3-> at time $T$: you receive 1 which you will invest at the (in $t$ unknown) EURIBOR rate $L(T,S)$;
-		\item<4-> at time $S$: 
+		\item<2-> at time $T$: you receive 1 which you will invest at the (in $t$ unknown) EURIBOR rate $L(T,S)$;
+		\item<3-> at time $S$: 
 		\begin{equation*}
 			\begin{cases}
 				\text{receive}~(1+L(T,S)\tau(T,S))\\
@@ -146,12 +144,12 @@
 	\begin{equation*}
 		1+L(T,S)\tau - 1 - \tau K = (L(T,S)-K)\tau
 	\end{equation*}
-	\uncover<2->{From the risk-neutral pricing formula
+	\uncover<1->{From the risk-neutral pricing formula
 	\begin{equation*}
 	\mathbb{E}^Q[D(t, S)(L(T, S)-K)\tau(T,S)|\mathcal{F}_t]
 	\end{equation*}
 	}
-	\uncover<3->{According to the \emph{Fundamental Theorem II} its value must equal to the value of the replicating portfolio in $t$ (we assume to be in a complete market). Hence
+	\uncover<2->{According to the \emph{Fundamental Theorem II} its value must equal to the value of the replicating portfolio in $t$ (we assume to be in a complete market). Hence
 	\begin{equation}
 		\begin{aligned}
 			\mathbb{E}^Q[D(t,S)&(L(T,S)-K)\tau(T,S)|\mathcal{F}_t]=\\
@@ -159,38 +157,40 @@
 			\label{eq:fra_as_expectation}
 		\end{aligned}
 	\end{equation}
+	\myendproof
     }
 \end{frame}
 
 \subsection{FRA Detailed Proof}
-\begin{frame}{FRA Detailed Proof I}
+\begin{frame}{FRA Detailed Proof}
 \begin{itemize}
 	\item<1-> Let's start from the risk neutral pricing formula
 	\begin{equation*} \textbf{FRA} = 
-\mathbb{E}^\mathcal{Q}_t[D(t,S)\tau (K - L(T,S))] = 	\mathbb{E}^\mathcal{Q}_t[D(t,S)\tau K - D(t,S)\tau L(T,S)]
+\mathbb{E}^\mathcal{Q}_t[\tau D(t,S)(K - L(T,S))] = 	\mathbb{E}^\mathcal{Q}_t[\tau D(t,S)K - \tau D(t,S)L(T,S)]
 	\end{equation*}
+	To ease the notation $\mathbb{E_t}[X] = \mathbb{E}[X|\mathcal{F}_t]$.
 	\item<2-> From which we can easily derive
 	\begin{equation*}
 		\begin{aligned}
-		\textbf{FRA} = \tau &K\mathbb{E}_t^\mathcal{Q}[D(t,S)] - \mathbb{E}_t^\mathcal{Q}[D(t,S)\tau L(T,S)] = \\
-		&=\tau KP(t,S) - \mathbb{E}_t^\mathcal{Q}[D(t,S)\tau L(T,S)]
+		\textbf{FRA} = \tau &K\mathbb{E}_t^\mathcal{Q}[D(t,S)] - \mathbb{E}_t^\mathcal{Q}[\tau D(t,S)L(T,S)] = \\
+		&=\tau KP(t,S) - \mathbb{E}_t^\mathcal{Q}[\tau D(t,S)L(T,S)]
 		\end{aligned}
 	\end{equation*}
 	which follows from the definition of \textbf{ZCB} value.
-	\item<3-> From the definition of discount factor we know that
+	\item<3-> For a discount factor the following holds
 	\begin{equation*}
 		D(t,S) = D(t,T)D(T,S)
 	\end{equation*}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{FRA Detailed Proof II}
+\begin{frame}{FRA Detailed Proof}
 	\begin{itemize}
 		\item<1-> So we get
 		\begin{equation*}
 			\textbf{FRA} = \tau KP(t,S)-\mathbb{E}_t[\tau D(t,T)D(T,S)L(T,S)]
 		\end{equation*}
-		\item<2-> Then using the properties of the expectation operator
+		\item<2-> Then using the expectation operator properties
 		\begin{equation*}
 		\textbf{FRA} = \tau KP(t,S) - \mathbb{E}_t[\mathbb{E}_T[\tau D(t,T)D(T,S)L(T,S)]]
 		\end{equation*}
@@ -205,9 +205,9 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{FRA Detailed Proof III}
+\begin{frame}{FRA Detailed Proof}
 	\begin{itemize}
-		\item<1-> Then using the definition of LIBOR rate
+		\item<1-> Then using the definition of LIBOR rate $L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}$
 		\begin{equation*}
 			\begin{aligned}
 			\textbf{FRA} = &\tau KP(t,S)-\mathbb{E}_t\left[D(t,T)P(T,S)\left(\frac{1}{P(T,S)}-1\right)\right]= \\
@@ -228,7 +228,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{FRA Detailed Proof IV}
+\begin{frame}{FRA Detailed Proof}
 	\begin{itemize}
 		\item<1-> Then applying the law of iterated expectations we get
 		\begin{equation*}
@@ -238,6 +238,7 @@
 	\begin{equation*}
 	\textbf{FRA} = \tau KP(t,S) - P(t,T) + P(t,S)
 	\end{equation*}
+	\myendproof
 	\end{itemize}
 \end{frame}
 
@@ -259,52 +260,54 @@
 
 \begin{frame}{Forward Rate and No-Arbitrage}
 	\begin{itemize}
-		\item Following Filipovic (2009) we can also directly define the Forward Rate by implementing the following.
-		\item At time $t$
-		\begin{itemize}
-			\item sell one $T$-ZCB
-			\item buy $\frac{P(t,T)}{P(t,S)}$ $S$-ZCB 
-		\end{itemize}
-		This results in a zero net investment.
-		\item At $T$ you must pay 1.
-		\item At time $S$ you receive $\frac{P(t,T)}{P(t,S)}$
-		\item The net effect of the operation is a \emph{forward} investment of one dollar a time $T$ yielding $\frac{P(t,T)}{P(t,S)}$ so
+		\item Following Filipovic (2009) we can also define the Forward Rate by implementing the following:
+		\item at time $t$
+		\begin{equation*}
+			\begin{cases}
+			\text{sell one $T$-ZCB}\\
+			\text{buy $\frac{P(t,T)}{P(t,S)}$ $S$-ZCB}\\
+			\end{cases} 
+		\end{equation*}
+		which results in a zero net investment;
+		\item at $T$ you must pay 1;
+		\item at time $S$ you receive $\frac{P(t,T)}{P(t,S)}$;
+		\item the net effect of the operation is a \emph{forward} investment of one dollar a time $T$ yielding $\frac{P(t,T)}{P(t,S)}$ so
 		\begin{equation*}
 		1 + \tau(T,S)F(t;T,S) = \frac{P(t,T)}{P(t,S)}
 		\end{equation*}
+	\myendproof
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Forward Rate}
 	\begin{itemize}
-		\item We can now rewrite the value of the FRA in terms of the simply-compounded forward rate
+		\item We can now rewrite the value of the FRA in terms of the \emph{simply-compounded forward rate}
 		\begin{equation}
 			\begin{aligned}
-			&\textbf{FRA}=N[\tau KP(t,S)–P(t,T)+P(t,S)] = \\
-			&=N\tau P(t,S) \left[K +\frac{1}{\tau} \frac{P(t,S)–P(t,T)}{P(t,S)}\right] = N\tau P(t,S)(K-F(t;T,S))
+			&\textbf{FRA}=N[\tau KP(t,S)-P(t,T)+P(t,S)] = \\
+			&=N\tau P(t,S) \left[K +\frac{1}{\tau} \frac{P(t,S)-P(t,T)}{P(t,S)}\right] = N\tau P(t,S)(K-F(t;T,S))
 			\end{aligned}
 			\label{eq:fram_payoff_withF}
 		\end{equation}
 		(\textbf{note:} this formula will be used for the swap evaluation).
-		\item<2-> Comparing to \cref{eq:fra_as_expectation} it is just like we had replaced in the payoff the LIBOR rate $L(T,S)$ with the forward rate $F(t;T,S)$ and then taken the present value of the (\emph{deterministic}) quantity.
+		\item<2-> Comparing to \cref{eq:fra_as_expectation} it is just like we had replaced the LIBOR rate $L(T,S)$ with the forward rate $F(t;T,S)$ in the payoff and then taken the present value of the (\emph{deterministic}) quantity.
 		\item<3-> \textcolor{red}{The forward rate can be interpreted as an \emph{estimate} of the future spot rate}, which is unknown at time $t$ (random process based on the market conditions).
-		\item<4-> We'll see later that indeed $F(t;T,S)$ is the expectation of $L(T,S)$ under a particular probability measure.
+		\item<4-> \emph{We'll see later that indeed $F(t;T,S)$ is the expectation of $L(T,S)$ under a particular probability measure.}
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Instantaneous Forward Rate}
-	\begin{itemize}
-		\item Now let's introduce the \textcolor{red}{instantaneous forward rate} $f(t, T)$.
-		\item It is defined as 
-		\begin{equation}
-			\begin{aligned}
-				f(t, T) &:= \lim_{S\rightarrow T^+} F(t;T,S) \\
-				& = \lim_{\epsilon\rightarrow 0}  \frac{1}{\tau(T,T+\epsilon)}\frac{P(t,T)-P(t,T+\epsilon)}{P(t,T+\epsilon)} \\
-				& = \lim_{\epsilon\rightarrow 0} - \frac{1}{P(t,T)} \frac{P(t,T+\epsilon)-P(t,T)}{\epsilon} \\
-				& = -\frac{\partial \log P(t, T)}{\partial T}
-			\end{aligned}
-		\end{equation}
-	\end{itemize}
+	\begin{block}{Definition}
+	The \textcolor{red}{instantaneous forward rate} $f(t, T)$ is defined as 
+	\begin{equation}
+		\begin{aligned}
+			f(t, T) &:= \lim_{S\rightarrow T^+} F(t;T,S) \\
+			& = \lim_{\epsilon\rightarrow 0}  \frac{1}{\tau(T,T+\epsilon)}\frac{P(t,T)-P(t,T+\epsilon)}{P(t,T+\epsilon)} \\
+			& = \lim_{\epsilon\rightarrow 0} - \frac{1}{P(t,T)} \frac{P(t,T+\epsilon)-P(t,T)}{\epsilon} \\
+			& = -\frac{\partial \log P(t, T)}{\partial T}
+		\end{aligned}
+	\end{equation}
+	\end{block}
 \end{frame}
 
 \begin{frame}{Instantaneous Forward Rate}
@@ -313,7 +316,7 @@
 		\begin{equation}
 			P(t, T) = e^{-\int_t^T f(t, s) ds}
 		\end{equation}
-		\item The instantaneous forward rate represents the rate for a forward contract with an infinitesimal investment period after the settlement date.
+		\item The \emph{instantaneous forward rate} represents the rate for a forward contract with an infinitesimal investment period after the settlement date.
 		\item Notice that
 		\begin{equation*}
 			r(t) = f(t,t)
@@ -324,11 +327,11 @@
 \section{Interest Rate Swap}
 \begin{frame}{Interest Rate Swap}
 	\begin{itemize}
-		\item An \textcolor{red}{Interest Rate Swap} (IRS) is a contract that exchanges payments between two differently indexed \emph{legs}, starting from a future time instant. At every pre-specified instant $T_i$, the fixed leg pays the amount ($N$ is the contract nominal)
+		\item An \textcolor{red}{Interest Rate Swap} (IRS) is a contract that exchanges payments between two differently indexed \emph{legs}, starting from a future time. At every pre-specified instant $T_i$, the \emph{fixed leg} pays the amount ($N$ is the contract nominal)
 		\begin{equation*}
 			N\tau(T_{i-1}, T_i)K
 		\end{equation*}
-		while the variable leg pays the amount
+		while the \emph{variable leg} pays the amount
 		\begin{equation*}
 			N\tau(T_{i-1}, T_i)L(T_{i-1}, T_i)
 		\end{equation*}
@@ -350,7 +353,7 @@
 
 \begin{frame}{IRS and FRA}
 	\begin{itemize}
-		\item We can view the last expression (\cref{eq:payoff_payer_irs}) as a portfolio of FRAs though.
+		\item The swap payoff in \cref{eq:payoff_payer_irs}) can be re-interpreted as a portfolio of FRAs.
 		\item Indeed consider a Receiver IRS and express its payoff as a sum of FRAs with \cref{eq:fram_payoff_withF}
 		\begin{equation}
 			\begin{aligned}
@@ -368,7 +371,7 @@
 	\begin{itemize}
 		\item<1-> Clearly not all the FRAs in a swap with zero value have zero value (\emph{except for the degenerate case of flat yield curve}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
 		\item<2-> In a \emph{Payer Swap} with an increasing yield curve the first FRAs will have negative value, the last positive. Still their NPV's sum is zero.
-		\item<3-> If the market don't move so much the swap rate payer will have to pay a net interest differential in the first part of the contract life, and to receive net interest in the second.
+		\item<3-> If the market doesn't move so much the swap rate payer will have to pay a net interest differential in the first part of the contract life, and to receive net interest in the second.
 		\item<4-> So the rate payer will have to fund the payments for the first part of the contract and to invest at his best the receipt during the second part. (This is a very hot topic nowadays; this feature is sometimes referred to as the funding profile of the contract).
 	\end{itemize}
 	\uncover<4->{
@@ -471,7 +474,7 @@
 
 \begin{frame}{Floating Rate Note (FRN)}
 	\begin{itemize}
-		\item<1-> Next consider a floating rate note that pays coupons at dates
+		\item<0-> Next consider a floating rate note that pays coupons at dates
 		\begin{equation*}
 			\mathcal{T}_{\text{payments}} = \{T_{\alpha+1},\ldots,T_\beta\}
 		\end{equation*}
@@ -481,20 +484,33 @@
 		\end{equation*}
 		\item<1-> At maturity $T_\beta$ the notional is reimbursed as before.
 		\item<2-> To value this note we change sign to the \textbf{RFS} (\cref{eq:swap_as_sum_fra}), set $K=0$, i.e. no fixed rate payments are done, and finally add the present value of the notional at maturity: $NP(t,T_\beta)$
-		\only<2-2>{\begin{equation*}
+		\begin{equation*}
 			\begin{aligned}
 			\textbf{FRN} &= -\textbf{RFS} + NP(t,T_\beta) =\\
 			& =NP(t,T_\alpha)-NP(t,T_\beta)-N\sum_{i=\alpha+1}^{\beta}K\tau_i P(t,T_i) + NP(t,T_\beta)
 		\end{aligned}
 		\end{equation*}
-	    }
-        \only<3->{\begin{equation*}
-    		\begin{aligned}
-    			\textbf{FRN} &= -\textbf{RFS} + NP(t,T_\beta) =\\
-    			& =NP(t,T_\alpha)-\cancel{NP(t,T_\beta)}-\cancel{N\sum_{i=\alpha+1}^{\beta}K\tau_i P(t,T_i)} + \cancel{NP(t,T_\beta)} =NP(t,T_\alpha)
-    		\end{aligned}
-    	\end{equation*}
-    }
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Floating Rate Note (FRN)}
+	\begin{itemize}
+		\item Next consider a floating rate note that pays coupons at dates
+		\begin{equation*}
+			\mathcal{T}_{\text{payments}} = \{T_{\alpha+1},\ldots,T_\beta\}
+		\end{equation*}
+		coupons calculated at the LIBOR rate fixed in the previous period
+		\begin{equation*}
+			\mathcal{T}_{\text{fixings}} = \{T_{\alpha},\ldots,T_{\beta - 1}\}
+		\end{equation*}
+		\item At maturity $T_\beta$ the notional is reimbursed as before.
+		\item To value this note we change sign to the \textbf{RFS} (\cref{eq:swap_as_sum_fra}), set $K=0$, i.e. no fixed rate payments are done, and finally add the present value of the notional at maturity: $NP(t,T_\beta)$
+		\begin{equation*}
+		\begin{aligned}
+			\textbf{FRN} &= -\textbf{RFS} + NP(t,T_\beta) =\\
+			& =NP(t,T_\alpha)-\cancel{NP(t,T_\beta)}-\cancel{N\sum_{i=\alpha+1}^{\beta}K\tau_i P(t,T_i)} + \cancel{NP(t,T_\beta)} =NP(t,T_\alpha)
+		\end{aligned}
+		\end{equation*}
 	\end{itemize}
 \end{frame}
 
@@ -516,11 +532,11 @@
 \begin{frame}{Concepts behind the Formulas}
 	Suppose that a generic bank, \emph{MyFavouriteBank}, has the same credit risk of the corresponding average inter-bank entity. So, \textcolor{red}{the spread over the LIBOR rate is 0}. Suppose now the bank needs financing and it plans to issue coupon bonds. It has two alternatives:
 	\begin{enumerate}
-		\item<2-> borrow $N$ and pay floating interests at the rates
+		\item<1-> borrow $N$ and pay floating interests at the rates
 		\begin{equation*}
 			L(T_{i-1},T_i);
 		\end{equation*}
-		\item<3-> borrow $N$ and pay fixed interests given by the coupon
+		\item<2-> borrow $N$ and pay fixed interests given by the coupon
 		\begin{equation*}
 			K = S_{\alpha,\beta}.
 		\end{equation*}
@@ -530,32 +546,32 @@
 
 \begin{frame}{Concepts behind the Formulas}
 	\begin{itemize}
-		\item<1-> Given the two strategies are equivalent the bank will then opt for one of two alternatives depending on:
+		\item<0-> Given the two strategies are equivalent the bank will then opt for one of two alternatives depending on:
 		\begin{enumerate}
 			\item marketing considerations, i.e. which kind of bond people prefer;
 			\item the interest rate risk it wants to have.
 		\end{enumerate} 
-		\item<2-> Remember that a variable rate mortgage is perceived risky by the average individual as salary is more or less fixed, but for bank this is not the case because it is left unarmed by the rate rise. Indeed if rates go up
+		\item<1-> Remember that a variable rate mortgage is perceived risky by the average individual as salary is more or less fixed, but for bank this is not the case because it is left unarmed by the rate rise. Indeed if rates go up
 		\begin{itemize}
 			\item the bank loses in the higher coupons it has to pay to the bond holders;
 			\item the bank gains in the highest rates it charges on new loans at the same time.
 		\end{itemize}
-		\item<3-> This is the most basic example of \emph{asset liability matching}.
-		\item<4-> The same more or less holds for a rate decrease.%, but with some caveats.
+		\item<2-> This is the most basic example of \emph{asset liability matching}.
+		\item<3-> The same more or less holds for a rate decrease.%, but with some caveats.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Concepts behind the Formulas}
 	\begin{itemize}
-		\item<2->Banks like floating rates exposure: 
+		\item<0->Banks like floating rates exposure: 
 		\begin{itemize}
-			\item<2-> [\goodcheck] the liability value (the bond floating rate) resets with rates;
-			\item<2-> [\goodcheck] often smaller costs then fixed rates;
-			\item<2-> [\goodcheck]surely less expensive in the case of a long-term loan (e.g. 30-year mortgage), lenders require higher fixed rates in that case, due to bad accuracy in forecast economic conditions over such a long period of time.
+			\item<1-> [\goodcheck] the liability value (the bond floating rate) resets with rates;
+			\item<1-> [\goodcheck] often smaller costs then fixed rates;
+			\item<1-> [\goodcheck]surely less expensive in the case of a long-term loan (e.g. 30-year mortgage), lenders require higher fixed rates in that case, due to bad accuracy in forecast economic conditions over such a long period of time.
 		%\end{itemize}
 		%\begin{itemize}
-			\item<3-> [\badcheck] higher interest rate risk (risk of rising rates in the future);
-			\item<3-> [\badcheck] with inverted yield curve, the cost of debt may actually be higher than fixed-rate debt (however, this is the exception rather than the norm).
+			\item<2-> [\badcheck] higher interest rate risk (risk of rising rates in the future);
+			\item<2-> [\badcheck] with inverted yield curve, the cost of debt may actually be higher than fixed-rate debt (however, this is the exception rather than the norm).
 		\end{itemize}
 % There is a general assumption that interest rates will rise – or, increase – over time,
 	\end{itemize}
@@ -576,6 +592,9 @@
 	\item The two legs can differ both in the tenor of the underlying rate and in the frequency of payments.
 	\item For instance a typical Basis Swap is one in which a floating leg indexed to EURIBOR-6M is exchanged against one indexed to EURIBOR-3M.
 	\end{itemize}
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{tenor_basis_swap}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Basis Swap Valuation}
@@ -872,9 +891,9 @@
 
 \begin{frame}{Market Rate Sensitivity}
 	\begin{itemize}
-		\item<1-> Another popular, though more complicated, method is to shock each input instrument used in the \emph{bootstrapping} by 1~bp one by one (i.e., change the futures rate by 1~bp, the swap rates by 1bp, OIS rates by 1~bp, etc\ldots), rebuild the curves, and then reprice the instrument of interest to obtain its curve sensitivity. 
+		\item<1-> Another popular, though more complicated, method is to shock each input instrument used in the \emph{bootstrapping} by 1~bp one by one (i.e., change the futures rate by 1~bp, the swap rates by 1~bp, OIS rates by 1~bp, etc\ldots), rebuild the curves, and then reprice the instrument of interest to obtain its curve sensitivity. 
 		\item<2-> This is called \textcolor{red}{Market Rate Sensitivity} and its value is given by the sum of each swap $NPV$ variations.
-		\item<3-> This of course is not quite a "parallel" shift of any curve (e.g., a 1~bp change in futures rate won't correspond to a 1bp change in the others).
+		\item<3-> This of course is not quite a "parallel" shift of any curve (e.g., a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
 		\item<4-> In a plain vanilla swap is very close but not equal to BPV. The mark to market value of the swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
 %		\item Suppose for instance that we are short on a five year swap and to receive $4y$. If the rates go higher we lose money, but the rate of variation of the MTM decreases with the increases of rates. If rates decrease, the MTM increases, and the rate of variation of the MTM increase with the further increase with the further decrease of rates.
 	\end{itemize}
@@ -943,20 +962,17 @@
 		\item<1-> Using the LIBOR rate definition we get
 		\begin{equation*}
 			\begin{aligned}
-				\textbf{Cpl} &=N\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_{i-1}}r_s ds}P(T_{i-1},T_i)\left[\frac{1}{P(T_{i-1},T_i)}-1-K\tau\right]^+ | \mathcal{F}_t\right) \\
+				\textbf{Cpl} &=N\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_{i-1}}r_s ds}P(T_{i-1},T_i)\left[\frac{1}{P(T_{i-1},T_i)}-1-K\tau\right]^+ \Big\rvert \mathcal{F}_t\right) \\
 				& = 		N\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_{i-1}}r_s ds}\left[1-(1+K\tau)P(T_{i-1},T_i)\right]^+ | \mathcal{F}_t\right)
 			\end{aligned}
 		\end{equation*}
 		\item<2-> Multiplying by $\frac{1}{1+K\tau}$ we finally get
 		\begin{equation}
-			\textbf{Cpl}=N(1+K\tau)\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_{i-1}}r_s ds}\left[\frac{1}{1+K\tau}-P(T_{i-1},T_i)\right]^+ | \mathcal{F}_t\right)
+			\textbf{Cpl}=N(1+K\tau)\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_{i-1}}r_s ds}\left[\frac{1}{1+K\tau}-P(T_{i-1},T_i)\right]^+ \Big\rvert \mathcal{F}_t\right)
 		\end{equation}
 	\end{itemize}
-\end{frame}
-
-\begin{frame}{Caplets as ZCB Put Options}
 	\begin{block}{Intepretation}
-		Caplets can then be seen as \textcolor{red}{put options} on ZCBs. In the same way, floorlets can be seen as \textcolor{red}{call options} on ZCBs.
+	Caplets can then be seen as \textcolor{red}{put options} on ZCBs. In the same way, floorlets can be seen as \textcolor{red}{call options} on ZCBs.
 	\end{block}
 \end{frame}
 
@@ -968,7 +984,7 @@
 		\item So $F(t;T_{i-1},T_i)$ (or $S_\alpha(t)$) are modeled as log-normal random variables. 
 		
 		\textcolor{red}{But not at the same time !} If $F(t;T_{i-1},T_i)$ is log-normal, then $S_\alpha(t)$ cannot be.
-		
+		\item Bottom line: a single model cannot do the job.
 		%\item Alert: if LIBOR/EURIBOR simple rates are log-normal, swap rates cannot be. This theoretical inconsistency is negligible in real world situations.
 	\end{itemize}
 \end{frame}
@@ -1111,7 +1127,7 @@
 \section{Swaptions}
 \begin{frame}{Swaptions Overview}
 \begin{itemize}
-	\item<1-> The purchaser \textcolor{red}{European swaption} has the right but not the obligation to enter into a swap contract, at a given future time, called the \textcolor{red}{swaption maturity}.
+	\item<1-> The purchaser of an \textcolor{red}{European swaption} has the right but not the obligation to enter into a swap contract, at a given future time, called the \textcolor{red}{swaption maturity}.
 	\item<2-> There are two types of \textcolor{red}{swaptions} (as the underlying swaps): a \emph{payer} in which at maturity the buyer could become the fixed-rate payer and a \emph{receiver} where she could become the fixed-rate receiver.
 	\item<3-> A swaption provides protection for a borrower as it ensures a maximum fixed interest rate payable in the future. Furthermore, it gives her the flexibility, if the rate does not rise above the swaption strike rate at expiry, to choose not to exercise it and take advantage of the lower market rates.
 \end{itemize}
@@ -1221,12 +1237,12 @@
 	\item<1-> We have seen that a Swap can be viewed as an exchange of bonds (fixed for float).
 	\item<2-> Hence a Swaption can be regarded as an \textcolor{red}{option to exchange fixed for floating} bonds (or viceversa).
 	\item<3-> To fully characterized this point we need an expression for a \textcolor{red}{Coupon Bond Option}.
-	Most interest rate models (e.g. short rate models) have closed formulas for the Zero Coupon Bond price. So it would be even better (simpler) if we could express a Coupon Bond Option as a portfolio of Zero Coupon Bond Options.
-	\item<4-> Luckily we can do that thanks to a recipe known as \textcolor{red}{Jamshidian's decomposition}.
+	\item <4->Most interest rate models (e.g. short rate models) have closed formulas for the Zero Coupon Bond price. So it would be even better (simpler) if we could express a Coupon Bond Option as a portfolio of Zero Coupon Bond Options.
+	\item<5-> Luckily we can do that thanks to a recipe known as \textcolor{red}{Jamshidian's decomposition}.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Jamshidian's Trick}
+\begin{frame}{Jamshidian's Decomposition}
 \begin{block}{Theorem}
 	Consider a sequence of functions $f_i$, a random variable $W$ and a constant $K\ge0$. If each $f_i$ is monotone (decreasing), that is $\cfrac{\partial f_i}{\partial W} < 0;\;\forall i$, then 
 	\begin{equation*}
@@ -1236,7 +1252,7 @@
 \end{block}
 \end{frame}
 
-\begin{frame}{Jamshidian's Trick Proof}
+\begin{frame}{Jamshidian's Decomposition Proof}
 \begin{itemize}
 	\item<1-> Since each $f_i$ is monotone also $\sum_i f_i$ is decreasing. Hence there is a unique solution $\hat{w}$ to 
 	\begin{equation*}
@@ -1268,7 +1284,9 @@
 			& = \left(\sum_i (f_i(\hat{w}) -  f_i(W))\right)^+= \sum_i (f_i(\hat{w}) - f_i(W))\mathbb{1}_{W\ge \hat{w}} = \\ 
 			&= \sum_i \left(K_i - f_i(W)\right)^+
 		\end{aligned}
-\end{equation*}}
+\end{equation*}
+	\myendproof
+	}
 	\column{0.35\linewidth}
 	\uncover<1->{
 	\includegraphics[width=1\linewidth]{jamshidian_trick}}
