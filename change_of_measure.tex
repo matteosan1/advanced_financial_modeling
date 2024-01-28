@@ -11,68 +11,6 @@
 \end{frame}
 
 \section{Change of Measure}
-\begin{frame}{Few Definitions}
-  It may be helpful to explain (and recall) some of the more technical terms we are going to use.\newline
-  
-  \textbf{Sample space}: all possible future states or outcomes ($\Omega$) of a random process.\newline
-  
-  \textbf{(Probability) Measure} ($\mathcal{P}, \mathcal{Q}\ldots$): is a mapping which associates a probability to each element in the sample space. Two measures are \textbf{equivalent} if they agree "on what is possible". Note the word \emph{possible}: the two measures can have different probabilities for the same event, but must have the same \emph{null-set} $\{x\in {\mathcal {P}}\mid p (x)=0\}$. 
-\end{frame}
-
-\begin{frame}{Few Definitions}
-  \textbf{Contingent claim}: is a derivative whose future payoff depends on the value of another “underlying” asset, or more generally, that is dependent on the realization of some uncertain future event $(S, X\ldots)$.\newline
-  
-  \textbf{Filtrations}: are totally ordered collections of subsets that are used to model the information that is available at a given point in time ($\mathcal{F}_t$). \newline
-  
-  \textbf{Martingale}: is a stochastic process for which, at a particular time, the conditional expectation of the next value in the sequence is equal to the present value, regardless of all prior values. It can be imagined as a drift-less process.
-\end{frame}
-
-\begin{frame}{Real World Measure $\mathcal{P}$}
-  \begin{itemize}
-  \item<1-> When we model derivative prices, we take as given some "true" probability measure $\mathcal{P}$, which assigns probabilities to different states of the world. 
-  \item<2-> These states in turn affect the path of security prices. 
-  \item<3-> And these states plus the corresponding probabilities are supposed to reflect the subjective beliefs of traders or investors about what will happen in the future.
-  \item<4-> Unfortunately, under $\mathcal{P}$ it is usually quite complicated to price derivatives, and the probabilities themselves cannot easily be derived.
-  \item<5-> This makes it hard to work out the price processes and it is necessary to use simulation techniques.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Changing Measure}
-  \begin{itemize}
-  \item<1-> Then it makes sense to look for a new set of probabilities (measure) which could simplify the pricing process giving the correct result at the same time.
-    %(Actually, no-arbitrage constructions or the Feynman-Kac formula will give you an explicit PDE whose solution is $C_t$, which will not generally be analytical solvable.)
-  \item<2-> That's why \textcolor{red}{changes of probability measure are important in mathematical finance}: allow to express derivative prices in closed-form.
-  \item<3-> At the beginning of the course we have seen how by simply assuming the absence of arbitrage it is possible to define a \textcolor{red}{new measure} under which the price of a derivative is given by the discounted expectation of its payoff.
-  \item<4-> This result has been formalized by \emph{Harrison} and \emph{Pliska} in 1981. 
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Equivalent Martingale Measure}
-  \begin{block}{Definition}
-    An \textcolor{red}{equivalent martingale measure} $\mathcal{Q}$ is a probability measure on the space $\Omega$ such that
-    \begin{enumerate}
-    \item $\mathcal{Q}$ is equivalent to $\mathcal{P}$;
-    \item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a price $\pi_t$
-	\begin{equation*}
-	  \pi_t = \mathbb{E}^{\mathcal{Q}^0}[D(t,T)V_A|\mathcal{F}_t]
-	\end{equation*}
-      %\item the \textcolor{red}{Radon-Nikodym} derivative is square integrable;
-    \item the "discounted asset price" is a $\mathcal{Q}$-martingale
-      \begin{equation*}
-	\pi_u = \mathbb{E}^{\mathcal{Q}^0}[D(0,t)V_A(t)|\mathcal{F}_u], \quad\text{with }(t>u)
-      \end{equation*}
-    \end{enumerate}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Fundamental Results Summary}
-  Harrison and Pliska proved and formalized also the following results:
-  \begin{itemize}
-  \item the market is free of arbitrage if and only if there exists an equivalent martingale measure;
-  \item the market is complete if and only if the martingale measure is unique;
-  \item in an arbitrage-free market the price of any claim is uniquely given, either by the value of an associated replicating strategy, or by the expectation of the discounted payoff under any of the equivalent martingale measures.
-  \end{itemize}
-\end{frame}
 
 \subsection{Numeraires}
 \begin{frame}{Numeraires}

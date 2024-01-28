@@ -12,12 +12,156 @@
 \end{frame}
 
 \begin{frame}{Single Curve Approach}
-  What follows is a detailed exposition of the classic \textcolor{red}{single curve}
-  approach for interest rate derivatives. Today a \textcolor{red}{multi-curve approach} is
-  used in practical applications. Nevertheless you need to understand
-  deeply this basic approach as a prerequisite for the extension to the
-  multi-curve model.
-\end{frame}          
+	What follows is a detailed exposition of the classic \textcolor{red}{single curve}
+	approach for interest rate derivatives. Today a \textcolor{red}{multi-curve approach} is
+	used in practical applications. Nevertheless you need to understand
+	deeply this basic approach as a prerequisite for the extension to the
+	multi-curve model.
+\end{frame}  
+
+\subsection{Money Market Account}
+\begin{frame}{Money Market Account}
+	\begin{itemize}
+		\item<0-> The \textcolor{red}{money market account} represents a risk-less investment, where profit is accrued continuously at the risk-free rate, and its value is denoted by $B(t)$.
+		\item<1-> We assume $B(0)=1$ and by definition
+		\begin{equation}
+			dB(t) = r(t)B(t)dt
+		\end{equation}
+		\item<2-> This evolution can be solved through variable separation
+		\begin{equation}
+			\begin{gathered}
+				\frac{dB_t}{B_t} = r_t dt \implies \int_0^t \frac{dB_t}{B_t} = \int_0^t r_s ds \\
+				\implies \log\frac{B_t}{B_0} = \int_0^t r_s ds \implies \boxed{B(t) = \exp\left(\int_0^t r_s ds\right)}
+			\end{gathered}
+		\end{equation}
+		where $r_t$ is referred to as \textcolor{red}{instantaneous spot rate} or \textcolor{red}{short rate}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Money Market Account}
+	\begin{itemize}
+		\item<0-> The \emph{short rate} $r_t$ can be modeled either by a deterministic or a stochastic process.
+		\item<1-> \textbf{Deterministic case}: from the definition of money market account it follows that 
+		\begin{equation*}
+			V(0) = A \implies V(t) = A\cdot B(t)
+		\end{equation*}
+		\item<2-> If we want to have at time $T$ exactly 1 unit of currency
+		\begin{equation*}
+			AB(T) = 1 \implies AB(t) = \frac{B(t)}{B(T)} 
+		\end{equation*}
+		hence $\frac{B(t)}{B(T)}$ is \textcolor{red}{the value of one unit of currency payable at time $T$ seen from $t$}.
+		
+		%%		\item We now define the abstract quantity $r(t)$, the \textbf{short rate}, as
+		%%		\begin{equation}
+			%%			r(t) = \lim_{T\rightarrow t^+} L(t,T) \simeq L(t, t+\epsilon)
+			%%		\end{equation}\quad with $\epsilon$ small
+	\end{itemize}
+\end{frame}
+
+
+\subsection{Stochastic Discount Factor and Zero Coupon Bond}
+\begin{frame}{Stochastic Discount Factor}
+	\uncover<1->{
+		\begin{block}{Defintion}
+			The \textcolor{red}{(stochastic) discount factor} $D(t, T)$ is the amount at time $t$ that is \emph{equivalent} to one unit of currency payable at time $T$ and is given by
+			\begin{equation}
+				D(t, T) = \frac{B(t)}{B(T)} = e^{-\int_t^T r_s ds}
+			\end{equation}
+	\end{block}}
+	\begin{itemize}
+		\item<2-> Can you guess which are its dimensions ?	
+		\item<3-> In many pricing application (e.g. Black-Scholes formula) $r$ is assumed to be a \textcolor{red}{deterministic} function of time, and so are $B(t)$ and $D(t,T)$:
+		\begin{itemize}
+			\item<3-> this is motivated by the small influence interest rate variations have on equity prices.
+		\end{itemize}
+		\item<4-> When dealing with interest rate products, $r$ becomes the main actor, so the deterministic assumption must be dropped.
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}{Money Market Account}
+	\begin{itemize}
+		\item<0-> Looking at \cref{eq:risk_neutral_price}, it is apparent that we are computing prices w.r.t. the bank account (the \emph{numeraire}). The corresponding risk-neutral measure is often denoted by $\mathcal{Q}^0$ or $\mathcal{Q}^B$, and similarly for the expectations. 
+		\item<2-> Recalling the risk-neutral pricing formula (\cref{eq:risk_neutral_pricing})
+		\begin{equation*}
+			\Pi_t = \mathbb{E}^{\mathcal{Q}^B}[D(t,T)A|\mathcal{F}_t]
+		\end{equation*}
+		%	In the following we are going to use $B(t)$ as numeraire then  Eq.~\ref{eq:risk_neutral_pricing} becomes
+		%	\begin{equation*}
+			%		\begin{aligned}
+				%			S_t = \mathbb{E}^{\mathcal{Q}^B}\left[e^{-\int_t^T r_s ds}S_T|\mathcal{F}_t\right]
+				%		\end{aligned}
+			%	\end{equation*}
+		%	where $\mathcal{Q}^B$ is the risk-neutral measure.% that makes $\frac{S_t}{B_t}$ a martingale. 	
+		when \textcolor{red}{interest rates are deterministic}, the exponential can be brought out of the expectation
+		\begin{equation*}
+			\Pi_t = e^{-\int_t^T r_s ds} \mathbb{E}^B\left[A|\mathcal{F}_t\right]
+		\end{equation*}
+		\item<3-> Instead when \textcolor{red}{rates are constant} (e.g. Black-Scholes or Heston models)
+		\begin{equation*}
+			\Pi_t = e^{-r(T-t)}\mathbb{E}^B\left[A|\mathcal{F}_t\right]
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Zero Coupon Bond}
+	\begin{itemize}
+		\item<0-> \textcolor{red}{Zero Coupon Bond} (ZCB) is a contract that pays one unit of money at time $T$. Its price at time $t$ is denoted by $P(t,T)$, and by definition $P(T,T) = 1$.
+		\item<2-> What is the relation between $P(t,T)$ and $D(t,T)$ ? \\
+		\uncover<3->{
+			\renewcommand{\arraystretch}{1.2}
+			{\tiny {\tiny }}{
+				\begin{table}[bt]
+					\begin{tabular}{|c|c|} \hline
+						$D(t, T)$ & $P(t, T)$ \\ \hline
+						equivalent amount of money & value of a contract \\ \hline
+						\multicolumn{2}{|c|}{\textcolor{red}{deterministic rates}} \\ \hline
+						\multicolumn{2}{|c|}{D(t,T)=P(t,T)} \\ \hline 
+						\multicolumn{2}{|c|}{\textcolor{red}{stochastic rates}} \\ \hline
+						random quantity at time $t$ &
+						\renewcommand{\arraystretch}{1.0} 
+						\begin{tabular}{@{}c@{}}
+							being the value of a contract\\ with a payoff at time $T$, must be known in $t$. \\
+							Indeed
+							$P(t, T) = \mathbb{E}^Q[D(t, T)|\mathcal{F}_t]$
+						\end{tabular} \\ \hline
+					\end{tabular}
+				\end{table}
+		}}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Year Fraction, Day-Count Convention}
+	\begin{itemize}
+		\item Time to maturity: $T-t$
+		\item Denote by $\tau(t, T)$ the chosen time measure between $t$ and $T$. In theory, you can think of $\tau(t, T)=T-t$. In practice there are many possible ways to compute that time difference.
+		\item Among the plethora of conventions, the followings are worth mentioning:
+		\begin{itemize}
+			\item Actual/365
+			\item Actual/360
+			\item 30/360
+		\end{itemize}
+		\item \textcolor{red}{Go and find their definitions: they are also embedded in Excel as financial functions.}
+	\end{itemize}
+	\begin{tikzpicture}[remember picture,overlay]
+		\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
+		\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/chzT2}{shorturl.at/chzT2}}};
+	\end{tikzpicture}
+\end{frame}
+
+\subsection{Spot Interest Rate}
+\begin{frame}{Spot Interest Rate}
+	\begin{itemize}
+		\item Simply-compounded \textcolor{red}{spot interest rate}
+		\begin{equation}
+			L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}		
+		\end{equation}
+		\item The \textcolor{red}{yield curve} at time $t$ is the graph of:
+		\begin{equation*}
+			T\rightarrowtail L(t, T)
+		\end{equation*}
+		\item In the market these are the so called LIBOR (or EURIBOR) rates and are typically compounded with the actual/360 convention. They are the main rates underlying interest rate derivatives.
+	\end{itemize}
+\end{frame}
 
 \section{Forward Rate Agreement}
 \begin{frame}{Forward Rate Agreement}

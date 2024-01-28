@@ -76,6 +76,85 @@
 \begin{document}
 \maketitle
 
+\section{Stochastic Simulation}
+In science, we are often more interested in the distribution of a set of outcomes rather than a single event. This may be the probability distribution of a molecule diffusing a specific distance as a function of time, or the price change of a very exotic derivative.
+
+Stochastic simulations allow us to generate a series of experiments on a system in which one step is governed by random chance. These simulations often boil down to flipping a coin to dictate if said step will occur or not.
+
+Of course, sitting in your office chair flipping a coin over and over again is not how one should do a simulation. To get a sense of the probability distribution of some outcome, we often have to simulate the process thousands of times. This means that we need to know how to make our computers do the heavy lifting.
+
+It's often easy to forget just how powerful modern computers can be. What once required a serious computational cluster only twenty years ago can now be done on a 10 mm thick compartment made of rose-gold colored aluminium. 
+
+%FIXME few words about mean and C.L.
+
+\subsection{1D Random Walk}
+The Random Walk in one dimension is a model for each process which have simple binary outcomes.
+
+The 1D random walk can be used to model how a gambler plays a game such as roulette in a casino. The idea in such games is that the gambler places a small stake on each game (say 1€). When the game is played the gambler will either loose and the total amount of money he has will thus decrease by one unit, or alternatively, he will win the game and in that case he wins back his stake and a prize, which we will set as 1€. As you can see if the gambler repeats this process of staking money and playing the amount of money he has will undergo a random walk in one dimension, since the outcome will be either 1 or -1.
+
+\begin{question}
+Code a function that simulate a 1D random walk. 
+
+\noindent
+\textbf{Hint:} we can decide whether to walk left or right by flipping a coin and seeing if it comes up \emph{heads} or \emph{tails}.
+\end{question}
+
+\subsubsection{Simulating a Gambler}
+
+Importantly there is a difference between the gambler and the 1D random walk, however. The gambler usually only has a finite amount of money to gamble with. If he looses a large number of games he is therefore forced to stop playing. Similarly, the gambler may also have some target for how much money he would like to win. In other words, he should have some figure $N$€, which is more than the amount of money he entered the casino with. He will stop gambling once he has $N$€ in his pocket.
+
+\begin{question}
+Determine with a simulation the probabilities whether the gambler leaves the casino with zero or with $N$€.
+
+Essentially we start the gambler with $X$€ and simulate the process of him playing the game only stopping once he has reached one of the two thresholds.
+
+Write a function called gambler that simulates this procedure, taking three arguments:
+\begin{itemize}
+\item \texttt{start}: the amount of money the gambler starts with; \item \texttt{n}: the target amount of money that the gambler wants to win;
+\item \texttt{p}: the probability of winning each individual game the gambler plays.
+\end{itemize}
+\end{question}
+
+We can also use simulation to determine how many spins of the wheel the gambler will play before leaving the casino (i.e. \emph{hitting time}).
+In other words we want to calculate the number of steps the random walk takes before arriving in one of the two threshold states.
+
+\begin{question}
+Write another function that simulates the changes in the amount of money the gambler has and that returns the number of spins of the wheel that take place.
+\end{question}
+
+\section{Martingale Examples}
+Suppose you play the following series of games. In game $i, i = 1, 2,\ldots$, you bet \$1 and roll a fair die. If the outcome is $\{1,2\}$ you win \$1, if it is $\{3,4\}$ nothing happens, and if the outcome is $\{5,6\}$ you lose \$1.
+Let $X_i$ be a random variable representing the amount of money you win or lose in bet $i$, this kind of game is said to be **fair** since
+
+$$\mathbb{E}[X_i]= \sum_{\Omega}p(\omega)\cdot x(\omega) = \frac{2}{6}\cdot 1 + \frac{2}{6}\cdot 0 + \frac{2}{6}\cdot -1 = 0\;\forall i$$
+so no unbalance between losses or wins.
+
+Now define another random variable $Z_n = \sum_{i=1}^{n} X_i$, i.e. the amount of money held at the $n$-th game.
+
+$Z_n$ is a martingale and $\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = Z_{n-1}$.
+
+\paragraph{Proof}
+
+\begin{equation}
+	\begin{aligned}
+		\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] &= \mathbb{E}[X_1 +\ldots + X_n|X_1,\ldots, X_{n-1}] \\
+		& = \underbrace{\mathbb{E}[X_1|X_1,\ldots, X_{n-1}]}_{X_1} + \ldots + \underbrace{\mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}]}_{X_{n-1}} + \underbrace{\mathbb{E}[X_n|X_1,\ldots, X_{n-1}]}_{\mathbb{E}[X_n]=0} \\
+		& = \mathbb{E}[X_1|X_1,\ldots, X_{n-1}] + \ldots + \mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}] + 0 = Z_{n-1}
+	\end{aligned}
+\end{equation}
+
+\begin{question}
+Using Monte Carlo simulation implement the game described in the text and check that the expected gain is indeed null.
+\end{question}
+
+\begin{question}
+An unbiased random walk (in any number of dimensions) is another example of a martingale.
+
+In higher dimensions, the set of randomly walked points has interesting geometric properties. In fact, one gets a discrete \emph{fractal}, that is, a set that exhibits stochastic self-similarity on large scales.
+
+Implement a 2D random walk simulation and plot one possible realization.
+\end{question}
+
 \section{Simulating Stochastic Differential Equations}
 
 Consider a generic stochastic differential equation (SDE)
@@ -137,6 +216,36 @@ import numpy as np
 path = np.DataSource("https://github.com/matteosan1/...../input_files")
 S = np.load(path.open("stock_2023.npy", "rb"))
 \end{ipython}
+\end{question}
+
+\begin{question}
+
+The Heston model can be considered an extension of the Black and Scholes model where the volatility of the underlying asset is not constant, nor even deterministic, but follows a random process.
+
+The basic Heston model assumes that $S_t$, the price of the asset, follows
+\begin{equation}
+dS_{t}=\mu S_{t}\,dt+{\sqrt {\nu _{t}}}S_{t}\,dW_{t}^{S}
+\end{equation}
+where the volatility 
+\begin{equation}
+{\displaystyle d\nu _{t}=\kappa (\theta -\nu _{t})\,dt+\xi {\sqrt {\nu _{t}}}\,dW_{t}^{\nu },}
+\end{equation}
+and 
+\begin{equation}
+W_{t}^{S},W_{t}^{\nu }
+\end{equation} 
+are Wiener processes with correlation $\rho$.
+
+The model has five parameters:
+\begin{itemize}
+\item $\nu _0$, the initial variance;
+\item $\theta$, the long variance of the price; as $t$ tends to infinity, the expected value of $\nu_t$ tends to $\theta$;
+\item $\rho$, the correlation of the two Wiener processes;
+\item $\kappa$, the rate at which $\nu_t$ reverts to $\theta$;
+\item $\xi$, the volatility of the volatility, which determines the variance of $\nu_t$.
+\end{itemize}
+
+Using the Euler scheme simulate a possible realization for $S$ and $\sigma$ using the parameters: $\nu _0=0.02760$, $\kappa=1.2$, $\theta=0.066$, $\xi=0.593$, $\rho=0.659$.
 \end{question}
 
 \section{Floating Rate Notes}
@@ -279,4 +388,97 @@ Consider a one year ($T=1$) call option with $S_0=100$ , $K=170$,  $\sigma=0.2$,
 Interesting reference \emph{Variance Reduction Techniques of Importance Sampling Monte Carlo Methods for Pricing Options}, 
 Journal of Mathematical Finance, 2013, 3, 431-436.
 \end{question}
+
+\section{Reverse Floater}
+
+* For instance, in September 2009, the short-term interest rate, the 3-month EURIBOR, **was at 0.5%**, and the forward curve was rising rather steeply, i.e. the implied forward 3-month EURIBOR in 3 years **was at 3.3%**. 
+* The 3-year interest rate for a fixed-coupon bond **was at 3.5%** at the time. 
+* It was possible to construct a 3-year reverse floater bond paying:
+
+$$ 6\% - 2 \cdot \text{3M-EURIBOR}$$
+
+(the coupon payments usually occur on a quarterly basis). 
+* Should the 3-Month EURIBOR not move during the first year, the coupon would amount to $6\% - 2 \cdot 0.5\% = 5\%$. 
+* Compared to a floating rate bond, the outperformance would be 4.5% for that period. 
+%* After 3 years, the invested nominal is redeemed along with the last coupon.
+
+Vega 
+
+$$V_{\text{cap}}=F\Phi(d_1) - K\Phi(d_2)$$
+
+$$\nu = \frac{\partial V_{\text{cap}}}{\partial\sigma} =
+F\phi(d_1)$$
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/reverse_floater_payoff}
+	\end{center}
+	\label{fig:revere_floater_payoff}
+\end{figure}
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/cap_vega}
+	\end{center}
+	\label{fig:cap_vega}
+\end{figure}
+
+\section{Interest Rate Swap as FRAs}
+
+\section{Girsanov Theorem}
+Let’s start with a standard Brownian motion $W_t^{\mathbb{P}} = \mathcal{N}_{\mathbb{P}(0,t)$ under a probability measure $\mathbb{P}$, and adapted to a filtration $\mathcal{F}_t$. These are 30 simulated evolution paths of $W_t^{\mathbb{P}}$, showing no drift, as expected:
+	
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_nodrift}
+	\end{center}
+	\label{fig:brownian_motion_nodrift}
+\end{figure}
+
+For exemplification, let us now construct a "drifty" process $Y_t=\mu t+\sigma W_t^{\mathbb{P}}\in \mathcal_{\mathbb{P}}(\mu t, \sigma^2 t)$, that is, with drift $\mu$ and diffusion $\sigma$; in other words, $\mathbb{E}^{\mathbb{P}[Y_t]=\mu t$ and $\text{Var}^{\mathbb{P}}[Y_t]=\mathbb{E}^{\mathbb{P}[Y^2_t]-\mathbb{E}^{\mathbb{P}[Y_t]^2=\sigma^2 t$.
+
+Incidentally, note the terminology: the drift is not an expectation, but rather the rate of change in expectation, and the diffusion is not a standard deviation, but rather the square root of the rate of 
+change in variance. These are 30 simulated paths for the evolution of $Y_t$, for $\mu = 0.8$ and $\sigma =1.25$ (the drift is visually apparent):
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[width=0.5\linewidth]{addons/brownian_motion_drift}
+\end{center}
+\label{fig:brownian_motion_drift}
+\end{figure}
+
+We aim at applying a change of measure from $\mathbb{P}$ into a new probability $\mathbb{Q}$, such that $Y_t$ becomes driftless (a martingale) under $\mathbb{Q}: \mathbb{E}^{\mathbb{Q}}[Y_t]=0$, yet with the same diffusion as under $\mathbb{P}$: $\text{Var}^{\mathbb{Q}}[Y_t]=\sigma^2 t$
+
+Consider the new process $U_t=\frac{1}{\sigma}Y_t\in\mathcal{N}_{\mathbb{P}}\left(\frac{\mu}{\sigma}t,t\right)$. In what follows, we will remove the drift of $U_t$, then reconstruct $Y_t$. For that, we follow Girsanov’s statement backwards: we aim at expressing $U_t$ as a standard Brownian motion under a probability $\mathbb{Q}$, that is, by Girsanov’s formula, we want to express $U_t$ in the following form:
+\begin{equation}
+	U_t = W_t^{\mathbb{P}} - [W_t^{\mathbb{P}}, M_t^{\mathbb{P}}]
+\end{equation}
+and now, we solve this equation for $M_t^{\mathbb{P}}$.
+We ask ourselves the question: what process $M_t^{\mathbb{P}}$ satisfies ? ,
+t
+P P PP
+t t tt
+U
+tW W W M µ
+σ
++=−
+
+? One can easily see that
+the process P P M W t t
+µ
+σ = − verifies the expression , , PP P P P WM W W W t tt t t t
+µµ µ
+σσ σ = − =− =− ,
+hence , P PP U W WM tt tt = − . Therefore P P M W t t
+µ
+σ = − is our solution. We use P Mt to define the
+change of measure: Zt M ( ) = ε ( t )
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
+	\end{center}
+	\label{fig:brownian_motion_girsanov}
+\end{figure}
+
+
 \end{document}
