@@ -11,7 +11,18 @@
 \usepackage{hyperref}
 
 \usepackage{exsheets}
-\SetupExSheets{counter-format=ch.qu}
+%\SetupExSheets{counter-format=qu}
+\SetupExSheets{
+  headings = block-subtitle ,
+  headings-format = \normalsize\bfseries\sffamily ,
+  % needs v0.16 2014/09/14 to work:
+  subtitle-format = \normalsize\bfseries\sffamily
+}
+
+\SetupExSheets{
+  counter-within = section ,
+  counter-format = se.qu\IfQuestionSubtitleT{:} ,
+}
 
 \geometry{a4paper, margin=2cm}
 
@@ -122,7 +133,7 @@ In other words we want to calculate the number of steps the random walk takes be
 Write another function that simulates the changes in the amount of money the gambler has and that returns the number of spins of the wheel that take place.
 \end{question}
 
-\section{Martingale Examples}
+\subsection{Martingale Examples}
 Suppose you play the following series of games. In game $i, i = 1, 2,\ldots$, you bet \$1 and roll a fair die. If the outcome is $\{1,2\}$ you win \$1, if it is $\{3,4\}$ nothing happens, and if the outcome is $\{5,6\}$ you lose \$1.
 Let $X_i$ be a random variable representing the amount of money you win or lose in bet $i$, this kind of game is said to be **fair** since
 
@@ -155,7 +166,7 @@ In higher dimensions, the set of randomly walked points has interesting geometri
 Implement a 2D random walk simulation and plot one possible realization.
 \end{question}
 
-\section{Simulating Stochastic Differential Equations}
+\subsection{Simulating Stochastic Differential Equations}
 
 Consider a generic stochastic differential equation (SDE)
 
@@ -197,16 +208,16 @@ Using the Euler scheme simulate the 4-months (with daily steps) evolution of a G
 
 \cprotEnv\begin{question}
 This \href{https://github.com/matteosan1/advanced_financial_modeling/raw/master/input_files}{file} contains a thousand 10-day realizations (with 0.1 day step) of historical price data of a single asset, assume that all the time series are different realizations of the same stochastic process.
-\begin{itemize}
+\begin{enumerate}
 \item Make two figures: the first should contain one realization as a function of time, in the second plot the first 50 realizations together as a function of time (\emph{label the axes appropriately}).
 \item In two separated plots report the mean and the variance of the stock prices as a function of time (\emph{label the axes appropriately}).
 \item Perform the variable change $X_{n+1}=\log\left(\cfrac{S_{n+1}}{S_n}\right)$ on $S_{n+1} = S_ne^{(\mu-0.5\sigma^2)\Delta t + \sigma\sqrt{\Delta t}Z}$ to rewrite the model into a simpler form. 
-	\begin{itemize}
+	\begin{enumerate}
 	\item Is the resulting dynamics linear ? Prove it, or give a counterexample; 
 	\item is the resulting system time-invariant ? Prove it, or give a counterexample.
-	\end{itemize}
+	\end{enumerate}
 \item Apply again the same transformation $X_{n+1}=\log\left(\frac{S_{n+1}}{S_n}\right)$ to data this time. Plot both the mean and the variance of the transformed realizations as a function of time.
-\end{itemize}
+\end{enumerate}
 
 \noindent
 \textbf{Hint:} the input file is a binary file that can be loaded back using \texttt{numpy} as follows (replace the URL from the link above):
@@ -219,7 +230,6 @@ S = np.load(path.open("stock_2023.npy", "rb"))
 \end{question}
 
 \begin{question}
-
 The Heston model can be considered an extension of the Black and Scholes model where the volatility of the underlying asset is not constant, nor even deterministic, but follows a random process.
 
 The basic Heston model assumes that $S_t$, the price of the asset, follows
@@ -245,8 +255,162 @@ The model has five parameters:
 \item $\xi$, the volatility of the volatility, which determines the variance of $\nu_t$.
 \end{itemize}
 
-Using the Euler scheme simulate a possible realization for $S$ and $\sigma$ using the parameters: $\nu _0=0.02760$, $\kappa=1.2$, $\theta=0.066$, $\xi=0.593$, $\rho=0.659$.
+Using the Euler scheme simulate a possible realization for $S_t$ and $\sigma_t$ using the parameters: $S_0=100$, $\mu=0.25$, $T=3$, $\nu_0=0.05$, $\kappa=1.2$, $\theta=0.10$, $\xi=0.593$, $\rho=-0.5$.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\linewidth]{addons/heston}
+\end{center}
+\label{fig:heston}
+\end{figure}
 \end{question}
+
+\section{Interest Rate Swap as FRAs}
+
+The swap payoff 
+
+\begin{equation}
+	\sum_{i=\alpha+1}^{\beta} D(t,T_i)N \tau_i \left[K-L(T_{i-1},T_i)\right]
+	\label{eq:payoff_payer_irs}
+\end{equation}	
+can be re-interpreted as a portfolio of FRAs. Indeed using the payoff of a FRA
+\begin{equation}
+	\textbf{FRA}= N\tau P(t,S)(K - F(t;T,S))
+	\label{eq:fram_payoff_withF}
+\end{equation}
+the Receiver IRS payoff can be expressed like
+\begin{equation}
+	\begin{aligned}
+		\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\mathbb{E}^Q[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
+		&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))\\
+		&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-N\sum_{i=\alpha+1}^{\beta}(P(t,T_{i-1})-P(t,T_i)) \\
+		&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)
+	\end{aligned}
+\label{eq:swap_as_sum_fra}
+\end{equation}
+
+Clearly not all the FRAs in the swap, when it has zero value, will have zero value each (\emph{except for the degenerate case of flat yield curve}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
+
+\begin{question}
+Implementing a class or a function that represents an interest rate swap shows that:
+\begin{enumerate}
+\item In a \emph{Payer Swap} with an increasing yield curve the first FRAs will have negative value, the last positive. 
+\item In a \emph{Payer Swap} with a decreasing yield curve the first FRAs will have positive value, the last negative.
+\end{enumerate}
+\end{question}
+
+\section{Cap Volatility Bootstrap}
+
+From the prices of different maturity caps, it is possible to $\color{red}{bootstrap}$ the volatility of each caplet, i.e. the volatility which refers to the forward rate corresponding to the caplet.
+
+Let's \emph{strip} caplet volatilities from the following cap (flat) volatilities:
+
+ Maturity | Volatility 
+--------|-------
+1y  | 44\%
+2y  | 45\%
+3y  | 44\%
+4y  | 41\%
+5y  | 39\%
+
+The quoted volatilities refer to caps with 0.013 strike over EURIBOR-6M:
+
+ Pillar | Rate 
+--------|-------
+3m  | 0.0002 
+6m  | 0.0007 
+12m | 0.0025
+2y  | 0.0070
+3y  | 0.0100
+5y  | 0.0162
+
+\begin{enumerate}
+\item We start with the nearest instruments, i.e. the spot starting caplet with $6m$ maturity. For maturities shorter than the first quoted value we consider the volatility constant hence:
+\begin{equation}
+\sigma^{spot}(t_{0,6m})=\color{green}{\sigma^{flat}(t_{0,1y})}
+\end{equation}
+\item Let’s now price the $1y$ forward starting caplet with $6m$ maturity. Since market cap volatilities are quoted assuming \textbf{no-arbitrage} opportunity we can build the forward starting caplet as the difference of two caps:
+\begin{equation}
+\begin{gathered}
+Cpl_{1y, 1y6m}(\sigma^{spot}_{1y6m})=Cap_{1y6m}-Cap_{1y} \\[0.3cm]
+Cap_{1y6m}(\color{red}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\color{red}{\sigma^{flat}_{1y6m}}) + Cpl_{6m,1y}(\color{red}{\sigma^{flat}_{1y6m}}) + Cpl_{1y,1y6m}(\color{red}{\sigma^{flat}_{1y6m}}) \\[0.3cm]
+Cap_{1y}(\color{green}{\sigma^{flat}_{1y}})=Cpl_{0,6m}(\color{green}{\sigma^{flat}_{1y}}) + Cpl_{6m,1y}(\color{green}{\sigma^{flat}_{1y}}) 
+\end{gathered}
+\end{equation}
+Unfortunately the $18m$ volatility is NOT quoted on the market, so we can:
+\begin{itemize}
+  \item assume for the sake of simplicity that the volatility remains constant between $1y$ and $2y$ caps;
+  \item use an interpolation method such as linear or cubic spline to get the $1y6m$ cap volatility.
+\end{itemize}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\linewidth]{addons/flat_volatilities}
+\end{center}
+\label{fig:flat_volatilities}
+\end{figure}
+
+Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volatility from previous Equation by using a Newton-Raphson or Brent method.
+
+\item We can apply the same method for the $1y6m$ forward starting caplet to get the volatility, $\sigma^{flat}_{2y}$ is quoted so no interpolation is needed here.
+\begin{equation}
+\begin{gathered}
+Cpl_{1y6m, 2y}(\sigma^{spot}_{2y})=Cap_{2y}-Cap_{1y6m} \\[0.3cm]
+Cap_{2y}(\color{green}{\sigma^{flat}_{2y}})=Cpl_{0,6m}(\color{green}{\sigma^{flat}_{2y}}) + Cpl_{6m,1y}(\color{green}{\sigma^{flat}_{2y}}) + \ldots + Cpl_{1y6m,2y}(\color{green}{\sigma^{flat}_{2y}}) \\[0.3cm]
+Cap_{1y6m}(\color{green}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\color{green}{\sigma^{flat}_{1y6m}}) + Cpl_{6m,1y}(\color{green}{\sigma^{flat}_{1y6m}}) + Cpl_{1y,1y6m}(\color{green}{\sigma^{flat}_{1y6m}})
+\end{gathered}
+\end{equation}
+
+\item Keep iteratively to solve for all the remaining volatilities using the very same technique.
+\end{enumerate}
+
+
+\section{Reverse Floater}
+
+* For instance, in September 2009, the short-term interest rate, the 3-month EURIBOR, **was at 0.5%**, and the forward curve was rising rather steeply, i.e. the implied forward 3-month EURIBOR in 3 years **was at 3.3%**. 
+* The 3-year interest rate for a fixed-coupon bond **was at 3.5%** at the time. 
+* It was possible to construct a 3-year reverse floater bond paying:
+
+$$ 6\% - 2 \cdot \text{3M-EURIBOR}$$
+
+(the coupon payments usually occur on a quarterly basis). 
+* Should the 3-Month EURIBOR not move during the first year, the coupon would amount to $6\% - 2 \cdot 0.5\% = 5\%$. 
+* Compared to a floating rate bond, the outperformance would be 4.5% for that period. 
+%* After 3 years, the invested nominal is redeemed along with the last coupon.
+
+Vega 
+
+$$V_{\text{cap}}=F\Phi(d_1) - K\Phi(d_2)$$
+
+$$\nu = \frac{\partial V_{\text{cap}}}{\partial\sigma} =
+F\phi(d_1)$$
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/reverse_floater_payoff}
+	\end{center}
+	\label{fig:revere_floater_payoff}
+\end{figure}
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/cap_vega}
+	\end{center}
+	\label{fig:cap_vega}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Floating Rate Notes}
 Floating rate bond or note (FRN) usually refers to an instrument whose coupon is based on a short term rate (3-month T-bill, 6-month LIBOR). Variable coupon rates are fixed in advance at reset dates, which are 3- or 6-month (interest payment period) earlier.
@@ -389,44 +553,8 @@ Interesting reference \emph{Variance Reduction Techniques of Importance Sampling
 Journal of Mathematical Finance, 2013, 3, 431-436.
 \end{question}
 
-\section{Reverse Floater}
-
-* For instance, in September 2009, the short-term interest rate, the 3-month EURIBOR, **was at 0.5%**, and the forward curve was rising rather steeply, i.e. the implied forward 3-month EURIBOR in 3 years **was at 3.3%**. 
-* The 3-year interest rate for a fixed-coupon bond **was at 3.5%** at the time. 
-* It was possible to construct a 3-year reverse floater bond paying:
-
-$$ 6\% - 2 \cdot \text{3M-EURIBOR}$$
-
-(the coupon payments usually occur on a quarterly basis). 
-* Should the 3-Month EURIBOR not move during the first year, the coupon would amount to $6\% - 2 \cdot 0.5\% = 5\%$. 
-* Compared to a floating rate bond, the outperformance would be 4.5% for that period. 
-%* After 3 years, the invested nominal is redeemed along with the last coupon.
-
-Vega 
-
-$$V_{\text{cap}}=F\Phi(d_1) - K\Phi(d_2)$$
-
-$$\nu = \frac{\partial V_{\text{cap}}}{\partial\sigma} =
-F\phi(d_1)$$
-
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/reverse_floater_payoff}
-	\end{center}
-	\label{fig:revere_floater_payoff}
-\end{figure}
-
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/cap_vega}
-	\end{center}
-	\label{fig:cap_vega}
-\end{figure}
-
-\section{Interest Rate Swap as FRAs}
-
 \section{Girsanov Theorem}
-Let’s start with a standard Brownian motion $W_t^{\mathbb{P}} = \mathcal{N}_{\mathbb{P}(0,t)$ under a probability measure $\mathbb{P}$, and adapted to a filtration $\mathcal{F}_t$. These are 30 simulated evolution paths of $W_t^{\mathbb{P}}$, showing no drift, as expected:
+Let’s start with a standard Brownian motion $W_t^{\mathcal{P}} = \mathcal{N}_{\mathcal{P}}(0,t)$ under a probability measure $\mathcal{P}$, and adapted to a filtration $\mathcal{F}_t$. These are 30 simulated evolution paths of $W_t^{\mathcal{P}}$, showing no drift, as expected:
 	
 \begin{figure}[htbp]
 	\begin{center}
@@ -435,7 +563,7 @@ Let’s start with a standard Brownian motion $W_t^{\mathbb{P}} = \mathcal{N}_{\
 	\label{fig:brownian_motion_nodrift}
 \end{figure}
 
-For exemplification, let us now construct a "drifty" process $Y_t=\mu t+\sigma W_t^{\mathbb{P}}\in \mathcal_{\mathbb{P}}(\mu t, \sigma^2 t)$, that is, with drift $\mu$ and diffusion $\sigma$; in other words, $\mathbb{E}^{\mathbb{P}[Y_t]=\mu t$ and $\text{Var}^{\mathbb{P}}[Y_t]=\mathbb{E}^{\mathbb{P}[Y^2_t]-\mathbb{E}^{\mathbb{P}[Y_t]^2=\sigma^2 t$.
+For exemplification, let us now construct a "drifty" process $Y_t=\mu t+\sigma W_t^{\mathcal{P}}\in \mathcal{N}_{\mathcal{P}}(\mu t, \sigma^2 t)$, that is, with drift $\mu$ and diffusion $\sigma$; in other words, $\mathbb{E}^{\mathcal{P}}[Y_t]=\mu t$ and $\text{Var}^{\mathbb{P}}[Y_t]=\mathbb{E}^{\mathcal{P}}[Y^2_t]-\mathbb{E}^{\mathcal{P}}[Y_t]^2=\sigma^2 t$.
 
 Incidentally, note the terminology: the drift is not an expectation, but rather the rate of change in expectation, and the diffusion is not a standard deviation, but rather the square root of the rate of 
 change in variance. These are 30 simulated paths for the evolution of $Y_t$, for $\mu = 0.8$ and $\sigma =1.25$ (the drift is visually apparent):
@@ -454,24 +582,24 @@ Consider the new process $U_t=\frac{1}{\sigma}Y_t\in\mathcal{N}_{\mathbb{P}}\lef
 \end{equation}
 and now, we solve this equation for $M_t^{\mathbb{P}}$.
 We ask ourselves the question: what process $M_t^{\mathbb{P}}$ satisfies ? ,
-t
-P P PP
-t t tt
-U
-tW W W M µ
-σ
-+=−
-
-? One can easily see that
-the process P P M W t t
-µ
-σ = − verifies the expression , , PP P P P WM W W W t tt t t t
-µµ µ
-σσ σ = − =− =− ,
-hence , P PP U W WM tt tt = − . Therefore P P M W t t
-µ
-σ = − is our solution. We use P Mt to define the
-change of measure: Zt M ( ) = ε ( t )
+%t
+%P P PP
+%t t tt
+%U
+%tW W W M µ
+%σ
+%+=−
+%
+%? One can easily see that
+%the process P P M W t t
+%µ
+%σ = − verifies the expression , , PP P P P WM W W W t tt t t t
+%µµ µ
+%σσ σ = − =− =− ,
+%hence , P PP U W WM tt tt = − . Therefore P P M W t t
+%µ
+%σ = − is our solution. We use P Mt to define the
+%change of measure: Zt M ( ) = ε ( t )
 
 \begin{figure}[htbp]
 	\begin{center}
