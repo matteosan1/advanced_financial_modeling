@@ -34,7 +34,7 @@
 \definecolor{ipython-frame}{RGB}{207, 207, 207}
 \definecolor{ipython-bg}{RGB}{247, 247, 247}
 \definecolor{ipython-red}{RGB}{186, 33, 33}
-\definecolor{ipython-green}{RGB}{0, 128, 0}
+\definecolor{ipython-green}{RGB}{0, 200, 0}
 \definecolor{ipython-cyan}{RGB}{64, 128, 128}
 \definecolor{ipython-purple}{RGB}{170, 34, 255}
 
@@ -303,38 +303,47 @@ Implementing a class or a function that represents an interest rate swap shows t
 
 From the prices of different maturity caps, it is possible to $\color{red}{bootstrap}$ the volatility of each caplet, i.e. the volatility which refers to the forward rate corresponding to the caplet.
 
-Let's \emph{strip} caplet volatilities from the following cap (flat) volatilities:
+Let's \emph{strip} caplet volatilities from the following cap (flat) volatilities which refers to caps with 0.013 strike over EURIBOR-6M whose term structure is shown in Table\ref{tab:flat_volatilities}(right).
 
- Maturity | Volatility 
---------|-------
-1y  | 44\%
-2y  | 45\%
-3y  | 44\%
-4y  | 41\%
-5y  | 39\%
-
-The quoted volatilities refer to caps with 0.013 strike over EURIBOR-6M:
-
- Pillar | Rate 
---------|-------
-3m  | 0.0002 
-6m  | 0.0007 
-12m | 0.0025
-2y  | 0.0070
-3y  | 0.0100
-5y  | 0.0162
-
+\begin{table}[htpb]
+\begin{center}
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{|c|c|}
+\hline
+Maturity & Volatility \\ \hline
+1y & 44\% \\ \hline
+2y & 45\% \\ \hline
+3y & 44\% \\ \hline
+4y & 41\% \\ \hline
+5y & 39\% \\ \hline
+\end{tabular}
+\quad
+\begin{tabular}{|c|c|}
+\hline
+Pillar & Rate \\ \hline
+3m & 0.0002 \\ \hline
+6m & 0.0007 \\ \hline
+12m & 0.0025 \\ \hline
+2y  & 0.0070 \\ \hline
+3y & 0.0100 \\ \hline
+5y & 0.0162 \\ \hline
+\end{tabular}
+\end{center}
+\label{tab:flat_volatilities}
+\caption{Left, flat volatilities table. Right, term structure of the considered Euribor-6M curve.}
+\end{table}
+The bootstrapping procedure proceeds has follows:
 \begin{enumerate}
 \item We start with the nearest instruments, i.e. the spot starting caplet with $6m$ maturity. For maturities shorter than the first quoted value we consider the volatility constant hence:
 \begin{equation}
-\sigma^{spot}(t_{0,6m})=\color{green}{\sigma^{flat}(t_{0,1y})}
+\sigma^{spot}(t_{0,6m})=\color{ipython-green}{\sigma^{flat}(t_{0,1y})}
 \end{equation}
 \item Let’s now price the $1y$ forward starting caplet with $6m$ maturity. Since market cap volatilities are quoted assuming \textbf{no-arbitrage} opportunity we can build the forward starting caplet as the difference of two caps:
 \begin{equation}
 \begin{gathered}
 Cpl_{1y, 1y6m}(\sigma^{spot}_{1y6m})=Cap_{1y6m}-Cap_{1y} \\[0.3cm]
 Cap_{1y6m}(\color{red}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\color{red}{\sigma^{flat}_{1y6m}}) + Cpl_{6m,1y}(\color{red}{\sigma^{flat}_{1y6m}}) + Cpl_{1y,1y6m}(\color{red}{\sigma^{flat}_{1y6m}}) \\[0.3cm]
-Cap_{1y}(\color{green}{\sigma^{flat}_{1y}})=Cpl_{0,6m}(\color{green}{\sigma^{flat}_{1y}}) + Cpl_{6m,1y}(\color{green}{\sigma^{flat}_{1y}}) 
+Cap_{1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}})=Cpl_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) + Cpl_{6m,1y}(\color{ipython-green}{\sigma^{flat}_{1y}}) 
 \end{gathered}
 \end{equation}
 Unfortunately the $18m$ volatility is NOT quoted on the market, so we can:
@@ -345,7 +354,7 @@ Unfortunately the $18m$ volatility is NOT quoted on the market, so we can:
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=0.8\linewidth]{addons/flat_volatilities}
+\includegraphics[width=0.6\linewidth]{addons/flat_volatilities}
 \end{center}
 \label{fig:flat_volatilities}
 \end{figure}
@@ -356,8 +365,8 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 \begin{equation}
 \begin{gathered}
 Cpl_{1y6m, 2y}(\sigma^{spot}_{2y})=Cap_{2y}-Cap_{1y6m} \\[0.3cm]
-Cap_{2y}(\color{green}{\sigma^{flat}_{2y}})=Cpl_{0,6m}(\color{green}{\sigma^{flat}_{2y}}) + Cpl_{6m,1y}(\color{green}{\sigma^{flat}_{2y}}) + \ldots + Cpl_{1y6m,2y}(\color{green}{\sigma^{flat}_{2y}}) \\[0.3cm]
-Cap_{1y6m}(\color{green}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\color{green}{\sigma^{flat}_{1y6m}}) + Cpl_{6m,1y}(\color{green}{\sigma^{flat}_{1y6m}}) + Cpl_{1y,1y6m}(\color{green}{\sigma^{flat}_{1y6m}})
+Cap_{2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}})=Cpl_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + Cpl_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \ldots + Cpl_{1y6m,2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) \\[0.3cm]
+Cap_{1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + Cpl_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + Cpl_{1y,1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})
 \end{gathered}
 \end{equation}
 
@@ -398,19 +407,6 @@ F\phi(d_1)$$
 	\end{center}
 	\label{fig:cap_vega}
 \end{figure}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 \section{Floating Rate Notes}
 Floating rate bond or note (FRN) usually refers to an instrument whose coupon is based on a short term rate (3-month T-bill, 6-month LIBOR). Variable coupon rates are fixed in advance at reset dates, which are 3- or 6-month (interest payment period) earlier.
@@ -453,6 +449,86 @@ The price of FRN has a range from \emph{par} to \emph{par} + full coupon. It is 
 \begin{question}
 Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. The relevant insterest rates can be taken from \href{https://raw.githubusercontent.com/matteosan1/advanced\_financial\_modeling/master/input_files/libor.csv}{libor.csv}
 \end{question}
+
+\section{Girsanov Theorem}
+Let’s start with a standard Brownian motion $W_t^{\mathcal{P}} = \mathcal{N}_{\mathcal{P}}(0,t)$ under a probability measure $\mathcal{P}$, and adapted to a filtration $\mathcal{F}_t$. In Fig.\ref{fig:brownian_motion_nodrift} 30 simulated path evolutions of $W_t^{\mathcal{P}}$ are shown, as expected there is no drfit.
+	
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_nodrift}
+	\end{center}
+	\label{fig:brownian_motion_nodrift}
+	\caption{Thirty realization of the simple Brownian motion $W_t^{\mathcal{P}}$.}
+\end{figure}
+
+For exemplification, let us now construct a "drifty" process $Y_t=\mu t+\sigma W_t^{\mathcal{P}}\in \mathcal{N}_{\mathcal{P}}(\mu t, \sigma^2 t)$, that is a Wiener process with drift $\mu$ and diffusion $\sigma$; in other words, $\mathbb{E}^{\mathcal{P}}[Y_t]=\mu t$ and $\text{Var}^{\mathbb{P}}[Y_t]=\mathbb{E}^{\mathcal{P}}[Y^2_t]-\mathbb{E}^{\mathcal{P}}[Y_t]^2=\sigma^2 t$.
+
+%Incidentally, note the terminology: the drift is not an expectation, but rather the rate of change in expectation, and the diffusion is not a standard deviation, but rather the square root of the rate of change in variance. 
+Figure\ref{fig:brownian_motion_drift} shows 30 simulated paths for the evolution of $Y_t$ ($\mu = 0.8$ and $\sigma =1.25$). There the drift is visually apparent.
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[width=0.5\linewidth]{addons/brownian_motion_drift}
+\end{center}
+\label{fig:brownian_motion_drift}
+	\caption{Thirty realization of the "drifty" Brownian motion $Y_t$.}
+\end{figure}
+
+We aim at applying a change of measure from $\mathcal{P}$ into a new probability $\mathcal{Q}$, such that $Y_t$ becomes driftless (a martingale) under $\mathcal{Q}: \mathbb{E}^{\mathcal{Q}}[Y_t]=0$, yet with the same diffusion as under $\mathcal{P}$: $\text{Var}^{\mathcal{Q}}[Y_t]=\sigma^2 t$
+
+Let $\mu^{*}$ be a new drift and assume $\\gamma_t = \frac{\mu_t^{*}-\mu_t}{\sigma_t}$. According to the Girsanov Theorem the process
+\begin{equation}
+dW^{*}_t = -\gamma_t dt + dW_t
+\end{equation}
+is a Brownian motion under the new measure $\mathcal{Q}$, equivalent to $\mathcal{P}$, is defined by the Radon-Nikodym derivative
+\begin{equation}
+\cfrac{d\mathcal{Q}}{d\mathcal{P}} = \exp\left(-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s\right)
+\end{equation}
+
+\begin{question}
+Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigma=0.2$. Determine the appropriate transformation, according to the Girsanov Theorem which makes the original process driftless. Verify that applying the Radon-Nikodym to the a simulated path of the process the drift indeed disappear.
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
+	\end{center}
+	\label{fig:brownian_motion_girsanov}
+\end{figure}
+\end{question}
+
+\begin{question}
+Given an underlying asset $S$ which currently is valued 100 simulate $N$ possible realization of the random variable $S$ both under the \emph{physical} probability measure and the 
+and a 1 year call option on that asset with strike $K=120$ determine 
+
+Other  Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigma=0.2$. Determine the appropriate transformation, according to the Girsanov Theorem which makes the original process driftless. Verify that applying the Radon-Nikodym to the a simulated path of the process the drift indeed disappear.
+
+mu = 0.05
+r = 0.01
+sigma = 0.20
+l = (mu-r)/sigma
+S0 = 100
+K = 120
+T = 1
+M = 252
+dt = T/M
+N = 10000
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
+	\end{center}
+	\label{fig:brownian_motion_girsanov}
+\end{figure}
+\end{question}
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Importance Sampling}
 Assume we want to calculate the expectation $\mathbb{E}[f(X)]$
@@ -552,61 +628,6 @@ Consider a one year ($T=1$) call option with $S_0=100$ , $K=170$,  $\sigma=0.2$,
 Interesting reference \emph{Variance Reduction Techniques of Importance Sampling Monte Carlo Methods for Pricing Options}, 
 Journal of Mathematical Finance, 2013, 3, 431-436.
 \end{question}
-
-\section{Girsanov Theorem}
-Let’s start with a standard Brownian motion $W_t^{\mathcal{P}} = \mathcal{N}_{\mathcal{P}}(0,t)$ under a probability measure $\mathcal{P}$, and adapted to a filtration $\mathcal{F}_t$. These are 30 simulated evolution paths of $W_t^{\mathcal{P}}$, showing no drift, as expected:
-	
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_nodrift}
-	\end{center}
-	\label{fig:brownian_motion_nodrift}
-\end{figure}
-
-For exemplification, let us now construct a "drifty" process $Y_t=\mu t+\sigma W_t^{\mathcal{P}}\in \mathcal{N}_{\mathcal{P}}(\mu t, \sigma^2 t)$, that is, with drift $\mu$ and diffusion $\sigma$; in other words, $\mathbb{E}^{\mathcal{P}}[Y_t]=\mu t$ and $\text{Var}^{\mathbb{P}}[Y_t]=\mathbb{E}^{\mathcal{P}}[Y^2_t]-\mathbb{E}^{\mathcal{P}}[Y_t]^2=\sigma^2 t$.
-
-Incidentally, note the terminology: the drift is not an expectation, but rather the rate of change in expectation, and the diffusion is not a standard deviation, but rather the square root of the rate of 
-change in variance. These are 30 simulated paths for the evolution of $Y_t$, for $\mu = 0.8$ and $\sigma =1.25$ (the drift is visually apparent):
-\begin{figure}[htbp]
-\begin{center}
-	\includegraphics[width=0.5\linewidth]{addons/brownian_motion_drift}
-\end{center}
-\label{fig:brownian_motion_drift}
-\end{figure}
-
-We aim at applying a change of measure from $\mathbb{P}$ into a new probability $\mathbb{Q}$, such that $Y_t$ becomes driftless (a martingale) under $\mathbb{Q}: \mathbb{E}^{\mathbb{Q}}[Y_t]=0$, yet with the same diffusion as under $\mathbb{P}$: $\text{Var}^{\mathbb{Q}}[Y_t]=\sigma^2 t$
-
-Consider the new process $U_t=\frac{1}{\sigma}Y_t\in\mathcal{N}_{\mathbb{P}}\left(\frac{\mu}{\sigma}t,t\right)$. In what follows, we will remove the drift of $U_t$, then reconstruct $Y_t$. For that, we follow Girsanov’s statement backwards: we aim at expressing $U_t$ as a standard Brownian motion under a probability $\mathbb{Q}$, that is, by Girsanov’s formula, we want to express $U_t$ in the following form:
-\begin{equation}
-	U_t = W_t^{\mathbb{P}} - [W_t^{\mathbb{P}}, M_t^{\mathbb{P}}]
-\end{equation}
-and now, we solve this equation for $M_t^{\mathbb{P}}$.
-We ask ourselves the question: what process $M_t^{\mathbb{P}}$ satisfies ? ,
-%t
-%P P PP
-%t t tt
-%U
-%tW W W M µ
-%σ
-%+=−
-%
-%? One can easily see that
-%the process P P M W t t
-%µ
-%σ = − verifies the expression , , PP P P P WM W W W t tt t t t
-%µµ µ
-%σσ σ = − =− =− ,
-%hence , P PP U W WM tt tt = − . Therefore P P M W t t
-%µ
-%σ = − is our solution. We use P Mt to define the
-%change of measure: Zt M ( ) = ε ( t )
-
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
-	\end{center}
-	\label{fig:brownian_motion_girsanov}
-\end{figure}
 
 
 \end{document}
