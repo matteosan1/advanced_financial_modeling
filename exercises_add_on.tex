@@ -299,6 +299,120 @@ Implementing a class or a function that represents an interest rate swap shows t
 \end{enumerate}
 \end{question}
 
+\section{Algorithmic Differentiation}
+
+\emph{Algorithmic Differentiation} (AD), also known as \emph{automatic differentiation}, is a mathematical, computer science technique for computing accurate sensitivities quickly. There are two main modes, namely \textbf{tangent mode} and \text{adjoint mode}. For many models, \emph{adjoint AD (AAD)} can compute sensitivities from to 10x to 1000x faster than numerical bumping or finite differences. AD operates directly on analytics and each line of code is differentiated. Clearly it can be applied to a single trade or a portfolio (or vector) of trades.
+
+If for example we have a computer algorithm that computes $y$ via multiple nested operations such as $y = h(g(f(x)))$ we could illustrate the series of operations as,
+\begin{equation}
+x\rightarrow f(x) \rightarrow g(f(x)) \rightarrow h(g(f(x))) \rightarrow y
+\end{equation}
+
+Working forwards from the input value $x$, we can compute the derivative of each operation and use the \emph{chain rule} to compute the total derivative $dy/dx$ as follows
+\begin{equation}
+\frac{df}{dx}\frac{dg}{df}\frac{dh}{dg}\frac{dy}{dh}=\frac{dy}{dx}
+\end{equation}
+But in principle we could also work backwards, from the output value $y$ to arrive at the same result,
+\begin{equation}
+\frac{dy}{dh}\frac{dh}{dg}\frac{dg}{df}\frac{df}{dx}=\frac{dy}{dx}
+\end{equation}
+Furthermore AD can be used on systems of equations and matrices. 
+Tangent mode works forward from the left to right
+\begin{equation}
+\left(\left(\left(\frac{\partial x_1}{\partial x}\frac{\partial x_2}{\partial x_1}\right)\frac{\partial x_3}{\partial x_2}\right)\cdots\frac{\partial x_m}{\partial x_{m-1}}\right)\frac{\partial y}{\partial x_m}
+\end{equation}
+With adjoint mode we work backwards from the right
+\begin{equation}
+\frac{\partial x_1}{\partial x}\left(\frac{\partial x_2}{\partial x_2}\left(\frac{\partial x_3}{\partial x_2}\cdots\left(\frac{\partial x_m}{\partial x_{m-1}}\frac{\partial y}{\partial x_m}\right)\right)\right)
+\end{equation}
+
+\subsection{Tangent Mode}
+In tangent mode we differentiate code working forwards starting with the trade inputs and follow the natural order of the original program. This method computes price sensitivities to one input at a time and we must call the tangent method several times, once for each input parameter.
+
+When using tangent mode \emph{dot} notation is usually used to denote derivatives being differentiated with respect to the function input. For example given $y = f(x)$ then $y$ dot would indicate $\dot{y} = dy/dx$.
+Consider the below simple function,
+\begin{equation}
+\begin{cases}
+\text{Function: } y = 2x^2\\
+\text{Tangent: } \dot{y} = 4x\dot{x}
+\end{cases}
+\label{eq:aad_function}
+\end{equation}
+In tangent mode $\dot{x}=dx/dx$ is specified as an input and used to enable/disable the tangent derivative calculation. Setting it to 1 in enables the derivative calculation giving
+$dy/dx = 4x$, however when $\dot{x}= 0$ we have $dy/dx = 0$.
+
+\subsection{Adjoint Mode}
+When using adjoint mode we differentiate code in reverse order, starting with function outputs. 
+Adjoint mode follows the reverse order of the original program, consequently we must compute the function value first (\emph{forward sweep}) and store the intermediate values before applying adjoint AD in reverse (\emph{back propagation}). This method shifts one function output at a time and generates derivatives exactly to machine precision for all price inputs in one go.
+
+Adjoint mode is computed using \emph{bar} notation for derivatives to denote the variable is to be differentiated with respect to the function input. For example given $y = f(x)$ and working in reverse order gives $\bar{y} = dy/dx$
+Once again let us consider same simple function from before,
+\begin{equation}
+\begin{cases}
+\text{Function: } y = 2x^2\\
+\text{Tangent: } \bar{y} = 4x\bar{x}
+\end{cases}
+\end{equation}
+In adjoint mode $\bar{y} = dy/dy$ is specified as an input and allows us to enable/disable the adjoint derivative calculation. 
+
+\subsection{Example}
+Consider the function define in Eq.\ref{eq:aad_function} and compute the AD both using tangent and adjoint technique.
+\begin{equation}
+\begin{cases}
+\text{Function: } f(x_1, x_2) = 2x_1^2 + 3x_2\\
+\text{Solution: } \frac{df}{dx_1} = 4x_1, \text{ and } \frac{df}{dx_2}=3
+\end{cases}
+\end{equation}
+When for example $x_1=2$ and $x_2 = 3$ we have,
+\begin{equation}
+\frac{df}{dx_1} = 8, \text{ and } \frac{df}{dx_2}=3
+\end{equation}
+
+\begin{question}
+Consider a 5-years receiver Interest Rate Swap with a 1M notional, exchanging a fixed rate of 5\% with a flat 1\% LIBOR rate. The risk free rate for discounting is considered to be flat a 1.5\%.
+Compute DV01 and PV01 with algorithmic differentiation using both tangent and adjoint modes. Compare the results.
+\end{question}
+
+\section{Asset Swap}
+
+\begin{question}
+Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
+Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond? 
+For this exercise assume the all Annuity Factors have a value of 10.0 for simplicity.
+\end{question}
+Recall the Asset Swap Spread $s$ can be calculated using 
+Firstly we calculate the swap components giving 
+The Par-Par adjustment is the dominating term and evaluates to
+Par-Par Adjustment =
+
+100 − 104.58
+100 !
+= −4.580%
+We proceed to calculate the asset swap spread s as
+s =
+0.600% − 4.580%
+10.0
+= −0.3980%
+or -39.80 basis points
+
+Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what
+is the par-par asset swap spread for this bond?
+Using the Asset Swap Spread $s$ can be calculated using 
+Again we calculate the swap components giving
+The Par-Par adjustment evaluates to
+Par-Par Adjustment =
+
+100 − 75.280
+100 !
+= 24.72%
+We proceed to calculate the asset swap spread s as
+s =
+25.60% + 24.72%
+10.0
+= 5.0320%
+or 503.20 basis points
+
+
 \section{Cap Volatility Bootstrap}
 
 From the prices of different maturity caps, it is possible to $\color{red}{bootstrap}$ the volatility of each caplet, i.e. the volatility which refers to the forward rate corresponding to the caplet.
@@ -373,6 +487,65 @@ Cap_{1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\textcolo
 \item Keep iteratively to solve for all the remaining volatilities using the very same technique.
 \end{enumerate}
 
+\section{BPV}
+
+\section{Asset Swap}
+
+\section{Callable Bond}
+Bonds with European call option just have a single possible call date. Let's denote the call date by $t_c$ and the notice time as $t_n$. Also, we denote the call price with $X$. 
+
+In general, we can assume that \textbf{it is optimal for the issuer to minimize the value of the contract}. It means the issuer will exercise the option if the price of the callable bond exceeds the exercise price at the notice date. Otherwise, she will give up the option right and the callable bond price is equal to that of the non-option bond.
+
+Denote by $r_b$ the \emph{break-even} interest rate which represents the rate value such that the issuer is indifferent between exercising the option or not.
+
+It can be calculated by,
+\begin{equation}
+X\cdot D(t_n, t_c) - P(r,t_n)=0
+\end{equation}
+where $D(t_n, t_c)$ is the discount factor between notice and exercise dates and $P(r,t_n)$ the price of the callable bond an instant before the notice date.
+
+We know the value of the callable bond $P(r,t_n)$ since it is equal to the value of the non-option bond. The solution of equation is the cross point between the two curves.
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/callable_bond}
+	\end{center}
+	\label{fig:callable_bond}
+\end{figure}
+
+\section{Jamshidian Decomposition}
+An option on a portfolio of pure discount bonds can be decomposed into a portfolio of options on the individual discount bonds in the
+portfolio.
+
+Hence, we can think of the European Swaption as a sum of European
+options on Zero-Coupon bonds. This method is called Jamshidian’s decomposition, and is mathematically explained as follows:
+\begin{equation}
+\max\left[\sum_{i=1}^n C_i p(r, t, s_i) - K, 0\right] = \sum_{i=1}^n C_i \max\left[p(r, t, s_i) - K_i, 0\right]
+\label{eq:jamshidian_decomposition}
+\end{equation}
+
+Consider a European Swaption with strike rate $K$, maturity $T$ and nominal $FV$
+with payment dates $T_i$ for $i = 1,\ldots, n$. Since the value of a floating rate bond is worth its face value, we can take it as an option on a bond paying $C_i = K_{s_i}$ with strike price $FV$. This option will be exercised when $r(T) < r^*$ where $r^*$ is the solution to
+\begin{equation}
+FV = \sum_{i=1}^n C_i p(r^*, T, T_i)
+\end{equation}
+This means that $FV$ is taken as a sum of discounted flows $C_i$ for a short rate $r^*$ at time $T$. To find the value of $r^*$ we have to discount all the Swap cash-flows, sum them up and let the sum be equal to the notional. We have to use the NewtonRaphson algorithm to follow this calculation $r^*$, that will be the correspondent level of $r$ for that equality to happen. 
+
+Once $r^*$ is found, we have to calculate the discounted cash-flows substituting it in the discounting factor $e^{-r\Delta t}$ and let them be the strike prices of our call options on Swaps.
+Afterwards, we calculate the payoff of the call options on the cash-flows with
+the strike price mentioned and sum them up. The payoff of this sum of options
+will thus be
+\begin{equation}
+\max\left[\sum_{i=1}^n C_ip(r, T, T_i)-FV, 0\right]
+\end{equation}
+which using Eq.\ref{eq:jamshidian_decomposition} we find is equivalent to
+\begin{equation}
+\sum_{i=1}^n C_i \max\left[p(r, T, T_i)-FV_i, 0\right]
+\end{equation}
+where $FV_i = p(r^*, T, T_i)$. 
+Therefore, the Swaption is calculated as the sum of $n$ options on discounted bonds with the exercise price of the $i$th option equal to $FV_i$.
+
+After the price of a European Swaption under the Hull-White model is calculated, we have to calibrate it against the market data. Usually this calibration method is carried out taking the target prices to match the ones given by the Black-76 or Normal-Black models and trying to get as close as possible to them.
 
 \section{Reverse Floater}
 
@@ -398,7 +571,7 @@ F\phi(d_1)$$
 	\begin{center}
 		\includegraphics[width=0.5\linewidth]{addons/reverse_floater_payoff}
 	\end{center}
-	\label{fig:revere_floater_payoff}
+	\label{fig:reverse_floater_payoff}
 \end{figure}
 
 \begin{figure}[htbp]

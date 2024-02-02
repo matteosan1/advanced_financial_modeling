@@ -58,7 +58,6 @@
 	\end{itemize}
 \end{frame}
 
-
 \subsection{Stochastic Discount Factor and Zero Coupon Bond}
 \begin{frame}{Stochastic Discount Factor}
 	\uncover<1->{
@@ -130,23 +129,23 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Year Fraction, Day-Count Convention}
-	\begin{itemize}
-		\item Time to maturity: $T-t$
-		\item Denote by $\tau(t, T)$ the chosen time measure between $t$ and $T$. In theory, you can think of $\tau(t, T)=T-t$. In practice there are many possible ways to compute that time difference.
-		\item Among the plethora of conventions, the followings are worth mentioning:
-		\begin{itemize}
-			\item Actual/365
-			\item Actual/360
-			\item 30/360
-		\end{itemize}
-		\item \textcolor{red}{Go and find their definitions: they are also embedded in Excel as financial functions.}
-	\end{itemize}
-	\begin{tikzpicture}[remember picture,overlay]
-		\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
-		\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/chzT2}{shorturl.at/chzT2}}};
-	\end{tikzpicture}
-\end{frame}
+%\begin{frame}{Year Fraction, Day-Count Convention}
+%	\begin{itemize}
+%		\item Time to maturity: $T-t$
+%		\item Denote by $\tau(t, T)$ the chosen time measure between $t$ and $T$. In theory, you can think of $\tau(t, T)=T-t$. In practice there are many possible ways to compute that time difference.
+%		\item Among the plethora of conventions, the followings are worth mentioning:
+%		\begin{itemize}
+%			\item Actual/365
+%			\item Actual/360
+%			\item 30/360
+%		\end{itemize}
+%		\item \textcolor{red}{Go and find their definitions: they are also embedded in Excel as financial functions.}
+%	\end{itemize}
+%	\begin{tikzpicture}[remember picture,overlay]
+%		\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
+%		\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/chzT2}{shorturl.at/chzT2}}};
+%	\end{tikzpicture}
+%\end{frame}
 
 \subsection{Spot Interest Rate}
 \begin{frame}{Spot Interest Rate}
@@ -876,8 +875,8 @@
 		ASWS = \frac{\textbf{CBP}-\overline{\textbf{CBP}}}{\sum_{i=1}^{\beta}\tau_iP(0,T_i)}
 	\end{equation}
 	\begin{itemize}
-	\item<2-> An asset swap enables an investor to buy a fixed rate bond and then hedge out the interest rate risk by swapping the fixed payments to floating. In doing so the investor retains the credit risk to the fixed-rate bond and earns a corresponding return. 
-	\item<3-> She is still exposed to the loss of the coupons and redemption on the bond, i.e. the difference between the bond price and recovery value.
+	\item<2-> An asset swap enables an investor to buy a fixed rate bond and then hedge out the interest rate risk by swapping the ixed payments to floating. In doing so the investor retains the credit risk to the fixed-rate bond and earns a corresponding return. 
+	\item<3-> She is still exposed to the loss of the coupons and redemption on the bond, i.e. the difference between the bond rice and recovery value.
 	\item<4-> In economic terms the purpose of the Asset Swap Spread is to compensate the Asset Swap buyer for taking these risks, which is measured by the spread.
 	\end{itemize}
 \uncover<4->{
@@ -900,17 +899,30 @@
 	\end{itemize}
 \end{frame}
 
-\section{Delta Measures}
+\section{Risk Measures}
 
-\begin{frame}{Delta Risk}
-	\begin{itemize}
-	\item<1-> The concept of delta risk on interest rate derivatives is a generalization of the traditional one of a single asset option. 
-	\item<2-> The delta risk measures precisely the risk associated with the shift of the interest rate curve. 
-	\item<3-> However there are a number of complications...
-	\item<4-> Interest rate derivatives depend on a variety of instruments, used in the determination of the interest rate curve, rather than a single asset.
-	\item<5-> Because there are many ways of shifting the interest rate curve, many different deltas can be computed. 
-	\end{itemize}
+\begin{frame}{Estimating Risk}
+\begin{itemize}
+\item After pricing a swap traders/investors compute swap risk to measure or hedge their interest rate risk.
+\item There are several ways to compute risk:
+\begin{itemize}
+	\item \textbf{analytical}: involves deriving a closed-form solution which can be complex and is not always possible;
+	\item \textbf{numerical}: one bumps the yield curve calibration instruments and reprice the swap. The change in price gives the risk;
+	\item \textbf{curve Jacobians}: when yield curves have been calibrated, the solver slope 'Jacobian' can be kept and used to give the change in swap price for a change in forwards/discount factors;
+	\item \textbf{algorithmic differentiation}: can be used to compute risk "automatically" at the same time as computing the price. It produces accurate and fast risk.
+\end{itemize}
+\end{itemize}
 \end{frame}
+
+%\begin{frame}{Delta Risk}
+%	\begin{itemize}
+%	\item<1-> The concept of delta risk on interest rate derivatives is a generalization of the traditional one of a single asset option. 
+%	\item<2-> The delta risk measures precisely the risk associated with the shift of the interest rate curve. 
+%	\item<3-> However there are a number of complications...
+%	\item<4-> Interest rate derivatives depend on a variety of instruments, used in the determination of the interest rate curve, rather than a single asset.
+%	\item<5-> Because there are many ways of shifting the interest rate curve, many different deltas can be computed. 
+%	\end{itemize}
+%\end{frame}
 
 \begin{frame}{Basis Point Value}
 \begin{itemize}
@@ -927,23 +939,23 @@
 \end{itemize}
 \end{frame}
 
-%Ingoring for simplicity the fact that we now have different curves for discounting and projecting forward floating rates, LIBOR basis and what not, the PV of the floating leg of the swap is
-%PVfloat=1−𝑃(0,𝑇𝑛)(1)
-%(assuming again for simplicity that the swap starts today and 𝑃(0,𝑇𝑛)
-%is the discount factor from the swap maturity 𝑇𝑛
-%). Likewise, the PV of the fixed leg is
-%PVfix=∑𝑖=1𝑛𝐶𝑃(0,𝑇𝑖)(2)
-%where 𝐶
-%is the fixed rate in the swap. Assuming for simplicity annual payments.
+%%Ingoring for simplicity the fact that we now have different curves for discounting and projecting forward floating rates, LIBOR basis and what not, the PV of the floating leg of the swap is
+%%PVfloat=1−𝑃(0,𝑇𝑛)(1)
+%%(assuming again for simplicity that the swap starts today and 𝑃(0,𝑇𝑛)
+%%is the discount factor from the swap maturity 𝑇𝑛
+%%). Likewise, the PV of the fixed leg is
+%%PVfix=∑𝑖=1𝑛𝐶𝑃(0,𝑇𝑖)(2)
+%%where 𝐶
+%%is the fixed rate in the swap. Assuming for simplicity annual payments.
+%%
+%%Theoretically, the interest rate risk of the swap is obtained by shifting each rate that was used to construct the discount factors 𝑃(0,𝑇𝑖)
+%%then revaluing the swap and then taking the PV difference.
 %
-%Theoretically, the interest rate risk of the swap is obtained by shifting each rate that was used to construct the discount factors 𝑃(0,𝑇𝑖)
-%then revaluing the swap and then taking the PV difference.
-
-%What Bloomberg seems to do instead is to calculate the new fixed PV by shifting the fixed rate 𝐶
-%. Even though it stays constant (it is a term of the trade) this is approximately valid because when all rates change that were used to construct the discount factors then in particular the fair swap rate for maturity 𝑇𝑛
-%will change. This fair swap rate is related to the discount factors by
-%𝐶fair=1−𝑃(0,𝑇𝑛)∑𝑛𝑖=1𝑃(0,𝑇𝑖)
-%which follows simply from PVfloat=PVfix
+%%What Bloomberg seems to do instead is to calculate the new fixed PV by shifting the fixed rate 𝐶
+%%. Even though it stays constant (it is a term of the trade) this is approximately valid because when all rates change that were used to construct the discount factors then in particular the fair swap rate for maturity 𝑇𝑛
+%%will change. This fair swap rate is related to the discount factors by
+%%𝐶fair=1−𝑃(0,𝑇𝑛)∑𝑛𝑖=1𝑃(0,𝑇𝑖)
+%%which follows simply from PVfloat=PVfix
 
 \begin{frame}{Basis Point Value}
 \begin{itemize}
@@ -959,16 +971,35 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{PV01}
+\begin{itemize}
+\item PV01 measures the sensitivity of a swap to a one basis point parallel shift in interest rates. Specifically it is defined as a swap's fixed leg annuity scaled by 1 bps
+\begin{equation}
+PV01 = A/10000
+\end{equation}
+\item Numerically we can serve the PV01 by bumping the yield curve calibration instruments by 1 bp. 
+%PV01 can be considered as the DV01 for par swaps (just set the fixed rate in the DV01 formula to the par rate making the PVswap term equal zero.
+%par rate = swap equivalent of bond yield to maturity
+\end{itemize}
+\end{frame}
+
 \begin{frame}{DV01}
 \begin{itemize}
 	\item<1-> If you want to know the \emph{linear} risk associated to a Interest Rate Swap if the market actually moves, you can make a slightly different calculation than above.
-	\item<2-> The \textcolor{red}{Dollar value of a basis point (DV01)} refers to the exposure of a swap position to a move of 1 bp in the forward rate curve.
+	\item<2-> The \textcolor{red}{Dollar value of a basis point (DV01)} refers to the exposure of a swap position to a \textbf{down-shift} move of 1 bp in the forward rate curve.
 	\item<3-> In the \emph{real} scenario the fixed rate is, well, fixed and floating rates move, so you can consider what happens to the NPV if every forecast rate $r_i$ are changed in parallel by the same amount
 	\begin{equation*}
 	\textbf{DV01} = \sum_j \frac{\partial \textbf{PFS}}{\partial r_j} = -\sum_{j}\tau_jP_j+\sum_{j}\left(K\sum_{i=\alpha+1}^\beta\tau_i\frac{\partial P_i}{\partial r_j} - \sum_{k=\alpha+1}^\beta L_k\tau_k\frac{\partial P_k}{\partial r_j}\right)
 	\end{equation*}
 	\item<4-> In the multi-curve framework DV01 would be calculated for the forecast curve, and for the discounting curve, resulting in two actual DV01 measurements.
 \end{itemize}
+%\begin{frame}{What does DV01 tell us ?}
+%\begin{itemize}
+%\item The DV01 calculates the profit or loss our swap will make from a down-shift in interest rates. 
+%\item Specifically it calculates the P&L from a 1 basis point down-shift in both OIS rates, used to calculate discount factors, and Libor forecast rates. 
+%\item The DV01 calculation is made up of a PV01 term, which indicates the risk to Libor forecast rates, and a DV01 add-on which indicates the risk to OIS discounting rates.
+%\end{itemize}
+%\end{frame}
 \end{frame}
 
 %Generally speaking an approximation for $\frac{\partial D_i}{\partial L_j}=\tau_i D_i$ if the rate $L_j$ impacts $D_i$ (i.e. if the rate is before $D_i$) and zero otherwise, so this is approximately:
@@ -995,11 +1026,77 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{DV01 Numerical Calculation}
-	\begin{center}
-		\includegraphics[width=0.6\linewidth]{dv01}
-	\end{center}
+%\begin{frame}{DV01}
+%\begin {itemize}
+%\item It is common to calculate swap DV01 by decomposing the swap into a fixed and floating rate bond: DV01 becomes the sensitivity of a bond to a down-shift of 1 basis point in yield to maturity.
+%\item Swap DV01 measures the sensitivity of a swap to changes in both forecast and discount curves. The Libor risk is usually much larger than the discount. % (except for swaps trading far from par). 
+%\item Most of the risk comes from the floating leg since it is the only one sensitive to the forecast rate changes, while both carry discount risk.
+%%Numerically it can be calculated by shifiting calibration instruments of both libor and ois discounting by 1 bp downwards. Heuristically this makes sence since the par rate by definition is the weighted average of libor forecast rates with OIS discount factors as weights.
+%%Analytically DV01 can be calculated using \emph{modified duration approach}. Duration indicates the percentage chage in price for a percentage change in yield. DV01^{bond} = -B*D/10000 (B bond clean price).
+%%Using bond interpretation a fixed rate receiver swap is a long bond and short a bond floater and vice versa for a receiver swap. 
+%%The floating rate bond has no risk to forward rate changes, since floating coupons track Libor and are naturally immunized against interest rate moves. Alternatively a floating rate bond or note can be considered as and also replicated by a strip of forward starting bond-lets. Mathematically such bond-lets cancel each other out and reduce to the single front coupon; namely the coupon where the Libor rate has fixed already.
+%%Under the bond approach the modified duration must include the final bond redemption payment or exchange of notional and the DV01 of the floating leg collapses to the DV01 of the front payment, where the Libor rate has fixed already and no longer a floating coupon.
+%%\end{frame}
+
+\begin{frame}{Market Rate Sensitivity}
+As mentioned above asset swaps are quoted as a spread to the swap curve. Recent market developments concerning yield curve construction, also known as bootstrapping, has lead to the introduction of multiple swap curves. This situation naturally led to the obvious question; which curve should asset swap spread benchmarked against? 
+	\begin{itemize}
+		\item<1-> Another popular, though more complicated, method is to shock each input instrument used in the \emph{bootstrapping} by 1~bp one by one (i.e., change the futures rate by 1~bp, the swap rates by 1~bp, OIS rates by 1~bp, etc\ldots), rebuild the curves, and then reprice the instrument of interest to obtain its curve sensitivity. 
+		\item<2-> This is called \textcolor{red}{Market Rate Sensitivity} and its value is given by the sum of each swap $NPV$ variations.
+		\item<3-> This of course is not quite a "parallel" shift of any curve (e.g., a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
+		\item<4-> In a plain vanilla swap is very close but not equal to BPV. The mark to market value of the swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
+%		\item Suppose for instance that we are short on a five year swap and to receive $4y$. If the rates go higher we lose money, but the rate of variation of the MTM decreases with the increases of rates. If rates decrease, the MTM increases, and the rate of variation of the MTM increase with the further increase with the further decrease of rates.
+\end{itemize}
 \end{frame}
+
+\begin{frame}{Convexity Risk}
+\begin{itemize}
+\item The term convexity refers to non-linear changes or second order effects on trading positions, which traders call \emph{Gamma}. 
+\item As Bond prices increase their corresponding yield decreases and vice versa, Bond and Swap prices however are not a linear function of yield. Plotting bond prices versus yield would result in a convex or curved looking function.
+\item For small changes in yield we can approximate the Price-Yield function as being linear, but for larger changes in yield this is clearly inadequate.
+\begin{itemize}
+	\item Bonds and swaps with larger coupons, ceterus paribus, are subject to higher convexity risk;
+	\item bonds and swaps with longer tenors, ceterus paribus, are subject to lower convexity risk.
+\end{itemize}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{dv01}
+	\end{center}
+\end{itemize}
+%If an asset swap position31 is not re-hedged regularly shifts in the yield curve may trigger a loss on the bond position that is not offset by the profit in the swap position or vice versa. The risk per basis point shift in the yield for the bond does not typically match that of the swap hedge due to a convexity mismatch between the bond and swap. For small changes in yield the mismatch is small and often negligible, but this is not the case for larger shifts. Asset swap positions  require regular rehedging to manage this  convexity risk
+\end{frame}
+
+%\begin{frame}{Multiple Curve Bootstrapping}
+%As mentioned above asset swaps are quoted as a spread to the swap curve. Recent market developments concerning yield curve construction, also known as bootstrapping, has lead to the introduction of multiple swap curves. This situation naturally led to the obvious question; which curve should asset swap spread benchmarked against? 
+%After the credit crisis and the collapse of Lehman Brothers that followed in 2008 Libor rates, the rates at which banks lend to one another, were no longer considered risk-free. Interbank lending begain to incorporate credit risk and Libor rates began to price in, different levels of credit risk dependent on the loan term. The market standard 1M, 3M, 6M and 12M Libor rates started to reflect, for the first time, increasing levels of credit risk respectively as longer-term interbank lending became associated with greater credit risk.
+%
+%Furthermore, post credit crisis, tenor basis swaps began to quote with non-negligible spreads and as a result discounting and forecasting Libor rates from single yield curve was no longer viable. Yield curves were subsequently required to be built from tenor-homogenous instruments; that is instruments with the same coupon frequency and similar credit risk for consistency purposes.
+%
+%The market consequently adopted the overnight OIS rate as the risk-free discounting benchmark. This was because OIS swaps have a coupon frequency of 1 day, the shortest quoted frequency in the market, and market participants therefore adopted this rate to be the closest proxy to risk-free lending. In contrast however Libor forecasting needs to be derived from an appropriate Libor curve, namely the Libor curve calibrated with tenor homogeneous instruments i.e. instruments whose coupon frequency match the Libor rate to be forecasted. Typical market swap curves in this multi-curve regime are quoted with coupon frequencies of 1 day, 1
+%month, 3 month, 6 month and 12 month and often referred to simply as an OIS, 1ML, 3ML, 6ML and 12L curve respectively, where the L denotes Libor.
+%
+%That is the term-structure of bond yields with the same issuer. Of course if there is short term distress in the market this might not be the case. A tenor basis swap is a swap is similar to a regular fixed-float swap, except that we have 2 floating legs with different floating rate frequencies e.g. 3M Libor vs 6M Libor.
+%
+%6.4 Benchmark Swap Curves
+%Current EUR yield curves are charted below for reference in figure (14). The reader’s attention
+%is drawn to the fact that EUR 1M and 3M Libor forward rates are negative on the short end of
+%the curve. OIS rates are also negative in this region and the corresponding discount factors are
+%greater than 1.0, which might have been considered unusual in previous years.
+%A EUR swap is quoted as an annual fixed rate versus a semi-annual 6M Euribor rate as standard.
+%Consequently the EUR benchmark swap curve has a floating frequency of 6 months. EUR asset
+%swap spreads should be considered relative to the 6M Euribor curve. USD swaps are quoted
+%semi-annual fixed versus 3M USD Libor, so the USD benchmark is the 3M Libor curve. This
+%indicates that some basic familiarity with swap conventions is required to know which swap
+%curve an asset swap spread is being quoted and benchmarked against.
+%
+%6.5 Curve Risk
+%In an upward sloping yield curve environment, a high coupon bond normally has a lower modified duration than a low coupon bond. For example consider and compare the 1 5/8% 5/2026
+%and 6% 6/2026 US Treasuries. The low coupon bond has a modified duration of 9.122 and the
+%high coupon bond 7.697.
+%If the yield curve steepens we expect the yield to rise further on the low coupon bond relative to
+%the high coupon bond. Hence selling the low coupon bond and buying the high coupon bond in
+%duration-neutral matched amounts will leave us with a steepening exposure in much the same
+%way as if we were to buy an 8-year bond and sell a 10-year bond. This steepening exposure we
+%call curve risk. Curve risk often manifests when trading asset swaps on a Yield-Yield basis since the duration of the swap is typically not identical to that of the offsetting bond.
 
 %\begin{frame}{Swap Delta Measures}
 %	\begin{itemize}
@@ -1033,15 +1130,6 @@
 %
 %If you are paying floating and receiving fixed, the DV01 is negative since as rates go higher you need to pay out a higher amount which results in negative PnL on the position and thus negative DV01.
 
-\begin{frame}{Market Rate Sensitivity}
-	\begin{itemize}
-		\item<1-> Another popular, though more complicated, method is to shock each input instrument used in the \emph{bootstrapping} by 1~bp one by one (i.e., change the futures rate by 1~bp, the swap rates by 1~bp, OIS rates by 1~bp, etc\ldots), rebuild the curves, and then reprice the instrument of interest to obtain its curve sensitivity. 
-		\item<2-> This is called \textcolor{red}{Market Rate Sensitivity} and its value is given by the sum of each swap $NPV$ variations.
-		\item<3-> This of course is not quite a "parallel" shift of any curve (e.g., a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
-		\item<4-> In a plain vanilla swap is very close but not equal to BPV. The mark to market value of the swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
-%		\item Suppose for instance that we are short on a five year swap and to receive $4y$. If the rates go higher we lose money, but the rate of variation of the MTM decreases with the increases of rates. If rates decrease, the MTM increases, and the rate of variation of the MTM increase with the further increase with the further decrease of rates.
-	\end{itemize}
-\end{frame}
 
 %\begin{frame}{Considerations}
 %	\begin{itemize}
@@ -1059,10 +1147,10 @@
 	\end{itemize}
 \end{frame}
 
-%\begin{frame}{Trading and Hedging Swaps}
-%	For example, the yield spread is 0.6524\%. An investor believes that this yield spread will narrow as inter-bank credit improves relative to German Sovereign credit. By entering into a position which profits from a rise in the lower (German	Sovereign) yields and / or a fall in the higher (inter-bank) yields, the investor is able to express his view on relative credit pricing.
-%	AGGIUNGERE UN PO' DI SPIEGAZIONE
-%\end{frame}
+%%\begin{frame}{Trading and Hedging Swaps}
+%%	For example, the yield spread is 0.6524\%. An investor believes that this yield spread will narrow as inter-bank credit improves relative to German Sovereign credit. By entering into a position which profits from a rise in the lower (German	Sovereign) yields and / or a fall in the higher (inter-bank) yields, the investor is able to express his view on relative credit pricing.
+%%	AGGIUNGERE UN PO' DI SPIEGAZIONE
+%%\end{frame}
 
 \section{Cap and Floor}
 \begin{frame}{Caps and Floors}
@@ -1169,6 +1257,7 @@
 \end{frame}
 
 \begin{frame}{Problems with the Black Model}
+Could switch to ABM negative values are "normal" but very different tails between normal and lognormal distributions
 \begin{itemize}
 	\item In the Black model \textcolor{red}{negative rates are not allowed}. Hence a zero strike floor cannot be priced
 	\begin{equation*}
@@ -1673,7 +1762,6 @@
 \end{itemize}
 \end{frame}
 
-
 \subsection{Callable Bonds}
 \begin{frame}{Callable Coupon Bond}
 \begin{itemize}
@@ -1852,3 +1940,5 @@
 %\end{frame}
 
 \end{document}
+
+
