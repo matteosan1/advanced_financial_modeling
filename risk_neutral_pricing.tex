@@ -56,16 +56,20 @@
 %\end{frame}
 
 
-\begin{frame}{Arbitrage}
+\begin{frame}{Risk Neutral Pricing Foundations}
 \begin{itemize}
 	\item Arbitrage opportunities rarely exist in practice. If and when they do, gains are extremely small, and are typically short-lived and difficult to spot. \textcolor{red}{Arbitrage exclusion in the mathematical model is close enough to reality}.
 	\item A martingale corresponds to the common notion that "a price, changes randomly" so we cannot know if it will go up or down. That is why this mathematical concept is brought into finance.
+	\item An \textcolor{red}{equivalent martingale measure} $\mathcal{Q}$ is a probability measure on the space $\Omega$ such that
+	\begin{enumerate}
+		\item $\mathcal{Q}$ is equivalent to $\mathcal{P}$;
+		\item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a price $\pi_t$
+		\begin{equation*}
+			\pi_t = \mathbb{E}^{\mathcal{Q}^0}[D(t,T)V_A|\mathcal{F}_t]
+		\end{equation*}
+		which is a $\mathcal{Q}$-martingale.
+	\end{enumerate}
 \end{itemize}
-	\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=6.5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
-	\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/knyGT}{shorturl.at/knyGT}}};
-\end{tikzpicture}
-
 \end{frame}
 
 %\begin{frame}{Martingale}
@@ -86,35 +90,14 @@
 %		\end{itemize}	
 %	\end{frame}
 
-\begin{frame}{Equivalent Martingale Measure}
-	\begin{block}{Definition}
-		An \textcolor{red}{equivalent martingale measure} $\mathcal{Q}$ is a probability measure on the space $\Omega$ such that
-		\begin{enumerate}
-			\item $\mathcal{Q}$ is equivalent to $\mathcal{P}$;
-			\item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a price $\pi_t$
-			\begin{equation*}
-				\pi_t = \mathbb{E}^{\mathcal{Q}^0}[D(t,T)V_A|\mathcal{F}_t]
-			\end{equation*}
-			\item the "discounted asset price" is a $\mathcal{Q}$-martingale
-			\begin{equation*}
-				\pi_u = \mathbb{E}^{\mathcal{Q}^0}[D(0,t)V_A(t)|\mathcal{F}_u], \quad\text{with }(t>u)
-			\end{equation*}
-		\end{enumerate}
-	\end{block}
-\end{frame}
-
-
 \begin{frame}{Risk-Neutral Measure}
-	The \textcolor{red}{risk-neutral measure} is agreed upon by the market as a whole just as a consequence of no arbitrage assumption.
+	\begin{itemize}
+	\item<1->The \textcolor{red}{risk-neutral measure} is agreed upon by the market as a whole just as a consequence of no arbitrage assumption.
 	In other words it is nothing more than an \emph{implied probability distribution}.
-	\pause
-	
-	Implied from observable prices of tradable instruments, and used to determine \textcolor{red}{objective fair prices} for an asset or financial instrument. Probabilities are assessed with the risk taken out of the equation, so it doesn’t play a factor in the anticipated outcome.
-	\pause
-	
-	By contrast, if you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \textcolor{red}{real or physical probability}.
+	\item<2-> Implied from observable prices of tradable instruments, and used to determine \textcolor{red}{objective fair prices} for an asset or financial instrument. Probabilities are assessed with the risk taken out of the equation, so it doesn’t play a factor in the anticipated outcome.
+	\item<3-> By contrast, if you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \textcolor{red}{real or physical probability}.
+	\end{itemize}
 \end{frame}
-
 
 \begin{frame}{Risk Neutral Pricing Foundations}
 	Harrison and Pliska proved and formalized the following results:
@@ -128,6 +111,52 @@
 		\end{equation}
 	\end{itemize}
 \end{frame}
+
+\begin{frame}{Risk Neutral Pricing Foundations}
+	Harrison and Pliska proved and formalized the following results:
+	\begin{itemize}
+		\item The market is free of arbitrage if (and only if) there exists an \textcolor{red}{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).
+		\item the market is complete if and only if the martingale measure is unique;
+		\item \textbf{In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure}
+		\begin{equation*}
+			\Pi_t = \textcolor{red}{\mathbb{E}^{\mathcal{Q}^0}[}D(t,T)V_A|\mathcal{F}_t\color{red}{]}
+		\end{equation*}
+		\item \small{\textcolor{red}{expectation $\implies$ Monte Carlo Simulation}}	
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Risk Neutral Pricing Foundations}
+	Harrison and Pliska proved and formalized the following results:
+	\begin{itemize}
+		\item The market is free of arbitrage if (and only if) there exists an \textcolor{red}{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).
+		\item the market is complete if and only if the martingale measure is unique;
+		\item \textbf{In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure}
+		\begin{equation*}
+			\Pi_t = \textcolor{red}{\mathbb{E}^{\mathcal{Q}^0}[}D(t,T)\textcolor{blue}{V_A}|\mathcal{F}_t\color{red}{]}
+		\end{equation*}
+		\item \small{\textcolor{red}{expectation $\implies$ Monte Carlo Simulation}}
+		\item \small{\textcolor{blue}{random variable, stochastic process $\implies$ dynamics evolution}}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Risk Neutral Pricing Foundations}
+	Harrison and Pliska proved and formalized the following results:
+	\begin{itemize}
+		\item The market is free of arbitrage if (and only if) there exists an \textcolor{red}{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).
+		\item the market is complete if and only if the martingale measure is unique;
+		\item \textbf{In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure}
+		\begin{equation*}
+			\Pi_t = 	\textcolor{red}{\mathbb{E}^{\mathcal{Q}^0}[}D(t,T)\textcolor{blue}{V_A}|\mathcal{F}_t\color{red}{]}
+		\end{equation*}
+		\item \small{\textcolor{red}{expectation $\implies$ Monte Carlo Simulation}}
+		\item \small{\textcolor{blue}{random variable, stochastic process $\implies$ dynamics evolution}}
+	\end{itemize}
+	\begin{tikzpicture}[remember picture,overlay]
+		\node[xshift=6.5cm,yshift=-3.2cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
+		\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/knyGT}{shorturl.at/knyGT}}};
+	\end{tikzpicture}
+\end{frame}
+
 %\subsection{Martingales}
 %\begin{frame}{Filtration}
 %	\begin{block}{Definition}
