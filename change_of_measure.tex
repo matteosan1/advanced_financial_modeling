@@ -29,7 +29,7 @@
   \begin{itemize}
   \item We may compute asset values w.r.t. USD, EUR or JPY.
   \item Others might prefer use commodities: 1~oz of gold could be a numeraire.
-  \item In any case, once we choose a numerarie e.g. 1 USD, we determine the value of other assets:
+  \item In any case, once we choose a numerarie e.g. 1 USD, we determine the value of all the other assets:
     \begin{columns}
     	\column{0.5\linewidth}
       \includegraphics[width=0.9\linewidth]{usd_eur}
@@ -42,7 +42,7 @@
 \begin{frame}{Numeraires}
   \begin{itemize}
   \item Of course, in practice there are reasons to prefer gold to other commodities e.g. corn, live cattle, or one currency with respect to another (i.e. political reasons)\ldots
-  \item But intuitively there should be no theoretical reason (at least at the scale of investors) to measure value in gold or USD (there used to be also the ``gold standard'')
+  \item But intuitively there should be no theoretical reason (at least at the scale of investors) to prefer to measure value in gold rather than USD (there used to be also the "gold standard")
   \item Basically we want to exploit this fact in our financial models.
   \end{itemize}
 \end{frame}
@@ -53,8 +53,8 @@
     \begin{itemize}
     \item the exchange rate of the Italian Lira to the Euro was locked at EUR 1 = ITL 1936.27 on 31 December 1998.
     \end{itemize}
-  \item<2-> When the numeraire is a stochastic process, and we want to move to it, the pricing of a claim has to be changed in order to take into account the new risks (the intrinsic randomness of the new numeraire).
-  \item<3-> In particular a change of numeraire implies also a change in the measure (probability distribution). Indeed (starting with the bank account numeraire)
+  \item<2-> When the numeraire is a \textcolor{red}{stochastic process}, and we want to move to it, the pricing of a claim has to be changed in order to take into account the new risks (the intrinsic randomness of the new numeraire).
+  \item<3-> In particular a change of numeraire implies also a change in the underlying measure (probability distribution). Indeed, starting with the bank account numeraire
     \begin{equation*}
       \begin{cases}
         \cfrac{S_1}{B_t} = \cfrac{\sum_i S^i_1 p_i}{e^{rt}}\\
@@ -69,11 +69,11 @@
   \begin{itemize}
   \item<1-> \textbf{Money market account.} Given $r_t$, a possibly random and time dependent risk-free interest rate process, let
     \begin{equation*}
-      N_t := \exp\left(\int_0^t r_s ds\right)
+      B_t := \exp\left(\int_0^t r_s ds\right)
     \end{equation*}
     In this case 
     \begin{equation*}
-      \tilde{S_t}:=\frac{S_t}{N_t}=e^{-\int_0^t r_s ds}S_t, \quad t \ge 0
+      \tilde{S_t}:=\frac{S_t}{B_t}=e^{-\int_0^t r_s ds}S_t, \quad t \ge 0
     \end{equation*}
     represents the discounted price of the asset at time 0.
   \item<2-> \textbf{Currency exchange rate.} In this case $N_t := R_t$ denotes e.g. the EUR/SGD exchange rate. Let
@@ -103,35 +103,50 @@
 \begin{frame}{Radon-Nikodym Derivative}
   \begin{itemize}
   \item Now we need to understand how to pass from a numeraire to another, and hence by a measure to another, in an arbitrage free setting.
-  \item Notice that until now we have implicitly assumed the bank account $B$ as numeraire.
-  \end{itemize}
-	\pause
-  \begin{block}{Definition}
-    When two measures are equivalent it is possible to express the first in terms of the second through the \textcolor{red}{Radon-Nikodym derivative}. Indeed there exists a \textcolor{red}{martingale process $\zeta_t$} such that
-    \begin{equation*}
-      \mathcal{Q}^* =\int_{A} \zeta_t(\omega)d\mathcal{Q}(\omega)
+  \item Notice that until now we have implicitly assumed the bank account $B$ as our numeraire.
+  \item Before formalize how this passage can be done it is worth stating the following:
+  	\begin{itemize}
+	  \item Formally we can indicate with
+	  \begin{equation*}
+	  	\begin{gathered}
+	  	\mathcal{N}_\mu := \{A\in \Omega \mid \mu(A)=0\}\\
+  	  	\mathcal{N}_\nu := \{A\in \Omega \mid \nu(A)=0\}
+  	  \end{gathered}
     \end{equation*}
-    which can be written in a more concise form as
-    \begin{equation}
-      \frac{d\mathcal{Q}^*}{d\mathcal{Q}} = \zeta_t
-      \label{eq:radon_nikodym_der}
-    \end{equation}
-  \end{block}
+  	the $\mu$-null sets and the $\nu$-null sets, respectively. 
+  	The two measures are called equivalent if and only $\mathcal {N}_\mu= \mathcal{N}_\nu$.
+	\item In other words two probability measures are said to be equivalent when they agree on which events have measure zero.
+  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Radon-Nikodym Derivative}
+	\begin{block}{Definition}
+		When two measures are equivalent it is possible to express the first in terms of the second through the \textcolor{red}{Radon-Nikodym derivative}. Indeed there exists a \textcolor{red}{martingale process $\zeta_t$} such that
+		\begin{equation*}
+			\mathcal{Q}^* =\int_{A} \zeta_t(\omega)d\mathcal{Q}(\omega)
+		\end{equation*}
+		which can be written in a more concise form as
+		\begin{equation}
+			\frac{d\mathcal{Q}^*}{d\mathcal{Q}} = \zeta_t
+			\label{eq:radon_nikodym_der}
+		\end{equation}
+	\end{block}
 \end{frame}
 
 \begin{frame}{Intuition from Expected Value}
   \begin{itemize}
-  \item To get a sense of what a Radon-Nikodym derivative is we can write the expected value of a generic function $\Pi(x)$ under a measure $\mathcal{F}$, with associated density function $f(x)$ as
+  \item To get a sense of what a Radon-Nikodym derivative is we can write the expected value of a generic function $F(x)$ under a measure $\mathcal{P}$, with associated density function $p(x)$ as
     \begin{equation*}
-      \mathbb{E}^\mathcal{F}=\int\Pi(x)f(x)dx
+      \mathbb{E}^\mathcal{P}=\int F(x)p(x)dx
     \end{equation*}
-  \item Suppose there exists a function $g(x)$, which satisfies the mathematical conditions required to be a density function. Then we can write
+  \item Suppose there exists a function $q(x)$, which satisfies the mathematical conditions required to be a density function. Then we can write
     \begin{equation*}
-      \mathbb{E}^\mathcal{F}=\int\Pi(x)f(x)\frac{g(x)}{g(x)}dx
+      \mathbb{E}^\mathcal{P}=\int F(x)f(x)\frac{q(x)}{q(x)}dx
     \end{equation*}
-  \item If we define $\psi(x)=\Pi(x)\frac{f(x)}{g(x)}$ the expected value can be written as 
+  \item If we define $\psi(x)=F(x)\frac{p(x)}{q(x)}$ the expected value can be written as 
     \begin{equation*}
-      \mathbb{E}^\mathcal{F}[\Pi(x)]=\int\psi(x)g(x)dx=\mathbb{E}^\mathcal{G}[\psi(x)]=\mathbb{E}^\mathcal{G}\left[\Pi(x)\frac{f(x)}{g(x)}\right]
+      \mathbb{E}^\mathcal{P}[F(x)]=\int\psi(x)q(x)dx=\mathbb{E}^\mathcal{Q}[\psi(x)]=\mathbb{E}^\mathcal{Q}\left[F(x)\frac{p(x)}{q(x)}\right]
     \end{equation*}
   \end{itemize}
 \end{frame}
@@ -140,7 +155,7 @@
   \begin{itemize}
   \item The expectations corresponding to the two measures are related by
     \begin{equation*}
-      \mathbb{E}^{\mathcal{Q}^*}[X] = \mathbb{E}^\mathcal{Q}\left[X\frac{d\mathcal{Q}^*}{d\mathcal{Q}}\right]
+      \mathbb{E}^{\mathcal{Q}^*}[X] = \mathbb{E}^\mathcal{Q}\left[X\frac{d\mathcal{Q}^*}{d\mathcal{Q}}\right]= \mathbb{E}^\mathcal{Q}[X\zeta]
     \end{equation*}
 	\pause
   \item In case of a conditioned expectation
@@ -155,9 +170,30 @@
   \end{itemize}
 \end{frame}
 
+%\begin{frame}{Conditional Expectation}
+%	\begin{itemize}
+%	\item The classic form of Bayes' theorem for continuous random variables involves integrating over the parameter space:
+%	\begin{equation*}	
+%	P(\theta|x) = \cfrac{p(x|\theta)P(\theta)}{\int p(x|\theta')P(\theta')d\theta'}
+%	\end{equation*}
+%	\item Now, introduce a reference probability density function $q(x)$ on the same data space as $p(x)$. The Radon-Nikodym derivative is such that:
+%	\begin{equation*}
+%	\int f(x)q(x)dx = \int p(x)dx
+%	\end{equation*}
+%	\item In our case, we can choose $q(x)$ to be the marginal density $P(x)$. Then, the likelihood function in Bayes' theorem can be represented using the Radon-Nikodym derivative:
+%	\begin{equation*}
+%	P(\theta|x) = d(p(x|\theta)P(\theta)|P(x))
+%	\end{equation*}
+%	\item This means the posterior density of the parameter $\theta$ given the data $x$ is proportional to the Radon-Nikodym derivative of the product of the likelihood function and the prior density, with respect to the marginal density.
+%	\item Intuitively, the Radon-Nikodym derivative measures how much "denser" the product of the likelihood and prior is compared to the marginal density at each data point $x$. This "rate of change" helps identify parameter values that make the observed data more likely, updating our belief about the parameter based on the evidence.
+%	\end{itemize}	
+%\end{frame}
+
+
 \subsection{Change of Numeraire}
 \begin{frame}{Change of Numeraire}
   \begin{block}{Theorem}
+  	\small{
     Assume exists a numeraire $N_t$ and the associated measure $\mathcal{Q}^N$, equivalent to $\mathcal{P}$, such that the price of any traded asset $S_t$ relative to $N$ is a martingale under $\mathcal{Q}^N$
     \begin{equation*}
       \frac{S_t}{N_t} = \mathbb{E}^N\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
@@ -166,50 +202,43 @@
     \begin{equation*}
       \frac{S_t}{U_t} = \mathbb{E}^U\left[\frac{S_T}{U_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
     \end{equation*}
+    The Radon-Nikodym derivative defining the measure $\mathcal{Q}^U$ is given by
+\begin{equation}
+	\frac{d\mathcal{Q}^U}{d\mathcal{Q}^N} = \frac{U_T N_0}{U_0 N_T}
+	\label{eq:radon_nikodym_der2}
+\end{equation}}
   \end{block}
 \end{frame}	
 
-\begin{frame}{Change of Numeraire}
-  \begin{block}{...continued}
-    The Radon-Nikodym derivative defining the measure $\mathcal{Q}^U$ is given by
-    \begin{equation}
-      \frac{d\mathcal{Q}^U}{d\mathcal{Q}^N} = \frac{U_T N_0}{U_0 N_T}
-      \label{eq:radon_nikodym_der2}
-    \end{equation}
-  \end{block}
+\begin{frame}{Change of Numeraire (Proof p.2)}
+	\begin{itemize}
+		\item Let's prove first this second part.
+  		\item By definition of $\mathcal{Q}^N$, for any asset price $S_t$ holds
+	  \begin{equation*}
+	    \begin{cases} 
+	      \mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \cfrac{S_0}{N_0} \\
+\mathbb{E}_t^U\left[\cfrac{U_0 S_T}{N_0 U_T}\right] = 	      \cfrac{U_0}{N_0}\mathbb{E}_t^U\left[\cfrac{S_T}{U_T}\right] = \cfrac{\cancel{U_0} S_0}{N_0 \cancel{U_0}} = \cfrac{S_0}{N_0}
+	    \end{cases}
+	  \end{equation*}
+  	\item Since both equations result to $S_0/N_0$ they can be equated
+  	\begin{equation*}
+  	\mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
+  	\end{equation*}
+  	\end{itemize} 
 \end{frame}
 
 \begin{frame}{Change of Numeraire (Proof p.2)}
-  Let's prove first this second part.
-  By definition of $\mathcal{Q}^N$, for any asset price $S_t$ holds
+	\begin{itemize}
+	\item By definition of Radon-Nikodym derivative and from the result of in previous slide, it holds
   \begin{equation*}
-    \begin{cases}
-      \cfrac{S_0}{N_0} = 
-      \mathbb{E}^N\left[\cfrac{S_T}{N_T}\right] \\
-      \cfrac{U_0}{N_0}\mathbb{E}^U\left[\cfrac{S_T}{U_T}\right] = \cfrac{\cancel{U_0} S_0}{N_0 \cancel{U_0}} = \cfrac{S_0}{N_0}
-    \end{cases}\implies \mathbb{E}^N\left[\frac{S_T}{N_T}\right] = \mathbb{E}^U\left[\frac{U_0 S_T}{N_0 U_T}\right]
+  	\begin{cases}
+    \mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{S_T}{N_T} \cfrac{d\mathcal{Q}^N}{d\mathcal{Q}^U}\right] \\
+    \mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
+    \end{cases}\implies
+	\cfrac{\cancel{S_T}}{N_T} \cfrac{d\mathcal{Q}^N}{d\mathcal{Q}^U} = \cfrac{U_0 \cancel{S_T}}{N_0 U_T}
   \end{equation*}
-  since both equal $S_0/N_0$. 
-\end{frame}
-
-\begin{frame}{Change of Numeraire (Proof p.2)}
-  Also, by definition of Radon-Nikodym derivative
-  \begin{equation*}
-    \mathbb{E}^N\left[\frac{S_T}{N_T}\right] = \mathbb{E}^U\left[\frac{S_T}{N_T} \frac{d\mathcal{Q}^N}{d\mathcal{Q}^U}\right]
-  \end{equation*}
-	\pause
-  But from the previous result
-  \begin{equation*}
-    \mathbb{E}^N\left[\frac{S_T}{N_T}\right] = \mathbb{E}^U\left[\frac{U_0 S_T}{N_0 U_T}\right]
-  \end{equation*}
-  The expectation arguments under $U$ must equal, so we get \cref{eq:radon_nikodym_der2}. 
-  \pause
-  
-  This last equation shows that \textcolor{red}{the risk-neutral price is invariant under change of numeraire.}
-    \begin{equation*}
-    Price_0 = \mathbb{E}^N\left[\frac{N_0 S_T}{N_T}\right] = \mathbb{E}^U\left[\frac{U_0 S_T}{U_T}\right]
-  \end{equation*}
-  
+	where we have used the fact that the expectation arguments under $U$ must equal to get \cref{eq:radon_nikodym_der2}. 
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Change of Numeraire (Proof p.1)}
@@ -221,28 +250,44 @@
   \item<2-> But 
     \begin{equation*}
       \begin{cases}
-	\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]= \mathbb{E}^N\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\bigg|\mathcal{F}_t\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
-	\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\bigg|\mathcal{F}_t\right]= \mathbb{E}^N\left[\cfrac{U_T N_0}{N_T U_0}\bigg|\mathcal{F}_t\right] = \cfrac{N_0 U_t}{U_0 N_t}
-      \end{cases}\implies
-      \frac{S_t}{\cancel{N_t}}=\mathbb{E}^U\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]\frac{U_t}{\cancel{N_t}}
+	\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\right]= \mathbb{E}_t^N\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
+	\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\right]= \mathbb{E}_t^N\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
+      \end{cases}
     \end{equation*}
   \end{itemize}
 \end{frame}	
 
+\begin{frame}{Change of Numeraire (Proof p.1)}
+	\begin{itemize}
+		\item Now we can prove the first part of the change of numeraire theorem. The conditional expectation formula~\cref{eq:conditioned_expectation} gives
+		\begin{equation*}
+			\mathbb{E}^U\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\bigg|\mathcal{F}_t\right]} = \cfrac{\cfrac{\cancel{N_0} S_t}{\cancel{U_0} \cancel{N_t}}}{\cfrac{\cancel{N_0} U_t}{\cancel{U_0} \cancel{N_t}}} = \cfrac{S_t}{U_t}
+		\end{equation*}
+		\item But 
+		\begin{equation*}
+			\begin{cases}
+				\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\right]= \mathbb{E}_t^N\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
+				\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\right]= \mathbb{E}_t^N\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
+			\end{cases}
+		\end{equation*}
+	\end{itemize}
+\end{frame}	
+
 \begin{frame}{Change of Numeraire Remarks}
-  \begin{itemize}
-  \item The powerful theorem we have just proved allows to
-    \begin{itemize}
+  This powerful theorem, we have just proved allows to
+\begin{enumerate}
     \item find a characterization of our process by means of which we can work-out more easily the fundamental pricing formula. In particular allows to find a measure associated to the new numeraire such that \textcolor{red}{the price of any asset divided by that numeraire is a martingale};
     \item give a simple rule to write (the otherwise difficult to derive) Radon-Nikodym derivative;
-    \item show that \textcolor{red}{the risk-neutral price is invariant under change of numeraire.}
-    \end{itemize}
-  \end{itemize}
+      \item \textcolor{red}{the risk-neutral price is invariant under change of numeraire}
+    \begin{equation*}
+    	Price = \mathbb{E}_t^N\left[\cfrac{N_0 S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{U_0 S_T}{U_T}\right]
+    \end{equation*}
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}{Asset Price divided by Numeraire}
 	\begin{itemize}
- 	\item<1-> Let $B$ be the money bank numeraire and $\mathcal{Q}^B$ the corresponding risk-neutral measure. Also let $N$ be another numeraire (note that $N/B$ is a $\mathcal{Q}^B$-martingale). 
+ 	\item<1-> Let $B$ be the money bank numeraire and $\mathcal{Q}^B$ the corresponding risk-neutral measure. Also let $N$ be another numeraire (note that for what just said $N/B$ is a $\mathcal{Q}^B$-martingale). 
 	\item<2-> From the Change of Numeraire Theorem we can define a new measure by mean of
   \begin{equation*}
     \frac{d\mathcal{Q}^N}{d\mathcal{Q}^B} = \frac{N_TB_0}{B_TN_0}
@@ -302,7 +347,7 @@
 
 \begin{frame}{A Useful Separation}
   \begin{itemize}
-  \item<1-> Until now we have used $B(t)$, the money market account, as numeraire. But as we have seen it is natural to look for the most convenient numeraire, which minimizes the mathematical difficulties according to the problem at hand.
+  \item<1-> Until now we have used $B(t)$, the money market account, as numeraire. But as we have seen it is natural to look for the most convenient one, that is, the one which minimizes the mathematical difficulties according to the problem at hand.
   \item<2-> Given a contingent claim whose payoff at time $T$ is $\chi$, we have the following formula for its price $\Pi$
     \begin{equation*}
       \Pi_\chi(t,T)=\mathbb{E}^B\left[e^{-\int_t^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=\mathbb{E}^B\left[e^{\int_0^t r_s ds}e^{-\int_0^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=B_t\mathbb{E}^B\left[B^{-1}_T\chi|\mathcal{F}_t\right]

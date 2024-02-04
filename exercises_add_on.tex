@@ -11,7 +11,18 @@
 \usepackage{hyperref}
 
 \usepackage{exsheets}
-\SetupExSheets{counter-format=ch.qu}
+%\SetupExSheets{counter-format=qu}
+\SetupExSheets{
+  headings = block-subtitle ,
+  headings-format = \normalsize\bfseries\sffamily ,
+  % needs v0.16 2014/09/14 to work:
+  subtitle-format = \normalsize\bfseries\sffamily
+}
+
+\SetupExSheets{
+  counter-within = section ,
+  counter-format = se.qu\IfQuestionSubtitleT{:} ,
+}
 
 \geometry{a4paper, margin=2cm}
 
@@ -23,7 +34,7 @@
 \definecolor{ipython-frame}{RGB}{207, 207, 207}
 \definecolor{ipython-bg}{RGB}{247, 247, 247}
 \definecolor{ipython-red}{RGB}{186, 33, 33}
-\definecolor{ipython-green}{RGB}{0, 128, 0}
+\definecolor{ipython-green}{RGB}{0, 200, 0}
 \definecolor{ipython-cyan}{RGB}{64, 128, 128}
 \definecolor{ipython-purple}{RGB}{170, 34, 255}
 
@@ -69,6 +80,8 @@
 \lstnewenvironment{ioutput}[1][]{\lstset{language=iOutput,mathescape=true,escapeinside={*@}{@*}}%
 }{%
 }
+
+\newcommand{\myendproof}{\hfill\qedsymbol}
 
 \title{Addons with Python Exercises}
 \author{Matteo Sani}
@@ -122,7 +135,7 @@ In other words we want to calculate the number of steps the random walk takes be
 Write another function that simulates the changes in the amount of money the gambler has and that returns the number of spins of the wheel that take place.
 \end{question}
 
-\section{Martingale Examples}
+\subsection{Martingale Examples}
 Suppose you play the following series of games. In game $i, i = 1, 2,\ldots$, you bet \$1 and roll a fair die. If the outcome is $\{1,2\}$ you win \$1, if it is $\{3,4\}$ nothing happens, and if the outcome is $\{5,6\}$ you lose \$1.
 Let $X_i$ be a random variable representing the amount of money you win or lose in bet $i$, this kind of game is said to be **fair** since
 
@@ -135,13 +148,13 @@ $Z_n$ is a martingale and $\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = Z_{n-1}$.
 
 \paragraph{Proof}
 
-\begin{equation}
+\begin{equation*}
 	\begin{aligned}
 		\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] &= \mathbb{E}[X_1 +\ldots + X_n|X_1,\ldots, X_{n-1}] \\
 		& = \underbrace{\mathbb{E}[X_1|X_1,\ldots, X_{n-1}]}_{X_1} + \ldots + \underbrace{\mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}]}_{X_{n-1}} + \underbrace{\mathbb{E}[X_n|X_1,\ldots, X_{n-1}]}_{\mathbb{E}[X_n]=0} \\
 		& = \mathbb{E}[X_1|X_1,\ldots, X_{n-1}] + \ldots + \mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}] + 0 = Z_{n-1}
 	\end{aligned}
-\end{equation}
+\end{equation*}
 
 \begin{question}
 Using Monte Carlo simulation implement the game described in the text and check that the expected gain is indeed null.
@@ -155,7 +168,7 @@ In higher dimensions, the set of randomly walked points has interesting geometri
 Implement a 2D random walk simulation and plot one possible realization.
 \end{question}
 
-\section{Simulating Stochastic Differential Equations}
+\subsection{Simulating Stochastic Differential Equations}
 
 Consider a generic stochastic differential equation (SDE)
 
@@ -164,12 +177,12 @@ dX(t) = \mu(t,X(t))dt + \sigma(t,X(t))dW(t)
 \label{eq:sde}
 \end{equation}
 
-The Monte Carlo simulation of such a process can be carried out according to the \emph{Euler scheme} as follows: conisider the value of $X$ at time $t=t_i$, the value compute $X(t_{i+1})$ is evaluated from the dynamics of X (Eq.\ref{eq:sde}), setting $\Delta t = t_{i+1} - t_{i}$, and sampling from a standard normal $\mathcal{N}(0,1)$ in order to "evolve" the stochastic term $dW$
+The Monte Carlo simulation of such a process can be carried out according to the \emph{Euler scheme} as follows: consider the value of $X$ at time $t=t_i$, the value compute $X(t_{i+1})$ is evaluated from the dynamics of X (Eq.~\ref{eq:sde}), setting $\Delta t = t_{i+1} - t_{i}$, and sampling from a standard normal $\mathcal{N}(0,1)$ in order to "evolve" the stochastic term $dW$
 \begin{equation}
 X(t_{i+1}) = X(t_i) + \mu(t_i,X(t_i))\Delta t + \sigma(t_i,X(t_i))\sqrt{\Delta t}\mathcal{N}(0,1)
 \end{equation}
 
-In the specific case of a simple brownian motion the dynamics is given by
+In the specific case of a simple Brownian motion the dynamics is given by
 \begin{equation}
 dW = \sqrt{dt}\mathcal{N}(0,1)
 \end{equation}
@@ -182,7 +195,7 @@ or
 W(t) = \sum_{t_0}^{t} \sqrt{dt}\mathcal{N}(0,1)
 \end{equation}
 
-Figure|\ref{fig:brownian_motion} reports two realization of the Brownian motion simulated according to the Euler scheme.
+Figure~\ref{fig:brownian_motion} reports two realization of the Brownian motion simulated according to the Euler scheme.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -197,16 +210,16 @@ Using the Euler scheme simulate the 4-months (with daily steps) evolution of a G
 
 \cprotEnv\begin{question}
 This \href{https://github.com/matteosan1/advanced_financial_modeling/raw/master/input_files}{file} contains a thousand 10-day realizations (with 0.1 day step) of historical price data of a single asset, assume that all the time series are different realizations of the same stochastic process.
-\begin{itemize}
+\begin{enumerate}
 \item Make two figures: the first should contain one realization as a function of time, in the second plot the first 50 realizations together as a function of time (\emph{label the axes appropriately}).
 \item In two separated plots report the mean and the variance of the stock prices as a function of time (\emph{label the axes appropriately}).
 \item Perform the variable change $X_{n+1}=\log\left(\cfrac{S_{n+1}}{S_n}\right)$ on $S_{n+1} = S_ne^{(\mu-0.5\sigma^2)\Delta t + \sigma\sqrt{\Delta t}Z}$ to rewrite the model into a simpler form. 
-	\begin{itemize}
+	\begin{enumerate}
 	\item Is the resulting dynamics linear ? Prove it, or give a counterexample; 
 	\item is the resulting system time-invariant ? Prove it, or give a counterexample.
-	\end{itemize}
+	\end{enumerate}
 \item Apply again the same transformation $X_{n+1}=\log\left(\frac{S_{n+1}}{S_n}\right)$ to data this time. Plot both the mean and the variance of the transformed realizations as a function of time.
-\end{itemize}
+\end{enumerate}
 
 \noindent
 \textbf{Hint:} the input file is a binary file that can be loaded back using \texttt{numpy} as follows (replace the URL from the link above):
@@ -219,7 +232,6 @@ S = np.load(path.open("stock_2023.npy", "rb"))
 \end{question}
 
 \begin{question}
-
 The Heston model can be considered an extension of the Black and Scholes model where the volatility of the underlying asset is not constant, nor even deterministic, but follows a random process.
 
 The basic Heston model assumes that $S_t$, the price of the asset, follows
@@ -245,9 +257,551 @@ The model has five parameters:
 \item $\xi$, the volatility of the volatility, which determines the variance of $\nu_t$.
 \end{itemize}
 
-Using the Euler scheme simulate a possible realization for $S$ and $\sigma$ using the parameters: $\nu _0=0.02760$, $\kappa=1.2$, $\theta=0.066$, $\xi=0.593$, $\rho=0.659$.
+Using the Euler scheme simulate a possible realization for $S_t$ and $\sigma_t$ using the parameters: $S_0=100$, $\mu=0.25$, $T=3$, $\nu_0=0.05$, $\kappa=1.2$, $\theta=0.10$, $\xi=0.593$, $\rho=-0.5$.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\linewidth]{addons/heston}
+\end{center}
+\label{fig:heston}
+\end{figure}
+\end{question}
+\clearpage
+
+\section{Forward Rate Agreement}
+Below is presented yet another alternative methods to determine the valuation formula for forward rate agreement.
+
+\subsection{Valuation by Replication}
+Let's try to estimate the value of a FRA using a simple replication approach:
+\begin{itemize}
+\item at time $t$: 
+	\begin{equation*}
+	\begin{cases}
+		\text{lend}~P(t,T)\\
+		\text{borrow}~P(t,S)(1+\tau(T,S)K)
+	\end{cases};
+	\end{equation*}
+\item at time $T$: you receive 1 which you will invest at the (in $t$ unknown) EURIBOR rate $L(T,S)$;
+\item at time $S$: 
+	\begin{equation*}
+		\begin{cases}
+			\text{receive}~(1+L(T,S)\tau(T,S))\\
+			\text{pay}~1 + \tau(T,S)K
+		\end{cases}.
+	\end{equation*}
+\end{itemize}
+
+Adding the cash-flows together and evaluating in $t$ we get:
+\begin{equation*}
+	1+L(T,S)\tau - 1 - \tau K = (L(T,S)-K)\tau
+\end{equation*}
+From the risk-neutral pricing formula
+	\begin{equation*}
+		\mathbb{E}^Q[D(t, S)(L(T, S)-K)\tau(T,S)|\mathcal{F}_t]
+	\end{equation*}
+but according to the \emph{Fundamental Theorem of Pricing II} its value must equal the value of the replicating portfolio in $t$ (we assume to be in a complete market). Hence
+\begin{equation}
+	\begin{aligned}
+		\mathbb{E}^Q[D(t,S)&(L(T,S)-K)\tau(T,S)|\mathcal{F}_t]=\\
+			&[P(t,S)\tau(T,S)K-P(t,T)+P(t,S)]
+			\label{eq:fra_as_expectation}
+	\end{aligned}
+%	\myendproof
+\end{equation}
+
+%\subsection{Forward Rate and No-Arbitrage Approach}
+%Following Filipovic (2009) we can define the Forward Rate by implementing the following:
+%		\item at time $t$
+%		\begin{equation*}
+%			\begin{cases}
+%				\text{sell one $T$-ZCB}\\
+%				\text{buy $\frac{P(t,T)}{P(t,S)}$ $S$-ZCB}\\
+%			\end{cases} 
+%		\end{equation*}
+%		which results in a zero net investment;
+%		\item at $T$ you must pay 1;
+%		\item at time $S$ you receive $\frac{P(t,T)}{P(t,S)}$;
+%		\item the net effect of the operation is a \emph{forward} investment of one dollar a time $T$ yielding $\frac{P(t,T)}{P(t,S)}$ so
+%		\begin{equation*}
+%			1 + \tau(T,S)F(t;T,S) = \frac{P(t,T)}{P(t,S)}
+%		\end{equation*}
+%	%	\myendproof
+%	\end{itemize}
+
+\clearpage
+\section{Interest Rate Swap as FRAs}
+
+The swap payoff 
+
+\begin{equation}
+	\sum_{i=\alpha+1}^{\beta} D(t,T_i)N \tau_i \left[K-L(T_{i-1},T_i)\right]
+	\label{eq:payoff_payer_irs}
+\end{equation}	
+can be re-interpreted as a portfolio of FRAs. Indeed using the payoff of a FRA
+\begin{equation}
+	\textbf{FRA}= N\tau P(t,S)(K - F(t;T,S))
+	\label{eq:fram_payoff_withF}
+\end{equation}
+the Receiver IRS payoff can be expressed like
+\begin{equation}
+	\begin{aligned}
+		\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\mathbb{E}^Q[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
+		&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))\\
+		&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-N\sum_{i=\alpha+1}^{\beta}(P(t,T_{i-1})-P(t,T_i)) \\
+		&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)
+	\end{aligned}
+\label{eq:swap_as_sum_fra}
+\end{equation}
+
+Clearly not all the FRAs in the swap, when it has zero value, will have zero value each (\emph{except for the degenerate case of flat yield curve}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
+
+\begin{question}
+Implementing a class or a function that represents an interest rate swap shows that:
+\begin{enumerate}
+\item In a \emph{Payer Swap} with an increasing yield curve the first FRAs will have negative value, the last positive. 
+\item In a \emph{Payer Swap} with a decreasing yield curve the first FRAs will have positive value, the last negative.
+\end{enumerate}
 \end{question}
 
+\clearpage
+\section{Asset Swap}
+
+	6.1
+Credit Risk
+The underlying bond in the asset swap package is credit risky and can default. The bond purchaser’s claim is on the recovery value of the bond, however she must continue to honor the
+bond coupons on the swap. Of course she may choose to close the swap position at market
+value. The asset swap seller is therefore taking on this credit risk, which could be hedged with
+Credit Default Swaps. Consequently asset swap investors receive credit protection should the underlying asset default.
+
+Asset Swap Spreads
+Asset swaps are quoted in the market as a spread, which incorporates both funding costs and a
+premium for credit protection. The spread attempts to make the swap in some way equivalent
+to a bond. The asset swap spread is also a useful rich-cheap bond analysis tool.
+The bonds of issuers of good credit quality, of some governments such as Germany and good
+quality government agency bonds trade at negative spreads to swaps, and especially so for the
+shorter maturity bonds. The opposite is true for poor or low quality credits such as Greek
+and Argentina sovereigns and many corporate bonds, which trade with positive spreads. For
+good quality credits a widening of the spread, which is negative, refers to a richening of the
+bond (decline in bond yield relative to swaps) and for poor quality credits the opposite is true,
+namely a widening of the positive spread reflects a cheapening of the bond and increase in bond
+yield.
+
+
+\begin{question}
+	Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
+	Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond? 
+	For this exercise assume the all Annuity Factors have a value of 10.0 for simplicity.
+\end{question}
+Recall the Asset Swap Spread $s$ can be calculated using 
+Firstly we calculate the swap components giving 
+The Par-Par adjustment is the dominating term and evaluates to
+Par-Par Adjustment =
+
+%100 − 104.58
+%100 !
+%= -4.580%
+%We proceed to calculate the asset swap spread s as
+%s =
+%0.600% - 4.580%
+%10.0
+%= -0.3980%
+%or -39.80 basis points
+%
+%Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what
+%is the par-par asset swap spread for this bond?
+%Using the Asset Swap Spread $s$ can be calculated using 
+%Again we calculate the swap components giving
+%The Par-Par adjustment evaluates to
+%Par-Par Adjustment =
+%
+%100 - 75.280
+%100 !
+%= 24.72%
+%We proceed to calculate the asset swap spread s as
+%s =
+%25.60% + 24.72%
+%10.0
+%= 5.0320%
+%or 503.20 basis points
+
+
+
+
+
+\clearpage
+\section{Algorithmic Differentiation}
+
+\emph{Algorithmic Differentiation} (AD), also known as \emph{automatic differentiation}, is a mathematical, computer science technique for computing accurate sensitivities quickly. There are two main modes, namely \textbf{tangent mode} and \text{adjoint mode}. For many models, \emph{adjoint AD (AAD)} can compute sensitivities from to 10x to 1000x faster than numerical bumping or finite differences. AD operates directly on analytics and each line of code is differentiated. Clearly it can be applied to a single trade or a portfolio (or vector) of trades.
+
+If for example we have a computer algorithm that computes $y$ via multiple nested operations such as $y = h(g(f(x)))$ we could illustrate the series of operations as,
+\begin{equation}
+x\rightarrow f(x) \rightarrow g(f(x)) \rightarrow h(g(f(x))) \rightarrow y
+\end{equation}
+
+Working forwards from the input value $x$, we can compute the derivative of each operation and use the \emph{chain rule} to compute the total derivative $dy/dx$ as follows
+\begin{equation}
+\frac{df}{dx}\frac{dg}{df}\frac{dh}{dg}\frac{dy}{dh}=\frac{dy}{dx}
+\end{equation}
+But in principle we could also work backwards, from the output value $y$ to arrive at the same result,
+\begin{equation}
+\frac{dy}{dh}\frac{dh}{dg}\frac{dg}{df}\frac{df}{dx}=\frac{dy}{dx}
+\end{equation}
+Furthermore AD can be used on systems of equations and matrices. 
+Tangent mode works forward from the left to right
+\begin{equation}
+\left(\left(\left(\frac{\partial x_1}{\partial x}\frac{\partial x_2}{\partial x_1}\right)\frac{\partial x_3}{\partial x_2}\right)\cdots\frac{\partial x_m}{\partial x_{m-1}}\right)\frac{\partial y}{\partial x_m}
+\end{equation}
+With adjoint mode we work backwards from the right
+\begin{equation}
+\frac{\partial x_1}{\partial x}\left(\frac{\partial x_2}{\partial x_2}\left(\frac{\partial x_3}{\partial x_2}\cdots\left(\frac{\partial x_m}{\partial x_{m-1}}\frac{\partial y}{\partial x_m}\right)\right)\right)
+\end{equation}
+
+\subsection{Tangent Mode}
+In tangent mode we differentiate code working forwards starting with the trade inputs and follow the natural order of the original program. This method computes price sensitivities to one input at a time and we must call the tangent method several times, once for each input parameter.
+
+When using tangent mode \emph{dot} notation is usually used to denote derivatives being differentiated with respect to the function input. For example given $y = f(x)$ then $y$ dot would indicate $\dot{y} = dy/dx$.
+Consider the below simple function,
+\begin{equation}
+\begin{cases}
+\text{Function: } y = 2x^2\\
+\text{Tangent: } \dot{y} = 4x\dot{x}
+\end{cases}
+\label{eq:aad_function}
+\end{equation}
+In tangent mode $\dot{x}=dx/dx$ is specified as an input and used to enable/disable the tangent derivative calculation. Setting it to 1 in enables the derivative calculation giving
+$dy/dx = 4x$, however when $\dot{x}= 0$ we have $dy/dx = 0$.
+
+\subsection{Adjoint Mode}
+When using adjoint mode we differentiate code in reverse order, starting with function outputs. 
+Adjoint mode follows the reverse order of the original program, consequently we must compute the function value first (\emph{forward sweep}) and store the intermediate values before applying adjoint AD in reverse (\emph{back propagation}). This method shifts one function output at a time and generates derivatives exactly to machine precision for all price inputs in one go.
+
+Adjoint mode is computed using \emph{bar} notation for derivatives to denote the variable is to be differentiated with respect to the function input. For example given $y = f(x)$ and working in reverse order gives $\bar{y} = dy/dx$
+Once again let us consider same simple function from before,
+\begin{equation}
+\begin{cases}
+\text{Function: } y = 2x^2\\
+\text{Tangent: } \bar{y} = 4x\bar{x}
+\end{cases}
+\end{equation}
+In adjoint mode $\bar{y} = dy/dy$ is specified as an input and allows us to enable/disable the adjoint derivative calculation. 
+
+\subsection{Example}
+Consider the function define in Eq.~\ref{eq:aad_function} and compute the AD both using tangent and adjoint technique.
+\begin{equation}
+\begin{cases}
+\text{Function: } f(x_1, x_2) = 2x_1^2 + 3x_2\\
+\text{Solution: } \frac{df}{dx_1} = 4x_1, \text{ and } \frac{df}{dx_2}=3
+\end{cases}
+\end{equation}
+When for example $x_1=2$ and $x_2 = 3$ we have,
+\begin{equation}
+\frac{df}{dx_1} = 8, \text{ and } \frac{df}{dx_2}=3
+\end{equation}
+
+\begin{question}
+Consider a 5-years receiver Interest Rate Swap with a 1M notional, exchanging a fixed rate of 5\% with a flat 1\% LIBOR rate. The risk free rate for discounting is considered to be flat a 1.5\%.
+Compute DV01 and PV01 with algorithmic differentiation using both tangent and adjoint modes. Compare the results.
+\end{question}
+
+\clearpage
+\section{Cap Volatility Bootstrap}
+
+Main Challenges
+	\begin{enumerate}
+		\item Produce Caplet/Floorlet prices consistent with current levels of Cap/Floor volatilities and therefore be able to re-price the market;
+		\item being able to “rebase” volatilities when pricing Cap/Floor over not quoted floating rates according to multiple curves framework (e.g. Cap/Floor over 1M or 12M Euribor);
+		\item to make things more complicated, some Caps/Floors are not always quoted over the same LIBOR, for example EUR Cap/Floor are quoted over 3M EURIBOR up to $2y$ maturity and then over 6M EURIBOR.
+	\end{enumerate}
+
+From the prices of different maturity caps, it is possible to $\color{red}{bootstrap}$ the volatility of each caplet, i.e. the volatility which refers to the forward rate corresponding to the caplet.
+
+Let's \emph{strip} caplet volatilities from the following cap (flat) volatilities which refers to caps with 0.013 strike over EURIBOR-6M whose term structure is shown in Table~\ref{tab:flat_volatilities}(right).
+
+\begin{table}[htpb]
+\begin{center}
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{|c|c|}
+\hline
+Maturity & Volatility \\ \hline
+1y & 44\% \\ \hline
+2y & 45\% \\ \hline
+3y & 44\% \\ \hline
+4y & 41\% \\ \hline
+5y & 39\% \\ \hline
+\end{tabular}
+\quad
+\begin{tabular}{|c|c|}
+\hline
+Pillar & Rate \\ \hline
+3m & 0.0002 \\ \hline
+6m & 0.0007 \\ \hline
+12m & 0.0025 \\ \hline
+2y  & 0.0070 \\ \hline
+3y & 0.0100 \\ \hline
+5y & 0.0162 \\ \hline
+\end{tabular}
+\end{center}
+\label{tab:flat_volatilities}
+\caption{Left, flat volatilities table. Right, term structure of the considered Euribor-6M curve.}
+\end{table}
+The bootstrapping procedure proceeds has follows:
+\begin{enumerate}
+\item We start with the nearest instruments, i.e. the spot starting caplet with $6m$ maturity. For maturities shorter than the first quoted value we consider the volatility constant hence:
+\begin{equation}
+\sigma^{spot}(t_{0,6m})=\color{ipython-green}{\sigma^{flat}(t_{0,1y})}
+\end{equation}
+\item Let’s now price the $1y$ forward starting caplet with $6m$ maturity. Since market cap volatilities are quoted assuming \textbf{no-arbitrage} opportunity we can build the forward starting caplet as the difference of two caps:
+\begin{equation}
+\begin{gathered}
+Cpl_{1y, 1y6m}(\sigma^{spot}_{1y6m})=Cap_{1y6m}-Cap_{1y} \\[0.3cm]
+Cap_{1y6m}(\color{red}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\color{red}{\sigma^{flat}_{1y6m}}) + Cpl_{6m,1y}(\color{red}{\sigma^{flat}_{1y6m}}) + Cpl_{1y,1y6m}(\color{red}{\sigma^{flat}_{1y6m}}) \\[0.3cm]
+Cap_{1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}})=Cpl_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) + Cpl_{6m,1y}(\color{ipython-green}{\sigma^{flat}_{1y}}) 
+\end{gathered}
+\end{equation}
+Unfortunately the $18m$ volatility is NOT quoted on the market, so we can:
+\begin{itemize}
+  \item assume for the sake of simplicity that the volatility remains constant between $1y$ and $2y$ caps;
+  \item use an interpolation method such as linear or cubic spline to get the $1y6m$ cap volatility.
+\end{itemize}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.6\linewidth]{addons/flat_volatilities}
+\end{center}
+\label{fig:flat_volatilities}
+\end{figure}
+
+Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volatility from previous Equation by using a Newton-Raphson or Brent method.
+
+\item We can apply the same method for the $1y6m$ forward starting caplet to get the volatility, $\sigma^{flat}_{2y}$ is quoted so no interpolation is needed here.
+\begin{equation}
+\begin{gathered}
+Cpl_{1y6m, 2y}(\sigma^{spot}_{2y})=Cap_{2y}-Cap_{1y6m} \\[0.3cm]
+Cap_{2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}})=Cpl_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + Cpl_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \ldots + Cpl_{1y6m,2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) \\[0.3cm]
+Cap_{1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + Cpl_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + Cpl_{1y,1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})
+\end{gathered}
+\end{equation}
+
+\item Keep iteratively to solve for all the remaining volatilities using the very same technique.
+\end{enumerate}
+
+\clearpage
+\section{Longstaff-Schwartz Algorithm}
+
+Monte Carlo simulation is a flexible and powerful numerical method to value financial derivatives of any kind. However being a forward evolving technique, it is per se not suited to address the valuation of American or Bermudan options which are valued in general by backwards induction. Longstaff-Schwartz provide a numerically efficient method to resolve this problem by what they call \emph{Least-Squares Monte Carlo}.
+
+The problem with Monte Carlo is that the decision to exercise an American option or not is dependent on the \emph{continuation} value. %Consider a simulation with $M+1$ points in time and paths. 
+The approach of Longstaff-Schwartz approximates continuation values for American options in the backwards steps by an ordinary least-squares regression.
+Equipped with such approximations, the option is exercised if the approximate continuation value is lower than the value of immediate exercise. Otherwise it is not exercised.
+
+\subsection{Bermudan Option}
+Consider a bermudan put option with strike $K$ and maturity in $n$ years. Each year you can choose whether to exercise or not.
+
+Let's implement a MC which actually simulates, besides the evolution of the market, what an investor holding this option would do. 
+
+We simulate that 1 year has passed, computing the new value of the asset and of the money market account
+\begin{equation}
+	\begin{gathered}
+		S(t_1=1y) = S(t_0)e^{(r-\frac{1}{2}\sigma^2)(t_1-t_0)+\sigma\sqrt{t_1-t_0}\mathcal{N}(0,1)} \\
+		B(t_1=1y)=B(t_0)e^{r(t_1-t_0)}
+	\end{gathered}
+\end{equation}
+
+At this point the investor could exercise. How does he know if it is convenient? In case of exercise he knows exactly the payoff he's getting. In case he continues, he knows that it is the same of having a European Put Option.
+
+So, in mathematical terms we have the following payoff in 
+\begin{equation}
+	\max[K-S(t_1), P(t_1,T;S(t_1),K)]
+\end{equation}
+where $P(t_1,T;S(t_1),K)$ is the price of a Put which can be computed analytically! In the jargon of american products, 
+is called the \emph{continuation value}, i.e. the value of holding the option instead of early exercising it.
+
+So the premium of the option is the average of this discounted payoff calculated in each iteration of the Monte Carlo procedure
+\begin{equation}
+	\cfrac{1}{N}\sum_i\max[K-S(t_1), P(t_1,T;S(t_1),K)]
+\end{equation}
+
+We could have priced this product because we have an analytical pricing formula for the put. What if we didn't have it?
+
+Brute force solution: for each realization of $S(t_1)$ we run another Monte Carlo to price the put. This method (called \emph{Nested Monte Carlo}) is very time consuming and quite inefficient, for this very simple case it's time of execution grows as $N^2$, which becomes prohibitive when you deal with more than one exercise date !
+
+Let's search for a finer solution analyzing the relationship between the continuation value and the simulated realization of $S$ at step $t_1$. 
+
+By plotting the discounted payoff at maturity, $P_i$ vs $S_i(T_1)$ (the red line represents the analytical price of the put as a function of $S_i$).
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{addons/lsm_paths}
+	\end{center}
+	\label{fig:lsm_paths}
+\end{figure}
+
+The analytical price of the put is a curve which kinds of interpolate the cloud of Monte Carlo points. This suggest us that
+\textbf{the price at time $t_1$ can be computed by means of an average on all discounted payoff (i.e. the barycentre of the cloud made of discounted payoff)}.
+Which in turn suggest that \textbf{the future value of an option can be seen as the problem of finding the curve that best fits the cloud of discounted payoff up to date of interest.}
+
+As an example in Fig.~\ref{fig:continuation_function} there is a curve found by means of a linear regression on a polynomial of 5th order.
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/continuation_function}
+	\end{center}
+	\label{fig:continuation_function}
+\end{figure}
+
+So we have an empirical pricing formula for the put to be used in the Monte Carlo Simulation
+\begin{equation}
+	P(t_1,T,S(t_1),K)=c_0+c_1 S(t_1) + c_2 S(t_1)^2 + c_3 S(t_1)^3 + c_4 S(t_1)^4 + c_5 S(t_1)^5
+\end{equation}
+
+The formula is obviously fast, the cost of the algorithm being just the best fit. Clearly we could have used any form for the curve (not only a polynomial). 
+
+\subsection{The Algorithm}
+The major insight of Longstaff-Schwartz is to estimate the continuation value $C_{t,i}$ by ordinary least-squares regression, therefore the name Least Square Monte Carlo for the algorithm. 
+They propose to regress the $I$ continuation values $Y_{t,i}$ against the I simulated levels $S_{t,i}$. Given $D$ basis functions $b_i:\mathbb{R}^D\rightarrow\mathcal{R}$ for the regression, the continuation value $C_{t,i}$ is according to the approach approximated by
+\begin{equation}
+	\hat{C}_{t,i}=\sum_{i=1}^D \alpha^*_{d,t}b_d(S_{t,i})
+	\label{eq:continuation_approx}
+\end{equation}
+
+The optimal regression parameters $\alpha^*_{d,t}$ are the result of the minimization
+\begin{equation}
+	\min_{\alpha_{1,t},\ldots,\alpha_{D,t}}\cfrac{1}{I}\sum_{i=1}^I \left(Y_{t,i}-\sum_{i=1}^D\alpha^*_{d,t}b_d(S_{t,i})\right)^2
+	\label{eq:optimization_alphas}	
+\end{equation}
+
+In some circumstances, the quality of the regression can be improved upon when restricting the paths involved in the regression to those where the option is in-the-money.
+
+\begin{question}
+Price an America put option using the LongStaff-Schwartz algorithm. The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.
+\end{question}
+
+\begin{question}
+Price an Bermudan Swaption using the LongStaff-Schwartz algorithm. %The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.
+\end{question}
+
+
+Let's consider now a generic American product. Here is the Longstaff-Schwartz algorithm
+\begin{itemize}
+	\item simulate $I$ index level paths with $M+1$ points in time leading to index level values
+	\begin{equation*}
+		S_{t,i},\quad t \in \{0,\ldots,T\}, i \in \{1,\ldots,I\}
+	\end{equation*};
+\item for $t=T$ the option value is $V_{T,i}=h_T(S_{T,i})$ by arbitrage arguments;
+\item start iterating backwards $t = T-\Delta t, \ldots,\Delta t$:
+\begin{itemize}
+	\item regress the $T_{t,i}$ against the $S_{t,i}, i\in \{1,\ldots, I\}$, given $D$ basis function $b$;
+	\item approximate $C_{t,i}$ by $\hat{C}_{t,i}$ according to Eq.~\ref{eq:continuation_approx} given the optimal parameters $\alpha^*_{d,t}$ from Eq.~\ref{eq:optimization_alphas};
+	\item set 
+	\begin{equation*}
+		V_{t,i}=
+		\begin{cases}
+			h_t(S_{t,i})\quad\text{if }h_t(S_{t,i})>\hat{C}_{t,i}\text{ exercise takes place}\\
+			Y_{t,i}\quad\text{if }h_t(S_{t,i})\leq\hat{C}_{t,i}\text{ exercise does not take place}\\
+		\end{cases}
+	\end{equation*}
+	repeat iteration steps until $t=\Delta t$;
+\end{itemize} 
+\item for $t=0$ calculate the LSM esitmator
+\begin{equation}
+	\hat{V}_0^{LSM}=e^{-r\Delta t}\cfrac{1}{I}\sum_{i=1}^{I}V_{\Delta t, i}
+\end{equation} 
+\end{itemize}
+
+\clearpage
+\section{Callable Bond}
+Bonds with European call option just have a single possible call date. Let's denote the call date by $t_c$ and the notice time as $t_n$. Also, we denote the call price with $X$. 
+
+In general, we can assume that \textbf{it is optimal for the issuer to minimize the value of the contract}. It means the issuer will exercise the option if the price of the callable bond exceeds the exercise price at the notice date. Otherwise, she will give up the option right and the callable bond price is equal to that of the non-option bond.
+
+Denote by $r_b$ the \emph{break-even} interest rate which represents the rate value such that the issuer is indifferent between exercising the option or not.
+
+It can be calculated by,
+\begin{equation}
+X\cdot D(t_n, t_c) - P(r,t_n)=0
+\end{equation}
+where $D(t_n, t_c)$ is the discount factor between notice and exercise dates and $P(r,t_n)$ the price of the callable bond an instant before the notice date.
+
+We know the value of the callable bond $P(r,t_n)$ since it is equal to the value of the non-option bond. The solution of equation is the cross point between the two curves.
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/callable_bond}
+	\end{center}
+	\label{fig:callable_bond}
+\end{figure}
+
+\clearpage
+\section{Jamshidian Decomposition}
+An option on a portfolio of pure discount bonds can be decomposed into a portfolio of options on the individual discount bonds in the
+portfolio.
+
+Hence, we can think of the European Swaption as a sum of European
+options on Zero-Coupon bonds. This method is called Jamshidian’s decomposition, and is mathematically explained as follows:
+\begin{equation}
+\max\left[\sum_{i=1}^n C_i p(r, t, s_i) - K, 0\right] = \sum_{i=1}^n C_i \max\left[p(r, t, s_i) - K_i, 0\right]
+\label{eq:jamshidian_decomposition}
+\end{equation}
+
+Consider a European Swaption with strike rate $K$, maturity $T$ and nominal $FV$
+with payment dates $T_i$ for $i = 1,\ldots, n$. Since the value of a floating rate bond is worth its face value, we can take it as an option on a bond paying $C_i = K_{s_i}$ with strike price $FV$. This option will be exercised when $r(T) < r^*$ where $r^*$ is the solution to
+\begin{equation}
+FV = \sum_{i=1}^n C_i p(r^*, T, T_i)
+\end{equation}
+This means that $FV$ is taken as a sum of discounted flows $C_i$ for a short rate $r^*$ at time $T$. To find the value of $r^*$ we have to discount all the Swap cash-flows, sum them up and let the sum be equal to the notional. We have to use the NewtonRaphson algorithm to follow this calculation $r^*$, that will be the correspondent level of $r$ for that equality to happen. 
+
+Once $r^*$ is found, we have to calculate the discounted cash-flows substituting it in the discounting factor $e^{-r\Delta t}$ and let them be the strike prices of our call options on Swaps.
+Afterwards, we calculate the payoff of the call options on the cash-flows with
+the strike price mentioned and sum them up. The payoff of this sum of options
+will thus be
+\begin{equation}
+\max\left[\sum_{i=1}^n C_ip(r, T, T_i)-FV, 0\right]
+\end{equation}
+which using Eq.~\ref{eq:jamshidian_decomposition} we find is equivalent to
+\begin{equation}
+\sum_{i=1}^n C_i \max\left[p(r, T, T_i)-FV_i, 0\right]
+\end{equation}
+where $FV_i = p(r^*, T, T_i)$. 
+Therefore, the Swaption is calculated as the sum of $n$ options on discounted bonds with the exercise price of the $i$th option equal to $FV_i$.
+
+After the price of a European Swaption under the Hull-White model is calculated, we have to calibrate it against the market data. Usually this calibration method is carried out taking the target prices to match the ones given by the Black-76 or Normal-Black models and trying to get as close as possible to them.
+
+\clearpage
+\section{Reverse Floater}
+
+* For instance, in September 2009, the short-term interest rate, the 3-month EURIBOR, **was at 0.5%**, and the forward curve was rising rather steeply, i.e. the implied forward 3-month EURIBOR in 3 years **was at 3.3%**. 
+* The 3-year interest rate for a fixed-coupon bond **was at 3.5%** at the time. 
+* It was possible to construct a 3-year reverse floater bond paying:
+
+$$ 6\% - 2 \cdot \text{3M-EURIBOR}$$
+
+(the coupon payments usually occur on a quarterly basis). 
+* Should the 3-Month EURIBOR not move during the first year, the coupon would amount to $6\% - 2 \cdot 0.5\% = 5\%$. 
+* Compared to a floating rate bond, the outperformance would be 4.5% for that period. 
+%* After 3 years, the invested nominal is redeemed along with the last coupon.
+
+Vega 
+
+$$V_{\text{cap}}=F\Phi(d_1) - K\Phi(d_2)$$
+
+$$\nu = \frac{\partial V_{\text{cap}}}{\partial\sigma} =
+F\phi(d_1)$$
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/reverse_floater_payoff}
+	\end{center}
+	\label{fig:reverse_floater_payoff}
+\end{figure}
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/cap_vega}
+	\end{center}
+	\label{fig:cap_vega}
+\end{figure}
+
+\clearpage
 \section{Floating Rate Notes}
 Floating rate bond or note (FRN) usually refers to an instrument whose coupon is based on a short term rate (3-month T-bill, 6-month LIBOR). Variable coupon rates are fixed in advance at reset dates, which are 3- or 6-month (interest payment period) earlier.
 
@@ -290,6 +844,77 @@ The price of FRN has a range from \emph{par} to \emph{par} + full coupon. It is 
 Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. The relevant insterest rates can be taken from \href{https://raw.githubusercontent.com/matteosan1/advanced\_financial\_modeling/master/input_files/libor.csv}{libor.csv}
 \end{question}
 
+\clearpage
+\section{Girsanov Theorem}
+Let’s start with a standard Brownian motion $W_t^{\mathcal{P}} = \mathcal{N}_{\mathcal{P}}(0,t)$ under a probability measure $\mathcal{P}$, and adapted to a filtration $\mathcal{F}_t$. In Fig.~\ref{fig:brownian_motion_nodrift} 30 simulated path evolutions of $W_t^{\mathcal{P}}$ are shown, as expected there is no drift.
+	
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_nodrift}
+	\end{center}
+	\label{fig:brownian_motion_nodrift}
+	\caption{Thirty realization of the simple Brownian motion $W_t^{\mathcal{P}}$.}
+\end{figure}
+
+For exemplification, let us now construct a "drifty" process $Y_t=\mu t+\sigma W_t^{\mathcal{P}}\in \mathcal{N}_{\mathcal{P}}(\mu t, \sigma^2 t)$, that is a Wiener process with drift $\mu$ and diffusion $\sigma$; in other words, $\mathbb{E}^{\mathcal{P}}[Y_t]=\mu t$ and $\text{Var}^{\mathbb{P}}[Y_t]=\mathbb{E}^{\mathcal{P}}[Y^2_t]-\mathbb{E}^{\mathcal{P}}[Y_t]^2=\sigma^2 t$.
+
+%Incidentally, note the terminology: the drift is not an expectation, but rather the rate of change in expectation, and the diffusion is not a standard deviation, but rather the square root of the rate of change in variance. 
+Figure~\ref{fig:brownian_motion_drift} shows 30 simulated paths for the evolution of $Y_t$ ($\mu = 0.8$ and $\sigma =1.25$). There the drift is visually apparent.
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[width=0.5\linewidth]{addons/brownian_motion_drift}
+\end{center}
+\label{fig:brownian_motion_drift}
+	\caption{Thirty realization of the "drifty" Brownian motion $Y_t$.}
+\end{figure}
+
+We aim at applying a change of measure from $\mathcal{P}$ into a new probability $\mathcal{Q}$, such that $Y_t$ becomes driftless (a martingale) under $\mathcal{Q}: \mathbb{E}^{\mathcal{Q}}[Y_t]=0$, yet with the same diffusion as under $\mathcal{P}$: $\text{Var}^{\mathcal{Q}}[Y_t]=\sigma^2 t$
+
+Let $\mu^{*}$ be a new drift and assume $\\gamma_t = \frac{\mu_t^{*}-\mu_t}{\sigma_t}$. According to the Girsanov Theorem the process
+\begin{equation}
+dW^{*}_t = -\gamma_t dt + dW_t
+\end{equation}
+is a Brownian motion under the new measure $\mathcal{Q}$, equivalent to $\mathcal{P}$, is defined by the Radon-Nikodym derivative
+\begin{equation}
+\cfrac{d\mathcal{Q}}{d\mathcal{P}} = \exp\left(-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s\right)
+\end{equation}
+
+\begin{question}
+Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigma=0.2$. Determine the appropriate transformation, according to the Girsanov Theorem which makes the original process driftless. Verify that applying the Radon-Nikodym to the a simulated path of the process the drift indeed disappear.
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
+	\end{center}
+	\label{fig:brownian_motion_girsanov}
+\end{figure}
+\end{question}
+
+\begin{question}
+Given an underlying asset $S$ which currently is valued 100 simulate $N$ possible realization of the random variable $S$ both under the \emph{physical} probability measure and the 
+and a 1 year call option on that asset with strike $K=120$ determine 
+
+Other  Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigma=0.2$. Determine the appropriate transformation, according to the Girsanov Theorem which makes the original process driftless. Verify that applying the Radon-Nikodym to the a simulated path of the process the drift indeed disappear.
+
+mu = 0.05
+r = 0.01
+sigma = 0.20
+l = (mu-r)/sigma
+S0 = 100
+K = 120
+T = 1
+M = 252
+dt = T/M
+N = 10000
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
+	\end{center}
+	\label{fig:brownian_motion_girsanov}
+\end{figure}
+\end{question}
+
+\clearpage
 \section{Importance Sampling}
 Assume we want to calculate the expectation $\mathbb{E}[f(X)]$
 \begin{equation}
@@ -318,7 +943,7 @@ From probability theory we know that the variance of the standard Monte Carlo es
 \cfrac{1}{n}\cdot\text{Var}[f(x)] = \cfrac{1}{n}\cdot\mathbb{E}[(f(X)-\mathbb{E}[f(X)])^2]
 \end{equation}
 
-Hence the variance for the re-formulated importance sampling estimator in Eq.\ref{eq:reformulated_expectation} is:
+Hence the variance for the re-formulated importance sampling estimator in Eq.~\ref{eq:reformulated_expectation} is:
 \begin{equation}
 \cfrac{1}{n}\cdot\text{Var}\left[\cfrac{p(x)}{q(x)}f(x)\right]
 \end{equation}
@@ -335,7 +960,7 @@ Naturally, we don’t know $\mathbb{E}[f(X)]$, as the reason we are doing this s
 However, we can think of the denominator of the previous expression as some normalisation constant, and consider to construct $q$ such that it has \textbf{high} density wherever $f(x)p(x)$ is \textbf{high}.
 
 \subsection{Practical Example}
-For the sake of demonstration, we choose $f=\mathcal{N}(5, 1)$, and the probability distribution $p=\mathcal{N}(9,2)$ which do not overlap too well, see Fig.\ref{fig:f_and_p}.
+For the sake of demonstration, we choose $f=\mathcal{N}(5, 1)$, and the probability distribution $p=\mathcal{N}(9,2)$ which do not overlap too well, see Fig.~\ref{fig:f_and_p}.
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.5\linewidth]{addons/f_and_p}
@@ -354,8 +979,8 @@ Intuitively one can see why sampling from this distribution is a bad idea: for m
 \label{fig:bad_sampling}
 \end{figure}
 
-Looking at Fig.|\ref{fig:bad_sampling} it is apparent how the vast majority of samples piles up at 0 (notice the logarithmic scale of the plot). 
-Therefore, as outlined above, to make the sampling more efficient, we can try a new distribution $q = \mathcal{N}(5.8, 1)$, which satisfies the criterion that its pdf is high in regions where $f(x)p(x)$ is high, see Fig|\ref{fig:fp_and_q}.
+Looking at Fig.~\ref{fig:bad_sampling} it is apparent how the vast majority of samples piles up at 0 (notice the logarithmic scale of the plot). 
+Therefore, as outlined above, to make the sampling more efficient, we can try a new distribution $q = \mathcal{N}(5.8, 1)$, which satisfies the criterion that its pdf is high in regions where $f(x)p(x)$ is high, see Fig.~\ref{fig:fp_and_q}.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -382,103 +1007,13 @@ Estimate how unlucky is a 25 standard deviation return
 \end{equation*}
 \end{question}
 \begin{question}
-Consider a one year ($T=1$) call option with $S_0=100$ , $K=170$,  $\sigma=0.2$, and $r=0.06$. The option is far out of the money, assuming we need to estimate its valye using Monte Carlo simulation, improve the efficiency of the calculation with importance sampling.
+Consider a one year ($T=1$) call option with $S_0=100$ , $K=170$,  $\sigma=0.2$, and $r=0.06$. The option is far out of the money, assuming we need to estimate its value using Monte Carlo simulation, improve the efficiency of the calculation with importance sampling.
 
 \noindent
 Interesting reference \emph{Variance Reduction Techniques of Importance Sampling Monte Carlo Methods for Pricing Options}, 
 Journal of Mathematical Finance, 2013, 3, 431-436.
 \end{question}
 
-\section{Reverse Floater}
-
-* For instance, in September 2009, the short-term interest rate, the 3-month EURIBOR, **was at 0.5%**, and the forward curve was rising rather steeply, i.e. the implied forward 3-month EURIBOR in 3 years **was at 3.3%**. 
-* The 3-year interest rate for a fixed-coupon bond **was at 3.5%** at the time. 
-* It was possible to construct a 3-year reverse floater bond paying:
-
-$$ 6\% - 2 \cdot \text{3M-EURIBOR}$$
-
-(the coupon payments usually occur on a quarterly basis). 
-* Should the 3-Month EURIBOR not move during the first year, the coupon would amount to $6\% - 2 \cdot 0.5\% = 5\%$. 
-* Compared to a floating rate bond, the outperformance would be 4.5% for that period. 
-%* After 3 years, the invested nominal is redeemed along with the last coupon.
-
-Vega 
-
-$$V_{\text{cap}}=F\Phi(d_1) - K\Phi(d_2)$$
-
-$$\nu = \frac{\partial V_{\text{cap}}}{\partial\sigma} =
-F\phi(d_1)$$
-
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/reverse_floater_payoff}
-	\end{center}
-	\label{fig:revere_floater_payoff}
-\end{figure}
-
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/cap_vega}
-	\end{center}
-	\label{fig:cap_vega}
-\end{figure}
-
-\section{Interest Rate Swap as FRAs}
-
-\section{Girsanov Theorem}
-Let’s start with a standard Brownian motion $W_t^{\mathbb{P}} = \mathcal{N}_{\mathbb{P}(0,t)$ under a probability measure $\mathbb{P}$, and adapted to a filtration $\mathcal{F}_t$. These are 30 simulated evolution paths of $W_t^{\mathbb{P}}$, showing no drift, as expected:
-	
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_nodrift}
-	\end{center}
-	\label{fig:brownian_motion_nodrift}
-\end{figure}
-
-For exemplification, let us now construct a "drifty" process $Y_t=\mu t+\sigma W_t^{\mathbb{P}}\in \mathcal_{\mathbb{P}}(\mu t, \sigma^2 t)$, that is, with drift $\mu$ and diffusion $\sigma$; in other words, $\mathbb{E}^{\mathbb{P}[Y_t]=\mu t$ and $\text{Var}^{\mathbb{P}}[Y_t]=\mathbb{E}^{\mathbb{P}[Y^2_t]-\mathbb{E}^{\mathbb{P}[Y_t]^2=\sigma^2 t$.
-
-Incidentally, note the terminology: the drift is not an expectation, but rather the rate of change in expectation, and the diffusion is not a standard deviation, but rather the square root of the rate of 
-change in variance. These are 30 simulated paths for the evolution of $Y_t$, for $\mu = 0.8$ and $\sigma =1.25$ (the drift is visually apparent):
-\begin{figure}[htbp]
-\begin{center}
-	\includegraphics[width=0.5\linewidth]{addons/brownian_motion_drift}
-\end{center}
-\label{fig:brownian_motion_drift}
-\end{figure}
-
-We aim at applying a change of measure from $\mathbb{P}$ into a new probability $\mathbb{Q}$, such that $Y_t$ becomes driftless (a martingale) under $\mathbb{Q}: \mathbb{E}^{\mathbb{Q}}[Y_t]=0$, yet with the same diffusion as under $\mathbb{P}$: $\text{Var}^{\mathbb{Q}}[Y_t]=\sigma^2 t$
-
-Consider the new process $U_t=\frac{1}{\sigma}Y_t\in\mathcal{N}_{\mathbb{P}}\left(\frac{\mu}{\sigma}t,t\right)$. In what follows, we will remove the drift of $U_t$, then reconstruct $Y_t$. For that, we follow Girsanov’s statement backwards: we aim at expressing $U_t$ as a standard Brownian motion under a probability $\mathbb{Q}$, that is, by Girsanov’s formula, we want to express $U_t$ in the following form:
-\begin{equation}
-	U_t = W_t^{\mathbb{P}} - [W_t^{\mathbb{P}}, M_t^{\mathbb{P}}]
-\end{equation}
-and now, we solve this equation for $M_t^{\mathbb{P}}$.
-We ask ourselves the question: what process $M_t^{\mathbb{P}}$ satisfies ? ,
-t
-P P PP
-t t tt
-U
-tW W W M µ
-σ
-+=−
-
-? One can easily see that
-the process P P M W t t
-µ
-σ = − verifies the expression , , PP P P P WM W W W t tt t t t
-µµ µ
-σσ σ = − =− =− ,
-hence , P PP U W WM tt tt = − . Therefore P P M W t t
-µ
-σ = − is our solution. We use P Mt to define the
-change of measure: Zt M ( ) = ε ( t )
-
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
-	\end{center}
-	\label{fig:brownian_motion_girsanov}
-\end{figure}
-
-
+\clearpage
+\tableofcontents
 \end{document}
