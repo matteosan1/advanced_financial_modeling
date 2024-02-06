@@ -15,8 +15,8 @@
 \subsection{Numeraires}
 \begin{frame}{Numeraires}
   \begin{itemize}
-  \item<1-> Ideally we would like to define a probability measure $\mathcal{Q}^X$ under which the discounted derivative process IS a martingale, such that the expectation of the payoff is analytically tractable (i.e. easy to compute).
-  \item<2-> The question that arises is: how can we determine such measure $\mathcal{Q}^X$ ?
+  \item<1-> Ideally we would like to define a probability measure $\mathbb{Q}^X$ under which the discounted derivative process IS a martingale, such that the expectation of the payoff is analytically tractable (i.e. easy to compute).
+  \item<2-> The question that arises is: how can we determine such measure $\mathbb{Q}^X$ ?
   \item<3-> The answer is through \textcolor{red}{change of numeraire}.
   \item<4-> A \textcolor{red}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as a unit of reference when pricing an asset $S_t$
     \begin{equation*}
@@ -109,12 +109,12 @@
 	  \item Formally we can indicate with
 	  \begin{equation*}
 	  	\begin{gathered}
-	  	\mathcal{N}_\mu := \{A\in \Omega \mid \mu(A)=0\}\\
-  	  	\mathcal{N}_\nu := \{A\in \Omega \mid \nu(A)=0\}
+	  	\mathbb{N}_\mu := \{A\in \Omega \mid \mu(A)=0\}\\
+  	  	\mathbb{N}_\nu := \{A\in \Omega \mid \nu(A)=0\}
   	  \end{gathered}
     \end{equation*}
   	the $\mu$-null sets and the $\nu$-null sets, respectively. 
-  	The two measures are called equivalent if and only $\mathcal {N}_\mu= \mathcal{N}_\nu$.
+  	The two measures are called equivalent if and only $\mathbb {N}_\mu= \mathbb{N}_\nu$.
 	\item In other words two probability measures are said to be equivalent when they agree on which events have measure zero.
   \end{itemize}
   \end{itemize}
@@ -124,11 +124,11 @@
 	\begin{block}{Definition}
 		When two measures are equivalent it is possible to express the first in terms of the second through the \textcolor{red}{Radon-Nikodym derivative}. Indeed there exists a \textcolor{red}{martingale process $\zeta_t$} such that
 		\begin{equation*}
-			\mathcal{Q}^* =\int_{A} \zeta_t(\omega)d\mathcal{Q}(\omega)
+			\mathbb{Q}^* =\int_{A} \zeta_t(\omega)d\mathbb{Q}(\omega)
 		\end{equation*}
 		which can be written in a more concise form as
 		\begin{equation}
-			\frac{d\mathcal{Q}^*}{d\mathcal{Q}} = \zeta_t
+			\frac{d\mathbb{Q}^*}{d\mathbb{Q}} = \zeta_t
 			\label{eq:radon_nikodym_der}
 		\end{equation}
 	\end{block}
@@ -138,15 +138,15 @@
   \begin{itemize}
   \item To get a sense of what a Radon-Nikodym derivative is we can write the expected value of a generic function $F(x)$ under a measure $\mathcal{P}$, with associated density function $p(x)$ as
     \begin{equation*}
-      \mathbb{E}^\mathcal{P}=\int F(x)p(x)dx
+      \expect{P}=\int F(x)p(x)dx
     \end{equation*}
   \item Suppose there exists a function $q(x)$, which satisfies the mathematical conditions required to be a density function. Then we can write
     \begin{equation*}
-      \mathbb{E}^\mathcal{P}=\int F(x)f(x)\frac{q(x)}{q(x)}dx
+      \expect{P}=\int F(x)f(x)\frac{q(x)}{q(x)}dx
     \end{equation*}
   \item If we define $\psi(x)=F(x)\frac{p(x)}{q(x)}$ the expected value can be written as 
     \begin{equation*}
-      \mathbb{E}^\mathcal{P}[F(x)]=\int\psi(x)q(x)dx=\mathbb{E}^\mathcal{Q}[\psi(x)]=\mathbb{E}^\mathcal{Q}\left[F(x)\frac{p(x)}{q(x)}\right]
+      \expect{P}[F(x)]=\int\psi(x)q(x)dx=\expect{Q}[\psi(x)]=\expect{Q}\left[F(x)\frac{p(x)}{q(x)}\right]
     \end{equation*}
   \end{itemize}
 \end{frame}
@@ -155,12 +155,12 @@
   \begin{itemize}
   \item The expectations corresponding to the two measures are related by
     \begin{equation*}
-      \mathbb{E}^{\mathcal{Q}^*}[X] = \mathbb{E}^\mathcal{Q}\left[X\frac{d\mathcal{Q}^*}{d\mathcal{Q}}\right]= \mathbb{E}^\mathcal{Q}[X\zeta]
+      \expect{Q^*}[X] = \expect{Q}\left[X\frac{d\mathbb{Q}^*}{d\mathbb{Q}}\right]= \expect{Q}[X\zeta]
     \end{equation*}
 	\pause
   \item In case of a conditioned expectation
     \begin{equation}
-      \mathbb{E}^*[X|\mathcal{F}_t] = \frac{\mathbb{E}\left[X\cfrac{d\mathcal{Q}^*}{d\mathcal{Q}}\bigg|\mathcal{F}_t\right]}{\mathbb{E}[\zeta_t|\mathcal{F}_t]}
+      \expect{*}[X|\mathcal{F}_t] = \frac{\mathbb{E}\left[X\cfrac{d\mathbb{Q}^*}{d\mathbb{Q}}\bigg|\mathcal{F}_t\right]}{\mathbb{E}[\zeta_t|\mathcal{F}_t]}
       \label{eq:conditioned_expectation}
     \end{equation}
     which is an "equivalent" formulation of the famous \emph{Bayes theorem}
@@ -194,17 +194,17 @@
 \begin{frame}{Change of Numeraire}
   \begin{block}{Theorem}
   	\small{
-    Assume exists a numeraire $N_t$ and the associated measure $\mathcal{Q}^N$, equivalent to $\mathcal{P}$, such that the price of any traded asset $S_t$ relative to $N$ is a martingale under $\mathcal{Q}^N$
+    Assume exists a numeraire $N_t$ and the associated measure $\mathbb{Q}^N$, equivalent to $\mathbb{P}$, such that the price of any traded asset $S_t$ relative to $N$ is a martingale under $\mathbb{Q}^N$
     \begin{equation*}
-      \frac{S_t}{N_t} = \mathbb{E}^N\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
+      \frac{S_t}{N_t} = \expect{N}\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
     \end{equation*}
-    Let $U$ be another arbitrary numeraire. Then there exists a measure $\mathcal{Q}^U$, also equivalent to $\mathcal{P}$, such that the price of any traded asset $S_t$, normalized to $U$, is a martingale under $\mathcal{Q}^U$
+    Let $U$ be another arbitrary numeraire. Then there exists a measure $\mathbb{Q}^U$, also equivalent to $\mathbb{P}$, such that the price of any traded asset $S_t$, normalized to $U$, is a martingale under $\mathbb{Q}^U$
     \begin{equation*}
-      \frac{S_t}{U_t} = \mathbb{E}^U\left[\frac{S_T}{U_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
+      \frac{S_t}{U_t} = \expect{U}\left[\frac{S_T}{U_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
     \end{equation*}
-    The Radon-Nikodym derivative defining the measure $\mathcal{Q}^U$ is given by
+    The Radon-Nikodym derivative defining the measure $\mathbb{Q}^U$ is given by
 \begin{equation}
-	\frac{d\mathcal{Q}^U}{d\mathcal{Q}^N} = \frac{U_T N_0}{U_0 N_T}
+	\frac{d\mathbb{Q}^U}{d\mathbb{Q}^N} = \frac{U_T N_0}{U_0 N_T}
 	\label{eq:radon_nikodym_der2}
 \end{equation}}
   \end{block}
@@ -213,16 +213,16 @@
 \begin{frame}{Change of Numeraire (Proof p.2)}
 	\begin{itemize}
 		\item Let's prove first this second part.
-  		\item By definition of $\mathcal{Q}^N$, for any asset price $S_t$ holds
+  		\item By definition of $\mathbb{Q}^N$, for any asset price $S_t$ holds
 	  \begin{equation*}
 	    \begin{cases} 
-	      \mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \cfrac{S_0}{N_0} \\
-\mathbb{E}_t^U\left[\cfrac{U_0 S_T}{N_0 U_T}\right] = 	      \cfrac{U_0}{N_0}\mathbb{E}_t^U\left[\cfrac{S_T}{U_T}\right] = \cfrac{\cancel{U_0} S_0}{N_0 \cancel{U_0}} = \cfrac{S_0}{N_0}
+	      \expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] = \cfrac{S_0}{N_0} \\
+\expectt{U}{t}\left[\cfrac{U_0 S_T}{N_0 U_T}\right] = \cfrac{U_0}{N_0}\expectt{U}{t}\left[\cfrac{S_T}{U_T}\right] = \cfrac{\cancel{U_0} S_0}{N_0 \cancel{U_0}} = \cfrac{S_0}{N_0}
 	    \end{cases}
 	  \end{equation*}
   	\item Since both equations result to $S_0/N_0$ they can be equated
   	\begin{equation*}
-  	\mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
+  	\expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] = \expectt{U}{t}\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
   	\end{equation*}
   	\end{itemize} 
 \end{frame}
@@ -232,10 +232,10 @@
 	\item By definition of Radon-Nikodym derivative and from the result of in previous slide, it holds
   \begin{equation*}
   	\begin{cases}
-    \mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{S_T}{N_T} \cfrac{d\mathcal{Q}^N}{d\mathcal{Q}^U}\right] \\
-    \mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
+    \expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] =\expectt{U}{t}\left[\cfrac{S_T}{N_T} \cfrac{d\mathbb{Q}^N}{d\mathbb{Q}^U}\right] \\
+    \expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] =\expectt{U}{t}\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
     \end{cases}\implies
-	\cfrac{\cancel{S_T}}{N_T} \cfrac{d\mathcal{Q}^N}{d\mathcal{Q}^U} = \cfrac{U_0 \cancel{S_T}}{N_0 U_T}
+	\cfrac{\cancel{S_T}}{N_T} \cfrac{d\mathbb{Q}^N}{d\mathbb{Q}^U} = \cfrac{U_0 \cancel{S_T}}{N_0 U_T}
   \end{equation*}
 	where we have used the fact that the expectation arguments under $U$ must equal to get \cref{eq:radon_nikodym_der2}. 
   \end{itemize}
@@ -245,13 +245,13 @@
   \begin{itemize}
   \item<1-> Now we can prove the first part of the change of numeraire theorem. The conditional expectation formula~\cref{eq:conditioned_expectation} gives
     \begin{equation*}
-      \mathbb{E}^U\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\bigg|\mathcal{F}_t\right]}
+      \expect{U}\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\bigg|\mathcal{F}_t\right]}
     \end{equation*}
   \item<2-> But 
     \begin{equation*}
       \begin{cases}
-	\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\right]= \mathbb{E}_t^N\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
-	\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\right]= \mathbb{E}_t^N\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
+	\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\right]= \expectt{N}{t}\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
+	\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\right]= \expectt{N}{t}\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
       \end{cases}
     \end{equation*}
   \end{itemize}
@@ -261,13 +261,13 @@
 	\begin{itemize}
 		\item Now we can prove the first part of the change of numeraire theorem. The conditional expectation formula~\cref{eq:conditioned_expectation} gives
 		\begin{equation*}
-			\mathbb{E}^U\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\bigg|\mathcal{F}_t\right]} = \cfrac{\cfrac{\cancel{N_0} S_t}{\cancel{U_0} \cancel{N_t}}}{\cfrac{\cancel{N_0} U_t}{\cancel{U_0} \cancel{N_t}}} = \cfrac{S_t}{U_t}
+			\expect{U}\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\bigg|\mathcal{F}_t\right]} = \cfrac{\cfrac{\cancel{N_0} S_t}{\cancel{U_0} \cancel{N_t}}}{\cfrac{\cancel{N_0} U_t}{\cancel{U_0} \cancel{N_t}}} = \cfrac{S_t}{U_t}
 		\end{equation*}
 		\item But 
 		\begin{equation*}
 			\begin{cases}
-				\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\right]= \mathbb{E}_t^N\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
-				\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\right]= \mathbb{E}_t^N\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
+				\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\right]= \expectt{N}{t}\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
+				\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\right]= \expectt{N}{t}\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
 			\end{cases}
 		\end{equation*}
 	\end{itemize}

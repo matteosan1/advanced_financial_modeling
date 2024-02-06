@@ -84,9 +84,9 @@
 \begin{frame}{Deterministic vs Stochastic}
 	\begin{itemize}
 		\item<0-> Recall the risk-neutral pricing formula \begin{equation*}
-			\Pi_t = \mathbb{E}^{\mathcal{Q}^B}[D(t,T)A|\mathcal{F}_t]
+			\Pi_t = \expect{Q^B}[D(t,T)A|\mathcal{F}_t]
 		\end{equation*}
-		where the corresponding risk-neutral measure is often denoted by $\mathcal{Q}^0$ or $\mathcal{Q}^B$, and similarly for the expectations. 
+		where the corresponding risk-neutral measure is often denoted by $\mathbb{Q}^0$ or $\mathbb{Q}^B$, and similarly for the expectations. 
 		%	In the following we are going to use $B(t)$ as numeraire then  Eq.~\ref{eq:risk_neutral_pricing} becomes
 		%	\begin{equation*}
 			%		\begin{aligned}
@@ -96,11 +96,11 @@
 		%	where $\mathcal{Q}^B$ is the risk-neutral measure.% that makes $\frac{S_t}{B_t}$ a martingale. 	
 		\item<1-> When \textcolor{red}{interest rates are deterministic}, the exponential can be brought out of the expectation
 		\begin{equation*}
-			\Pi_t = e^{-\int_t^T r_s ds} \mathbb{E}^B\left[A|\mathcal{F}_t\right]
+			\Pi_t = e^{-\int_t^T r_s ds} \expect{B}\left[A|\mathcal{F}_t\right]
 		\end{equation*}
 		\item<2-> Instead when \textcolor{red}{rates are constant} (e.g. Black-Scholes or Heston models)
 		\begin{equation*}
-			\Pi_t = e^{-r(T-t)}\mathbb{E}^B\left[A|\mathcal{F}_t\right]
+			\Pi_t = e^{-r(T-t)}\expect{B}\left[A|\mathcal{F}_t\right]
 		\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -124,7 +124,7 @@
 						\begin{tabular}{@{}c@{}}
 							being the value of a contract\\ with a payoff at time $T$, must be known in $t$ \\
 							from 
-							$P(t, T) = \mathbb{E}^Q[D(t, T)|\mathcal{F}_t]$
+							$P(t, T) = \expect{Q}[D(t, T)|\mathcal{F}_t]$
 						\end{tabular} \\ \hline
 					\end{tabular}
 				\end{table}
@@ -274,15 +274,15 @@
 \begin{itemize}
 	\item<1-> Let's start from the risk neutral pricing formula
 	\begin{equation} \textbf{FRA} = 
-\mathbb{E}^\mathcal{Q}_t[\tau D(t,S)(K - L(T,S))] = 	\mathbb{E}^\mathcal{Q}_t[\tau D(t,S)K - \tau D(t,S)L(T,S)]
+\expectt{Q}{t}[\tau D(t,S)(K - L(T,S))] = 	\expectt{Q}{t}[\tau D(t,S)K - \tau D(t,S)L(T,S)]
 	\label{eq:fra_as_expectation}
 	\end{equation}
-	To ease the notation $\mathbb{E_t}[X] = \mathbb{E}[X|\mathcal{F}_t]$.
+	To ease the notation $\expectt{Q}{t}[X] = \expectt{Q}{t}[X|\mathcal{F}_t]$.
 	\item<2-> From which we can easily derive using the definition of \textbf{ZCB} value
 	\begin{equation*}
 		\begin{aligned}
-		\textbf{FRA} = \tau &K\mathbb{E}_t^\mathcal{Q}[D(t,S)] - \mathbb{E}_t^\mathcal{Q}[\tau D(t,S)L(T,S)] = \\
-		&=\tau KP(t,S) - \mathbb{E}_t^\mathcal{Q}[\tau D(t,S)L(T,S)]
+		\textbf{FRA} = \tau &K\expectt{Q}{t}[D(t,S)] - \expectt{Q}{t}[\tau D(t,S)L(T,S)] = \\
+		&=\tau KP(t,S) - \expectt{Q}{t}[\tau D(t,S)L(T,S)]
 		\end{aligned}
 	\end{equation*}
 	\item<3-> For a discount factor the following holds
@@ -296,19 +296,19 @@
 	\begin{itemize}
 		\item<1-> So we get
 		\begin{equation*}
-			\textbf{FRA} = \tau KP(t,S)-\mathbb{E}_t[\tau D(t,T)D(T,S)L(T,S)]
+			\textbf{FRA} = \tau KP(t,S)-\expectt{Q}{t}[\tau D(t,T)D(T,S)L(T,S)]
 		\end{equation*}
 		\item<2-> Then using the tower expectation property
 		\begin{equation*}
-		\textbf{FRA} = \tau KP(t,S) - \mathbb{E}_t[\mathbb{E}_T[\tau D(t,T)D(T,S)L(T,S)]]
+		\textbf{FRA} = \tau KP(t,S) - \expectt{Q}{t}[\mathbb{E}_T[\tau D(t,T)D(T,S)L(T,S)]]
 		\end{equation*}
 		\item<3-> Last equation can be transformed as
 		\begin{equation*}
-			\textbf{FRA} = \tau KP(t,S) - \mathbb{E}_t[\tau D(t,T)L(T,S)\mathbb{E}_T[D(T,S)]]
+			\textbf{FRA} = \tau KP(t,S) - \expectt{Q}{t}[\tau D(t,T)L(T,S)\mathbb{E}_T[D(T,S)]]
 		\end{equation*}
 		\item<4-> From which
 		\begin{equation*}
-		\textbf{FRA} = \tau KP(t,S) - \mathbb{E}_t[\tau D(t,T)L(T,S)P(T,S)]
+		\textbf{FRA} = \tau KP(t,S) - \expectt{Q}{t}[\tau D(t,T)L(T,S)P(T,S)]
 		\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -318,19 +318,19 @@
 		\item<1-> Then using the definition of LIBOR rate $L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}$
 		\begin{equation*}
 			\begin{aligned}
-			\textbf{FRA} = &\tau KP(t,S)-\mathbb{E}_t\left[D(t,T)P(T,S)\left(\frac{1}{P(T,S)}-1\right)\right]= \\
-			&=\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t[D(t,T)P(T,S)]
+			\textbf{FRA} = &\tau KP(t,S)-\expectt{Q}{t}\left[D(t,T)P(T,S)\left(\frac{1}{P(T,S)}-1\right)\right]= \\
+			&=\tau KP(t,S)-\expectt{Q}{t}[D(t,T)] + \expectt{Q}{t}[D(t,T)P(T,S)]
 			\end{aligned}
 		\end{equation*}
 		\item<2-> The last term can be expressed in terms of $D$
 		\begin{equation*}
-			\textbf{FRA} = \tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[D(t,T)\mathbb{E}_T[D(T,S)]\right]
+			\textbf{FRA} = \tau KP(t,S)-\expectt{Q}{t}[D(t,T)] + \expectt{Q}{t}\left[D(t,T)\expectt{Q}{T}[D(T,S)]\right]
 		\end{equation*}		
 		\item<2-> Bringing the discount factor inside the expectation
 		\begin{equation*}
 			\begin{aligned}
-			\textbf{FRA} = &\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + 				\mathbb{E}_t\left[\mathbb{E}_T[D(t,T)D(T,S)]\right]=\\
-			&=\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + 				\mathbb{E}_t\left[\mathbb{E}_T[D(t,S)]\right]
+			\textbf{FRA} = &\tau KP(t,S)-\expectt{Q}{t}[D(t,T)] + 				\expectt{Q}{t}\left[\expectt{Q}{T}[D(t,T)D(T,S)]\right]=\\
+			&=\tau KP(t,S)-\expectt{Q}{t}[D(t,T)] + \expectt{Q}{t}\left[\expectt{Q}{T}[D(t,S)]\right]
 			\end{aligned}
 		\end{equation*}		
 	\end{itemize}
@@ -341,7 +341,7 @@
 		\item<1-> Then applying the law of iterated expectations we arrive at the final result
 		\begin{equation*}
 			\begin{aligned}
-			\textbf{FRA} &= \tau KP(t,S)-\mathbb{E}_t[D(t,T)] + 			\mathbb{E}_t[D(t,S)] = \\
+			\textbf{FRA} &= \tau KP(t,S)-\expectt{Q}{t}[D(t,T)] + 			\expectt{Q}{t}[D(t,S)] = \\
 				&= \boxed{\tau KP(t,S) - P(t,T) + P(t,S)}
 			\end{aligned}
 		\end{equation*}
@@ -446,7 +446,7 @@
 		\item Indeed consider a Receiver IRS and express its payoff as a sum of FRAs using \cref{eq:fram_payoff_withF}
 		\begin{equation}
 			\begin{aligned}
-				\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\mathbb{E}^Q[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
+				\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
 				&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))\\
 				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-N\sum_{i=\alpha+1}^{\beta}(P(t,T_{i-1})-P(t,T_i)) \\
 				&=\boxed{N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)}
@@ -1131,11 +1131,11 @@ PV01 = A/10000
 		\end{equation*} 
 		and its value is given by
 		\begin{equation}
-			\textbf{Cpl}(t,T_{i-1},T_i,\tau,N,K)=\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_i}r_s ds}N\tau(L(T_{i-1},T_i)-K)^+ | \mathcal{F}_t\right)
+			\textbf{Cpl}(t,T_{i-1},T_i,\tau,N,K)=\expect{Q}\left[e^{-\int_t^{T_i}r_s ds}N\tau(L(T_{i-1},T_i)-K)^+ | \mathcal{F}_t\right]
 		\end{equation}
 		\item<3-> This can also be written
 		\begin{equation*}
-			\textbf{Cpl}=N\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_{i-1}}r_s ds}\tau P(T_{i-1},T_i)(L(T_{i-1},T_i)-K)^+ | \mathcal{F}_t\right)
+			\textbf{Cpl}=N\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\tau P(T_{i-1},T_i)(L(T_{i-1},T_i)-K)^+ | \mathcal{F}_t\right]
 		\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -1145,13 +1145,13 @@ PV01 = A/10000
 		\item<1-> Using the LIBOR rate definition we get
 		\begin{equation*}
 			\begin{aligned}
-				\textbf{Cpl} &=N\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_{i-1}}r_s ds}P(T_{i-1},T_i)\left[\frac{1}{P(T_{i-1},T_i)}-1-K\tau\right]^+ \Big\rvert \mathcal{F}_t\right) \\
-				& = 		N\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_{i-1}}r_s ds}\left[1-(1+K\tau)P(T_{i-1},T_i)\right]^+ | \mathcal{F}_t\right)
+				\textbf{Cpl} &=N\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}P(T_{i-1},T_i)\left(\frac{1}{P(T_{i-1},T_i)}-1-K\tau\right)^+ \Big\rvert \mathcal{F}_t\right] \\
+				& = N\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(1-(1+K\tau)P(T_{i-1},T_i)\right)^+ | \mathcal{F}_t\right]
 			\end{aligned}
 		\end{equation*}
 		\item<2-> Multiplying by $\frac{1}{1+K\tau}$ we finally get
 		\begin{equation}
-			\textbf{Cpl}=N(1+K\tau)\mathbb{E}^{\mathcal{Q}}\left(e^{-\int_t^{T_{i-1}}r_s ds}\left[\frac{1}{1+K\tau}-P(T_{i-1},T_i)\right]^+ \Big\rvert \mathcal{F}_t\right)
+			\textbf{Cpl}=N(1+K\tau)\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(\frac{1}{1+K\tau}-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]
 		\end{equation}
 	\end{itemize}
 	\only<3->{
@@ -1277,7 +1277,7 @@ PV01 = A/10000
 		\item Although being quoted, \textcolor{red}{flat volatilities have little financial meaning}. Conversely spot volatilities cannot be observed directly but are the quantities \textcolor{red}{naturally tied to forward rates as a measure of their uncertainty}.
 	\end{itemize}
 	\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 	\end{tikzpicture}
 \end{frame}
 
@@ -1343,7 +1343,7 @@ PV01 = A/10000
 	\end{equation*}
 	\item<2-> If we look at the swaption payoff through this expression modeling as stochastic variable directly $S_{\alpha,\beta}(t)$, instead of each forward rate $F(t;T_{i-1},T_i)$, we can write the swaption price as the expectation of
 	\begin{equation}
-		\textbf{PSw}=\mathbb{E}^{\mathcal{Q}}\left[D(t,T_\alpha)A\max(S_{\alpha,\beta}(T_\alpha)-K, 0)\right]
+		\textbf{PSw}=\expect{Q}\left[D(t,T_\alpha)A\max(S_{\alpha,\beta}(T_\alpha)-K, 0)\right]
 	\end{equation}
 	which looks like easier and more intuitive than previous \cref{eq:swaption_payoff_std}.
 \end{itemize}
@@ -1351,17 +1351,17 @@ PV01 = A/10000
 
 \begin{frame}{Swaption Characterization}
 	\begin{itemize}	
-		\item<1-> We characterize the payoff in three different ways
+		\item We characterize the payoff in three different ways
 		\begin{enumerate}
-			\item<2-> The swaption is said to be \textcolor{red}{at-the-money} (ATM) if
+			\item The swaption is said to be \textcolor{red}{at-the-money} (ATM) if
 			\begin{equation*}
 				K = K_{ATM} = S_{\alpha,\beta}(0) = \frac{P(0,T_\alpha)-P(0,T_\beta)}{\sum_{i=\alpha+1}^\beta \tau_i P(0,T_i)}
 			\end{equation*}
 			where $T_\alpha$ is the maturity of the swaption, and $T_\beta$ the last payment date of the underlying swap (the first being $T_{\alpha+1})$. That is when the strike is equal to the swap forward rate $S_{\alpha,\beta}$.
-			\item<3-> The payer swaption is \textcolor{red}{in-the-money} if $K<K_{ATM}$ and \textcolor{red}{out-of-the-money} otherwise.
-			\item<4-> The opposite holds for the receiver swaption.
+			\item The payer swaption is \textcolor{red}{in-the-money} if $K<K_{ATM}$ and \textcolor{red}{out-of-the-money} otherwise.
+			\item The opposite holds for the receiver swaption.
 		\end{enumerate}
-		\item<5-> ATM swaptions are quoted for maturities ranging between $1m$ and $30y$, and for tenors between $1y$ and $30y$.
+		\item ATM swaptions are quoted for maturities ranging between $1m$ and $30y$, and for tenors between $1y$ and $30y$.
 	\end{itemize}
 \end{frame}
 
@@ -1400,8 +1400,8 @@ PV01 = A/10000
 		\item \textbf{no joint action of forward LIBOR rates is involved.}
 	\end{itemize}
 	\item<2-> Unfortunately this is not possible with swaptions. The swap rate is \textcolor{red}{essentially a weighted average of forward rates} $S=\cfrac{\sum F(t;T_{i-1},T_i)}{\sum P(t,T_i)}$, hence its volatility should depend on each forward rate volatilities \textbf{as well as} their correlations.
-	\item<4-> If you take as "fundamental" entity the LIBOR rates you have to deal with the joint action of the simple forward LIBOR rates and so with the \textbf{terminal correlation} between rates of different portions of the yield curve. 
-	\item This issue will be extensively studied in the context of the Libor Market Models further on down the course.
+	\item<3-> If you take as "fundamental" entity the LIBOR rates you have to deal with the joint action of the simple forward LIBOR rates and so with the \textbf{terminal correlation} between rates of different portions of the yield curve. 
+	\item<4-> This issue will be extensively studied in the context of the Libor Market Models further on down the course.
 	%Can you provide an example ?
 \end{itemize}
 \end{frame}
@@ -1534,7 +1534,7 @@ PV01 = A/10000
 	\end{equation}
 \end{itemize}	
 \begin{tikzpicture}[remember picture,overlay]
-\node[xshift=6.2cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\node[xshift=6.0cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}
 \end{frame}
 
@@ -1652,7 +1652,7 @@ PV01 = A/10000
 	\item<3-> Given the complexity of Bermudan swaption valuation, there is no closed form solution. Therefore, we need to select an interest rate term structure model and a numeric solution to price this contract numerically.		
 	\item<4-> Typically tree techniques or the Longstaff-Schwartz method are used.
 	\begin{tikzpicture}[remember picture,overlay]
-		\node[xshift=6.2cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+		\node[xshift=5.8cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 	\end{tikzpicture}
 \end{itemize}
 \end{frame}
@@ -1756,7 +1756,7 @@ PV01 = A/10000
 	\end{itemize}
 \uncover<3->{
 \begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=6.2cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+	\node[xshift=5.8cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}
 }
 \end{frame}
@@ -1843,36 +1843,27 @@ PV01 = A/10000
 		\item<2-> Another strategy is to buy a reverse floater if the rates are low now and the investor believes they stay low, even though the forward contracts are implying an increase. If she is correct and the rates do not change, by holding the reverse floater she will outperform floating rate notes on the same index.
 		\item<3-> Hedging against the risk of falling interest rates. If an investor has invested in regular bonds, and if the interest rate falls, then she will receive lower returns than expected. In this scenario, it is extremely helpful to have inverse floaters in the portfolio as it gives higher returns when interest rates fall.
 		\begin{tikzpicture}[remember picture,overlay]
-			\node[xshift=6.2cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+			\node[xshift=5.8cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 		\end{tikzpicture}
 	\end{itemize}
 \end{frame}
 
-%\begin{frame}{Reverse Floater Bond}
-%	\begin{itemize}
-%		\item<1-> As with all investments that employ leverage, inverse floaters introduce a significant amount of interest rate risk. 
-%		\begin{columns}[t]
-%		\column{0.4\linewidth}
-%		\item<2-> When short-term interest rates fall, both MV and yield of the reverse floater increases, magnifying the fluctuation in the bond's price.
-%		\column{0.4\linewidth}
-%		\item<3-> When short-term interest rates rise, bond value can drop significantly, and holders may end up with a security that pays little interest (i.e. magnified interest rate risk).
-%		\end{columns}
-%		\item<4-> Other typical investors are long vega, if $K$ is close to the forward rates, vega is much higher.
-%		\item<5-> A long Vega portfolio means there is positive exposure to increases in implied volatility, while a short Vega portfolio is indicative of volatility vulnerability.
-%			\begin{tikzpicture}[remember picture,overlay]
-%			\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
-%			\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/wK368}{shorturl.at/wK368}}};
-%		\end{tikzpicture}	
-%	\end{itemize}
-%\end{frame}
-
-%\begin{frame}{Reverse Floater Bond}
-%	\begin{itemize}
-%		%\item Remember, high volatility can result in drastic market swings. Volatility typically has a negative correlation to the market – meaning spiked volatility can be reflective of downward market velocity. Managing a portfolio's Vega exposure can help understand volatility risk and the trader's comfort level.
-%		\item Ex: when buying an option, the purchaser wants the premium to increase and when selling an option, the seller wants the premium to decrease. Should implied volatility increase, there will be an increase in the option's premium. Inversely, if there is a decrease in implied volatility, there will be a decrease in the option's premium. 
-%		%Vega changes when there are larger price swings (higher implied volatility) which can be equated to higher uncertainty. Lower implied volatility can be connected to lower uncertainty, which equates to less dramatic swings of the underlying security.
-%	\end{itemize}
-%\end{frame}
+\begin{frame}{Reverse Floater Bond}
+	\begin{itemize}
+		\item<1-> As with all investments that employ leverage, inverse floaters introduce a significant amount of interest rate risk. 
+		%\begin{columns}[t]
+		%\column{0.4\linewidth}
+		%\item<2-> When short-term interest rates fall, both MV and yield of the reverse floater increases, magnifying the fluctuation in the bond's price.
+		%\column{0.4\linewidth}
+		%\item<3-> When short-term interest rates rise, bond value can drop significantly, and holders may end up with a security that pays little interest (i.e. magnified interest rate risk).
+		%\end{columns}
+		\item Other typical investors are long vega, if $K$ is close to the forward rates, vega is much higher.
+		\item A long Vega portfolio means there is positive exposure to increases in implied volatility, while a short Vega portfolio is indicative of volatility vulnerability.
+		\item Remember, high volatility can result in drastic market swings. olatility typically has a negative correlation to the market – meaning spiked volatility can be reflective of downward market velocity. Managing a portfolio's Vega exposure can help understand volatility risk and the trader's comfort level.
+		\item Ex: when buying an option, the purchaser wants the premium to increase and when selling an option, the seller wants the premium to decrease. Should implied volatility increase, there will be an increase in the option's premium. Inversely, if there is a decrease in implied volatility, there will be a decrease in the option's premium. 
+		\item Vega changes when there are larger price swings (higher implied volatility) which can be equated to higher uncertainty. Lower implied volatility can be connected to lower uncertainty, which equates to less dramatic swings of the underlying security.
+	\end{itemize}
+\end{frame}
 
 \end{document}
 

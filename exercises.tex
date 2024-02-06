@@ -48,8 +48,8 @@ S(t)=S(0)\exp\left\{\int_0^t e^{-u}dW(u) + \int_0^t(1-\frac{1}{2}e^{-2u}du\right
 X(t)=\int_0^t e^{-u}dW(u)+\int_0^t(1-\frac{1}{2}e^{-2u}du
 \end{equation*}
 and determine the distribution of $X(t)$.
-\item Prove that $\{S(t):t\geq 0\}$ is an Ito process.
-\item Let $r$ be a constant interest rate. Find the risk-neutral measure $\tilde{\mathcal{P}}$, equivalent to $\mathcal{P}$, such that the discounted price process $\{we^{-rt}S(t): 0\leq t \leq T\}$ is a martingale under $\tilde{\mathcal{P}}$.
+\item Prove that $\{S(t):t\geq 0\}$ is an \ito's process.
+\item Let $r$ be a constant interest rate. Find the risk-neutral measure $\tilde{\mathbb{P}}$, equivalent to $\mathbb{P}$, such that the discounted price process $\{we^{-rt}S(t): 0\leq t \leq T\}$ is a martingale under $\tilde{\mathbb{P}}$.
 \end{enumerate}
 \fillwithlines{3cm}
 \begin{solution}
@@ -78,7 +78,7 @@ we have
 \begin{equation*}
 dX(t) = e^{-t}dW(t) + (1-\frac{1}{2}e^{-2t})dt
 \end{equation*} 
-and $dX(t)dX(t)=e^{-2t} dt$. Note that $S(t)=S(0)e^{X(t)}$, so let $f(x)=S(0)e^x$, then $f_x(x)=f_{xx}(x)=f(x)$. By the Ito formula we get
+and $dX(t)dX(t)=e^{-2t} dt$. Note that $S(t)=S(0)e^{X(t)}$, so let $f(x)=S(0)e^x$, then $f_x(x)=f_{xx}(x)=f(x)$. By the \ito formula we get
 \begin{equation*}
 \begin{aligned}
 dS_t &= df(X_t) = S_tdX+\frac{1}{2}S(t)dXdX = \\
@@ -86,7 +86,7 @@ dS_t &= df(X_t) = S_tdX+\frac{1}{2}S(t)dXdX = \\
 &=S_t dt+S_t e^{-t}dW
 \end{aligned}
 \end{equation*}
-This shows that $S_t$ is an Ito process.
+This shows that $S_t$ is an \ito process.
 \item Define 
 \begin{equation*}
 \theta(r)=\cfrac{1-r}{e^{-t}}=e^t (1-r)
@@ -98,14 +98,14 @@ Z &= \exp\left(-\int_0^T \theta(u)dW(u) - \frac{1}{2}\int_0^T \theta^2(u)du\righ
 &=\exp\left(-\int_0^T e^u (1-r)dW(u) - \frac{1}{2}\int_0^T e^{2u} (1-r)^2 du\right)
 \end{aligned}
 \end{equation*}
-Define the measure $\tilde{\mathcal{P}}$ by $\tilde{\mathcal{P}}(A) =\int_A Z d\mathcal{P}$ and consider the process 
+Define the measure $\tilde{\mathbb{P}}$ by $\tilde{\mathbb{P}}(A) =\int_A Z d\mathbb{P}$ and consider the process 
 \begin{equation*}
 \begin{aligned}
 \tilde{W}_t = \int_0^t \theta(u)dW(u) +W(t) = \int_0^t e^{u}(1-r)du+W(t)=(1-r)(e^t -1)+W(t)
 \end{aligned}
 \end{equation*}
-By Girsanov Theorem $\tilde{W}$ is a Brownian motion under $\tilde{\mathcal{P}}$ and hence it is a martingale under $\tilde{\mathcal{P}}$. 
-Using the SDE of part (a), together with the Ito product rule, we have 
+By Girsanov Theorem $\tilde{W}$ is a Brownian motion under $\tilde{\mathbb{P}}$ and hence it is a martingale under $\tilde{\mathbb{P}}$. 
+Using the SDE of part (a), together with the \ito product rule, we have 
 \begin{equation*}
 \begin{aligned}
 d(e^{-rt}S(t)) &= e^{-rt}dS_t-r e^{-rt}S_t dt = \\
@@ -115,7 +115,7 @@ d(e^{-rt}S(t)) &= e^{-rt}dS_t-r e^{-rt}S_t dt = \\
 &= e^{-t(r+1)}S_t d\tilde{W}_t
 \end{aligned}
 \end{equation*}
-Since $e^{-rt}S(t)$ is an Ito integral, we see that the discounted price process is a martingale under $\tilde{\mathcal{P}}$.
+Since $e^{-rt}S(t)$ is an \ito integral, we see that the discounted price process is a martingale under $\tilde{\mathbb{P}}$.
 \end{enumerate}
 \end{solution}
 
@@ -163,12 +163,12 @@ With $\beta$ and $\sigma$ constant and $\lambda\in\mathbb{R}^+$, the necessary c
 \begin{equation*}
 0.01+0.04-\beta-0.1\sigma=0\implies \beta=0.05-0.15\sigma
 \end{equation*}
-%To check this result we employ the Ito derivative rules for multivariate functions...
+%To check this result we employ the \ito derivative rules for multivariate functions...
 \end{enumerate}
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Suppose $B(t)$ is a standard Brownian motion. For each of the following choices of $X_t$, find an equivalent probability measure $\mathcal{Q}$ such that $X_t$ is a Brownian motion in the new measure. Assume $X_0=B_0=0$
+\question Suppose $B(t)$ is a standard Brownian motion. For each of the following choices of $X_t$, find an equivalent probability measure $\mathbb{Q}$ such that $X_t$ is a Brownian motion in the new measure. Assume $X_0=B_0=0$
 \begin{equation*}
 \begin{gathered}
 dX_t = 2dt + dB_t\\
@@ -212,67 +212,64 @@ dX_t = 2dt + 6dB_t
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Let $f$ be a function double differentiable. Assume that $f$ is a solution of the heat equation
-\begin{equation*}
-\cfrac{\partial}{\partial t}f(t, x) = -\cfrac{1}{2}\cfrac{\partial^2}{\partial x^2}f(t, x)
-\end{equation*}
-Let $B_t$ be a standard Brownian motion.
-\begin{enumerate}[label=(\alph*),font=\itshape]
-\item Find the SDE solved by $f(t, B_t)$.
-\item Deduce that $f(t, B_t)$ is a martingale if and only if $f$ is solution of the heat equation.
-\item Show that if $\cfrac{\partial}{\partial x}f(t, x)$ is bounded, then $f(t, B_t)$ is a martingale.
-\end{enumerate}
-\fillwithlines{3cm}
-\begin{solution}
-\begin{enumerate}[label=(\alph*),font=\itshape]
-\item Apply Itô's formula:
-%First, we need to express f(t, B_t) as a function of both time and the Brownian motion B_t. We can define a new function g(t, x) such that f(t, B_t) = g(t, B_t). Now, we apply Itô's formula to g(t, B_t):
-%
-%dg = g_t dt + g_x dB_t + 1/2 g_{xx} d[B_t]^2
-%where:
-%
-%g_t = ∂g/∂t is the partial derivative of g with respect to time.
-%g_x = ∂g/∂x is the partial derivative of g with respect to x (evaluated at x = B_t).
-%g_{xx} = ∂^2g/∂x^2 is the second partial derivative of g with respect to x (evaluated at x = B_t).
-%d[B_t]^2 = dt for Brownian motion (since its variance is dt).
-%Relate g and f:
-%Remember that f(t, B_t) = g(t, B_t). Substituting this into the Itô's formula equation:
-%
-%df = g_t dt + g_x dB_t + 1/2 g_{xx} dt
-%Substitute the heat equation:
-%Since f satisfies the heat equation df/dt = -1/2 d^2f/dx^2, we can replace df/dt in the above equation:
-%
-%-1/2 d^2f/dx^2 = g_t dt + g_x dB_t + 1/2 g_{xx} dt
-%Simplify and solve for dg:
-%Combining terms and recognizing d^2f/dx^2 = g_{xx}, we get:
-%
-%0 = g_t + g_x dB_t
-%This is the SDE solved by f(t, B_t). However, it's important to note that this is a formal solution, and further analysis depending on the boundary conditions or specific context might be required.
-%
-%Therefore, the SDE solved by f(t, B_t) is 0 = g_t + g_x dB_t. Remember that this solution depends on the initial and boundary conditions imposed on the heat equation and the specific choices made for the definition of f and g.
-%\item 
-\end{enumerate}
-\end{solution}
+%\question Let $f$ be a function double differentiable. Assume that $f$ is a solution of the heat equation
+%\begin{equation*}
+%\cfrac{\partial}{\partial t}f(t, x) = -\cfrac{1}{2}\cfrac{\partial^2}{\partial x^2}f(t, x)
+%\end{equation*}
+%Let $B_t$ be a standard Brownian motion.
+%\begin{enumerate}[label=(\alph*),font=\itshape]
+%\item Find the SDE solved by $f(t, B_t)$.
+%\item Deduce that $f(t, B_t)$ is a martingale if and only if $f$ is solution of the heat equation.
+%\end{enumerate}
+%\fillwithlines{3cm}
+%\begin{solution}
+%\begin{enumerate}[label=(\alph*),font=\itshape]
+%\item Apply Ito's formula to function $f(t, B_t)$ to get the differential
+%\begin{equation*}
+%df = \cfrac{\partial f}{\partial t} dt + \cfrac{\partial f}{\partial B}dB_t + \frac{1}{2}\cfrac{\partial^2 f}{\partial B^2}dB_t^2
+%\end{equation*}
+%Given that $f$ is solution of the heat equation we can simplify the differential (replacing $dB_t^2=dt$)
+%\begin{equation*}
+%df =\cfrac{\partial f}{\partial B}dB_t = \phi_t dB_t
+%\end{equation*}
+%Considering again the differential $df$,  if the function is a martingale the only surviving term should be the one in $dB_t$ hence it must hold
+%\begin{equation*}
+%\cfrac{\partial}{\partial t}f(t, x) = -\cfrac{1}{2}\cfrac{\partial^2}{\partial x^2}f(t, x)
+%\end{equation*}
+%so $f$ is a solution of the heat equation.
+%\end{enumerate}
+%\end{solution}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \question Show that the exponential SDE
 \begin{equation*}
-dX_t = A_tX_tdB_t,\quad X_0=x_0
+dX_t = A_t X_tdW_t,\quad X_0=x_0
 \end{equation*}
 has the following solution
 \begin{equation*}
 X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
 \end{equation*}
-\textbf{Hint:} Apply Ito's formula to $f(Y_t)$ where $f(x)=x_0 e^x$ and $Y_t=-\frac{1}{2}\int_0^t A_s^2 ds + \int_0^t A_s dB_s$
-\begin{enumerate}[label=(\alph*),font=\itshape]
-\item Find the SDE solved by $f(t, B_t)$.
-\item Deduce that $f(t, B_t)$ is a martingale if and only if $f$ is solution of the heat equation.
-\item Show that if $\cfrac{\partial}{\partial x}f(t, x)$ is bounded, then $f(t, B_t)$ is a martingale.
-\end{enumerate}
+%\textbf{Hint:} Apply \ito formula to $f(Y_t)$ where $f(x)=x_0 e^x$ and $Y_t=-\frac{1}{2}\int_0^t A_s^2 ds + \int_0^t A_s dB_s$
 \fillwithlines{3cm}
 \begin{solution}
-Define a function $g(t, x) = \ln(x)$. Applying Itô's formula to $g(t, X_t)$:
+The SDE can be expressed as $d(\ln(X_t)) = \cfrac{dX_t}{X_t} = A_t dW_t$ where we have changed to the variable $Y_t = \ln(X_t)$. Applying \ito formula to $Y_t$ 
+\begin{equation*}
+dY_t = \left[a\cfrac{\partial Y}{\partial X} + \cfrac{\partial Y}{\partial t} + \frac{1}{2}b\cfrac{\partial^2 Y}{\partial X^2}\right]+ b\cfrac{\partial Y}{\partial X}dW_t
+\end{equation*}
+but $a=0, \frac{\partial Y}{\partial t}=0, b=A_tX_t, \frac{\partial Y}{\partial X}=\frac{1}{X}, \frac{\partial^2 Y}{\partial X^2}=-\frac{1}{X^2}$, so
+\begin{equation*}
+dY_t = \left[\cancel{a\cfrac{\partial Y}{\partial X}} + \cancel{\cfrac{\partial Y}{\partial t}} - \frac{1}{2}A_t^2 \cancel{X_t^2}\cfrac{1}{\cancel{X^2}}\right]+ A_t\cancel{X_t}\cfrac{1}{\cancel{X_t}}dW_t = -\frac{1}{2}A_t^2 + A_t dW_t
+\end{equation*}
+Integrating and xconsidering the initial condition given by the problem
+\begin{equation*}
+\begin{gathered}
+\ln\left(\frac{X_t}{X_0}\right) = -\frac{1}{2}\int_0^t A_s^2 ds + \int_0^tA_s dW_s \\
+X_t = X_0 \exp\left(-\frac{1}{2}\int_0^t A_s^2 ds + \int_0^tA_s dW_s \right)
+\end{gathered}
+\end{equation*}
+
+
 
 %dg = g_t dt + g_x dX_t + 1/2 g_{xx} d[X_t]^2
 %
@@ -310,7 +307,7 @@ Define a function $g(t, x) = \ln(x)$. Applying Itô's formula to $g(t, X_t)$:
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Let $W_1(t)$ and $W_2(t)$ a 2D-Brownian motion defined on a probability space $(\Omega, \mathcal{F}, \mathcal{P})$. Consider two price processes $\{S_1(t):t\geq 0\}$ and $\{S_2(t):t\geq 0\}$ with corresponding SDEs given by
+\question Let $W_1(t)$ and $W_2(t)$ a 2D-Brownian motion defined on a probability space $(\Omega, \mathcal{F}, \mathbb{P})$. Consider two price processes $\{S_1(t):t\geq 0\}$ and $\{S_2(t):t\geq 0\}$ with corresponding SDEs given by
 \begin{equation*}
 \begin{aligned}
 dS_1(t) &= 2S_1(t)dW_1(t) + 3S_1(t)dW_2(t)\\
@@ -318,13 +315,13 @@ dS_2(t) &= S_2(t)dt + S_2dW_1(t)
 \end{aligned}
 \end{equation*}
 \begin{enumerate}[label=(\alph*),font=\itshape]
-\item Show that $S_1(t)S_2(t)$ is a 2D-Ito process.
-\item Consider an expiration date $T$, and suppose tha interest rate is a constant $r$. Show that the market price equations have a unique solution, and determine the risk-neutral probability measure $\tilde{\mathcal{P}}$ for the process $\{S_1(t),S_2(t):0\leq t\leq T\}$.
+\item Show that $S_1(t)S_2(t)$ is a 2D-\ito process.
+\item Consider an expiration date $T$, and suppose tha interest rate is a constant $r$. Show that the market price equations have a unique solution, and determine the risk-neutral probability measure $\tilde{\mathbb{P}}$ for the process $\{S_1(t),S_2(t):0\leq t\leq T\}$.
 \end{enumerate}
 \fillwithlines{3cm}
 \begin{solution}
 \begin{enumerate}[label=(\alph*),font=\itshape]
-\item We apply Ito's product rule, we find
+\item We apply \ito product rule, we find
 \begin{equation*}
 d(S_1S_2) = S_1dS_1+S_2dS_2+dS_1 dS_2
 \end{equation*}
@@ -341,7 +338,7 @@ we get after simplifying
 \begin{equation*}
 d(S_1 S_2) = 3S_1 S_2 dt + 3S_1S_2dW_1 + 3S_1S_2dW_2 
 \end{equation*}
-Hence  $\{S_1(t),S_2(t):0\leq t\leq T\}$ is a 2D-Ito process.
+Hence  $\{S_1(t),S_2(t):0\leq t\leq T\}$ is a 2D-\ito process.
 \item Using the notation of the book, 
 %we have α1 = 0, σ11 = 2, σ12 =
 %3, α2 = 1, σ21 = 1, σ22 = 0. The market price equations in this case
@@ -441,19 +438,19 @@ Hence, at $t = 0$, assuming that the option values are 2.5, one can benefit from
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Consider the process $Z_t$ whose dynamics is defined by the following SDE $dZ_t = -\phi_tZ_tdW_t, Z_0=1$, where $W_t$ is a Brownian motion under the measure $\mathcal{P}$. For any $t\geq 0$ define the a new measure $\mathcal{Q}$ according to $d\mathcal{Q}=Z_t d\mathcal{P}$.
+\question Consider the process $Z_t$ whose dynamics is defined by the following SDE $dZ_t = -\phi_tZ_tdW_t, Z_0=1$, where $W_t$ is a Brownian motion under the measure $\mathbb{P}$. For any $t\geq 0$ define the a new measure $\mathbb{Q}$ according to $d\mathbb{Q}=Z_t d\mathbb{P}$.
 Prove that 
 \begin{equation*}
-\mathbb{E}^{\mathcal{Q}}[Z_T\log(Z_T)] = \mathbb{E}^{\mathcal{Q}}\left(\frac{1}{2}\int_0^T\phi_s^2 ds\right)
+\mathbb{E}^{\mathbb{Q}}[Z_T\log(Z_T)] = \mathbb{E}^{\mathbb{Q}}\left(\frac{1}{2}\int_0^T\phi_s^2 ds\right)
 \end{equation*}
 
 \fillwithlines{3cm}
 \begin{solution}
 $Z$ is clearly a $\mathcal{P}$-martingale, so that $\mathcal{Q}$ defines a genuine probability measure, and therefore
 \begin{equation*}
-\mathbb{E}^{\mathcal{P}}(Z_t\log(Z_t)) = \mathbb{E}^{\mathcal{Q}}(\log(Z_t))
+\expect{P}(Z_t\log(Z_t)) = \expect{Q}(\log(Z_t))
 \end{equation*}
-Now, applying Ito's formula, we can write
+Now, applying \ito formula, we can write
 \begin{equation*}
 Z_T = \exp\left(-\frac{1}{2}\int_0^T \phi_s^2 ds - \int_0^T \phi_s dW_s\right)
 \end{equation*}
@@ -478,12 +475,12 @@ where $\mu$ and $\sigma$ are bounded and adapted processes, and $\sigma >0$ almo
 \fillwithlines{3cm}
 \begin{solution}
 \begin{enumerate}[label=(\alph*),font=\itshape]
-\item From Ito's formula we can write for any $t\geq 0$
+\item From \ito formula we can write for any $t\geq 0$
 \begin{equation*}
 X_t = \exp\left\{\int_0^t\left(\mu_s - \frac{1}{2}\sigma_s^2\right)ds + \int_0^t\sigma_s dW_s\right\}
 \end{equation*}
 so that (a) follows immediately. One can apply Girsanov theorem to introduce the probability measure $\mathbb{Q}$ via $d\mathbb{Q}=Z_t d\mathbb{P}$ with $dZ_t = Z_t\mu_t \sigma_t^{-1}dW_t$, such that $B_t := W_t +\mu_t\sigma^{-1}_t dt$ is a standard Brownian motion under $\mathbb{Q}$.
-Finally, applying Ito's formula yields
+Finally, applying \ito formula yields
 \begin{equation*}
 dX^{-1}_t = -X^{-1}_t \sigma_t  \left( dW_t - \frac{\sigma_t^2 - \mu_t}{\sigma_t}dt\right)
 \end{equation*}
@@ -511,7 +508,7 @@ and compute, for any $u\in\mathbb{R}$, the expectation
 \begin{equation*}
 \mathbb{E}^{\mathbb{P}}\left[\exp\left\{\frac{u^2}{2}\int_0^t X_s^2 ds\right\}\right]
 \end{equation*}
-You might need to show first that an application of Ito's formula yields
+You might need to show first that an application of \ito formula yields
 \begin{equation*}
 \int_0^t W_s dW_s = \cfrac{W_t^2-t}{2}
 \end{equation*}
@@ -605,6 +602,433 @@ S_t = S_0 \exp\left(\sigma W_t - \frac{\sigma^2}{2}t\right)
 where $S_0$ is the initial value (1 in this case). This implies that $S_t$ follows a lognormal distribution with parameters $\mu=\frac{\sigma^2}{2}t$ and $\sigma^2 = \sigma^2 t$.
 \end{itemize}
 \end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Compute the stochastic differential $dZ$ when
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item $Z(t) = \exp(\alpha t)$;
+\item $Z(t) = \int_0^t g_s dW_s$ where $g$ is an adapted stochastic process;
+\item $Z(t) = \exp(\alpha W(t))$;
+\item $Z(t) = \exp(\alpha X(t))$ where $X$ has stochastic differential $dX(t)=\mu dt + \sigma dW(t)$ with $\mu$ and $\sigma$ constants;
+\item $Z(t) = X^2(t)$ where $X$ has stochastic differential $dX(t)=\alpha X(t)dt + \sigma X(t)dW(t)$.
+\end{enumerate}
+\fillwithlines{3cm}
+
+\begin{solution}
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item $dZ_t= \alpha e^{\alpha t}dt$;
+\item $dZ_t = g(t) dW_t$;
+\item by \ito formula: $dZ_t = \frac{\alpha^2}{2}Z(t)dt + \alpha Z_t W_t$;
+\item by \ito formula: $dZ_t = (\alpha\mu + \frac{\alpha^2\sigma^2}{2})Z(t)dt + \alpha \sigma Z_t W_t$;
+\item by \ito formula: $dZ_t = (\sigma^2 + 2\alpha)Z_t dt + 2\sigma Z_t W_t$.
+\end{enumerate}
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Compute the stochastic differential for $Z$ when $Z(t) = \/X(t)$ and $X$ has stochastic differential 
+\begin{equation*}
+dX(t) = \alpha X(t) dt + \sigma X(t) dW(t)
+\end{equation*}
+\fillwithlines{3cm}
+\begin{solution}
+$dZ(t)=(\sigma^2 - \alpha)Z(t)dt -\sigma Z(t)dW(t)$
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Compute the stochastic differential for $Z$ when
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item $Z(t) = \int_0^t e^{-as}\sigma dW(s)$
+\item $Z(t) = e^{at}\int_0^t e^{-as}\sigma dW(s)$
+\end{enumerate}
+\fillwithlines{3cm}
+
+\begin{solution}
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item $dZ(t) = e^{-at}\sigma dW(t)$;
+\item Let $Y(t)=\int_0^t e^{-as}\sigma dW(s)$ and $F(t, y)=e^{at}y$. Then $Z(t)=F(t, Y)$ and \ito formula gives
+\begin{equation*}
+dZ(t) = a\left\{e^{at}\int_0^t e^{-as}\sigma dW(s)\right\}dt + \sigma dW(t)
+\end{equation*}
+\end{enumerate}
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Solve the n-dimensional linear equation
+\begin{equation*}
+\begin{aligned}
+dX(t) &= AX(t) dt + \sigma dW(t)\\
+X(0) &= x_0
+\end{aligned}
+\end{equation*}
+where $B$ is a d-dimensional Brownian motion, $\sigma$ is a $n\times d$-matrix and $A$ is an $n\times n$-matrix
+\fillwithlines{3cm}
+
+\begin{solution}
+Using \ito formula one can check that the solution is given by
+\begin{equation*}
+X(t) = e^{At}x_0 + \int_0^te^{A(t-s)}\sigma dW(s)
+\end{equation*}
+where we have used the matrix exponential $e^{At}$ defined by
+\begin{equation*}
+e^{At} = \sum_{k=0}^{\infty} \cfrac{A^k}{k!}t^k
+\end{equation*}
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Let $W$ be a Brownian motion and $\mathcal{F}$ the natural filtration generated by $W$. Show, using stochastic calculus, that the following processes are martingales,
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item $W^2(t) - t$;
+\item $\exp\{\lambda W(t) - \lambda^2\frac{t}{2}\}$, where $\lambda$ is a fixed real number.
+\end{enumerate}
+\fillwithlines{3cm}
+
+\begin{solution}
+\ito formula gives
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item $d(W^2(t) - t) = 2W(t)dW(t)$;
+\item $d(\exp\{\lambda W(t) - \lambda^2\frac{t}{2}\}) = \lambda\exp\{\lambda W(t) - \lambda^2t/2\}dW(t)$.
+\end{enumerate}
+We know that $\int_0^tX(s)dW(s)$ is a martingale if $X$ is adapted (and square integrable) so we see that the process are martingales.
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Check whether the following processes $X(t)$ are martingales (w.r.t. the natural filtration generated by $W$),
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item $X(t) = W(t) + 4t$;
+\item $X(t) = W^2(t)$;
+\item $X(t) = t^2W(t) - 2\int_0^tsW(s)ds$;
+\item $X(t) = W_1(t) + W_2(t)$ where $W_1$ and $W_2$ is a 2-dimensional Brownian motion.
+\end{enumerate}
+\fillwithlines{3cm}
+
+\begin{solution}
+\ito formula gives the stochastic differentials 
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item $dX(t) = 4dt + dW(t) $;
+\item $dX(t) = dt+2W(t)dW(t)$;
+\item $dX(t) = t^2dW(t)$;
+\item $dX(t) = W_1(t)dW_2(t) + W_2(t)dW_1(t)$.
+\end{enumerate}
+Since the drift term has to be zero in order for the process to be a martingale we see that the process in (a) and (b) are not martingales, while the processes in (c) and (d) are.
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Supoose that $X$ satisfies the SDE
+\begin{equation*}
+dX(t) = \alpha X(t)dt + \sigma X^{\beta}(t)dW(t)
+\end{equation*}
+where $\alpha, \sigma, \beta$ are constants and $W$ is a Brownian motion.
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item Determine the constants $a, b, c$ such that $Y(t) = \exp\{-a X^b(t) + ct\}$ is a martingale;
+\item compute $\mathbb{E}[X(t)]$ when $\beta =1/2$;
+\item compute $\text{Var}[X(t)]$ when $\beta =1/2$.
+\end{enumerate}
+\fillwithlines{3cm}
+
+\begin{solution}
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item $a=2\alpha/(b\sigma^2)$, $b=2(1-\beta)$ and $c=ab(b-1)\sigma^2/2$;
+\item $\mathbb{E}[X(t)] = x_0e^{\alpha t}$;
+\item $\text{Var}[X(t)] = \frac{x_0\sigma^2}{\alpha}(e^{2\alpha t}-e^{\alpha t})$.
+\end{enumerate}
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Let $h(t)$ be a deterministic function and define the process $X$ by
+\begin{equation*}
+X(t) = \int_0^t h(s) dW(s)
+\end{equation*}
+Show that $X(t)$ is normally distributed with 
+\begin{equation*}
+\mathbb{E}[X(t)] = 0, \quad \text{Var}[X(t)] = \int_0^t h^2(s) ds
+\end{equation*}
+by showing that 
+\begin{equation*}
+\mathbb{E}[\exp\{i u X(t)\}] = \exp\left\{-\frac{1}{2}u^2 \int_0^t h^2(s) ds\right\}
+\end{equation*}
+\fillwithlines{3cm}
+
+\begin{solution}
+Fix $u$ and put $Z(t)=\exp (iuX(t))$. Using \ito formula gives
+\begin{equation*}
+Z(t) = Z_0 - \int_0^t \cfrac{1}{2}u^2h_s^2Z_s ds + \int_0^t iuh_sZ_sdW_s
+\end{equation*}
+Taking expected value and solving the resulitng ODE for $m(t)=\mathbb{E}[Z(t)]$:
+\begin{equation*}
+\frac{dm}{dt} = -{1}{2}u^2h^2(t)m(t), \quad m(0)=1
+\end{equation*}
+yields the result.
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Let $X$ and $Y$ staisfy the following system of SDE's
+\begin{equation*}
+\begin{cases}
+dX(t) = \alpha X(t) dt + Y(t)dW(t), \quad X(0) = x_0\\
+dY(t) = \alpha Y(t) dt - X(t)dW(t), \quad Y(0) = x_0\\
+\end{cases}
+\end{equation*}
+where $x_0$ and $y_0$ are deterministic constants.
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item Show that $R$, defined by $R(t) = X^2(t)+Y^2(t)$ is deterministic;
+\item compute $\mathbb{E}[X(t)]$ and $\text{Cov}(X(t), Y(t))$, and determine for which value of $\alpha$ the process $R$ becomes a deterministic constant.
+\end{enumerate}
+\fillwithlines{3cm}
+
+\begin{solution}
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item \ito formula gives
+\begin{equation*}
+dR(t)=(2\alpha + 1)R(t)dt,\quad R(0)=x_o^2 + y_0^2
+\end{equation*}
+Hence $R(t) = (x_0^2 + y_0^2)e^{(2\alpha + 1)t}$.
+\item First compute $\mathbb{E}[X(t)] = x_0e^{\alpha t}$ and  $\mathbb{E}[Y(t)] = y_0e^{\alpha t}$. The let $Z=XY$ and use \ito formula. Taking expected value gives
+\begin{equation*} 
+\mathbb{E}[Z(t)] = x_0y_0 + \int_0^t(2\alpha - 1)\mathbb{E}[Z(s)]ds
+\end{equation*}
+Solving the ODE for $m(t) = \mathbb{E}[Z(t)]$ gives 
+\begin{equation*} 
+m(t) = x_0y_0e^{(2\alpha - 1)t}
+\end{equation*}
+Using $\text{Cov}(X(t)Y(t))=\mathbb{E}[X(t)Y(t)]-\mathbb{E}[X(t)]\mathbb{E}[Y(t)]$ gives the answer
+\begin{equation*} 
+\text{Cov}(X(t), Y(t)) = x_oy_0e^{2\alpha t}(e^t - 1)
+\end{equation*}
+\end{enumerate}
+
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Let $X$ and $Y$ be given by
+\begin{equation*}
+\begin{cases}
+dX(t) = \alpha X(t) dt + \beta X(t)dW_2(t), \quad X(0) = x_0\\
+dY(t) = \gamma Y(t) dt + \sigma X(t)dW_1(t), \quad Y(0) = x_0\\
+\end{cases}
+\end{equation*}
+where $\alpha, \beta, \gamma$ are constant and $W_1$ and $W_2$ are independent Brownian motions.
+Compute $\mathbb{E}[X(t)Y(t)]$.
+\fillwithlines{3cm}
+\begin{solution}
+With $Z=XY$ we have by \ito formula that
+\begin{equation*}
+dZ(t) = (\gamma+\alpha\sigma)Z(t)dt + (\alpha + \sigma)Z(t)dW_1(t) + \beta Z(t)dW_2(t)
+\end{equation*}
+Integrating and taking expectation gives
+\begin{equation*}
+\mathbb{E}[Z(t)] = Z_0 + (\gamma+\alpha\sigma)\int_0^t\mathbb{E}[Z(s)]ds
+\end{equation*}
+Put $m(t)=\mathbb{E}[Z(t)]$ we get the ODE for $m$:
+\begin{equation*}
+\cfrac{dm}{m} = (\gamma+\alpha\sigma)m(t),\quad m(0)=x_0y_0
+\end{equation*}
+Solving this ODE we get $\mathbb{E}[Z(t)]=x_0y_0e^{(\gamma+\alpha\sigma)t}$
+\end{solution}
+
+When it comes to analyzing callable bonds, investors have a variety of tools and techniques at their disposal. These tools and techniques enable investors to assess the value of callable bonds and make informed investment decisions. In this section, we will discuss some of the most commonly used callable bond analysis tools and techniques.
+
+1. Yield to Call (YTC)
+
+YTC is a measure of the return an investor can expect if a callable bond is called by the issuer. It takes into account the call price, the coupon rate, and the time to call. YTC is an important metric for investors because it allows them to compare the potential return of a callable bond to that of a non-callable bond. However, it is important to note that YTC assumes that the issuer will call the bond at the first opportunity, which may not always be the case.
+
+2. Yield to Worst (YTW)
+
+YTW is a measure of the return an investor can expect if a callable bond is not called by the issuer. It takes into account the yield to maturity and the yield to call, whichever is lower. YTW is important for investors because it provides a more conservative estimate of the potential return of a callable bond. It is also important to note that YTW assumes that the bond will not be called, which may not always be the case.
+
+3. option-Adjusted spread (OAS)
+
+OAS is a measure of the yield spread between a callable bond and a risk-free bond of the same maturity. It takes into account the optionality of the callable bond, which allows the issuer to call the bond at any time. OAS is important for investors because it provides a more accurate estimate of the credit risk associated with a callable bond.
+
+4. Duration
+
+Duration is a measure of the sensitivity of a bond's price to changes in interest rates. It takes into account the bond's cash flows, maturity, and yield. Duration is important for investors because it allows them to assess the risk associated with a callable bond. Callable bonds typically have shorter durations than non-callable bonds, which means that they are less sensitive to changes in interest rates.
+
+5. Monte Carlo Simulation
+
+Monte Carlo simulation is a technique that uses random variables to simulate the potential outcomes of an investment. It takes into account a range of possible interest rate scenarios and calculates the potential return of a callable bond under each scenario. Monte Carlo simulation is important for investors because it allows them to assess the potential risk and return of a callable bond in a variety of market conditions.
+
+A callable bond is a bond in which the issuer reserves the right to redeem the bond at different discrete times, possibly for different redemption values. When a callable bond is bought, no one knows when the bond will be called, however it can nly be called at the times agreed upon at issue.
+
+The most common questions asked with callable bonds involve either
+
+1. determining the maximum price that can be paid for the bond to guarantee a certain yield rate, or
+2. detemining the minimum yield rate for a bond that was bought at a certain price.
+
+The recommende strategy for solving callable bond problems is to crete a two column table with the first represeint ghe timme at which the bond can be called.
+
+For type 1. problems, the second column is the corresponding price in order to receive the desired yield rate, keeping in mind the redemption value may be different at the different redemption dates. Then think through what happens whine the bond is bought for the prices in the table but redeemed at other times in the table, an answer the question accrodgingly.
+
+For type 2. rpboems the second column of the table is the yield rate tha would produce the given price, again keeping in mind the redemption value may be different at the different edemption dates.
+
+
+\question A 1000 face value 20-years callable bond with 5\% annual coupons is selling 1150. The bond can be redeemed at the end of 18 years for 950, at the end of 19 years for 975, or at the end of 20 years for 1000. Determine the minimum annual yield rate that a buyer will earn on this bond.
+\fillwithlines{3cm}
+\begin{solution}
+3.647\%
+
+18 3.831\%
+19 3.87\%
+20 3.91\%
+
+
+\end{solution}
+
+\question A 1000 face value 20-year callable bond with 3\% annual coupons can be redeemed according to the following schedule:
+\begin{itemize}
+	\item 1000 at the end of years 10 through 14;
+	\item 1075 at the end of years 15 through 17;
+	\item 1125 at the end of years 18 through 20.
+\end{itemize}
+Determine the maximum price a buyer should pay in order to earn an annual yield of at least 5\%.
+\fillwithlines{3cm}
+\begin{solution}
+def ytm(y, c, t, f, red):
+    ...:     val = sum([c*f/(1+y)**k for k in range(1, t+1)])
+    ...:     return val + red/(1+y)**t
+    ...: 
+
+In [28]: ytm(0.05, 0.03, 10, 1000)
+
+10 845.57
+11 833.87
+NOTE: The prices will systematically increase or decrease (decrease in this problem) when the redemption value remains the same.
+Therefore, we only need to check endpoints for the same redemption values.
+14 802.03
+15 828.48
+17 807.24
+18 818.15
+20 797.87 which is the answer
+
+Imagine you bought the bond for 797.87. Determine the yield if the bond is redeemed at the end of year 16.
+
+In [51]: def find_ytm(y, c, t, f, red, price):
+    ...:     val = sum([c*f/(1+y)**k for k in range(1, t+1)])
+    ...:     return val + red/(1+y)**t - price
+
+n [55]: brentq(find_ytm, 0, 0.1, args=(0.03, 16, 1000, 1075, 797.87))
+Out[55]: 0.05204043575983794
+
+\end{solution}
+
+\question A 1000 face value 10-year callable bond with 8\% semiannual coupons is bought for 1050.  The bond can be redeemed at the end of any year starting with year 7.  Determine the minimum annual yield for this bond.
+\fillwithlines{3cm}
+\begin{solution}
+In [70]: def b_ytm(price, fv, call_price, T, coup, freq=2, guess=0):
+    ...:     freq = float(freq)
+    ...:     periods = T*freq
+    ...:     coupon = coup*fv/freq
+    ...:     dt = [(i+1)/freq for i in range(int(periods))]
+    ...:     ytm_func = lambda y: sum([coupon/(1+y/freq)**(freq*t) for t in dt]) + fv/(1+y/freq)**(freq*max(dt)) - price
+    ...:     return newton(ytm_func, guess)
+
+There is no redemption value stated or implied. For all bond problems, when this is the case, assume the bond is redeemable at par. 
+14 3.54\%
+16 3.58\%
+18 3.62\%
+20 3.64\%
+NOTE: The interest rates will systematically increase or decrease (increase in this problem) when the redemption value remains the same. Therefore, we only need to check endpoints for the same redemption values.
+\end{solution}
+
+\question A 1000 face value 20-years callable bong, reddeemable at 1200, with 5\% annual coupons can be redeemed at the end of year 18, 19, 20. Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 3\%
+1392.55
+In [116]: price(1000, 1200, 19, 0.05, 0.03, 1)
+Out[116]: 1286.475982125383
+
+In [117]: price(1000, 1200, 18, 0.05, 0.03, 1)
+Out[117]: 1275.0702615891446
+
+In [118]: price(1000, 1200, 20, 0.05, 0.03, 1)
+Out[118]: 1297.5494972091096
+
+
+\question A 1000 face value 20-years callable bond with 4\% annual coupons can be redeemed according to the following schedule:
+1000 at end 12-14, 1025 at end 15-17, 975 at end 18-20.
+Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 4\%
+987.66
+
+\question A 1000 face value 10\% annual coupon bond is redeemable as follows: 1100 at 15, 16,17, 1000 at 18,19,20. A buyer pays 1500 for this bond, Determine the buyer minimum annual yield.
+In [70]: def b_ytm(price, fv, call_price, T, coup, freq=2, guess=0):
+    ...:     freq = float(freq)
+    ...:     periods = T*freq
+    ...:     coupon = coup*fv/freq
+    ...:     dt = [(i+1)/freq for i in range(int(periods))]
+    ...:     ytm_func = lambda y: sum([coupon/(1+y/freq)**(freq*t) for t in dt]) + fv/(1+y/freq)**(freq*max(dt)) - price
+    ...:     return newton(ytm_func, guess)
+5.474%
+In [96]: b_ytm(1500, 1000, 1100, 15, 0.1, 1)
+Out[96]: 0.051378853239277274
+
+In [97]: b_ytm(1500, 1000, 1100, 16, 0.1, 1)
+Out[97]: 0.05290592139352415
+
+In [98]: b_ytm(1500, 1000, 1100, 17, 0.1, 1)
+Out[98]: 0.05423627236846406
+
+In [99]: b_ytm(1500, 1000, 1000, 18, 0.1, 1)
+Out[99]: 0.05540277776325789
+
+In [100]: b_ytm(1500, 1000, 1000, 19, 0.1, 1)
+Out[100]: 0.05643146238150476
+
+In [101]: b_ytm(1500, 1000, 1000, 20, 0.1, 1)
+Out[101]: 0.05734319789419295
+
+
+
+
+\question A 20-year 10\% 1000 bond that pays interest half-yearly is redeemable (callable) in twelve years at a buy-back (call) price of 1150. The bond's current yield to maturity is 9.50\% annually. You are required to determine 
+\begin{enumerate}[label=(\alph*),font=\itshape]
+	\item the yield to call;
+	\item the yield to call if the buy-back price is only 1100;
+	\item the yield to call if instead of twelve years the bond can be called in eight years, the buy-back price being 1150.
+\end{enumerate}
+\fillwithlines{3cm}
+\begin{solution}
+
+def price(y, c, t, f, red):
+    ...:     val = sum([c*f/(1+y)**k for k in range(1, t+1)])
+    ...:     return val + red/(1+y)**t
+
+def price(fv, call_price, T, coup, y, freq=2):
+     freq = float(freq)
+     periods = T*freq
+     coupon = coup*fv/freq
+     dt = [(i+1)/freq for i in range(int(periods))]
+	return sum([coupon/(1+y/freq)**(freq*t) for t in dt]) + fv/(1+y/freq)**(freq*max(dt)) 
+
+A callable bond is a debenture issued with a call provision, in which this bond can be redeemed earlier than its initial maturity. The call price is determined at the issuance.
+
+Given the number of periods $N$, the par 1000, the semiannual coupon = $1000\cdot 0.1 \cdot 0.5 = 50$, and the semiannual yield $I=0.0475$ determine the current price of the bond
+\begin{equation*}
+P_0 = coupon \frac{1-(1+I)^{-N}}{I} + \frac{Par}{(1+I)^N} = 50 \frac{1-(1+0.0475)^{-40}}{0.0475}+\cfrac{1000}{(1+0.0475)^40} = 1044.41
+\end{equation*}
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item To determine the yield to call if the price is 1150, 
+FV = 1,150
+PV = 1,044.41
+PMT = 50
+N = 12 x 2 = 24
+CPT I = 5.01
+YTC = 5.01% x 2 = 10.02%
+\item Determine the yield to call if the call price is Rs 1,100; using the financial calculator:
+
+FV = 1,100
+PV = 1,044.41
+PMT = 50
+N = 12 x 2 = 24
+CPT I = 4.91
+YTC = 4.91% x 2 = 9.82%
+\item Determine the yield to call if the call price is Rs 1,150; and this bond will be called in 8 yearsl of ; using the financial calculator:
+
+FV = 1,150
+PV = 1,044.41
+PMT = 50
+N = 8 x 2 = 16
+CPT I = 5.21
+YTC = 5.21% x 2 = 10.42%
+\end{solution}
+
+
 
 \end{questions}
 \end{document}

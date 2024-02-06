@@ -16,7 +16,7 @@
 		
 		\textbf{Sample space}: all possible future states or outcomes ($\Omega$) of a random process.\newline
 		
-		\textbf{(Probability) Measure} ($\mathcal{P}, \mathcal{Q}\ldots$): is a mapping which associates a probability to each element in the sample space. Two measures are \textbf{equivalent} if they agree "on what is possible". Note the word \emph{possible}: the two measures can have different probabilities for the same event, but must have the same \emph{null-set} $\{x\in {\mathcal {P}}\mid p (x)=0\}$. 
+		\textbf{(Probability) Measure} ($\mathbb{P}, \mathbb{Q}\ldots$): is a mapping which associates a probability to each element in the sample space. Two measures are \textbf{equivalent} if they agree "on what is possible". Note the word \emph{possible}: the two measures can have different probabilities for the same event, but must have the same \emph{null-set} $\{x\in {\mathbb{P}}\mid p (x)=0\}$. 
 	\end{frame}
 
 \begin{frame}{Few Definitions}
@@ -68,14 +68,14 @@
 \begin{itemize}
 	\item Arbitrage opportunities rarely exist in practice. If and when they do, gains are extremely small, and are typically short-lived and difficult to spot. \textcolor{red}{Arbitrage exclusion in the mathematical model is close enough to reality}.
 	\item A martingale corresponds to the common notion that "a price, changes randomly" so we cannot know if it will go up or down. That is why this mathematical concept is brought into finance.
-	\item An \textcolor{red}{equivalent martingale measure} $\mathcal{Q}$ is a probability measure on the space $\Omega$ such that
+	\item An \textcolor{red}{equivalent martingale measure} $\mathbb{Q}$ is a probability measure on the space $\Omega$ such that
 	\begin{enumerate}
-		\item $\mathcal{Q}$ is equivalent to $\mathcal{P}$;
+		\item $\mathbb{Q}$ is equivalent to $\mathbb{P}$;
 		\item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a price $\pi_t$
 		\begin{equation*}
-			\pi_t = \mathbb{E}^{\mathcal{Q}^0}[D(t,T)V_A|\mathcal{F}_t]
+			\pi_t = \expect{Q^0}[D(t,T)V_A|\mathcal{F}_t]
 		\end{equation*}
-		which is a $\mathcal{Q}$-martingale.
+		which is a $\mathbb{Q}$-martingale.
 	\end{enumerate}
 \end{itemize}
 \end{frame}
@@ -100,16 +100,16 @@
 
 \begin{frame}{Equivalent Martingale Measure}
 	\begin{block}{Definition}
-		An \textcolor{red}{equivalent martingale measure} $\mathcal{Q}$ is a probability measure on the space $\Omega$ such that
+		An \textcolor{red}{equivalent martingale measure} $\mathbb{Q}$ is a probability measure on the space $\Omega$ such that
 		\begin{enumerate}
-			\item $\mathcal{Q}$ is equivalent to $\mathcal{P}$;
+			\item $\mathbb{Q}$ is equivalent to $\mathbb{P}$;
 			\item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a price $\pi_t$
 			\begin{equation*}
-				\pi_t = \mathbb{E}^{\mathcal{Q}^0}[D(t,T)V_A|\mathcal{F}_t]
+				\pi_t = \expect{Q^0}[D(t,T)V_A|\mathcal{F}_t]
 			\end{equation*}
-			\item the "discounted asset price" is a $\mathcal{Q}$-martingale
+			\item the "discounted asset price" is a $\mathbb{Q}$-martingale
 			\begin{equation*}
-				\pi_u = \mathbb{E}^{\mathcal{Q}^0}[D(0,t)V_A(t)|\mathcal{F}_u], \quad\text{with }(t>u)
+				\pi_u = \expect{Q^0}[D(0,t)V_A(t)|\mathcal{F}_u], \quad\text{with }(t>u)
 			\end{equation*}
 		\end{enumerate}
 	\end{block}
@@ -131,7 +131,7 @@
 		\item the market is complete if and only if the martingale measure is unique;
 		\item \textbf{In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure}
 		\begin{equation}
-			\Pi_t = \mathbb{E}^{\mathcal{Q}^0}[D(t,T)V_A|\mathcal{F}_t]
+			\Pi_t = \expect{Q^0}[D(t,T)V_A|\mathcal{F}_t]
 			\label{eq:risk_neutral_pricing}
 		\end{equation}
 	\end{itemize}
