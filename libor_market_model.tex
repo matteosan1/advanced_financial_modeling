@@ -44,11 +44,11 @@
   \begin{itemize}
   \item<1-> $t = 0$ is the current time and the set $\{T_0, T_1, \dots, T_n\}$ of expiry-maturity dates is the tenor structure. %with the corresponding year fractions $\tau_i$ associated with the expiry-maturity pair $(T_{i−1}, T_i)$, for all $i > 0$;
   \item<2-> The simply-compounded forward interest rate resetting at its expiry date $T_{i-1}$ and with maturity $T_i$ is denoted by $F_i(t) = F(t; T_{i-1}, T_i)$;
-  \item<3-> $\mathcal{Q}^i$ is the equivalent martingale measure (EMM) associated with the numeraire $P(\cdot, T_i)$, i.e. the $T_i$-forward measure;
-  \item<4-> $Z^i$ is a $n$-dimensional \textcolor{red}{correlated} Brownian motion under $\mathcal{Q}^i$, with \emph{instantaneous} correlation matrix $\rho$, i.e. $dZ^i(t) dZ^i(t) = \rho dt$.
+  \item<3-> $\mathbb{Q}^i$ is the equivalent martingale measure (EMM) associated with the numeraire $P(\cdot, T_i)$, i.e. the $T_i$-forward measure;
+  \item<4-> $Z^i$ is a $n$-dimensional \textcolor{red}{correlated} Brownian motion under $\mathbb{Q}^i$, with \emph{instantaneous} correlation matrix $\rho$, i.e. $dZ^i(t) dZ^i(t) = \rho dt$.
   \end{itemize}
 \uncover<5->{
-  We have already seen that $F_i$ is a martingale under the corresponding $T_i$-forward measure, on the interval $[0, T_{i-1}]$, \textcolor{red}{hence each $F_i$ has a drift-less dynamics under $\mathcal{Q}^i$.}}
+  We have already seen that $F_i$ is a martingale under the corresponding $T_i$-forward measure, on the interval $[0, T_{i-1}]$, \textcolor{red}{hence each $F_i$ has a drift-less dynamics under $\mathbb{Q}^i$.}}
 \end{frame}
 
 \begin{frame}{Forward Rate Dynamics}
@@ -87,7 +87,7 @@
 
 \begin{frame}{Forward Rate Dynamics in LMM}
   \begin{block}{Proposition}
-    Under the assumptions of the Libor Market Model, the dynamics of each $F_k$, for $k = 1,\ldots, n$, under the forward measure $\mathcal{Q}^i$ with $i \in \{1,\ldots, n\}$, is:
+    Under the assumptions of the Libor Market Model, the dynamics of each $F_k$, for $k = 1,\ldots, n$, under the forward measure $\mathbb{Q}^i$ with $i \in \{1,\ldots, n\}$, is:
     \begin{equation}
       \begin{cases}
 	k < i: dF_k(t) = -\sigma_k(t)F_k(t)\sum_{j=k+1}^i\cfrac{\rho_{k,j}\tau_j\sigma_j(t)F_j(t)}{1+\tau_jF_j(t)}dt + \sigma_k(t)F_k(t)dZ^i_k(t) \\ \vspace{0.1cm}
@@ -109,10 +109,10 @@
       dF_k(t) = \mu_k^i(t, \bar{F}(t))F_k(t)dt + \sigma_k(t)F_k(t)dZ^i_k(t),\quad k\neq i
       \label{eq:forward_dynamics_in_lfm}
     \end{equation}
-  \item<3-> Let's apply the change of measure from $\mathcal{Q}^i$ to $\mathcal{Q}^k$, then impose that the $\mathcal{Q}^k$ resulting drift is null. 
-  \item<4-> The Radon-Nikodym derivative of $\mathcal{Q}^{i-1}$ w.r.t. $\mathcal{Q}^i$ at time $t$ is
+  \item<3-> Let's apply the change of measure from $\mathbb{Q}^i$ to $\mathbb{Q}^k$, then impose that the $\mathbb{Q}^k$ resulting drift is null. 
+  \item<4-> The Radon-Nikodym derivative of $\mathbb{Q}^{i-1}$ w.r.t. $\mathbb{Q}^i$ at time $t$ is
     \begin{equation*}
-      \frac{dQ^{i-1}}{dQ^i}\bigg|\mathcal{F}_t = \frac{P(t, T_{i-1})P(0, T_i)}{P(0, T_{i-1})P(t, T_i)} = \zeta^i_t
+      \frac{d\mathbb{Q}^{i-1}}{d\mathbb{Q}^i}\bigg|\mathcal{F}_t = \frac{P(t, T_{i-1})P(0, T_i)}{P(0, T_{i-1})P(t, T_i)} = \zeta^i_t
     \end{equation*}
   \end{itemize}
 \end{frame}
@@ -123,7 +123,7 @@
     \begin{equation*}
       \zeta^i_t = \frac{P(0, T_i)}{P(0, T_{i-1})}(1+F_i(t)\tau_i)
     \end{equation*}
-    therefore, assuming \cref{eq:forward_process_lmm}, the dynamics of $\zeta^i_t$ under $\mathcal{Q}^i$ is
+    therefore, assuming \cref{eq:forward_process_lmm}, the dynamics of $\zeta^i_t$ under $\mathbb{Q}^i$ is
     \begin{equation*}
       \begin{aligned}
 	d\zeta^i_t &= \frac{P(0, T_i)}{P(0, T_{i-1})}dF_i(t)\tau_i = \frac{P(0, T_i)}{P(0, T_{i-1})}\tau_i\sigma_i(t)F_i(t)dZ^i_i(t) = \\ &= \frac{\tau_i\sigma_i(t)F_i(t)}{1+F_i(t)\tau_i}\zeta_t^idZ^i_i(t)=\lambda \zeta_t^idZ^i_i(t)
@@ -166,11 +166,11 @@
 \subsection{Log-normal Forward Model}
 \begin{frame}{Log-normal Forward Libor Model}
   \begin{block}{Proposition}
-    Consider a given volatility structure $\sigma_1,\ldots, \sigma_n$, where each $\sigma_i$ is bounded, and the terminal measure $\mathcal{Q}^n$ with associated $n$-dimensional correlated Brownian motions $Z^n$. If we define the processes $F_1,\ldots, F_n$ by
+    Consider a given volatility structure $\sigma_1,\ldots, \sigma_n$, where each $\sigma_i$ is bounded, and the terminal measure $\mathbb{Q}^n$ with associated $n$-dimensional correlated Brownian motions $Z^n$. If we define the processes $F_1,\ldots, F_n$ by
     \begin{equation}
       dF_i(t) = -\sigma_i(t)F_i(t)\sum_{j=i+1}^n \rho^{ij} \frac{\tau_j\sigma_j(t)F_j(t)}{1+F_j(t)\tau_j} dt + \sigma_i(t)F_i(t)dZ^n_i(t)
     \end{equation}
-    for $i = 1,\ldots, n$, then the $\mathcal{Q}^i$-dynamics of $F_i$ is given by \cref{eq:forward_process_lmm}, i.e. there exists a Libor Model with the given volatility structure.
+    for $i = 1,\ldots, n$, then the $\mathbb{Q}^i$-dynamics of $F_i$ is given by \cref{eq:forward_process_lmm}, i.e. there exists a Libor Model with the given volatility structure.
   This model is often called \textcolor{red}{log-normal forward Libor model} from the log-normal distribution of each forward rate under the related forward measure.
   \end{block}
 \end{frame}
@@ -280,9 +280,9 @@
 	\begin{equation*}
 		\textbf{Cap}=\mathbb{E}^B\left[\sum_{i=\alpha+1}^\beta 	\tau_iD(0, T_i)(F(T_{i-1}; T_{i-1}, T_i) - K)^+\right]
 	\end{equation*}
-	\item<2-> Given the linearity of the expectation operator, we can apply the change of measure technique to move to $\mathcal{Q}^i$, i.e. the $T$-forward measure associated to bond price $P(\cdot,T_i)$
+	\item<2-> Given the linearity of the expectation operator, we can apply the change of measure technique to move to $\mathbb{Q}^i$, i.e. the $T$-forward measure associated to bond price $P(\cdot,T_i)$
 	\begin{equation*}
-		\textbf{Cap}= \sum_{i=\alpha+1}^\beta \tau_i P(0, T_i)\mathbb{E}^i[(F(T_{i-1}; T_{i-1}, T_i) - K)^+] = \sum_{i=\alpha+1}^\beta P(0, T_i)\textbf{Caplet}
+		\textbf{Cap}= \sum_{i=\alpha+1}^\beta \tau_i P(0, T_i)\expect{i}[(F(T_{i-1}; T_{i-1}, T_i) - K)^+] = \sum_{i=\alpha+1}^\beta P(0, T_i)\textbf{Caplet}
 	\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -293,8 +293,8 @@
 	\begin{equation*}
 		\textbf{Caplet} = \mathbb{E}^i[(F_i(T_{i-1}) - K)^+]
 	\end{equation*}
-	just remember that under $\mathcal{Q}^i$ the process $F_i$ is a martingale.
-	\item Given its lognormal distribution, the above expectation is computed as \textcolor{red}{a Black and Scholes price for a stock call option whose underlying “stock” is $F_i$, struck at $K$, with maturity $T_{i-1}$, with zero constant “risk-free rate” and instantaneous percentage volatility $\sigma_i(t)$.}
+	just remember that under $\mathbb{Q}^i$ the process $F_i$ is a martingale.
+	\item Given its log-normal distribution, the above expectation is computed as \textcolor{red}{a Black and Scholes price for a stock call option whose underlying “stock” is $F_i$, struck at $K$, with maturity $T_{i-1}$, with zero constant “risk-free rate” and instantaneous percentage volatility $\sigma_i(t)$.}
 \end{itemize}
 \end{frame}
 
@@ -394,7 +394,7 @@
 	\begin{itemize}
 		\item<1-> From the pricing formula of a payer swaption
 		\begin{equation*}
-			\textbf{PSw}=\mathbb{E}^{\mathcal{Q}}\left[D(t,T_\alpha)A_{\alpha,\beta}\max(S_{\alpha,\beta}(T_\alpha)-K, 0)\right]
+			\textbf{PSw}=\expect{Q}\left[D(t,T_\alpha)A_{\alpha,\beta}\max(S_{\alpha,\beta}(T_\alpha)-K, 0)\right]
 		\end{equation*}
 		it comes clearly that the natural choice of numeraire to model the dynamics of the forward swap rate is
 		\begin{equation*}
@@ -407,11 +407,11 @@
 
 \begin{frame}{Choice of the Numeraire}
   \begin{itemize}
-  \item<1-> Denoted by $\mathcal{Q}^{\alpha,\beta}$ the EMM associated with the numeraire $A_{\alpha,\beta}$, the forward swap rate process $S_{\alpha,\beta}$ is a martingale under $\mathcal{Q}^{\alpha,\beta}$, on the interval $[t, T_\alpha]$.
+  \item<1-> Denoted by $\mathbb{Q}^{\alpha,\beta}$ the EMM associated with the numeraire $A_{\alpha,\beta}$, the forward swap rate process $S_{\alpha,\beta}$ is a martingale under $\mathbb{Q}^{\alpha,\beta}$, on the interval $[t, T_\alpha]$.
   \begin{equation*}
   	S_{\alpha,\beta}(t) = \cfrac{P(t,T_\alpha)-P(t,T_\beta)}{\sum_{i=\alpha+1}^{\beta}\tau_iP(t,T_i)}
   \end{equation*}
-  \item<2-> The probability measure $\mathcal{Q}^{\alpha,\beta}$ is called \textcolor{red}{the (forward) swap measure} related to $\alpha, \beta$.
+  \item<2-> The probability measure $\mathbb{Q}^{\alpha,\beta}$ is called \textcolor{red}{the (forward) swap measure} related to $\alpha, \beta$.
   \item<2-> We may note that the annuity plays for the swap rate the same role as the zero coupon bond prices did for the forward rates in the LFM. 
   \end{itemize}
 \end{frame}
@@ -423,7 +423,7 @@
       dS_{\alpha,\beta}(t) = \sigma_{\alpha,\beta}(t)S_{\alpha,\beta}(t)dW^{\alpha,\beta}(t),\quad t \leq T_\alpha
       \label{eq:swap_rate_dynamics}
     \end{equation}
-    for $(\alpha, \beta) \in T$ pairs, where $W^{\alpha,\beta}$ is a scalar standard $\mathcal{Q}^{\alpha,\beta}$-Brownian motion.
+    for $(\alpha, \beta) \in T$ pairs, where $W^{\alpha,\beta}$ is a scalar standard $\mathbb{Q}^{\alpha,\beta}$-Brownian motion.
   \end{block}
 \end{frame}
 %%%We can also allows for correlation between the different Brownian motions, however, this will not affect the swaption prices but only the pricing of more complicated products.
@@ -481,9 +481,9 @@
   \pause
   In order to give an answer we can proceed as follows:
   \begin{enumerate}
-  \item<2-> assume the hypothesis of the LFM, namely that each forward rate $F_i$ is log-normal under its related forward measure $\mathcal{Q}^i$;
-  \item<3-> apply the change of measure to obtain their dynamics under the swap measure $\mathcal{Q}^{\alpha,\beta}$, for a choice of $(\alpha,\beta) \in T$ pairs;
-  \item<4-> apply the It$\hat{o}$’s formula to obtain the resulting dynamics for the swap rate $S_{\alpha,\beta}$ under $\mathcal{Q}^{\alpha,\beta}$;
+  \item<2-> assume the hypothesis of the LFM, namely that each forward rate $F_i$ is log-normal under its related forward measure $\mathbb{Q}^i$;
+  \item<3-> apply the change of measure to obtain their dynamics under the swap measure $\mathbb{Q}^{\alpha,\beta}$, for a choice of $(\alpha,\beta) \in T$ pairs;
+  \item<4-> apply the It$\hat{o}$’s formula to obtain the resulting dynamics for the swap rate $S_{\alpha,\beta}$ under $\mathbb{Q}^{\alpha,\beta}$;
   \item<5-> check if this distribution is log-normal, as it is under the hypothesis of the LSM.
   \end{enumerate}
 	\uncover<6->{
@@ -551,7 +551,7 @@
   \item<3-> Recall the price of a payer swaption:
     \begin{equation*}
       \begin{aligned}
-        \textbf{PSw} = \mathbb{E}^\mathcal{Q}&\left[D(0, T_\alpha) (S_{\alpha,\beta}(T_\alpha) - K)^+ \sum_{i=\alpha+1}^\beta \tau_i P(T_\alpha, T_i)\right] \\
+        \textbf{PSw} = \expect{Q}&\left[D(0, T_\alpha) (S_{\alpha,\beta}(T_\alpha) - K)^+ \sum_{i=\alpha+1}^\beta \tau_i P(T_\alpha, T_i)\right] \\
         &= P(0, T_\alpha)\mathbb{E}^\alpha\left[(S_{\alpha, \beta}(T_\alpha) - K)^+ \sum^\beta_{i=\alpha+1} \tau_i P(T_\alpha, T_i)\right]
       \end{aligned}
     \end{equation*}
@@ -562,7 +562,7 @@
 \begin{frame}{Monte Carlo Pricing of Swaptions}
   \begin{itemize}
   \item<1-> Keep in mind that $S_{\alpha,\beta}$ has an expression in terms of the relevant spanning forward rates, and notice that the expectation above depends on the joint distribution of the same $F$’s.
-  \item<2-> The dynamics of the $k$-th forward rate, for each $k = \alpha + 1,\ldots, \beta$, under $\mathcal{Q}^\alpha$ is (\cref{eq:forward_rat_dynamics_lfm})
+  \item<2-> The dynamics of the $k$-th forward rate, for each $k = \alpha + 1,\ldots, \beta$, under $\mathbb{Q}^\alpha$ is (\cref{eq:forward_rat_dynamics_lfm})
 \begin{equation}
   dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\rho_{kj}\tau_j\sigma_jF_j}{1+\tau_jF_j}dt+\sigma_kF_k dW^\alpha_k, \quad t<T_\alpha
   \label{eq:dynamics_4.1}
@@ -654,7 +654,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
   \item<1-> Consider a general payoff at time $T$, $\Pi(T)$, depending on a vector of spanning forward LIBOR rates $\bar{F}(t)$. %, for $t \in [0, T]$, where typically $T$ is smaller than or equal to the expiry of the first forward rate.
   \item<2-> We simulate various scenarios of $\Pi(T)$ under the $T$-forward measure. Let $m$ be the number of simulated paths, the Monte Carlo price of the payoff is
     \begin{equation*}
-      \mathbb{E}^\mathcal{Q}[D(0,T)\Pi(T)] = P(0,T)\mathbb{E}^T[\Pi(T)]\approx \frac{P(0,T)}{m}\sum_{j=1}^{m}\Pi^j(T)
+      \expect{Q}[D(0,T)\Pi(T)] = P(0,T)\mathbb{E}^T[\Pi(T)]\approx \frac{P(0,T)}{m}\sum_{j=1}^{m}\Pi^j(T)
     \end{equation*}
   \item<3-> Since $\Pi^1(T), \Pi^2(T),\ldots$ is a sequence of realizations of i.i.d. random variables distributed as $\Pi(T)$, the \textcolor{red}{Central Limit Theorem} tell us that for $m\rightarrow\infty$
     \begin{equation*}
@@ -760,7 +760,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
   \item<3-> Consider the payoff of such portfolio where the $K_i = F_i(0)$ and rewrite it by a change of measure as follows:
     \begin{equation*}
       \begin{aligned}
-        \textbf{FRAs} = &\mathbb{E}^\mathcal{Q}\left[D(0,T_\alpha)\sum_{i=\alpha+1}^\beta P(T_\alpha,T_i)\tau_i(F_i(T_\alpha) - F_i(0))\right] = \\
+        \textbf{FRAs} = &\expect{Q}\left[D(0,T_\alpha)\sum_{i=\alpha+1}^\beta P(T_\alpha,T_i)\tau_i(F_i(T_\alpha) - F_i(0))\right] = \\
         &=\mathbb{E}^j\left[\frac{P(0,T_j)}{P(T_\alpha,T_j)}\sum_{i=\alpha+1}^\beta P(T_\alpha,T_i)\tau_i(F_i(T_\alpha) - F_i(0))\right] = \\
         & = P(0,T_j)\mathbb{E}^j\left[\frac{\sum_{i=\alpha+1}^\beta P(T_\alpha,T_i)\tau_i(F_i(T_\alpha) - F_i(0))}{P(T_\alpha,T_j)}\right]
       \end{aligned}
@@ -775,7 +775,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
       \Pi_{an}(T_\alpha) = \frac{\sum_{i=\alpha+1}^\beta P(T_\alpha,T_i)\tau_i(F_i(T_\alpha) - F_i(0))}{P(T_\alpha,T_j)}
     \end{equation*}
     whose price at time $T_\alpha = 0$ is $\pi_{an} = 0$.
-  \item<2-> Indeed, the payoff $\Pi_{an}(\cdot)$ is a sum of traded assets divided by $P(\cdot, T_j)$, hence it is a martingale under the $T^j$-forward measure $\mathcal{Q}^j$, which implies that
+  \item<2-> Indeed, the payoff $\Pi_{an}(\cdot)$ is a sum of traded assets divided by $P(\cdot, T_j)$, hence it is a martingale under the $T^j$-forward measure $\mathbb{Q}^j$, which implies that
     
     \begin{equation*}
       \mathbb{E}^j[\Pi_{an}(T_\alpha)] = \mathbb{E}^j[\Pi_{an}(0)] = 0

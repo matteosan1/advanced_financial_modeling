@@ -15,8 +15,8 @@
 \subsection{Numeraires}
 \begin{frame}{Numeraires}
   \begin{itemize}
-  \item<1-> Ideally we would like to define a probability measure $\mathcal{Q}^X$ under which the discounted derivative process IS a martingale, such that the expectation of the payoff is analytically tractable (i.e. easy to compute).
-  \item<2-> The question that arises is: how can we determine such measure $\mathcal{Q}^X$ ?
+  \item<1-> Ideally we would like to define a probability measure $\mathbb{Q}^X$ under which the discounted derivative process IS a martingale, such that the expectation of the payoff is analytically tractable (i.e. easy to compute).
+  \item<2-> The question that arises is: how can we determine such measure $\mathbb{Q}^X$ ?
   \item<3-> The answer is through \textcolor{red}{change of numeraire}.
   \item<4-> A \textcolor{red}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as a unit of reference when pricing an asset $S_t$
     \begin{equation*}
@@ -109,12 +109,12 @@
 	  \item Formally we can indicate with
 	  \begin{equation*}
 	  	\begin{gathered}
-	  	\mathcal{N}_\mu := \{A\in \Omega \mid \mu(A)=0\}\\
-  	  	\mathcal{N}_\nu := \{A\in \Omega \mid \nu(A)=0\}
+	  	\mathbb{N}_\mu := \{A\in \Omega \mid \mu(A)=0\}\\
+  	  	\mathbb{N}_\nu := \{A\in \Omega \mid \nu(A)=0\}
   	  \end{gathered}
     \end{equation*}
   	the $\mu$-null sets and the $\nu$-null sets, respectively. 
-  	The two measures are called equivalent if and only $\mathcal {N}_\mu= \mathcal{N}_\nu$.
+  	The two measures are called equivalent if and only $\mathbb {N}_\mu= \mathbb{N}_\nu$.
 	\item In other words two probability measures are said to be equivalent when they agree on which events have measure zero.
   \end{itemize}
   \end{itemize}
@@ -124,11 +124,11 @@
 	\begin{block}{Definition}
 		When two measures are equivalent it is possible to express the first in terms of the second through the \textcolor{red}{Radon-Nikodym derivative}. Indeed there exists a \textcolor{red}{martingale process $\zeta_t$} such that
 		\begin{equation*}
-			\mathcal{Q}^* =\int_{A} \zeta_t(\omega)d\mathcal{Q}(\omega)
+			\mathbb{Q}^* =\int_{A} \zeta_t(\omega)d\mathbb{Q}(\omega)
 		\end{equation*}
 		which can be written in a more concise form as
 		\begin{equation}
-			\frac{d\mathcal{Q}^*}{d\mathcal{Q}} = \zeta_t
+			\frac{d\mathbb{Q}^*}{d\mathbb{Q}} = \zeta_t
 			\label{eq:radon_nikodym_der}
 		\end{equation}
 	\end{block}
@@ -138,15 +138,15 @@
   \begin{itemize}
   \item To get a sense of what a Radon-Nikodym derivative is we can write the expected value of a generic function $F(x)$ under a measure $\mathcal{P}$, with associated density function $p(x)$ as
     \begin{equation*}
-      \mathbb{E}^\mathcal{P}=\int F(x)p(x)dx
+      \expect{P}=\int F(x)p(x)dx
     \end{equation*}
   \item Suppose there exists a function $q(x)$, which satisfies the mathematical conditions required to be a density function. Then we can write
     \begin{equation*}
-      \mathbb{E}^\mathcal{P}=\int F(x)f(x)\frac{q(x)}{q(x)}dx
+      \expect{P}=\int F(x)f(x)\frac{q(x)}{q(x)}dx
     \end{equation*}
   \item If we define $\psi(x)=F(x)\frac{p(x)}{q(x)}$ the expected value can be written as 
     \begin{equation*}
-      \mathbb{E}^\mathcal{P}[F(x)]=\int\psi(x)q(x)dx=\mathbb{E}^\mathcal{Q}[\psi(x)]=\mathbb{E}^\mathcal{Q}\left[F(x)\frac{p(x)}{q(x)}\right]
+      \expect{P}[F(x)]=\int\psi(x)q(x)dx=\expect{Q}[\psi(x)]=\expect{Q}\left[F(x)\frac{p(x)}{q(x)}\right]
     \end{equation*}
   \end{itemize}
 \end{frame}
@@ -155,12 +155,12 @@
   \begin{itemize}
   \item The expectations corresponding to the two measures are related by
     \begin{equation*}
-      \mathbb{E}^{\mathcal{Q}^*}[X] = \mathbb{E}^\mathcal{Q}\left[X\frac{d\mathcal{Q}^*}{d\mathcal{Q}}\right]= \mathbb{E}^\mathcal{Q}[X\zeta]
+      \expect{Q^*}[X] = \expect{Q}\left[X\frac{d\mathbb{Q}^*}{d\mathbb{Q}}\right]= \expect{Q}[X\zeta]
     \end{equation*}
 	\pause
   \item In case of a conditioned expectation
     \begin{equation}
-      \mathbb{E}^*[X|\mathcal{F}_t] = \frac{\mathbb{E}\left[X\cfrac{d\mathcal{Q}^*}{d\mathcal{Q}}\bigg|\mathcal{F}_t\right]}{\mathbb{E}[\zeta_t|\mathcal{F}_t]}
+      \expect{*}[X|\mathcal{F}_t] = \frac{\mathbb{E}\left[X\cfrac{d\mathbb{Q}^*}{d\mathbb{Q}}\bigg|\mathcal{F}_t\right]}{\mathbb{E}[\zeta_t|\mathcal{F}_t]}
       \label{eq:conditioned_expectation}
     \end{equation}
     which is an "equivalent" formulation of the famous \emph{Bayes theorem}
@@ -194,17 +194,17 @@
 \begin{frame}{Change of Numeraire}
   \begin{block}{Theorem}
   	\small{
-    Assume exists a numeraire $N_t$ and the associated measure $\mathcal{Q}^N$, equivalent to $\mathcal{P}$, such that the price of any traded asset $S_t$ relative to $N$ is a martingale under $\mathcal{Q}^N$
+    Assume exists a numeraire $N_t$ and the associated measure $\mathbb{Q}^N$, equivalent to $\mathbb{P}$, such that the price of any traded asset $S_t$ relative to $N$ is a martingale under $\mathbb{Q}^N$
     \begin{equation*}
-      \frac{S_t}{N_t} = \mathbb{E}^N\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
+      \frac{S_t}{N_t} = \expect{N}\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
     \end{equation*}
-    Let $U$ be another arbitrary numeraire. Then there exists a measure $\mathcal{Q}^U$, also equivalent to $\mathcal{P}$, such that the price of any traded asset $S_t$, normalized to $U$, is a martingale under $\mathcal{Q}^U$
+    Let $U$ be another arbitrary numeraire. Then there exists a measure $\mathbb{Q}^U$, also equivalent to $\mathbb{P}$, such that the price of any traded asset $S_t$, normalized to $U$, is a martingale under $\mathbb{Q}^U$
     \begin{equation*}
-      \frac{S_t}{U_t} = \mathbb{E}^U\left[\frac{S_T}{U_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
+      \frac{S_t}{U_t} = \expect{U}\left[\frac{S_T}{U_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
     \end{equation*}
-    The Radon-Nikodym derivative defining the measure $\mathcal{Q}^U$ is given by
+    The Radon-Nikodym derivative defining the measure $\mathbb{Q}^U$ is given by
 \begin{equation}
-	\frac{d\mathcal{Q}^U}{d\mathcal{Q}^N} = \frac{U_T N_0}{U_0 N_T}
+	\frac{d\mathbb{Q}^U}{d\mathbb{Q}^N} = \frac{U_T N_0}{U_0 N_T}
 	\label{eq:radon_nikodym_der2}
 \end{equation}}
   \end{block}
@@ -213,16 +213,16 @@
 \begin{frame}{Change of Numeraire (Proof p.2)}
 	\begin{itemize}
 		\item Let's prove first this second part.
-  		\item By definition of $\mathcal{Q}^N$, for any asset price $S_t$ holds
+  		\item By definition of $\mathbb{Q}^N$, for any asset price $S_t$ holds
 	  \begin{equation*}
 	    \begin{cases} 
-	      \mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \cfrac{S_0}{N_0} \\
-\mathbb{E}_t^U\left[\cfrac{U_0 S_T}{N_0 U_T}\right] = 	      \cfrac{U_0}{N_0}\mathbb{E}_t^U\left[\cfrac{S_T}{U_T}\right] = \cfrac{\cancel{U_0} S_0}{N_0 \cancel{U_0}} = \cfrac{S_0}{N_0}
+	      \expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] = \cfrac{S_0}{N_0} \\
+\expectt{U}{t}\left[\cfrac{U_0 S_T}{N_0 U_T}\right] = \cfrac{U_0}{N_0}\expectt{U}{t}\left[\cfrac{S_T}{U_T}\right] = \cfrac{\cancel{U_0} S_0}{N_0 \cancel{U_0}} = \cfrac{S_0}{N_0}
 	    \end{cases}
 	  \end{equation*}
   	\item Since both equations result to $S_0/N_0$ they can be equated
   	\begin{equation*}
-  	\mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
+  	\expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] = \expectt{U}{t}\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
   	\end{equation*}
   	\end{itemize} 
 \end{frame}
@@ -232,10 +232,10 @@
 	\item By definition of Radon-Nikodym derivative and from the result of in previous slide, it holds
   \begin{equation*}
   	\begin{cases}
-    \mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{S_T}{N_T} \cfrac{d\mathcal{Q}^N}{d\mathcal{Q}^U}\right] \\
-    \mathbb{E}_t^N\left[\cfrac{S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
+    \expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] =\expectt{U}{t}\left[\cfrac{S_T}{N_T} \cfrac{d\mathbb{Q}^N}{d\mathbb{Q}^U}\right] \\
+    \expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] =\expectt{U}{t}\left[\cfrac{U_0 S_T}{N_0 U_T}\right]
     \end{cases}\implies
-	\cfrac{\cancel{S_T}}{N_T} \cfrac{d\mathcal{Q}^N}{d\mathcal{Q}^U} = \cfrac{U_0 \cancel{S_T}}{N_0 U_T}
+	\cfrac{\cancel{S_T}}{N_T} \cfrac{d\mathbb{Q}^N}{d\mathbb{Q}^U} = \cfrac{U_0 \cancel{S_T}}{N_0 U_T}
   \end{equation*}
 	where we have used the fact that the expectation arguments under $U$ must equal to get \cref{eq:radon_nikodym_der2}. 
   \end{itemize}
@@ -245,13 +245,13 @@
   \begin{itemize}
   \item<1-> Now we can prove the first part of the change of numeraire theorem. The conditional expectation formula~\cref{eq:conditioned_expectation} gives
     \begin{equation*}
-      \mathbb{E}^U\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\bigg|\mathcal{F}_t\right]}
+      \expect{U}\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\bigg|\mathcal{F}_t\right]}
     \end{equation*}
   \item<2-> But 
     \begin{equation*}
       \begin{cases}
-	\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\right]= \mathbb{E}_t^N\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
-	\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\right]= \mathbb{E}_t^N\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
+	\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\right]= \expectt{N}{t}\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
+	\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\right]= \expectt{N}{t}\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
       \end{cases}
     \end{equation*}
   \end{itemize}
@@ -261,13 +261,13 @@
 	\begin{itemize}
 		\item Now we can prove the first part of the change of numeraire theorem. The conditional expectation formula~\cref{eq:conditioned_expectation} gives
 		\begin{equation*}
-			\mathbb{E}^U\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\mathbb{E}^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\bigg|\mathcal{F}_t\right]} = \cfrac{\cfrac{\cancel{N_0} S_t}{\cancel{U_0} \cancel{N_t}}}{\cfrac{\cancel{N_0} U_t}{\cancel{U_0} \cancel{N_t}}} = \cfrac{S_t}{U_t}
+			\expect{U}\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\bigg|\mathcal{F}_t\right]} = \cfrac{\cfrac{\cancel{N_0} S_t}{\cancel{U_0} \cancel{N_t}}}{\cfrac{\cancel{N_0} U_t}{\cancel{U_0} \cancel{N_t}}} = \cfrac{S_t}{U_t}
 		\end{equation*}
 		\item But 
 		\begin{equation*}
 			\begin{cases}
-				\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\cfrac{S_T}{U_T}\right]= \mathbb{E}_t^N\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
-				\mathbb{E}_t^N\left[\cfrac{d\mathcal{Q}^U}{d\mathcal{Q}^N}\right]= \mathbb{E}_t^N\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
+				\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\right]= \expectt{N}{t}\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
+				\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\right]= \expectt{N}{t}\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
 			\end{cases}
 		\end{equation*}
 	\end{itemize}
@@ -280,26 +280,26 @@
     \item give a simple rule to write (the otherwise difficult to derive) Radon-Nikodym derivative;
       \item \textcolor{red}{the risk-neutral price is invariant under change of numeraire}
     \begin{equation*}
-    	Price = \mathbb{E}_t^N\left[\cfrac{N_0 S_T}{N_T}\right] = \mathbb{E}_t^U\left[\cfrac{U_0 S_T}{U_T}\right]
+    	Price = \expectt{N}{t}\left[\cfrac{N_0 S_T}{N_T}\right] = \expectt{U}{t}\left[\cfrac{U_0 S_T}{U_T}\right]
     \end{equation*}
     \end{enumerate}
 \end{frame}
 
 \begin{frame}{Asset Price divided by Numeraire}
 	\begin{itemize}
- 	\item<1-> Let $B$ be the money bank numeraire and $\mathcal{Q}^B$ the corresponding risk-neutral measure. Also let $N$ be another numeraire (note that for what just said $N/B$ is a $\mathcal{Q}^B$-martingale). 
+ 	\item<1-> Let $B$ be the money bank numeraire and $\mathbb{Q}^B$ the corresponding risk-neutral measure. Also let $N$ be another numeraire (note that for what just said $N/B$ is a $\mathbb{Q}^B$-martingale). 
 	\item<2-> From the Change of Numeraire Theorem we can define a new measure by mean of
   \begin{equation*}
-    \frac{d\mathcal{Q}^N}{d\mathcal{Q}^B} = \frac{N_TB_0}{B_TN_0}
+    \frac{d\mathbb{Q}^N}{d\mathbb{Q}^B} = \frac{N_TB_0}{B_TN_0}
   \end{equation*}
-	\item<3-> Then, for any asset $S$ such that $S/B$ is a $\mathcal{Q}^B$-martingale
+	\item<3-> Then, for any asset $S$ such that $S/B$ is a $\mathbb{Q}^B$-martingale
   \begin{equation*}
-    \mathbb{E}^N\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right] = \cfrac{\mathbb{E}^B\left[\cfrac{S_T}{N_T}\cfrac{N_TB_0}{B_TN_0}\bigg|\mathcal{F}_t\right]}{\mathbb{E}^B\left[\cfrac{N_TB_0}{B_TN_0}\bigg|\mathcal{F}_t\right]}
-    =\cfrac{\mathbb{E}^B\left[\cfrac{S_T}{B_T}\bigg|\mathcal{F}_t\right]}
-    {\mathbb{E}^B\left[\cfrac{N_T}{B_T}\bigg|\mathcal{F}_t\right]}
+    \expect{N}\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right] = \cfrac{\expect{B}\left[\cfrac{S_T}{N_T}\cfrac{N_TB_0}{B_TN_0}\bigg|\mathcal{F}_t\right]}{\expect{B}\left[\cfrac{N_TB_0}{B_TN_0}\bigg|\mathcal{F}_t\right]}
+    =\cfrac{\expect{B}\left[\cfrac{S_T}{B_T}\bigg|\mathcal{F}_t\right]}
+    {\expect{B}\left[\cfrac{N_T}{B_T}\bigg|\mathcal{F}_t\right]}
     =\frac{S_tB_t}{N_tB_t}=\frac{S_t}{N_t}
   \end{equation*}
-	\item<4-> \textcolor{red}{So $S/N$ is a $\mathcal{Q}^N$-martingale.}
+	\item<4-> \textcolor{red}{So $S/N$ is a $\mathbb{Q}^N$-martingale.}
 	\end{itemize}
 \end{frame}
 
@@ -316,7 +316,7 @@
 	\end{tabular}
 	& \begin{tabular}{l}
 	    It is a martingale under the\\
-	    measure $Q^B$ associated to \\
+	    measure $\mathbb{Q}^B$ associated to \\
 	    the bank account numeraire,\\
   	    i.e. the risk neutral measure.
 	  \end{tabular} \\ \hline
@@ -327,7 +327,7 @@
 	  divided by another ZCB.		
 	\end{tabular}
 	& \begin{tabular}{l}
-	    Under the measure $\mathcal{Q}^2$\\ 
+	    Under the measure $\mathbb{Q}^2$\\ 
 	    associated to the numeraire\\ 
 	    $P(\cdot,T_2)$ it is a martingale.\end{tabular}\\ \hline  
 	\begin{tabular}{@{}l@{}}
@@ -350,11 +350,11 @@
   \item<1-> Until now we have used $B(t)$, the money market account, as numeraire. But as we have seen it is natural to look for the most convenient one, that is, the one which minimizes the mathematical difficulties according to the problem at hand.
   \item<2-> Given a contingent claim whose payoff at time $T$ is $\chi$, we have the following formula for its price $\Pi$
     \begin{equation*}
-      \Pi_\chi(t,T)=\mathbb{E}^B\left[e^{-\int_t^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=\mathbb{E}^B\left[e^{\int_0^t r_s ds}e^{-\int_0^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=B_t\mathbb{E}^B\left[B^{-1}_T\chi|\mathcal{F}_t\right]
+      \Pi_\chi(t,T)=\expect{B}\left[e^{-\int_t^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=\expect{B}\left[e^{\int_0^t r_s ds}e^{-\int_0^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=B_t\expect{B}\left[B^{-1}_T\chi|\mathcal{F}_t\right]
     \end{equation*}
-  \item<3-> If $\chi$ and the short rate process were independent under $\mathcal{Q}^B$ (recall $\mathbb{E}[XY]=\mathbb{E}[X]\mathbb{E}[Y]$) then we could write
+  \item<3-> If $\chi$ and the short rate process were independent under $\mathbb{Q}^B$ (recall $\mathbb{E}[XY]=\mathbb{E}[X]\mathbb{E}[Y]$) then we could write
     \begin{equation*}
-      \Pi_\chi(t,T)=\mathbb{E}^B\left[e^{-\int_t^T r_s ds}\bigg|\mathcal{F}_t\right]\mathbb{E}^B\left[\chi|\mathcal{F}_t\right] = P(t,T)\mathbb{E}^B\left[\chi|\mathcal{F}_t\right]
+      \Pi_\chi(t,T)=\expect{B}\left[e^{-\int_t^T r_s ds}\bigg|\mathcal{F}_t\right]\expect{B}\left[\chi|\mathcal{F}_t\right] = P(t,T)\expect{B}\left[\chi|\mathcal{F}_t\right]
     \end{equation*}
   \end{itemize}
 \end{frame}
@@ -363,10 +363,10 @@
   \begin{itemize}
   \item<1-> In general the above separation is not possible due to the interaction between the discount factors and the claim payoff. 
   \item<2-> In this, like in other concrete situations, a better numeraire is indeed the ZCB with the same maturity $T$ of the derivative to price (recall $P(T,T)=1)$.
-  \item<3-> The \textcolor{red}{forward measure $\mathcal{Q}^T$ (also called the $T$-measure)} is defined as the martingale measure for the numeraire process $P(\cdot,T)$, the ZCB maturing in T indeed, i.e. what we called $\mathcal{Q}^2$ in the example above.
+  \item<3-> The \textcolor{red}{forward measure $\mathbb{Q}^T$ (also called the $T$-measure)} is defined as the martingale measure for the numeraire process $P(\cdot,T)$, the ZCB maturing in T indeed, i.e. what we called $\mathbb{Q}^2$ in the example above.
   \item<4-> It is easy to see that using \cref{eq:radon_nikodym_der2}, the Radon-Nykodim derivative is given in this case by
     \begin{equation}
-      \zeta_t = \frac{d\mathcal{Q}^T}{d\mathcal{Q}^B} = \frac{P(t,T)\overbrace{B(0)}^{=1}}{B_t P(0,T)} ,\quad\left(\zeta_T=\frac{\overbrace{P(T,T)}^{=1}B(0)}{B(T)P(0,T)}=\frac{1}{B(T)P(0,T)}\right)
+      \zeta_t = \frac{d\mathbb{Q}^T}{d\mathbb{Q}^B} = \frac{P(t,T)\overbrace{B(0)}^{=1}}{B_t P(0,T)} ,\quad\left(\zeta_T=\frac{\overbrace{P(T,T)}^{=1}B(0)}{B(T)P(0,T)}=\frac{1}{B(T)P(0,T)}\right)
       \label{eq:radon_nikodym_t_forward}
     \end{equation}
   \end{itemize}
@@ -377,11 +377,11 @@
   \item<1-> Applying the change of numeraire to the pricing formula, we get
     \begin{equation*}
       \begin{aligned}
-	\Pi_\chi(t,T) & = B_t\mathbb{E}^B\left[B^{-1}_T\chi|\mathcal{F}_t\right] \\
-	& = B_t\mathbb{E}^B\left[P(0,T)\zeta_T\chi|\mathcal{F}_t\right]\quad\text{(using } B_T^{-1} = \zeta_TP(0,T))\\
-	& = B_tP(0,T)\mathbb{E}^B\left[\zeta_T|\mathcal{F}_t\right]\mathbb{E}^T\left[\chi|\mathcal{F}_t\right]\quad\text{(by \cref{eq:conditioned_expectation})}\\
-	& = \cancel{B_tP(0,T)}\frac{P(t,T)}{\cancel{B_tP(0,T)}}\mathbb{E}^T\left[\chi|\mathcal{F}_t\right] \\
-	& = P(t,T)\mathbb{E}^T\left[\chi|\mathcal{F}_t\right] \\
+	\Pi_\chi(t,T) & = B_t\expect{B}\left[B^{-1}_T\chi|\mathcal{F}_t\right] \\
+	& = B_t\expect{B}\left[P(0,T)\zeta_T\chi|\mathcal{F}_t\right]\quad\text{(using } B_T^{-1} = \zeta_TP(0,T))\\
+	& = B_tP(0,T)\expect{B}\left[\zeta_T|\mathcal{F}_t\right]\expect{T}\left[\chi|\mathcal{F}_t\right]\quad\text{(by \cref{eq:conditioned_expectation})}\\
+	& = \cancel{B_tP(0,T)}\frac{P(t,T)}{\cancel{B_tP(0,T)}}\expect{T}\left[\chi|\mathcal{F}_t\right] \\
+	& = P(t,T)\expect{T}\left[\chi|\mathcal{F}_t\right] \\
       \end{aligned}
     \end{equation*}
     which achieves the desired separation (although under a new measure).
@@ -389,22 +389,22 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Identity between $\mathcal{Q}^B$ and $\mathcal{Q}^T$}
-  By construction of the martingale measure $\mathcal{Q}^B$, the following relationship holds
+\begin{frame}{Identity between $\mathbb{Q}^B$ and $\mathbb{Q}^T$}
+  By construction of the martingale measure $\mathbb{Q}^B$, the following relationship holds
   \begin{equation*}
     \begin{gathered}
-      \frac{P(t,T)}{B_t}=\mathbb{E}^B\left[\frac{P(T,T)}{B_T}\right]\\[0.3cm]
-      P(t,T)=\mathbb{E}^B\left[\frac{P(T,T)}{B_T}B_t\right] = \mathbb{E}^B\left[\frac{B_t}{B_T}\right]
+      \frac{P(t,T)}{B_t}=\expect{B}\left[\frac{P(T,T)}{B_T}\right]\\[0.3cm]
+      P(t,T)=\expect{B}\left[\frac{P(T,T)}{B_T}B_t\right] = \expect{B}\left[\frac{B_t}{B_T}\right]
     \end{gathered}
   \end{equation*}
 	\pause
   Plugging the result into the Radon-Nikodym derivative gives
   \begin{equation*}
-    \frac{d\mathcal{Q}^T}{d\mathcal{Q}^B} = \frac{B_t}{B_T}\frac{1}{P(t,T)} =\frac{B_t/B_T}{\mathbb{E}^B[B_t/B_T]}
+    \frac{d\mathbb{Q}^T}{d\mathbb{Q}^B} = \frac{B_t}{B_T}\frac{1}{P(t,T)} =\frac{B_t/B_T}{\expect{B}[B_t/B_T]}
   \end{equation*}
 	\pause
   \begin{block}{Proposition}
-    If interest rates are deterministic (i.e. the Radon-Nikodym derivative is 1), then the measures $\mathcal{Q}^B$ and $\mathcal{Q}^T$ are identical.
+    If interest rates are deterministic (i.e. the Radon-Nikodym derivative is 1), then the measures $\mathbb{Q}^B$ and $\mathbb{Q}^T$ are identical.
   \end{block}
 \end{frame}
 
@@ -412,27 +412,27 @@
   \begin{itemize}
   \item Clearly as the Radon-Nikodym derivative is a martingale for valuation time $t$, we have
     \begin{equation*}
-      \frac{d\mathcal{Q}^U}{d\mathcal{Q}^N}=\frac{U_tN_0}{U_0N_t}
+      \frac{d\mathbb{Q}^U}{d\mathbb{Q}^N}=\frac{U_tN_0}{U_0N_t}
     \end{equation*}
   \item Do not confuse the maturity of the numeraire bond $T$ with the times at which you have to take the values of the numeraire, in this case $t$ and 0.
   \item If you want to switch from the $T$ measure to the $S$ measure, i.e. the one induced by the bond $P(.,S)$, for the valuation time $t$ we get
     \begin{equation*}
-      \frac{d\mathcal{Q}^S}{d\mathcal{Q}^T}=\frac{P(t,S)P(0,T)}{P(t,T)P(0,S)}
+      \frac{d\mathbb{Q}^S}{d\mathbb{Q}^T}=\frac{P(t,S)P(0,T)}{P(t,T)P(0,S)}
     \end{equation*}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{The Forward Rate Under $\mathcal{Q}^T$}
+\begin{frame}{The Forward Rate Under $\mathbb{Q}^T$}
   \begin{block}{Proposition}
-    Consider the forward numeraire $P(t,T)$ and denote with $\mathcal{Q}^T$ its associated measure.
-    The forward rate spanning the interval $[S,T]$ is the $\mathcal{Q}^T$-expectation of the future spot rate at time $S$ for the maturity $T$
+    Consider the forward numeraire $P(t,T)$ and denote with $\mathbb{Q}^T$ its associated measure.
+    The forward rate spanning the interval $[S,T]$ is the $\mathbb{Q}^T$-expectation of the future spot rate at time $S$ for the maturity $T$
     \begin{equation}
-      F(t;S,T) =\mathbb{E}^T[L(S,T)|\mathcal{F}_t]
+      F(t;S,T) =\expect{T}[L(S,T)|\mathcal{F}_t]
     \end{equation}
   \end{block}
 \end{frame}
 
-\begin{frame}{The Forward Rate Under $\mathcal{Q}^T$ (Proof)}
+\begin{frame}{The Forward Rate Under $\mathbb{Q}^T$ (Proof)}
   \begin{equation*}
     \begin{gathered}
       F(t;S,T) = \frac{1}{\tau}\left[\frac{P(t,S)-P(t,T)}{P(t,T)}\right] \\[0.3cm]
@@ -444,40 +444,40 @@
   \begin{equation*}
     \frac{F(t;S,T)P(t,T)}{P(t,T)} = F(t,S,T)
   \end{equation*}
-  is a \textcolor{red}{martingale} under $\mathcal{Q}^T$-measure. \pause Hence
+  is a \textcolor{red}{martingale} under $\mathbb{Q}^T$-measure. \pause Hence
   \begin{equation*}
-    F(t;S,T) = \mathbb{E}^T[F(S;S,T)|\mathcal{F}_t] = \mathbb{E}^T\left[\frac{1}{\tau}\left(\frac{1-P(S,T)}{P(S,T)}\right)\bigg|\mathcal{F}_t\right] = \mathbb{E}^T[L(S,T)|\mathcal{F}_t]
+    F(t;S,T) = \expect{T}[F(S;S,T)|\mathcal{F}_t] = \expect{T}\left[\frac{1}{\tau}\left(\frac{1-P(S,T)}{P(S,T)}\right)\bigg|\mathcal{F}_t\right] = \expect{T}[L(S,T)|\mathcal{F}_t]
   \end{equation*}
 \end{frame}
 
 \begin{frame}{The Forward Rate Under $\mathcal{Q}^T$}
   A similar result can be derived for the corresponding instantaneous quantities
   \begin{equation}
-    f(t,T)=\mathbb{E}^T[r_t|\mathcal{F}_t]
+    f(t,T)=\expect{T}[r_t|\mathcal{F}_t]
   \end{equation}
 	\pause
   Indeed from the definition of $\mathcal{Q}^B$
   \begin{equation*}
-    \frac{P(t,T)}{B_t}=\mathbb{E}^B\left[\frac{P(T,T)}{B_T}\bigg|\mathcal{F}_t\right]
+    \frac{P(t,T)}{B_t}=\expect{B}\left[\frac{P(T,T)}{B_T}\bigg|\mathcal{F}_t\right]
   \end{equation*}
   but $P(T,T)=1$ so
   \begin{equation*}
-    P(t,T)=\mathbb{E}^B\left[\frac{B_tP(T,T)}{B_T}\bigg|\mathcal{F}_t\right]=\mathbb{E}^B\left[e^{-\int_t^Tr_u du}\big|\mathcal{F}_t\right]
+    P(t,T)=\expect{B}\left[\frac{B_tP(T,T)}{B_T}\bigg|\mathcal{F}_t\right]=\expect{B}\left[e^{-\int_t^Tr_u du}\big|\mathcal{F}_t\right]
   \end{equation*}
 	\pause
   Differentiating with respect to $T$ ($\frac{d}{dx}\int_c^x f(t)dt=f(x)$)
   \begin{equation*}
     \frac{\partial P(t,T)}{\partial T}=
-    \mathbb{E}^B\left[-r(T)e^{-\int_t^Tr_u du}\big|\mathcal{F}_t\right]
+    \expect{B}\left[-r(T)e^{-\int_t^Tr_u du}\big|\mathcal{F}_t\right]
   \end{equation*}
 \end{frame}
 
-\begin{frame}{The Forward Rate Under $\mathcal{Q}^T$}
+\begin{frame}{The Forward Rate Under $\mathbb{Q}^T$}
   Now we can change numeraire to $P(\cdot,T)$ so that, using reciprocal of \cref{eq:radon_nikodym_t_forward} ($\zeta^{-1}=\frac{B_t/B_T}{P(t,T)/P(T,T)}$)
   \begin{equation*}
     \frac{\partial P(t,T)}{\partial T}=
-    \mathbb{E}^T\left[-r(T)\cancel{e^{-\int_t^Tr_u du}}\frac{P(t,T)}{\cancel{e^{-\int_t^Tr_u du}}}\bigg|\mathcal{F}_t\right]=
-    P(t,T)\mathbb{E}^T\left[-r(T)|\mathcal{F}_t\right]
+    \expect{T}\left[-r(T)\cancel{e^{-\int_t^Tr_u du}}\frac{P(t,T)}{\cancel{e^{-\int_t^Tr_u du}}}\bigg|\mathcal{F}_t\right]=
+    P(t,T)\expect{T}\left[-r(T)|\mathcal{F}_t\right]
   \end{equation*}
 	\pause
   Hence
@@ -485,7 +485,7 @@
     \begin{aligned}
       f(t,T)&=\frac{1}{P(t,T)}\frac{\partial P(t,T)}{\partial T}=
       -\frac{\partial \ln P(t,T)}{\partial T}
-      = \mathbb{E}^T\left[r(T)|\mathcal{F}_t\right]=	\mathbb{E}^T\left[f(T,T)|\mathcal{F}_t\right]
+      = \expect{T}\left[r(T)|\mathcal{F}_t\right]=	\expect{T}\left[f(T,T)|\mathcal{F}_t\right]
     \end{aligned}
   \end{equation*}
   Which demonstrates the initial statement and also shows that \textcolor{red}{the instantaneous forward rate is a martingale under the $T$-forward measure}.
@@ -495,11 +495,11 @@
 	\begin{itemize}
 		\item Previous result
 		\begin{equation*}
-			f(t, T) = \mathbb{E}^T[r(T)|\mathcal{F}_t]
+			f(t, T) = \expect{T}[r(T)|\mathcal{F}_t]
 		\end{equation*}
 		has a nice connection with the \textcolor{red}{expectation hypothesis of the term structure of interest rates}.
 		\item Its basic idea is that the long-term rate is determined purely by current and future expected short-term rates.
-		\item We cannot dive into it, but there are tons of papers on the subject, among which I suggest
+		\item We cannot dive into it, but there are a lot of papers on the subject, among which I suggest
 		\begin{itemize}
 			\item \href{https://pages.stern.nyu.edu/~sternfin/asangvin/ExpHyp.pdf}{\emph{The Expectation Hypothesis, A. Sangvinatsos}}
 			\item \href{https://www.jstor.org/stable/2327547}{\emph{A Re-Examination of Traditional Hypotheses about the Term Structure of Interest Rates}, J.C. Cox, J.E. Ingersoll, and S.A. Ross}
@@ -623,10 +623,10 @@
 \begin{frame}{Which Dynamics ?}
   \begin{itemize}
   \item<1-> We're left with one important question:
-    \textcolor{red}{what does the path of an asset price $S_t$ look like under a new measure $\mathcal{Q}$ ?} (we need to know in order to be able to really compute its expectation under $\mathcal{Q}$.)
-  \item<2-> \emph{Girsanov's theorem} answers to this question since it tells us, when we change from $\mathcal{P}$ to some other measure $\mathcal{Q}$, how the stochastic part of a process ($W_t$) changes under $\mathcal{Q}$.
-  \item<3-> Will see that it evolves as the sum of a Brownian motion under $\mathcal{Q}$ and a drift related to the Radon-Nikodym derivative characterizing $\mathcal{Q}$.
-  \item<4-> We therefore want to choose the Radon-Nikodym derivative so that the drift of $W_t$ w.r.t. $\mathcal{Q}$ exactly cancels out the drift of $S_t$, leaving us with a pure diffusion process (martingale). 
+    \textcolor{red}{what does the path of an asset price $S_t$ look like under a new measure $\mathbb{Q}$ ?} (we need to know in order to be able to really compute its expectation under $\mathbb{Q}$.)
+  \item<2-> \emph{Girsanov's theorem} answers to this question since it tells us, when we change from $\mathbb{P}$ to some other measure $\mathbb{Q}$, how the stochastic part of a process ($W_t$) changes under $\mathbb{Q}$.
+  \item<3-> Will see that it evolves as the sum of a Brownian motion under $\mathbb{Q}$ and a drift related to the Radon-Nikodym derivative characterizing $\mathbb{Q}$.
+  \item<4-> We therefore want to choose the Radon-Nikodym derivative so that the drift of $W_t$ w.r.t. $\mathbb{Q}$ exactly cancels out the drift of $S_t$, leaving us with a pure diffusion process (martingale). 
   \end{itemize}
 \end{frame}
 
@@ -636,14 +636,14 @@
     \begin{equation*}
       dX_t = f_t dt + \sigma_t dW_t
     \end{equation*}
-    under $\mathcal{P}$. 
+    under $\mathbb{P}$. 
     
     Let be given a new drift $f^*_t$ and assume $\gamma_t=\frac{f_t^*-f_t}{\sigma_t}$ such that $\mathbb{E}\left[\exp\left(\frac{1}{2}\int_0^t\gamma_t^2dt\right)\right]<\infty$.
     Define the measure 
     \begin{equation}
-      \frac{d\mathcal{P}^*}{d\mathcal{P}}=\exp\left(-\frac{1}{2}\int_0^t \gamma_s^2 ds + \int_0^t \gamma_s dW_s \right)
+      \frac{d\mathbb{P}^*}{d\mathbb{P}}=\exp\left(-\frac{1}{2}\int_0^t \gamma_s^2 ds + \int_0^t \gamma_s dW_s \right)
     \end{equation}
-    Then $\mathcal{P}^*$ is equivalent to $\mathcal{P}$. 
+    Then $\mathbb{P}^*$ is equivalent to $\mathbb{P}$. 
     The Radon-Nikodym derivative process is an \textcolor{red}{exponential martingale}.
   \end{block}
 \end{frame}
@@ -683,7 +683,7 @@
       dX_t = b(X_t, t) dt + a(X_t, t) dW_t
     \end{equation*}
   \item Let's assume that the drift and diffusion coefficients are such that there exists a unique solution to the equation which is $X$.
-  \item We want to find a probability measure $\mathcal{P}^*$ such that the drift of $X$ is $\tilde{b}(X_t,t)$ instead of $b(X_t,t)$.
+  \item We want to find a probability measure $\mathbb{P}^*$ such that the drift of $X$ is $\tilde{b}(X_t,t)$ instead of $b(X_t,t)$.
   \end{itemize}
 \end{frame}
 
@@ -704,14 +704,13 @@
   \begin{itemize}
   \item<1-> If the Novikov condition is satisfied then we can apply the Girsanov theorem and we have that
     \begin{equation}
-      \mathcal{P}^* = \mathbb{E}^\mathcal{P}\left[\exp\left(-\frac{1}{2}\int_0^t \gamma_s^2 ds + \int_0^t \gamma_s dW_s \right)\right]
+      \mathbb{P}^* = \expect{P}\left[\exp\left(-\frac{1}{2}\int_0^t \gamma_s^2 ds + \int_0^t \gamma_s dW_s \right)\right]
     \end{equation}
-    and that $\tilde{W}$ is a Brownian motion on $\mathcal{P}^*$.
+    and that $\tilde{W}$ is a Brownian motion on $\mathbb{P}^*$.
   \item<2-> In practice, don't need to determine the new measure $\mathcal{P}^*$.
   \item<3-> It is enough to know it exists, such that we can work with the resulting SDE of the process of interest under the new measure.	
   \begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
-	\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/ctCF7}{shorturl.at/ctCF7}}};
+	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}
   \end{itemize}
 \end{frame}
@@ -812,9 +811,9 @@
 %	\end{itemize}
 %\end{frame}
 
-\begin{frame}{Moving Away from $\mathcal{P}$ Measure}
+\begin{frame}{Moving Away from $\mathbb{P}$ Measure}
   \begin{itemize}
-  \item<1-> Let's go back to the real-world probabilities and assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathcal{P}$
+  \item<1-> Let's go back to the real-world probabilities and assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
     \begin{equation*}
       dS_t = \mu S_t dt + \sigma S_t dW_t
     \end{equation*}
@@ -834,14 +833,14 @@
   \begin{itemize}
   \item<1-> We have seen that under the bank account induced measure the process defined as an asset divided by the numeraire is a martingale
     \begin{equation*}
-      \cfrac{S_t}{B_t} = \mathbb{E}^B\left[\frac{S_T}{B_T}\bigg|\mathcal{F}_t\right]
+      \cfrac{S_t}{B_t} = \expect{B}\left[\frac{S_T}{B_T}\bigg|\mathcal{F}_t\right]
     \end{equation*}
   \item<2-> So if we define $Z_t=\cfrac{S_t}{B_t}$, since $Z_t$ is a martingale (no-drift process) it's evolution could be described by
     \begin{equation}
       dZ_t = \sigma Z_t dW_t^B
       \label{eq:z_martingale1}
     \end{equation}
-    where $dW_t^B$ is a Brownian motion under the $\mathcal{Q}^B$ measure.
+    where $dW_t^B$ is a Brownian motion under the $\mathbb{Q}^B$ measure.
   \end{itemize}
 \end{frame}
 
@@ -889,20 +888,20 @@
   \item<1-> Now let's see what happens under the stock numeraire.
   \item<2-> Under the risk-neutral measure $\mathcal{Q}^B$
     \begin{equation*}
-      \frac{S_0}{B_0} = \mathbb{E}^B\left[\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right] \implies
-      S_0 = \mathbb{E}^B\left[B_0\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right]
+      \frac{S_0}{B_0} = \expect{B}\left[\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right] \implies
+      S_0 = \expect{B}\left[B_0\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right]
     \end{equation*}
-  \item<3-> By the Change of Numeraire Theorem under the measure $\mathcal{Q}^A$ induced by asset numeraire $A$
+  \item<3-> By the Change of Numeraire Theorem under the measure $\mathbb{Q}^A$ induced by asset numeraire $A$
     \begin{equation*}
-      S_0 = \mathbb{E}^A\left[A_0\frac{S_t}{A_t}\bigg|\mathcal{F}_0\right]
+      S_0 = \expect{A}\left[A_0\frac{S_t}{A_t}\bigg|\mathcal{F}_0\right]
     \end{equation*}
-  \item<4-> Since both expressions represent a price of an asset they must be the same and we can equal the terms inside the expectations. Note that the expectations are computed according two different measures so we keep the factors $d\mathcal{Q}^X$. 
+  \item<4-> Since both expressions represent a price of an asset they must be the same and we can equal the terms inside the expectations. Note that the expectations are computed according two different measures so we keep the factors $d\mathbb{Q}^X$. 
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Stock Numeraire Measure Dynamics}
   \begin{equation*}
-    \frac{B_0}{B_t}d\mathcal{Q}^B = \frac{A_0}{A_t}d\mathcal{Q}^A\implies \frac{d\mathcal{Q}^A}{d\mathcal{Q}^B}=\frac{B_0A_t}{B_tA_0}
+    \frac{B_0}{B_t}d\mathbb{Q}^B = \frac{A_0}{A_t}d\mathbb{Q}^A\implies \frac{d\mathbb{Q}^A}{d\mathbb{Q}^B}=\frac{B_0A_t}{B_tA_0}
   \end{equation*}
   \begin{itemize}
   \item<2-> We have already derived the analytical GBM solution in the risk-neutral measure (see pg. 14 to 18 of "no\_arbitrage" slides)
@@ -911,7 +910,7 @@
     \end{equation*}
     \item<3-> So we can replace the numeraire definition into the Radon-Nikodym derivative
     \begin{equation*}
-      \frac{d\mathcal{Q}^A}{d\mathcal{Q}^B}=\frac{\cancel{A_0}e^{\cancel{rt}-\frac{1}{2}\sigma^2 t + \sigma W^B_t}}{\cancel{e^{rt}}\cancel{A_0}}=\exp\left(-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
+      \frac{d\mathbb{Q}^A}{d\mathbb{Q}^B}=\frac{\cancel{A_0}e^{\cancel{rt}-\frac{1}{2}\sigma^2 t + \sigma W^B_t}}{\cancel{e^{rt}}\cancel{A_0}}=\exp\left(-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
     \end{equation*}
   \end{itemize}
 \end{frame}
@@ -951,8 +950,7 @@
   \end{itemize}
 	\pause
   \begin{tikzpicture}[remember picture,overlay]
-    \node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
-    \node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/rGJQ3}{shorturl.at/rGJQ3}}};
+    \node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
   \end{tikzpicture}
 \end{frame}
 
@@ -983,9 +981,9 @@
 \begin{frame}{Drift Changes (Proof)}
   %We now provide a formal proof of the above proposition in the special case of \textcolor{red}{$n=1$}, in which \textcolor{red}{$\rho=1$}.
   
-  Indicate by $\mathcal{Q}^N$ and $\mathcal{Q}^U$ the $N$-measure and $U$-measure. By Girsanov theorem we have the following expression for the Radon-Nikodym derivative
+  Indicate by $\mathbb{Q}^N$ and $\mathbb{Q}^U$ the $N$-measure and $U$-measure. By Girsanov theorem we have the following expression for the Radon-Nikodym derivative
   \begin{equation*}
-    \zeta_t = \frac{d\mathcal{Q}^N}{d\mathcal{Q}^U} = e^{-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s^U}
+    \zeta_t = \frac{d\mathbb{Q}^N}{d\mathbb{Q}^U} = e^{-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s^U}
   \end{equation*}
   with 
   \begin{equation}
@@ -1003,7 +1001,7 @@
 \begin{frame}{Drift Changes (Proof)}
   By the main theorem on numeraire change \cref{eq:radon_nikodym_der2}, and using the fact that $\zeta_t$ is a $\mathcal{Q}^U$-martingale, 
   \begin{equation}
-    \zeta_t = \frac{d\mathcal{Q}^N}{d\mathcal{Q}^U} = \frac{U_0N_t}{N_0U_t}
+    \zeta_t = \frac{d\mathbb{Q}^N}{d\mathbb{Q}^U} = \frac{U_0N_t}{N_0U_t}
     \label{eq:zeta_numeraire}
   \end{equation}
   thus
@@ -1011,7 +1009,7 @@
     d\zeta_t= \frac{U_0}{N_0}d\left(\frac{N_t}{U_t}\right)= \frac{U_0}{N_0}\sigma_t^{N/U}CdW_t^U
     \label{eq:dzeta2}
   \end{equation}
-  where $\sigma^{N/U}_t$ is the volatility of the process $N_t/U_t$, which is also a martingale under $\mathcal{Q}^U$.
+  where $\sigma^{N/U}_t$ is the volatility of the process $N_t/U_t$, which is also a martingale under $\mathbb{Q}^U$.
 \end{frame}
   
 \begin{frame}{Drift Changes (Proof)}
@@ -1054,7 +1052,7 @@
 \end{frame}
 
 \begin{frame}{Drift Changes (Proof)}	
-Now let $N_t$ and $U_t$ have dynamics under $\mathcal{Q}^U$ given by 
+Now let $N_t$ and $U_t$ have dynamics under $\mathbb{Q}^U$ given by 
 \begin{equation*}
 	\begin{gathered}
 		dN_t = (\ldots) dt + \sigma_t^NCdW^U_t\\
@@ -1147,7 +1145,7 @@ Now let $N_t$ and $U_t$ have dynamics under $\mathcal{Q}^U$ given by
       &=\frac{S}{N}(\sigma^S - \sigma^N)dW^N 
       \end{aligned}
   \end{equation*}
-  which shows that $\cfrac{S}{N}$ is a $\mathcal{Q}^N$-martingale (no drift in dynamics).
+  which shows that $\cfrac{S}{N}$ is a $\mathbb{Q}^N$-martingale (no drift in dynamics).
 \end{frame}
 
 %\begin{frame}{}
