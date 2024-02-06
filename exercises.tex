@@ -49,7 +49,7 @@ X(t)=\int_0^t e^{-u}dW(u)+\int_0^t(1-\frac{1}{2}e^{-2u}du
 \end{equation*}
 and determine the distribution of $X(t)$.
 \item Prove that $\{S(t):t\geq 0\}$ is an Ito process.
-\item Let $r$ be a constant interest rate. Find the risk-neutral measure $\tilde{\mathcal{P}}$, equivalent to $\mathcal{P}$, such that the discounted price process $\{we^{-rt}S(t): 0\leq t \leq T\}$ is a martingale under $\tilde{\mathcal{P}}$.
+\item Let $r$ be a constant interest rate. Find the risk-neutral measure $\tilde{\mathbb{P}}$, equivalent to $\mathbb{P}$, such that the discounted price process $\{we^{-rt}S(t): 0\leq t \leq T\}$ is a martingale under $\tilde{\mathbb{P}}$.
 \end{enumerate}
 \fillwithlines{3cm}
 \begin{solution}
@@ -98,13 +98,13 @@ Z &= \exp\left(-\int_0^T \theta(u)dW(u) - \frac{1}{2}\int_0^T \theta^2(u)du\righ
 &=\exp\left(-\int_0^T e^u (1-r)dW(u) - \frac{1}{2}\int_0^T e^{2u} (1-r)^2 du\right)
 \end{aligned}
 \end{equation*}
-Define the measure $\tilde{\mathcal{P}}$ by $\tilde{\mathcal{P}}(A) =\int_A Z d\mathcal{P}$ and consider the process 
+Define the measure $\tilde{\mathbb{P}}$ by $\tilde{\mathbb{P}}(A) =\int_A Z d\mathbb{P}$ and consider the process 
 \begin{equation*}
 \begin{aligned}
 \tilde{W}_t = \int_0^t \theta(u)dW(u) +W(t) = \int_0^t e^{u}(1-r)du+W(t)=(1-r)(e^t -1)+W(t)
 \end{aligned}
 \end{equation*}
-By Girsanov Theorem $\tilde{W}$ is a Brownian motion under $\tilde{\mathcal{P}}$ and hence it is a martingale under $\tilde{\mathcal{P}}$. 
+By Girsanov Theorem $\tilde{W}$ is a Brownian motion under $\tilde{\mathbb{P}}$ and hence it is a martingale under $\tilde{\mathbb{P}}$. 
 Using the SDE of part (a), together with the Ito product rule, we have 
 \begin{equation*}
 \begin{aligned}
@@ -115,7 +115,7 @@ d(e^{-rt}S(t)) &= e^{-rt}dS_t-r e^{-rt}S_t dt = \\
 &= e^{-t(r+1)}S_t d\tilde{W}_t
 \end{aligned}
 \end{equation*}
-Since $e^{-rt}S(t)$ is an Ito integral, we see that the discounted price process is a martingale under $\tilde{\mathcal{P}}$.
+Since $e^{-rt}S(t)$ is an Ito integral, we see that the discounted price process is a martingale under $\tilde{\mathbb{P}}$.
 \end{enumerate}
 \end{solution}
 
@@ -168,7 +168,7 @@ With $\beta$ and $\sigma$ constant and $\lambda\in\mathbb{R}^+$, the necessary c
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Suppose $B(t)$ is a standard Brownian motion. For each of the following choices of $X_t$, find an equivalent probability measure $\mathcal{Q}$ such that $X_t$ is a Brownian motion in the new measure. Assume $X_0=B_0=0$
+\question Suppose $B(t)$ is a standard Brownian motion. For each of the following choices of $X_t$, find an equivalent probability measure $\mathbb{Q}$ such that $X_t$ is a Brownian motion in the new measure. Assume $X_0=B_0=0$
 \begin{equation*}
 \begin{gathered}
 dX_t = 2dt + dB_t\\
@@ -225,17 +225,14 @@ Let $B_t$ be a standard Brownian motion.
 \fillwithlines{3cm}
 \begin{solution}
 \begin{enumerate}[label=(\alph*),font=\itshape]
-\item Apply Itô's formula:
-%First, we need to express f(t, B_t) as a function of both time and the Brownian motion B_t. We can define a new function g(t, x) such that f(t, B_t) = g(t, B_t). Now, we apply Itô's formula to g(t, B_t):
-%
-%dg = g_t dt + g_x dB_t + 1/2 g_{xx} d[B_t]^2
-%where:
-%
-%g_t = ∂g/∂t is the partial derivative of g with respect to time.
-%g_x = ∂g/∂x is the partial derivative of g with respect to x (evaluated at x = B_t).
-%g_{xx} = ∂^2g/∂x^2 is the second partial derivative of g with respect to x (evaluated at x = B_t).
+\item First, we need to express $f(B_t, t)$ as a function of both time and the Brownian motion B$_t$. We can define a new function $g(X_t, t)$ such that $f(B_t, t) = g(B_t, t)$. Now, we apply Itô's formula to $g(B_t, t)$:
+\begin{equation*}
+dg = g_t dt + g_x dB_t + 1/2 g_{xx} dB_t^2
+\end{equation*}
+where $g_t = \frac{\partial g}{\partial t}$ is the partial derivative of $g$ with respect to time, and $g_x = \frac{\partial g}{\partial x}$ is the partial derivative of $g$ with respect to $x$ %(evaluated at x = B_t) 
+and $g_{xx} = \frac{\partial^2 g}{\partial x^2}$ is the second partial derivative of $g$ with respect to $x$.% (evaluated at x = B_t).
 %d[B_t]^2 = dt for Brownian motion (since its variance is dt).
-%Relate g and f:
+
 %Remember that f(t, B_t) = g(t, B_t). Substituting this into the Itô's formula equation:
 %
 %df = g_t dt + g_x dB_t + 1/2 g_{xx} dt
@@ -272,14 +269,16 @@ X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
 \end{enumerate}
 \fillwithlines{3cm}
 \begin{solution}
-Define a function $g(t, x) = \ln(x)$. Applying Itô's formula to $g(t, X_t)$:
+Define a function $g(X_t, t) = \ln(X_t)$. Applying Itô's formula to $g(t, X_t)$:
+\begin{equation*}
+dg = g_t dt + g_x dX_t + 1/2 g_{xx} dX_t^2
+\end{equation*}
 
-%dg = g_t dt + g_x dX_t + 1/2 g_{xx} d[X_t]^2
-%
-%Since d[X_t]^2 = X_t^2 dB_t^2 = X_t^2 dt (due to Brownian motion properties), we get:
-%
-%dg = (1/X_t) dX_t + 1/2 * (-1/X_t^2) * X_t^2 dt
-%
+Since $dX_t^2 = X_t^2 dB_t^2 = X_t^2 dt$ (due to Brownian motion properties), we get:
+\begin{equation*}
+dg = (1/X_t) dX_t + 1/2 * (-1/X_t^2) * X_t^2 dt
+\end{equation*}
+
 %Substituting the SDE for dX_t:
 %
 %dg = A_t dB_t - 1/2 A_t^2 dt
@@ -310,7 +309,7 @@ Define a function $g(t, x) = \ln(x)$. Applying Itô's formula to $g(t, X_t)$:
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Let $W_1(t)$ and $W_2(t)$ a 2D-Brownian motion defined on a probability space $(\Omega, \mathcal{F}, \mathcal{P})$. Consider two price processes $\{S_1(t):t\geq 0\}$ and $\{S_2(t):t\geq 0\}$ with corresponding SDEs given by
+\question Let $W_1(t)$ and $W_2(t)$ a 2D-Brownian motion defined on a probability space $(\Omega, \mathcal{F}, \mathbb{P})$. Consider two price processes $\{S_1(t):t\geq 0\}$ and $\{S_2(t):t\geq 0\}$ with corresponding SDEs given by
 \begin{equation*}
 \begin{aligned}
 dS_1(t) &= 2S_1(t)dW_1(t) + 3S_1(t)dW_2(t)\\
@@ -319,7 +318,7 @@ dS_2(t) &= S_2(t)dt + S_2dW_1(t)
 \end{equation*}
 \begin{enumerate}[label=(\alph*),font=\itshape]
 \item Show that $S_1(t)S_2(t)$ is a 2D-Ito process.
-\item Consider an expiration date $T$, and suppose tha interest rate is a constant $r$. Show that the market price equations have a unique solution, and determine the risk-neutral probability measure $\tilde{\mathcal{P}}$ for the process $\{S_1(t),S_2(t):0\leq t\leq T\}$.
+\item Consider an expiration date $T$, and suppose tha interest rate is a constant $r$. Show that the market price equations have a unique solution, and determine the risk-neutral probability measure $\tilde{\mathbb{P}}$ for the process $\{S_1(t),S_2(t):0\leq t\leq T\}$.
 \end{enumerate}
 \fillwithlines{3cm}
 \begin{solution}
@@ -441,23 +440,23 @@ Hence, at $t = 0$, assuming that the option values are 2.5, one can benefit from
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Consider the process $Z_t$ whose dynamics is defined by the following SDE $dZ_t = -\phi_tZ_tdW_t, Z_0=1$, where $W_t$ is a Brownian motion under the measure $\mathcal{P}$. For any $t\geq 0$ define the a new measure $\mathcal{Q}$ according to $d\mathcal{Q}=Z_t d\mathcal{P}$.
+\question Consider the process $Z_t$ whose dynamics is defined by the following SDE $dZ_t = -\phi_tZ_tdW_t, Z_0=1$, where $W_t$ is a Brownian motion under the measure $\mathbb{P}$. For any $t\geq 0$ define the a new measure $\mathbb{Q}$ according to $d\mathbb{Q}=Z_t d\mathbb{P}$.
 Prove that 
 \begin{equation*}
-\mathbb{E}^{\mathcal{Q}}[Z_T\log(Z_T)] = \mathbb{E}^{\mathcal{Q}}\left(\frac{1}{2}\int_0^T\phi_s^2 ds\right)
+\mathbb{E}^{\mathbb{Q}}[Z_T\log(Z_T)] = \mathbb{E}^{\mathbb{Q}}\left(\frac{1}{2}\int_0^T\phi_s^2 ds\right)
 \end{equation*}
 
 \fillwithlines{3cm}
 \begin{solution}
-$Z$ is clearly a $\mathcal{P}$-martingale, so that $\mathcal{Q}$ defines a genuine probability measure, and therefore
+$Z$ is clearly a $\mathbb{P}$-martingale, so that $\mathbb{Q}$ defines a genuine probability measure, and therefore
 \begin{equation*}
-\mathbb{E}^{\mathcal{P}}(Z_t\log(Z_t)) = \mathbb{E}^{\mathcal{Q}}(\log(Z_t))
+\mathbb{E}^{\mathbb{P}}(Z_t\log(Z_t)) = \mathbb{E}^{\mathbb{Q}}(\log(Z_t))
 \end{equation*}
 Now, applying Ito's formula, we can write
 \begin{equation*}
 Z_T = \exp\left(-\frac{1}{2}\int_0^T \phi_s^2 ds - \int_0^T \phi_s dW_s\right)
 \end{equation*}
-From Girsanov theorem, the process $\tilde{W}$ defined pathwise as $\tilde{W}_t := W_t +\int_0^t\phi_s ds$ is a standard Brownian motion under $\mathcal{Q}$ and 
+From Girsanov theorem, the process $\tilde{W}$ defined pathwise as $\tilde{W}_t := W_t +\int_0^t\phi_s ds$ is a standard Brownian motion under $\mathbb{Q}$ and 
 \begin{equation*}
 -\frac{1}{2}\int_0^t \phi_s^2 ds - \int_0^t \phi_s dW_s = \frac{1}{2}\int_0^t \phi_s^2 ds - \int_0^t \phi_s d\tilde{W}_s
 \end{equation*}
@@ -465,7 +464,7 @@ from which the result follows.
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Let $X_t$ be the unique solution to the following stochastic differential equation, under $\mathcal{P}$:
+\question Let $X_t$ be the unique solution to the following stochastic differential equation, under $\mathbb{P}$:
 \begin{equation*}
 dX_t = X_t(\mu_t dt + \sigma_t dW_t)
 \end{equation*}
@@ -502,7 +501,7 @@ Z_t := \exp\left\{\lambda\int_0^t X_s dW_s - \frac{\lambda^2}{2}\int_0^t X_s^2 d
 \end{equation*}
 \begin{enumerate}[label=(\alph*),font=\itshape]
 \item Show that $Z$ is a martingale.
-\item Define the new probability measure $\mathbb{Q}$ as $d\mathbb{Q}:=Z_td\mathbb{P}$. Write the stochastic differential equation solved by the rpocess $X$ under $\mathbb{Q}$.
+\item Define the new probability measure $\mathbb{Q}$ as $d\mathbb{Q}:=Z_td\mathbb{P}$. Write the stochastic differential equation solved by the process $X$ under $\mathbb{Q}$.
 \item Show that 
 \begin{equation*}
 Z_t := \exp\left\{\lambda\int_0^t X_s dW_s + \frac{\lambda^2}{2}\int_0^t X_s^2 ds\right\}
@@ -604,6 +603,9 @@ S_t = S_0 \exp\left(\sigma W_t - \frac{\sigma^2}{2}t\right)
 \end{equation*}
 where $S_0$ is the initial value (1 in this case). This implies that $S_t$ follows a lognormal distribution with parameters $\mu=\frac{\sigma^2}{2}t$ and $\sigma^2 = \sigma^2 t$.
 \end{itemize}
+\begin{center}
+	\includegraphics[width=0.8\linewidth]{addons/cev_sim}
+\end{center}
 \end{solution}
 
 \end{questions}
