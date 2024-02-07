@@ -63,6 +63,7 @@ To value the second forward contract, we note that the forward interest rate is 
 \end{equation*}
 
 The total value of the forward contract is therefore $1.161 + 0.803 = 1.964$~million.
+\end{solution}
 
 \question  A financial institution has entered into an interest rate swap with company A. Under the terms of the swap, it receives 10\% per annum and pays 6-month LIBOR on a principal of 10 million for 5 years. Payments are made every 6 months. 
 Suppose that company A defaults on the sixth payment date (at the end of year 3) when the interest rate (with semiannual compounding) is 8\% per annum for all maturities. 
@@ -147,6 +148,209 @@ Year & Dollar& Sw Fr & Forward &Dollar Equivalent. & Loss \\ \hline
 
 Discounting the numbers in the final column to the end of year 6 at 8\% per annum, the cost of the default is 679800. Note that, if this were the only contract entered into by company B, it would make no sense for the company to default at the end of year six as the exchange of payments. At that time has a positive value to company B.
 In practice company B is likely to be defaulting and declaring bankruptcy for reasons unrelated to this particular contract and payments on the contract are likely to stop when bankruptcy is declared.
+\end{solution}
+
+\question Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A.
+
+\begin{solution}
+In our case: $Q= 100$~mln - the principal of the swap (in bond notation it is face value FV), LIBOR=0.102 - 6 months LIBOR, T=1.25 - the maturity of the bond as a fraction of the year (15 months is 1.25 of year), r3m=0.10 - 3 months interest rate, r9m=0.105 - 9 months interest rate, r15m=0.11 - 15 months interest rate, rfix=0.08 - fixed interest rate, 2 - number of payments in a year
+
+Since the company A pays floating interest and receives fixed one
+\begin{equation*}
+V=V_{fix}-V_{fl} = \sum_{i=1}^n \cfrac{k}{e^{r_i t_i}} + \cfrac{Q}{e^{r_n t_n}} - \cfrac{k^*}{e^{r_1 t_1}}+\cfrac{Q}{e^{r_1 t_1}}
+\end{equation*}
+
+The fixed leg value is
+\begin{equation*}
+V_{fix} = 4e^{-0.25\cdot 0.1} +  4e^{-0.75\cdot 0.105} +  104e^{-1.25\cdot 0.11} = 98.25\text{mln}
+\end{equation*}
+
+The floating payment is based on LIBOR and the nearest (first) payment is 
+\begin{equation*}
+k^*=0.102\cdot0.5\cdot 100 = 5.1\text{mln}
+\end{equation*}
+Hence:
+\begin{equation*}
+V_{fl}=5.1e^{-0.25\cdot 0.1}+100\cdot e^{-0.25\cdot 0.1} = 102.51
+\end{equation*}
+
+And the final calcualtion
+\begin{equation*}
+V = 98.24-102.51=-4.27\text{mln}
+\end{equation*}
+which is the swap value for company A.
+\end{solution}
+
+\question Determine the value of the swap from previous exercise in the way as described in the Relationship between interest rate swap and FRA part.
+\begin{solution}
+The cash flows that will be exchanged after three months can be calculated at the beginning. The interest rate of 8\% will be exchanged for a rate of 10.2\%. Let us call it FRA1:
+\begin{equation*}
+FRA_1 = 0.5\cdot 100\cdot (0.08-0.102)\cdot e^{-0.25\cdot 0.1}=-1.07
+\end{equation*}
+
+Determination of flows after 9th and 15th month requires two more formulas.
+
+First we have to calculate forward interest rate for the half-year period for 3 months from now. This is required to calculate the cash flow after 9 months. We will use the following formula: $e^{r_{9m}\cdot0.75}=e^{r_{3m}\cdot0.25}e^{F'_{0.25, 0.5}\cdot 0.5}$. Solving the formula for $F'_{0.25, 0.5}$ we have:
+\begin{equation*}
+F'_{0.25, 0.5}=\cfrac{r_{9m}\cdot 0.75-r_{3m}\cdot0.25}{0.5}=0.10750
+\end{equation*}
+
+The rate is continously compounded therefore we should convert it into semiamnual compounding with the formula $R_m = m\cdot(e^{r_c/m}-1)$, where $r_c$ is continously compounded and $r_m$ is discretely compounded. Note that $m$ in this formula is the number of payments within a year (not the number of months).
+\begin{equation*}
+F_{0.25, 0.5}=2\cdot(e^{F'_{0.25,0.5}/2}-1)=0.11044
+\end{equation*}
+The present value of the cash flow exchanged in 9 months is:
+\begin{equation*}
+FRA_2=0.5\cdot100\cdot(0.08-0.11044)\cdot e^{-0.75\cdot0.105}=-1.41
+\end{equation*}
+obtained from the FRA contract valuation.
+
+Then the procedure goes on similarly: to calculate the present value of the cash flow that will occur in 1 year and 3 months, we need to calculate forward interest rate for the half-year period for 9 months from now. We will use the following formula: $e^{r_{15m}\cdot 1.25}=e^{r_{9m}\cdot 0.75}e^{F'_{0.75, 0.5}\cdot 0.5}$. Solving the formula for $F'_{0.75, 0.5}$
+ we have:
+\begin{equation*}
+F'_{0.75, 0.5}=\cfrac{r_{15m}\cdot1.25-r_{9m}0.75}{0.5}=0.11750
+\end{equation*}
+
+After converting the rate with continous compounding to the interest rate with semi-annual compounding, we obtain:
+\begin{equation*}
+FRA_{0.75,0.5}=2\cdot(e^{F'_{0.75,0.52}}-1)=2\dot(e^0.117502-1)=0.12102
+\end{equation*}
+
+The present value of the cash flow exchanged in 15 months is:
+\begin{equation*}
+FRA_3=0.5\cdot100\cdot(0.08-0.12102)\cdot e^{-1.25\cdot0.11}=-1.79
+\end{equation*}
+
+The value of the swap is then 
+\begin{equation*}
+V=FRA_1+FRA_2+FRA_3 = -1.07-1.41-1.79=-4.27
+\end{equation*}
+\end{solution}
+
+\question Assume that yield curves in Japan and in the US are flat. The interest rate in Japan is equal to 4\% per annum, and in the US to 9\% per annum (with continuous compounding). The financial institution takes position in the swap contract, under which it receives 5\% on an annual basis of the amount denominated in yen and pays 8\% per annum of the amount denominated in dollars. These amounts are respectively 10 million USD and 1200 million yen. The contract is valid for 3 years and the current exchange rate is 110 USDJPY. What is the value of this currency swap?
+\begin{solution}
+We should use the formula for swap valuation: 
+\begin{equation*}
+V=\cfrac{1}{S}\cdot(V_f-V_d)
+\end{equation*}
+
+Note that $S$ should be appropriately entered to the formula to calculate $V$ in USD.
+
+The cash flows in domestic (USD) and foreign (JPY) currency:
+\begin{equation*}
+\begin{aligned}
+k_d&=r_{d, fix}\cdot 10 mln USD =0.8 mln USD \\
+k_f&=r_{f, fix}\cdot 1200 mln JPY 60 mln JPY
+\end{aligned}
+\end{equation*}
+
+Now we can calculate bond values by discounting the cash flows with respective interest rates ($r_f$ and $r_d$):
+\begin{equation*}
+\begin{aligned}
+V_d&=0.8\cdot e^{-0.09\cdot1}+0.8\cdot e^{-0.09\cdot2}+10.8\cdot e^{-0.09\cdot 3}=9.64 mln USD\\
+V_f&=60\cdot e^{-0.04\cdot1}+60\cdot e^{-0.04\cdot 2}+1260\cdot e{-0.04\cdot 3}=1230.55 mln JPY
+\end{aligned}
+\end{equation*}
+The formula for swap value gives:
+\begin{equation*}
+V = S\cdot V_f - V_d =1230.55 mln JPY110 USDJPY-9.64 mln USD=1.55 mln USD
+\end{equation*}
+
+The swap value for a financial institution is 1.55 million USD.
+\end{solution}
+
+\question Determine the value of the swap from Exercise 3 as the sum of forward contracts.
+
+\begin{solution}
+We will calculate all the values in USD. The exchange rate is 110 USDJPY and says how many yens one should pay for 1 USD. We need the ratio in USD therefore we can write it as a rate of the form of JPYUSD and then $(S'=0.009091=\frac{1}{110})$ JPYUSD (0.009091 USD per 1 yen). At the beginning, we will calculate forward exchange rates for one, two and three years:
+\begin{equation*}
+\begin{aligned}
+F&=S'\cdot e^{(r_d-r_f)T}\\
+F_1&=0.009091\cdot e^{0.05\cdot 1}=0.0096
+F_2&=0.009091\cdot e^{0.05\cdot 2}=0.0101
+F_3&=0.009091\cdot e^{0.05\cdot 3}=0.0106
+\end{aligned}
+\end{equation*}
+
+Using the formulas given in the theoretical part, we can calculate the values of cash flows that will occur at the end of the first, second and third year:
+\begin{equation*}
+\begin{aligned}
+FC_1&=(60\cdot0.0096-0.8)\cdot e^{-0.09\cdot1}=-0.21 \\
+FC_2&=(60\cdot0.0101-0.8)\cdot e^{-0.09\cdot2}=-0.16 \\
+FC_3&=(60\cdot0.0106-0.8)\cdot e^{-0.09\cdot3}=-0.13
+\end{aligned}
+\end{equation*}
+In addition, the swap notional will also be exchanged at the end of the third year. Let’s calculate the value of this flow: $FC_n=(1200\cdot 0.0106-10)e^{-0.09\cdot3}=2.05$.
+
+The final value of a currency swap is the sum of the above four values:
+\begin{equation*}
+V=-0.21-0.16-0.13+2.05=1.55 mln USD
+\end{equation*}
+\end{solution}
+
+\question The currency swap has 3 years to expire. Agreement assumes the exchange of the following payments: A pays to B 14\% from GBP 20 million, while B pays to A 10\% from USD 30 million. The term structure of interest rates is flat in both the United Kingdom and the United States. At present, US rates are 8\%, and Great Britain rates are 11\% (continous compounding). Interest is paid once a year. The current exchange rate is 1.65 GBPUSD.
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item What is the value of the swap for the company A and for the company B?
+\item How will the answer to the above question change if we assume a decreasing structure of interest rates, both in GBP and USD?
+USD: 8\%, 7\%, 6\% for Y1, Y2, Y3 respectively
+GBP: 11\%, 10\%, 9\% for Y1, Y2, Y3 respectively
+\item Will the value of the swap change if we assume that the parties pay floating payments based on market rates? Use the forward contracts to calculate swap value.
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item Company A receives payments in USD and pays in GBP. Therefore we should use the formula for swap valuation using bonds portfolio $V= B_{USD}-FX\cdot B_{GBP}$.
+
+The value of GBP cash flow and the bond underlying the swap is:
+$C F_{GBP}=20 mln\cdot 14\%=2.8 mln GBP$ and $B_{GBP}=2.8e^{-0.11\cdot1}+2.8e^{-0.11\cdot2}+22.8e^{-0.11\cdot 3}=21.15 mln GBP$.
+
+The value of USD cash flow bond underlying the swap is:
+$CF_{USD}=30 mln\cdot10\%=3 mln USD$ and $B_{USD}=3e^{-0.08\cdot1}+3e^{-0.08\cdot2}+33e^{-0.08\cdot3}=31.28 mln USD$.
+
+The value of the contract to the A (paying GBP) is
+$V=B_{USD}-FX\cdot B_{GBP}=31.28-1.65\cdot21.15=-3.62 mln USD$
+\item In this case we should use appropriate interest rate term structure to calculate bond values.
+
+The value of GBP bond underlying the swap is: $CF_{GBP}=20 mln\cdot14\%=2.8 mln GBP$ and $B_{GBP}=2.8e^{-0.11\cdot1}+2.8e^{-0.10\cdot 2}+22.8e^{-0.09\cdot3}=22.21 mln GBP$
+
+The value of USD bond underlying the swap is: $CF_{USD}=30 mln\cdot 10\%=3 mln GBP$ and $B_{USD}=3e^{-0.08\cdot1}+3e^{-0.07\cdot2}+33e^{-0.06\cdot3}=32.94 mln USD$.
+
+The value of the contract to the A (paying GBP) is $V=B_{USD}-FX\cdot B_{GBP}=32.94-1.65\cdot22.21=-3.71 mln USD$
+\item At the beginning we have to calculate market rates i.e. forward rates for GBP and USD. Because rates are continously compounded we will use:
+\begin{equation*}
+e^{r_{t+n}(t+n)}=e^{r_t\cdot t}e^{F_{t, n}n}
+\end{equation*}
+
+Solving the formula for $F_{t, n}$ we have:
+\begin{equation*}
+F_{t, n}=\cfrac{r_{t+n}\cdot(t+n)-r_t t}{n}
+\end{equation*}
+In our case:
+$r_{i,GBP}=11\%,10\%,9\%$ and $r_{i,USD}=8\%,7\%,6\%$
+
+Therefore:
+$F'_{i,i+1,GBP} = 0.11,0.09,0.07$ and $F'_{i,i+1,USD} = 0.08,0.06,0.04$.
+
+The rates are continously compounded therefore we have to convert them into annual compounding (for details see exercise 2):
+$F_{i,i+1,GBP}=0.1163,0.0942,0.0725$ and $F_{i, i+1,USD}=0.0833,0.0618,0.0408$.
+
+Now have to calculate also forward exchange rate $(F=Se^{(r_d-r_f)T})$:
+$F1=1.6012,1.5539,1.5050$
+
+Now we can calculate the cash flows:
+$FC_1=-1.1310, FC_2=-0.9317, FC_3=-0.8040$
+
+And the principal cash flow:
+$FC_n=(30-20\cdot F_2)e^{-r_{3,USD}\cdot 3} = -0.1334$
+
+The value of the swap is:
+\begin{equation*}
+V=FC_1+FC_2+FC_3+FC_n=-1.1310-0.9317-0.8040-0.1334=-3.00 mlnUSD
+\end{equation*}
+Note that the solution of this point would be a one line if we use the bond valuation based approach (since both bonds are valued at beginning of its life so the values are equal to face value):$(30-20\cdot 1.65)=-3$.
+
+If time at which we value a swap contract is later than moment of bond issue then one should use the full formula for bond valuations.
+\end{enumerate}
+\end{solution}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
