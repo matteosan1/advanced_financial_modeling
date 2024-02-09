@@ -199,6 +199,8 @@ or
 W(t) = \sum_{t_0}^{t} \sqrt{dt}\mathcal{N}(0,1)
 \end{equation}
 
+\begin{question}
+Simulate a couple of realization of a Brownian motion process with initial value 0.
 Figure~\ref{fig:brownian_motion} reports two realization of the Brownian motion simulated according to the Euler scheme.
 
 \begin{figure}[htbp]
@@ -207,6 +209,7 @@ Figure~\ref{fig:brownian_motion} reports two realization of the Brownian motion 
 \end{center}
 \label{fig:brownian_motion}
 \end{figure}
+\end{question}
 
 \begin{question}
 Using the Euler scheme simulate the 4-months (with daily steps) evolution of a Geometric Brownian Motion stochastic process with initial value $S_0=100$, $\mu=0.005$, and $\sigma=0.05$.
@@ -270,6 +273,11 @@ Using the Euler scheme simulate a possible realization for $S_t$ and $\sigma_t$ 
 \label{fig:heston}
 \end{figure}
 \end{question}
+
+\begin{question}
+Using the Euler scheme simulate few realization from a short rate process following the Hull and White model.
+\end{question}
+
 \clearpage
 
 \section{Forward Rate Agreement}
@@ -413,8 +421,8 @@ The price of FRN has a range from \emph{par} to \emph{par} + full coupon. It is 
 		\includegraphics[width=0.6\linewidth]{addons/floating_rate_note}
 	\end{center}
 \end{question}
-
 \clearpage
+
 \section{Asset Swap}
 
 The underlying bond in the asset swap package is credit risky and can default. The bond purchaser’s claim is on the recovery value of the bond, however she must continue to honor the bond coupons on the swap (of course she may choose to close the swap position at market value). The asset swap seller is therefore taking on this credit risk, which could be hedged with Credit Default Swaps.
@@ -535,7 +543,7 @@ Once again let us consider same simple function from before,
 \end{equation}
 In adjoint mode $\bar{y} = dy/dy$ is specified as an input and allows us to enable/disable the adjoint derivative calculation. 
 
-\subsection{Example}
+\begin{question}
 Consider the function define in Eq.~\ref{eq:aad_function} and compute the AD both using tangent and adjoint technique.
 \begin{equation}
 \begin{cases}
@@ -547,23 +555,72 @@ When for example $x_1=2$ and $x_2 = 3$ we have,
 \begin{equation}
 \frac{df}{dx_1} = 8, \text{ and } \frac{df}{dx_2}=3
 \end{equation}
+\end{question}
 
 \begin{question}
 Consider a 5-years receiver Interest Rate Swap with a 1M notional, exchanging a fixed rate of 5\% with a flat 1\% LIBOR rate. The risk free rate for discounting is considered to be flat a 1.5\%.
 Compute DV01 and PV01 with algorithmic differentiation using both tangent and adjoint modes. Compare the results.
 \end{question}
+\clearpage
+
+\section{Newton-Raphson Method}
+Newton's method, also known as the Newton–Raphson method, is a root-finding algorithm which produces successively better approximations to the roots (or zeroes) of a real-valued function. %The most basic version starts with a real-valued function f, its derivative f′, and an initial guess x0 for a root of f. If f satisfies certain assumptions and the initial guess is close, then
+
+The idea is to start with an initial guess, then to approximate the function by its tangent line, and finally to compute the $x$-intercept of this tangent line. This $x$-intercept will typically be a better approximation to the original function's root than the first guess, and the method can be iterated.
+
+If the tangent line to the curve $f(x)$ at $x = x_n$ intercepts the $x$-axis at $x_{n+1}$ then the slope is
+\begin{equation}
+	f'(x_n)=\dfrac {f(x_{n})-0}{x_{n}-x_{n+1}}
+\end{equation}
+
+Solving for $x_{n+1}$ gives
+\begin{equation}
+	x_{n+1}=x_{n}-{\frac {f(x_{n})}{f'(x_{n})}}
+\end{equation}
+
+We start the process with some arbitrary initial value $x_0$ (the closer to the zero, the better). The method will usually converge, provided this initial guess is close enough to the unknown zero, and that $f'(x_0) \neq 0$.
+\begin{center}
+	\includegraphics[width=0.6\linewidth]{addons/newton_method}
+\end{center}
 
 \clearpage
-\section{Cap Volatility Bootstrap}
 
-Main Challenges
-	\begin{enumerate}
-		\item Produce Caplet/Floorlet prices consistent with current levels of Cap/Floor volatilities and therefore be able to re-price the market;
-		\item being able to “rebase” volatilities when pricing Cap/Floor over not quoted floating rates according to multiple curves framework (e.g. Cap/Floor over 1M or 12M Euribor);
-		\item to make things more complicated, some Caps/Floors are not always quoted over the same LIBOR, for example EUR Cap/Floor are quoted over 3M EURIBOR up to $2y$ maturity and then over 6M EURIBOR.
-	\end{enumerate}
+\section{Bootstrap}
 
-From the prices of different maturity caps, it is possible to $\color{red}{bootstrap}$ the volatility of each caplet, i.e. the volatility which refers to the forward rate corresponding to the caplet.
+\emph{Bootstrap} is an algorithm that allows to determine a vector of values that are implicitly defined by a set of equations.
+
+Consider the following system 
+\begin{equation}
+	\begin{cases}
+		f_1(x_1, c) = 0\\
+		f_2(x_1, x_2, c) = 0\\
+		f_3(x_1, x_2, x_3, c) = 0\\
+		\vdots
+		f_n(x_1,\ldots,x_n, c) = 0\\
+	\end{cases}
+\label{eq:bootstrap}
+\end{equation}
+It is possible to find the vector $\bar{x} = \{x_1,\ldots,x_n\}$ which simultaneously satisfy all the equation in~\ref{eq:bootstrap}, with an iterative algorithm as follows.
+Indeed, solving the first equation, either analytically or numerically, we get $x_1 = f_1^{-1}(c)$ that can be used to solve the second equation as $x_2 = f_2^{-1}(x_1, c)$.
+Going on, \emph{iteratively}, through each equation we are then able to determine all the unknown $\bar{X}$ values.
+
+As a financial example, you can imagine the functions $f_i$ as the pricing equation of bonds with different maturities, each depending on a different set of interest rates, minus the current market price of the bond $c$. Since those are fair prices each $f_i$ can be set equal to 0 and through the bootstrap we can determine the interest rate term-structure implied by the bond market quotes. 
+
+\subsection{Cap Volatilities}
+
+Another practical application of the bootstrap algorithm is to determine the \emph{spot cap volatilities} from the current market prices (note, the market quotes only the flat volatilities).
+
+The main challenges are:
+\begin{enumerate}
+	\item Produce Caplet/Floorlet prices consistent with current levels of Cap/Floor volatilities and therefore be able to re-price the market;
+	\item being able to “rebase” volatilities when pricing Cap/Floor over not quoted floating rates according to multiple curves framework (e.g. Cap/Floor over 1M or 12M Euribor);
+	\item to make things more complicated, some Caps/Floors are not always quoted over the same LIBOR, for example EUR Cap/Floor are quoted over 3M EURIBOR up to $2y$ maturity and then over 6M EURIBOR.
+\end{enumerate}
+
+From the prices of different maturity caps, it is possible to \emph{bootstrap} the volatility of each caplet, i.e. the volatility which refers to the forward rate corresponding to the caplet.
+
+\begin{question}
+Given the following set of flat volatilities use the bootstrap algorithm to determine the implied spot volatilities.
 
 Let's \emph{strip} caplet volatilities from the following cap (flat) volatilities which refers to caps with 0.013 strike over EURIBOR-6M whose term structure is shown in Table~\ref{tab:flat_volatilities}(right).
 
@@ -594,18 +651,19 @@ Pillar & Rate \\ \hline
 \label{tab:flat_volatilities}
 \caption{Left, flat volatilities table. Right, term structure of the considered Euribor-6M curve.}
 \end{table}
+
 The bootstrapping procedure proceeds has follows:
 \begin{enumerate}
-\item We start with the nearest instruments, i.e. the spot starting caplet with $6m$ maturity. For maturities shorter than the first quoted value we consider the volatility constant hence:
+\item we start with the nearest instruments, i.e. the spot starting caplet with $6m$ maturity. For maturities shorter than the first quoted value we consider the volatility constant hence:
 \begin{equation}
-\sigma^{spot}(t_{0,6m})=\color{ipython-green}{\sigma^{flat}(t_{0,1y})}
+\sigma^{spot}_{t_{0,6m}}=\textcolor{ipython-green}{\sigma^{flat}_{t_{0,1y}}}
 \end{equation}
 \item Let’s now price the $1y$ forward starting caplet with $6m$ maturity. Since market cap volatilities are quoted assuming \textbf{no-arbitrage} opportunity we can build the forward starting caplet as the difference of two caps:
 \begin{equation}
 \begin{gathered}
-Cpl_{1y, 1y6m}(\sigma^{spot}_{1y6m})=Cap_{1y6m}-Cap_{1y} \\[0.3cm]
-Cap_{1y6m}(\color{red}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\color{red}{\sigma^{flat}_{1y6m}}) + Cpl_{6m,1y}(\color{red}{\sigma^{flat}_{1y6m}}) + Cpl_{1y,1y6m}(\color{red}{\sigma^{flat}_{1y6m}}) \\[0.3cm]
-Cap_{1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}})=Cpl_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) + Cpl_{6m,1y}(\color{ipython-green}{\sigma^{flat}_{1y}}) 
+\text{Cpl}_{1y, 1y6m}(\sigma^{spot}_{1y6m})=\text{Cap}_{1y6m}-\text{Cap}_{1y} \\[0.3cm]
+\text{Cap}_{1y6m}(\textcolor{red}{\sigma^{flat}_{1y6m}})=\text{Cpl}_{0,6m}(\textcolor{red}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{6m,1y}(\textcolor{red}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{1y,1y6m}(\textcolor{red}{\sigma^{flat}_{1y6m}}) \\[0.3cm]
+\text{Cap}_{1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) 
 \end{gathered}
 \end{equation}
 Unfortunately the $18m$ volatility is NOT quoted on the market, so we can:
@@ -614,7 +672,7 @@ Unfortunately the $18m$ volatility is NOT quoted on the market, so we can:
   \item use an interpolation method such as linear or cubic spline to get the $1y6m$ cap volatility.
 \end{itemize}
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.6\linewidth]{addons/flat_volatilities}
 \end{center}
@@ -626,14 +684,90 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 \item We can apply the same method for the $1y6m$ forward starting caplet to get the volatility, $\sigma^{flat}_{2y}$ is quoted so no interpolation is needed here.
 \begin{equation}
 \begin{gathered}
-Cpl_{1y6m, 2y}(\sigma^{spot}_{2y})=Cap_{2y}-Cap_{1y6m} \\[0.3cm]
-Cap_{2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}})=Cpl_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + Cpl_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \ldots + Cpl_{1y6m,2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) \\[0.3cm]
-Cap_{1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + Cpl_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + Cpl_{1y,1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})
+\text{Cpl}_{1y6m, 2y}(\sigma^{spot}_{2y})= \text{Cap}_{2y}-\text{Cap}_{1y6m} \\[0.3cm]
+\text{Cap}_{2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \ldots + \text{Cpl}_{1y6m,2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) \\[0.3cm]
+\text{Cap}_{1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{1y,1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})
 \end{gathered}
 \end{equation}
 
 \item Keep iteratively to solve for all the remaining volatilities using the very same technique.
 \end{enumerate}
+\end{question}
+\clearpage
+
+\section{Negative Rates}
+
+The financial crisis, which started in 2007, exposed a lack of trust among counterparties. Since then the incorporation of the probability of default in pricing models has become standard.
+This lack of trust in the financial system reduced trading activities and kept the money in the pockets.
+To recover trust, the central banks decide to intervene and stimulate the monetary supply and demand by lowering the interest rates.
+This decision was expected to encourage investors to borrow money at low rate and invest into the economy, which would push its grow. Since 2008 interest rates have gradually been lowered.
+
+Begin June 2014, the rates set by ECB were negative for the first time (-10 bps). Using negative rates to "inspire" investors is certainly unconventional bu not unprecedented (Switzerland, Sweden and Denmark also report negative rates).
+
+In a negative interest rate environment, the ZCBs, may get values that are higher than one unit of currency. This would imply that the Libor rate would be negative. When the the rate is negative the Black-Scholes pricing equation is not properly defined (the logarithm of a negative quantity...).
+
+Instead of using the Geometric Brownian Motion dynamics, the arithmetic Brownian Motion (ABM), that give rise to negative realizations could, for example be chosen. Such a solution, although straight-forward, has a significant disadvantage, however, as the normal distribution has much flatter tails as compared to a log-normal process.
+
+So instead of completely changing the underlying dynamics, the industrial standard fro dealing with the negativity has become to \emph{shift} the original process.
+
+Caplets can be prices under a negative interest rate environment by an \emph{adaptation} of the underlying dynamics of the Libor rate. The shifted process is defined, as
+\begin{equation}
+\hat{L_k}(t) = L_k(t) + \theta_k
+\end{equation}
+The corresponding Black equation becomes
+\begin{equation}
+	\textbf{Cpl}_k(t_0) = N\tau_k P(t_0, T_k)\left[\hat{L_k}(t_0)\Phi(d_1)-\hat{K}\Phi(d_2)\right] 
+\end{equation}
+where $\hat{K} = K + \theta_k$.
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[width=0.6\linewidth]{addons/lognormal_shifted}
+\end{center}
+\label{fig:lognormal_shifted}
+\end{figure}
+
+\begin{question}
+Write a python function that simulated shifted-geometric Brownian motion paths.
+\end{question}
+
+\begin{question}
+Using the function written in the previous exercise, price caplets with Monte Carlo and using Black formula in a regime with negative interest rates. Compare the two results.
+\end{question}
+
+\clearpage
+\section{Jamshidian Decomposition}
+An option on a portfolio of pure discount bonds can be decomposed into a portfolio of options on the individual discount bonds in the portfolio.
+
+Hence, we can think of the European Swaption as a sum of European
+options on Zero-Coupon bonds. This method is called Jamshidian’s decomposition, and is mathematically explained as follows:
+\begin{equation}
+	\max\left[\sum_{i=1}^n C_i p(r, t, s_i) - K, 0\right] = \sum_{i=1}^n C_i \max\left[p(r, t, s_i) - K_i, 0\right]
+	\label{eq:jamshidian_decomposition}
+\end{equation}
+
+Consider a European Swaption with strike rate $K$, maturity $T$ and nominal $FV$
+with payment dates $T_i$ for $i = 1,\ldots, n$. Since the value of a floating rate bond is worth its face value, we can take it as an option on a bond paying $C_i = K_{s_i}$ with strike price $FV$. This option will be exercised when $r(T) < r^*$ where $r^*$ is the solution to
+\begin{equation}
+	FV = \sum_{i=1}^n C_i p(r^*, T, T_i)
+\end{equation}
+This means that $FV$ is taken as a sum of discounted flows $C_i$ for a short rate $r^*$ at time $T$. To find the value of $r^*$ we have to discount all the Swap cash-flows, sum them up and let the sum be equal to the notional. We have to use the NewtonRaphson algorithm to follow this calculation $r^*$, that will be the correspondent level of $r$ for that equality to happen. 
+
+Once $r^*$ is found, we have to calculate the discounted cash-flows substituting it in the discounting factor $e^{-r\Delta t}$ and let them be the strike prices of our call options on Swaps.
+Afterwards, we calculate the payoff of the call options on the cash-flows with
+the strike price mentioned and sum them up. The payoff of this sum of options
+will thus be
+\begin{equation}
+	\max\left[\sum_{i=1}^n C_ip(r, T, T_i)-FV, 0\right]
+\end{equation}
+which using Eq.~\ref{eq:jamshidian_decomposition} we find is equivalent to
+\begin{equation}
+	\sum_{i=1}^n C_i \max\left[p(r, T, T_i)-FV_i, 0\right]
+\end{equation}
+where $FV_i = p(r^*, T, T_i)$. 
+Therefore, the Swaption is calculated as the sum of $n$ options on discounted bonds with the exercise price of the $i$th option equal to $FV_i$.
+
+After the price of a European Swaption under the Hull-White model is calculated, we have to calibrate it against the market data. Usually this calibration method is carried out taking the target prices to match the ones given by the Black-76 or Normal-Black models and trying to get as close as possible to them.
 
 \clearpage
 \section{Longstaff-Schwartz Algorithm}
@@ -663,7 +797,7 @@ So, in mathematical terms we have the following payoff in
 \begin{equation}
 	\max[K-S(t_1), P(t_1,T;S(t_1),K)]
 \end{equation}
-where $P(t_1,T;S(t_1),K)$ is the price of a Put which can be computed analytically! In the jargon of american products, 
+where $P(t_1,T;S(t_1),K)$ is the price of a Put which can be computed analytically! In the jargon of American products, 
 is called the \emph{continuation value}, i.e. the value of holding the option instead of early exercising it.
 
 So the premium of the option is the average of this discounted payoff calculated in each iteration of the Monte Carlo procedure
@@ -987,40 +1121,6 @@ Determine the maximum price a buyer is willing to pay in order to earn an annual
 %		YTC = 5.21% x 2 = 10.42%
 %	\end{solution}
 
-\clearpage
-\section{Jamshidian Decomposition}
-An option on a portfolio of pure discount bonds can be decomposed into a portfolio of options on the individual discount bonds in the
-portfolio.
-
-Hence, we can think of the European Swaption as a sum of European
-options on Zero-Coupon bonds. This method is called Jamshidian’s decomposition, and is mathematically explained as follows:
-\begin{equation}
-\max\left[\sum_{i=1}^n C_i p(r, t, s_i) - K, 0\right] = \sum_{i=1}^n C_i \max\left[p(r, t, s_i) - K_i, 0\right]
-\label{eq:jamshidian_decomposition}
-\end{equation}
-
-Consider a European Swaption with strike rate $K$, maturity $T$ and nominal $FV$
-with payment dates $T_i$ for $i = 1,\ldots, n$. Since the value of a floating rate bond is worth its face value, we can take it as an option on a bond paying $C_i = K_{s_i}$ with strike price $FV$. This option will be exercised when $r(T) < r^*$ where $r^*$ is the solution to
-\begin{equation}
-FV = \sum_{i=1}^n C_i p(r^*, T, T_i)
-\end{equation}
-This means that $FV$ is taken as a sum of discounted flows $C_i$ for a short rate $r^*$ at time $T$. To find the value of $r^*$ we have to discount all the Swap cash-flows, sum them up and let the sum be equal to the notional. We have to use the NewtonRaphson algorithm to follow this calculation $r^*$, that will be the correspondent level of $r$ for that equality to happen. 
-
-Once $r^*$ is found, we have to calculate the discounted cash-flows substituting it in the discounting factor $e^{-r\Delta t}$ and let them be the strike prices of our call options on Swaps.
-Afterwards, we calculate the payoff of the call options on the cash-flows with
-the strike price mentioned and sum them up. The payoff of this sum of options
-will thus be
-\begin{equation}
-\max\left[\sum_{i=1}^n C_ip(r, T, T_i)-FV, 0\right]
-\end{equation}
-which using Eq.~\ref{eq:jamshidian_decomposition} we find is equivalent to
-\begin{equation}
-\sum_{i=1}^n C_i \max\left[p(r, T, T_i)-FV_i, 0\right]
-\end{equation}
-where $FV_i = p(r^*, T, T_i)$. 
-Therefore, the Swaption is calculated as the sum of $n$ options on discounted bonds with the exercise price of the $i$th option equal to $FV_i$.
-
-After the price of a European Swaption under the Hull-White model is calculated, we have to calibrate it against the market data. Usually this calibration method is carried out taking the target prices to match the ones given by the Black-76 or Normal-Black models and trying to get as close as possible to them.
 
 \clearpage
 \section{Reverse Floater}
