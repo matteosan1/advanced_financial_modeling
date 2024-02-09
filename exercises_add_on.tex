@@ -100,6 +100,10 @@ It's often easy to forget just how powerful modern computers can be. What once r
 
 %FIXME few words about mean and C.L.
 
+\begin{question}
+Using a Monte Carlo simulation of coin flip demonstrate the Central Limit Theorem.
+\end{question}
+
 \subsection{1D Random Walk}
 The Random Walk in one dimension is a model for each process which have simple binary outcomes.
 
@@ -364,28 +368,78 @@ Implementing a class or a function that represents an interest rate swap shows t
 \end{question}
 
 \clearpage
+\section{Floating Rate Notes}
+Floating rate bond or note (FRN) usually refers to an instrument whose coupon is based on a short term rate (3-month T-bill, 6-month LIBOR). Variable coupon rates are fixed in advance at reset dates, which are 3- or 6-month (interest payment period) earlier.
+
+In this example we use an annual payment frequency but the extension to the quarterly or semi-annual frequency is straightforward.
+
+Floating rate bond price with (\emph{unit notional amount}), $n$ maturity, annual frequency ($\tau=1$), and the first coupon rate predetermined at previous reset date ($C_{reset}$) is as follows.
+
+\begin{equation}
+	\begin{aligned}
+		\textbf{FRN} & = D_{0,1}C_{reset} + \sum_{i=1}^nD_{0,i}f_{i,i+1} + D_{0,n}= \\
+		& = D_{0,1}C_{reset} + D_{0,2}f_{1,2} + \ldots + D_{0,n-1}f_{n-2,n-1}+ D_{0,n}(1+f_{n-1,n}) = \\
+		& = D_{0,1}C_{reset} + D_{0,2}\left(\frac{D_{0,1}}{D_{0,2}}-1\right) + \ldots \\
+		&\quad\ldots + D_{0,n-1}\left(\frac{D_{0,n-2}}{D_{0,n-1}}-1\right) + D_{0,n}\left(\frac{D_{0,n-1}}{D_{0,n}}-1\right) + D_{0,n} = \\
+		& = D_{0,1}C_{reset} + (D_{0,1} - D_{0,2}) + (D_{0,2} - D_{0,3}) + \ldots \\
+		&\quad\ldots + (D_{0,n-2} - D_{0,n-1}) + (D_{0,n-1} - D_{0,n}) + D_{0,n} = \boxed{D_{0,1} (1 +C_{reset})}
+	\end{aligned}
+\end{equation}
+where $f(t_1,t_2)$ denotes the forward rate between $t_1$ and $t_2$.
+
+If the remaining maturity of the above \textbf{FRN} for example was 4.25 year, its price will be
+\begin{equation}
+	\textbf{FRN} = D_{0,\frac{1}{4}}(1+C_{reset})
+\end{equation}
+
+If the remaining maturity of the above \textbf{FRN} was $(4 + \epsilon)$ year, in this case, the price would be
+
+\begin{equation}
+	\begin{aligned}
+		\textbf{FRN} &= D_{0,1}f_{0,1}+ D_{0,2}f_{1,2} + \ldots + D_{0,n-1}f_{n-2,n-1} + D_{0,n}(1+f_{n-1,n}) = \\
+		& = D_{0,1}\left(\frac{D_{0,0}}{D_{0,1}}-1\right) + D_{0,2}\left(\frac{D_{0,1}}{D_{0,2}}-1\right) + \ldots \\
+		&\quad\ldots + D_{0,n-1}\left(\frac{D_{0,n-2}}{D_{0,n-1}}-1\right) + D_{0,n}\left(\frac{D_{0,n-1}}{D_{0,n}}-1\right) + D_{0,n} = \\
+		&= (D_{0,0}-D_{0,1})+(D_{0,1}-D_{0,2}) + \ldots \\
+		&\quad\ldots + (D_{0,n-2}-D_{0,n-1})+(D_{0,n-1}-D_{0,n})+D_{0,n} = 1
+	\end{aligned}
+\end{equation}
+
+The price of FRN has a range from \emph{par} to \emph{par} + full coupon. It is par right before the reset date and is $C$ right after the reset date (and is linear when pricing date is between two reset dates).
+
+\begin{question}
+	Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. The relevant insterest rates can be taken from \href{https://raw.githubusercontent.com/matteosan1/advanced\_financial\_modeling/master/input_files/libor.csv}{libor.csv}
+	
+	\begin{center}
+		\includegraphics[width=0.6\linewidth]{addons/floating_rate_note}
+	\end{center}
+\end{question}
+
+\clearpage
 \section{Asset Swap}
 
-	6.1
-Credit Risk
-The underlying bond in the asset swap package is credit risky and can default. The bond purchaser’s claim is on the recovery value of the bond, however she must continue to honor the
-bond coupons on the swap. Of course she may choose to close the swap position at market
-value. The asset swap seller is therefore taking on this credit risk, which could be hedged with
-Credit Default Swaps. Consequently asset swap investors receive credit protection should the underlying asset default.
+The underlying bond in the asset swap package is credit risky and can default. The bond purchaser’s claim is on the recovery value of the bond, however she must continue to honor the bond coupons on the swap (of course she may choose to close the swap position at market value). The asset swap seller is therefore taking on this credit risk, which could be hedged with Credit Default Swaps.
 
-Asset Swap Spreads
-Asset swaps are quoted in the market as a spread, which incorporates both funding costs and a
-premium for credit protection. The spread attempts to make the swap in some way equivalent
-to a bond. The asset swap spread is also a useful rich-cheap bond analysis tool.
-The bonds of issuers of good credit quality, of some governments such as Germany and good
-quality government agency bonds trade at negative spreads to swaps, and especially so for the
-shorter maturity bonds. The opposite is true for poor or low quality credits such as Greek
-and Argentina sovereigns and many corporate bonds, which trade with positive spreads. For
-good quality credits a widening of the spread, which is negative, refers to a richening of the
-bond (decline in bond yield relative to swaps) and for poor quality credits the opposite is true,
-namely a widening of the positive spread reflects a cheapening of the bond and increase in bond
-yield.
+Many bonds do not have a liquid CDS market and even when they do the trader often cannot match the hedge to the maturity of the asset swap, since often only the 5Y CDS contracts are liquid. Often credit risk is hedged using a proxy bond issuer or CDS reference entity, whereby we receive a protection or insurance payout if a highly correlated credit defaults, but we don’t receive a credit protection on the exact same bond issuer referenced in our asset swap.
 
+%Finally we should also note that in the event of a default we receive a payout to cover losses on our bond notional, but we are not compensated for losses on the bond coupons themselves.
+Suffice to say if and when traders purchase credit protection using CDS contracts this does not typically provide a perfect hedge and we carry some residual credit risk or credit basis risk.
+
+Asset swaps are quoted in the market as a spread, which incorporates both funding costs and a premium for credit protection. The spread attempts to make the swap in some way equivalent to a bond.
+
+The bonds of issuers of good credit quality, of some governments such as Germany and good quality government agency bonds trade at negative spreads to swaps, and especially so for the shorter maturity bonds. The opposite is true for poor or low quality credits such as Greek and Argentina sovereigns and many corporate bonds, which trade with positive spreads. For good quality credits a widening of the spread, which is negative, refers to a richening of the bond (decline in bond yield relative to swaps) and for poor quality credits the opposite is true, namely a widening of the positive spread reflects a cheapening of the bond and increase in bond yield.
+
+\begin{question}
+Consider a 1Y risky bond paying quarterly coupons. The bond issuer has a default probability of 5\% during the next year. The interest rate term structure is considered flat at 0.05.
+
+\begin{itemize}
+\item If the bond buyer enters into an asset swap, determine its spread;
+\item check that a CDS with same maturity as the asset swap has similar spread;
+\item finally check how the spread change as a function of the probability of default.
+\end{itemize}
+\begin{center}
+	\includegraphics[width=0.6\linewidth]{addons/asset_swap_spread}
+\end{center}
+\end{question}
 
 \begin{question}
 	Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
@@ -423,10 +477,6 @@ Par-Par Adjustment =
 %10.0
 %= 5.0320%
 %or 503.20 basis points
-
-
-
-
 
 \clearpage
 \section{Algorithmic Differentiation}
@@ -1006,49 +1056,6 @@ F\phi(d_1)$$
 	\end{center}
 	\label{fig:cap_vega}
 \end{figure}
-
-\clearpage
-\section{Floating Rate Notes}
-Floating rate bond or note (FRN) usually refers to an instrument whose coupon is based on a short term rate (3-month T-bill, 6-month LIBOR). Variable coupon rates are fixed in advance at reset dates, which are 3- or 6-month (interest payment period) earlier.
-
-In this example we use an annual payment frequency but the extension to the quarterly or semi-annual frequency is straightforward.
-
-Floating rate bond price with (\emph{unit notional amount}), $n$ maturity, annual frequency ($\tau=1$), and the first coupon rate predetermined at previous reset date ($C_{reset}$) is as follows.
-
-\begin{equation}
-\begin{aligned}
-\textbf{FRN} & = D_{0,1}C_{reset} + \sum_{i=1}^nD_{0,i}f_{i,i+1} + D_{0,n}= \\
-& = D_{0,1}C_{reset} + D_{0,2}f_{1,2} + \ldots + D_{0,n-1}f_{n-2,n-1}+ D_{0,n}(1+f_{n-1,n}) = \\
-& = D_{0,1}C_{reset} + D_{0,2}\left(\frac{D_{0,1}}{D_{0,2}}-1\right) + \ldots \\
-&\quad\ldots + D_{0,n-1}\left(\frac{D_{0,n-2}}{D_{0,n-1}}-1\right) + D_{0,n}\left(\frac{D_{0,n-1}}{D_{0,n}}-1\right) + D_{0,n} = \\
-& = D_{0,1}C_{reset} + (D_{0,1} - D_{0,2}) + (D_{0,2} - D_{0,3}) + \ldots \\
-&\quad\ldots + (D_{0,n-2} - D_{0,n-1}) + (D_{0,n-1} - D_{0,n}) + D_{0,n} = \boxed{D_{0,1} (1 +C_{reset})}
-\end{aligned}
-\end{equation}
-where $f(t_1,t_2)$ denotes the forward rate between $t_1$ and $t_2$.
-
-If the remaining maturity of the above \textbf{FRN} for example was 4.25 year, its price will be
-\begin{equation}
-\textbf{FRN} = D_{0,\frac{1}{4}}(1+C_{reset})
-\end{equation}
-
-If the remaining maturity of the above \textbf{FRN} was $(4 + \epsilon)$ year, in this case, the price would be
-
-\begin{equation}
-\begin{aligned}
-\textbf{FRN} &= D_{0,1}f_{0,1}+ D_{0,2}f_{1,2} + \ldots + D_{0,n-1}f_{n-2,n-1} + D_{0,n}(1+f_{n-1,n}) = \\
-& = D_{0,1}\left(\frac{D_{0,0}}{D_{0,1}}-1\right) + D_{0,2}\left(\frac{D_{0,1}}{D_{0,2}}-1\right) + \ldots \\
-&\quad\ldots + D_{0,n-1}\left(\frac{D_{0,n-2}}{D_{0,n-1}}-1\right) + D_{0,n}\left(\frac{D_{0,n-1}}{D_{0,n}}-1\right) + D_{0,n} = \\
-&= (D_{0,0}-D_{0,1})+(D_{0,1}-D_{0,2}) + \ldots \\
-&\quad\ldots + (D_{0,n-2}-D_{0,n-1})+(D_{0,n-1}-D_{0,n})+D_{0,n} = 1
-\end{aligned}
-\end{equation}
-
-The price of FRN has a range from \emph{par} to \emph{par} + full coupon. It is par right before the reset date and is $C$ right after the reset date (and is linear when pricing date is between two reset dates).
-
-\begin{question}
-Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. The relevant insterest rates can be taken from \href{https://raw.githubusercontent.com/matteosan1/advanced\_financial\_modeling/master/input_files/libor.csv}{libor.csv}
-\end{question}
 
 \clearpage
 \section{Girsanov Theorem}
