@@ -525,6 +525,7 @@ Consider the function define in Eq.~\ref{eq:aad_function} and compute the AD bot
 When for example $x_1=2$ and $x_2 = 3$ we have,
 \begin{equation}
 \frac{df}{dx_1} = 8, \text{ and } \frac{df}{dx_2}=3
+\end{equation}
 \end{question}
 
 \begin{question}
@@ -614,11 +615,6 @@ Cap_{1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})=Cpl_{0,6m}(\textcolo
 \item Keep iteratively to solve for all the remaining volatilities using the very same technique.
 \end{enumerate}
 \clearpage
-
-
-
-
-
 
 
 \clearpage
@@ -746,43 +742,60 @@ Let's consider now a generic American product. Here is the Longstaff-Schwartz al
 
 \clearpage
 \section{Callable Bond}
-
-When it comes to analyzing callable bonds, investors have a variety of tools and techniques at their disposal. These tools and techniques enable investors to assess the value of callable bonds and make informed investment decisions. In this section, we will discuss some of the most commonly used callable bond analysis tools and techniques.
-
-1. Yield to Call (YTC)
-
-YTC is a measure of the return an investor can expect if a callable bond is called by the issuer. It takes into account the call price, the coupon rate, and the time to call. YTC is an important metric for investors because it allows them to compare the potential return of a callable bond to that of a non-callable bond. However, it is important to note that YTC assumes that the issuer will call the bond at the first opportunity, which may not always be the case.
-
-2. Yield to Worst (YTW)
-
-YTW is a measure of the return an investor can expect if a callable bond is not called by the issuer. It takes into account the yield to maturity and the yield to call, whichever is lower. YTW is important for investors because it provides a more conservative estimate of the potential return of a callable bond. It is also important to note that YTW assumes that the bond will not be called, which may not always be the case.
-
-3. option-Adjusted spread (OAS)
-
-OAS is a measure of the yield spread between a callable bond and a risk-free bond of the same maturity. It takes into account the optionality of the callable bond, which allows the issuer to call the bond at any time. OAS is important for investors because it provides a more accurate estimate of the credit risk associated with a callable bond.
-
-4. Duration
-
-Duration is a measure of the sensitivity of a bond's price to changes in interest rates. It takes into account the bond's cash flows, maturity, and yield. Duration is important for investors because it allows them to assess the risk associated with a callable bond. Callable bonds typically have shorter durations than non-callable bonds, which means that they are less sensitive to changes in interest rates.
-
-5. Monte Carlo Simulation
-
-Monte Carlo simulation is a technique that uses random variables to simulate the potential outcomes of an investment. It takes into account a range of possible interest rate scenarios and calculates the potential return of a callable bond under each scenario. Monte Carlo simulation is important for investors because it allows them to assess the potential risk and return of a callable bond in a variety of market conditions.
-
 A callable bond is a bond in which the issuer reserves the right to redeem the bond at different discrete times, possibly for different redemption values. When a callable bond is bought, no one knows when the bond will be called, however it can nly be called at the times agreed upon at issue.
 
-The most common questions asked with callable bonds involve either
+Investors have a variety of tools and techniques at their disposal, which enable them to assess the value of callable bonds and make informed investment decisions. Examples are:
+\begin{itemize}
+\item \textbf{Yield to Call (YTC)} It is a measure of the return an investor can expect if a callable bond is called by the issuer. It takes into account the call price, the coupon rate, and the time to call. YTC is an important metric for investors because it allows them to compare the potential return of a callable bond to that of a non-callable bond. However, it is important to note that YTC assumes that the issuer will call the bond at the first opportunity, which may not always be the case.
+\item \textbf{Yield to Worst (YTW)} It is a measure of the return an investor can expect if a callable bond is not called by the issuer. It takes into account the yield to maturity and the yield to call, whichever is lower. YTW is important for investors because it provides a more conservative estimate of the potential return of a callable bond. It is also important to note that YTW assumes that the bond will not be called, which may not always be the case.
+\item \textbf{Option-Adjusted spread (OAS)} It is a measure of the yield spread between a callable bond and a risk-free bond of the same maturity. It takes into account the optionality of the callable bond, which allows the issuer to call the bond at any time. OAS is important for investors because it provides a more accurate estimate of the credit risk associated with a callable bond.
+\item \textbf{Duration} It is a measure of the sensitivity of a bond's price to changes in interest rates. It takes into account the bond's cash flows, maturity, and yield. Duration is important for investors because it allows them to assess the risk associated with a callable bond. Callable bonds typically have shorter durations than non-callable bonds, which means that they are less sensitive to changes in interest rates.
+\item \textbf{Monte Carlo Simulation}.
+\end{itemize}
 
-1. determining the maximum price that can be paid for the bond to guarantee a certain yield rate, or
-2. detemining the minimum yield rate for a bond that was bought at a certain price.
+The most common questions asked with callable bonds involve either determining the maximum price that can be paid for the bond to guarantee a certain yield rate, or detemining the minimum yield rate for a bond that was bought at a certain price.
 
-The recommende strategy for solving callable bond problems is to crete a two column table with the first represeint ghe timme at which the bond can be called.
+The recommende strategy in both cases is to crete a sort of two column table with the first representing the time at which the bond can be called.
 
-For type 1. problems, the second column is the corresponding price in order to receive the desired yield rate, keeping in mind the redemption value may be different at the different redemption dates. Then think through what happens whine the bond is bought for the prices in the table but redeemed at other times in the table, an answer the question accrodgingly.
+For the first type of problems, the second column is the corresponding price in order to receive the desired yield rate, %, keeping in mind the redemption value may be different at the different redemption dates. Then think through what happens whine the bond is bought for the prices in the table but redeemed at other times in the table, an answer the question accrodgingly.
+while for the second is the yield rate tha would produce the given price. %, again keeping in mind the redemption value may be different at the different edemption dates.
 
-For type 2. rpboems the second column of the table is the yield rate tha would produce the given price, again keeping in mind the redemption value may be different at the different edemption dates.
+\begin{question} A 1000 face value 20-years callable bond with 5\% annual coupons is selling 1150. The bond can be redeemed at the end of 18 years for 950, at the end of 19 years for 975, or at the end of 20 years for 1000. Determine the minimum annual yield rate that a buyer will earn on this bond.
+\end{question}
 
+\begin{question} A 1000 face value 20-year callable bond with 3\% annual coupons can be redeemed according to the following schedule:
+\begin{itemize}
+	\item 1000 at the end of years 10 through 14;
+	\item 1075 at the end of years 15 through 17;
+	\item 1125 at the end of years 18 through 20.
+\end{itemize}
+Determine the maximum price a buyer should pay in order to earn an annual yield of at least 5\%.
+\end{question}
 
+\begin{question} A 1000 face value 10-year callable bond with 8\% semiannual coupons is bought for 1050.  The bond can be redeemed at the end of any year starting with year 7.  Determine the minimum annual yield for this bond.
+\end{question}
+
+\begin{question} A 1000 face value 20-years callable bong, reddeemable at 1200, with 5\% annual coupons can be redeemed at the end of year 18, 19, 20. Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 3\%
+\end{question}
+
+\begin{question} A 1000 face value 20-years callable bond with 4\% annual coupons can be redeemed according to the following schedule:
+1000 at end 12-14, 1025 at end 15-17, 975 at end 18-20.
+Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 4\%
+987.66
+\end{question}
+
+\begin{question} A 1000 face value 10\% annual coupon bond is redeemable as follows: 1100 at 15, 16,17, 1000 at 18,19,20. A buyer pays 1500 for this bond, Determine the buyer minimum annual yield.
+\end{question}
+
+\begin{question} A 20-year 10\% 1000 bond that pays interest half-yearly is redeemable (callable) in twelve years at a buy-back (call) price of 1150. The bond's current yield to maturity is 9.50\% annually. You are required to determine 
+\begin{enumerate}[label=(\alph*),font=\itshape]
+	\item the yield to call;
+	\item the yield to call if the buy-back price is only 1100;
+	\item the yield to call if instead of twelve years the bond can be called in eight years, the buy-back price being 1150.
+\end{enumerate}
+\end{question}
+
+\subsection{To Exercise or Not To Exercise}
 
 Bonds with European call option just have a single possible call date. Let's denote the call date by $t_c$ and the notice time as $t_n$. Also, we denote the call price with $X$. 
 
@@ -804,174 +817,6 @@ We know the value of the callable bond $P(r,t_n)$ since it is equal to the value
 	\end{center}
 	\label{fig:callable_bond}
 \end{figure}
-
-
-\begin{question} A 1000 face value 20-years callable bond with 5\% annual coupons is selling 1150. The bond can be redeemed at the end of 18 years for 950, at the end of 19 years for 975, or at the end of 20 years for 1000. Determine the minimum annual yield rate that a buyer will earn on this bond.
-\end{question}
-%\begin{solution}
-%	3.647\%
-%	
-%	18 3.831\%
-%	19 3.87\%
-%	20 3.91\%
-%	
-%	
-%\end{solution}
-
-\begin{question} A 1000 face value 20-year callable bond with 3\% annual coupons can be redeemed according to the following schedule:
-\begin{itemize}
-	\item 1000 at the end of years 10 through 14;
-	\item 1075 at the end of years 15 through 17;
-	\item 1125 at the end of years 18 through 20.
-\end{itemize}
-Determine the maximum price a buyer should pay in order to earn an annual yield of at least 5\%.
-\end{question}
-%\begin{solution}
-%	def ytm(y, c, t, f, red):
-%	...:     val = sum([c*f/(1+y)**k for k in range(1, t+1)])
-%	...:     return val + red/(1+y)**t
-%	...: 
-%	
-%	In [28]: ytm(0.05, 0.03, 10, 1000)
-%	
-%	10 845.57
-%	11 833.87
-%	NOTE: The prices will systematically increase or decrease (decrease in this problem) when the redemption value remains the same.
-%	Therefore, we only need to check endpoints for the same redemption values.
-%	14 802.03
-%	15 828.48
-%	17 807.24
-%	18 818.15
-%	20 797.87 which is the answer
-%	
-%	Imagine you bought the bond for 797.87. Determine the yield if the bond is redeemed at the end of year 16.
-%	
-%	In [51]: def find_ytm(y, c, t, f, red, price):
-%	...:     val = sum([c*f/(1+y)**k for k in range(1, t+1)])
-%	...:     return val + red/(1+y)**t - price
-%	
-%	n [55]: brentq(find_ytm, 0, 0.1, args=(0.03, 16, 1000, 1075, 797.87))
-%	Out[55]: 0.05204043575983794
-%	
-%\end{solution}
-
-\begin{question} A 1000 face value 10-year callable bond with 8\% semiannual coupons is bought for 1050.  The bond can be redeemed at the end of any year starting with year 7.  Determine the minimum annual yield for this bond.
-\end{question}
-%\begin{solution}
-%	In [70]: def b_ytm(price, fv, call_price, T, coup, freq=2, guess=0):
-%	...:     freq = float(freq)
-%	...:     periods = T*freq
-%	...:     coupon = coup*fv/freq
-%	...:     dt = [(i+1)/freq for i in range(int(periods))]
-%	...:     ytm_func = lambda y: sum([coupon/(1+y/freq)**(freq*t) for t in dt]) + fv/(1+y/freq)**(freq*max(dt)) - price
-%	...:     return newton(ytm_func, guess)
-%	
-%	There is no redemption value stated or implied. For all bond problems, when this is the case, assume the bond is redeemable at par. 
-%	14 3.54\%
-%	16 3.58\%
-%	18 3.62\%
-%	20 3.64\%
-%	NOTE: The interest rates will systematically increase or decrease (increase in this problem) when the redemption value remains the same. Therefore, we only need to check endpoints for the same redemption values.
-%\end{solution}
-
-\begin{question} A 1000 face value 20-years callable bong, reddeemable at 1200, with 5\% annual coupons can be redeemed at the end of year 18, 19, 20. Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 3\%
-\end{question}
-%1392.55
-%In [116]: price(1000, 1200, 19, 0.05, 0.03, 1)
-%Out[116]: 1286.475982125383
-%
-%In [117]: price(1000, 1200, 18, 0.05, 0.03, 1)
-%Out[117]: 1275.0702615891446
-%
-%In [118]: price(1000, 1200, 20, 0.05, 0.03, 1)
-%Out[118]: 1297.5494972091096
-
-
-\begin{question} A 1000 face value 20-years callable bond with 4\% annual coupons can be redeemed according to the following schedule:
-1000 at end 12-14, 1025 at end 15-17, 975 at end 18-20.
-Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 4\%
-987.66
-\end{question}
-
-\begin{question} A 1000 face value 10\% annual coupon bond is redeemable as follows: 1100 at 15, 16,17, 1000 at 18,19,20. A buyer pays 1500 for this bond, Determine the buyer minimum annual yield.
-\end{question}
-%In [70]: def b_ytm(price, fv, call_price, T, coup, freq=2, guess=0):
-%...:     freq = float(freq)
-%...:     periods = T*freq
-%...:     coupon = coup*fv/freq
-%...:     dt = [(i+1)/freq for i in range(int(periods))]
-%...:     ytm_func = lambda y: sum([coupon/(1+y/freq)**(freq*t) for t in dt]) + fv/(1+y/freq)**(freq*max(dt)) - price
-%...:     return newton(ytm_func, guess)
-%5.474%
-%In [96]: b_ytm(1500, 1000, 1100, 15, 0.1, 1)
-%Out[96]: 0.051378853239277274
-%
-%In [97]: b_ytm(1500, 1000, 1100, 16, 0.1, 1)
-%Out[97]: 0.05290592139352415
-%
-%In [98]: b_ytm(1500, 1000, 1100, 17, 0.1, 1)
-%Out[98]: 0.05423627236846406
-%
-%In [99]: b_ytm(1500, 1000, 1000, 18, 0.1, 1)
-%Out[99]: 0.05540277776325789
-%
-%In [100]: b_ytm(1500, 1000, 1000, 19, 0.1, 1)
-%Out[100]: 0.05643146238150476
-%
-%In [101]: b_ytm(1500, 1000, 1000, 20, 0.1, 1)
-%Out[101]: 0.05734319789419295
-
-\begin{question} A 20-year 10\% 1000 bond that pays interest half-yearly is redeemable (callable) in twelve years at a buy-back (call) price of 1150. The bond's current yield to maturity is 9.50\% annually. You are required to determine 
-\begin{enumerate}[label=(\alph*),font=\itshape]
-	\item the yield to call;
-	\item the yield to call if the buy-back price is only 1100;
-	\item the yield to call if instead of twelve years the bond can be called in eight years, the buy-back price being 1150.
-\end{enumerate}
-\end{question}
-%\begin{solution}
-%	
-%	def price(y, c, t, f, red):
-%	...:     val = sum([c*f/(1+y)**k for k in range(1, t+1)])
-%	...:     return val + red/(1+y)**t
-%	
-%	def price(fv, call_price, T, coup, y, freq=2):
-%	freq = float(freq)
-%	periods = T*freq
-%	coupon = coup*fv/freq
-%	dt = [(i+1)/freq for i in range(int(periods))]
-%	return sum([coupon/(1+y/freq)**(freq*t) for t in dt]) + fv/(1+y/freq)**(freq*max(dt)) 
-%	
-%	A callable bond is a debenture issued with a call provision, in which this bond can be redeemed earlier than its initial maturity. The call price is determined at the issuance.
-%	
-%	Given the number of periods $N$, the par 1000, the semiannual coupon = $1000\cdot 0.1 \cdot 0.5 = 50$, and the semiannual yield $I=0.0475$ determine the current price of the bond
-%	\begin{equation*}
-%		P_0 = coupon \frac{1-(1+I)^{-N}}{I} + \frac{Par}{(1+I)^N} = 50 \frac{1-(1+0.0475)^{-40}}{0.0475}+\cfrac{1000}{(1+0.0475)^40} = 1044.41
-%	\end{equation*}
-%	\begin{enumerate}[label=(\alph*),font=\itshape]
-%		\item To determine the yield to call if the price is 1150, 
-%		FV = 1,150
-%		PV = 1,044.41
-%		PMT = 50
-%		N = 12 x 2 = 24
-%		CPT I = 5.01
-%		YTC = 5.01% x 2 = 10.02%
-%		\item Determine the yield to call if the call price is Rs 1,100; using the financial calculator:
-%		
-%		FV = 1,100
-%		PV = 1,044.41
-%		PMT = 50
-%		N = 12 x 2 = 24
-%		CPT I = 4.91
-%		YTC = 4.91% x 2 = 9.82%
-%		\item Determine the yield to call if the call price is Rs 1,150; and this bond will be called in 8 yearsl of ; using the financial calculator:
-%		
-%		FV = 1,150
-%		PV = 1,044.41
-%		PMT = 50
-%		N = 8 x 2 = 16
-%		CPT I = 5.21
-%		YTC = 5.21% x 2 = 10.42%
-%	\end{solution}
 
 \clearpage
 \section{Jamshidian Decomposition}
@@ -1242,12 +1087,14 @@ Note that in general it’s not trivial at all to find $q$, and certainly there 
 \begin{question}
 Implement the importance sampling example outlined above, trying to reproduce the results quoted in the text.
 \end{question}
+
 \begin{question}
 Estimate how unlucky is a 25 standard deviation return
 \begin{equation*}
 \theta := P(X\geq 25) = \mathbb{E}[\mathbbm{1}_{X\geq 25}]  \quad\text{where } X\sim \mathcal{N}(0, 1)
 \end{equation*}
 \end{question}
+
 \begin{question}
 Consider a one year ($T=1$) call option with $S_0=100$ , $K=170$,  $\sigma=0.2$, and $r=0.06$. The option is far out of the money, assuming we need to estimate its value using Monte Carlo simulation, improve the efficiency of the calculation with importance sampling.
 
