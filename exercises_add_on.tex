@@ -81,6 +81,8 @@
 }{%
 }
 
+\newcommand{\mymatrix}[1]{\ensuremath{\left\downarrow\vphantom{#1}\right.\overset{\xrightarrow[\hphantom{#1}]{\text{simulations (axis 1)}}}{#1}}}
+
 \newcommand{\myendproof}{\hfill\qedsymbol}
 
 \title{Addons with Python Exercises}
@@ -89,6 +91,14 @@
 \begin{document}
 \maketitle
 
+\begin{equation*}
+\text{\tiny time (axis 0)}\mymatrix{\begin{pmatrix}
+        S_0(t_0) & S_1(t_0) & \cdots & S_N(t_0) \\
+        S_0(t_1) & S_1(t_1) & \cdots & S_N(t_1) \\
+        \vdots  & \vdots  & \ddots & \vdots  \\
+        S_0(t_m) & S_1(t_m) & \cdots & S_N(t_m)
+        \end{pmatrix}}
+\end{equation*}
 \section{Stochastic Simulation}
 In science, we are often more interested in the distribution of a set of outcomes rather than a single event. This may be the probability distribution of a molecule diffusing a specific distance as a function of time, or the price change of a very exotic derivative.
 
@@ -414,48 +424,6 @@ good quality credits a widening of the spread, which is negative, refers to a ri
 bond (decline in bond yield relative to swaps) and for poor quality credits the opposite is true,
 namely a widening of the positive spread reflects a cheapening of the bond and increase in bond
 yield.
-
-
-\begin{question}
-	Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
-	Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond? 
-	For this exercise assume the all Annuity Factors have a value of 10.0 for simplicity.
-\end{question}
-Recall the Asset Swap Spread $s$ can be calculated using 
-Firstly we calculate the swap components giving 
-The Par-Par adjustment is the dominating term and evaluates to
-Par-Par Adjustment =
-
-%100 − 104.58
-%100 !
-%= -4.580%
-%We proceed to calculate the asset swap spread s as
-%s =
-%0.600% - 4.580%
-%10.0
-%= -0.3980%
-%or -39.80 basis points
-%
-%Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what
-%is the par-par asset swap spread for this bond?
-%Using the Asset Swap Spread $s$ can be calculated using 
-%Again we calculate the swap components giving
-%The Par-Par adjustment evaluates to
-%Par-Par Adjustment =
-%
-%100 - 75.280
-%100 !
-%= 24.72%
-%We proceed to calculate the asset swap spread s as
-%s =
-%25.60% + 24.72%
-%10.0
-%= 5.0320%
-%or 503.20 basis points
-
-
-
-
 
 \clearpage
 \section{Algorithmic Differentiation}

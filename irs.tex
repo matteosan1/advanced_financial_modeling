@@ -413,6 +413,17 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Homework}
+\begin{itemize}
+\item The 1-year spot rate on US treasury bonds is 9\%, the 2-year spot rate is 9.5\% and the 3-year spot rate is 10\%. 
+\begin{itemize}
+\item Calculate the implied 1-year ahead, 1-year forward rate, $F(0;1,2)$. Explain why a 1-year forward rate of 9.6\% could not be explained by the market;
+\item calculate the forward rates  $F(0; 2, 3$ and $F(0; 1,3)$. Is there a link between $F(0;1,2),F(0;2,3)$ and $F(0;1,3)$ ?
+\end{itemize}
+\item A bank offers to borrow €100 from you at an interest rate applicable between the end of year 1 and the end of year 2 at a rate of 13\% (i.e. the forward rate). The spot rates for 1-year and 2-year are currently 10\% and 12\% respectively. Explain whether you would take the bank’s offer. 
+\end{itemize}
+\end{frame}
+
 \section{Interest Rate Swap}
 \begin{frame}{Interest Rate Swap}
 	\begin{itemize}
@@ -467,6 +478,14 @@
 		\begin{tikzpicture}[remember picture,overlay]
 		\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 	\end{tikzpicture}}
+\end{frame}
+
+\begin{frame}{Homework}
+\begin{itemize}
+\item A 100 million interest rate swap has a remaining life of 10 months. Under the terms of the swap; 6-month LIBOR is exchanged for 7\% per annum (compounded semiannually). The average of the bid-offer rate being exchanged for 6-month LIBOR in swaps of all maturities is currently 5\% per annum with continuous compounding. The 6-month LIBOR rate was 4.6\% per annum 2 months ago. What is the current value of the swap to the party paying floating ? What is its value to the party paying fixed ?
+\item Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A.
+\item Determine the value of the swap from previous exercise in the way as described in the Relationship between interest rate swap and FRA part.
+\end{itemize}
 \end{frame}
 
 \subsection{Swap Rate}
@@ -850,8 +869,17 @@
 \end{tikzpicture}
 \end{frame}
 
-\section{Risk Measures}
+\begin{frame}{Homework}
+\begin{itemize}
+\item Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increase, all the rest being equal? What does it mean in term of credit quality expectation by the market for the bond's issuer?
+\item  Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
+Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond? 
+For this exercise assume the all Annuity Factors have a value of 10.0 for simplicity.
+\item Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond?
+\end{itemize}
+\end{frame}
 
+\section{Risk Measures}
 \begin{frame}{Estimating Risk}
 \begin{itemize}
 \item After pricing a trader/investor computes Swap risk for hedging.
@@ -1103,6 +1131,12 @@ PV01 = A/10000
 %%	For example, the yield spread is 0.6524\%. An investor believes that this yield spread will narrow as inter-bank credit improves relative to German Sovereign credit. By entering into a position which profits from a rise in the lower (German	Sovereign) yields and / or a fall in the higher (inter-bank) yields, the investor is able to express his view on relative credit pricing.
 %%	AGGIUNGERE UN PO' DI SPIEGAZIONE
 %%\end{frame}
+
+\begin{frame}{Homework}
+\begin{itemize}
+\item Ex.1
+\end{itemize}
+\end{frame}
 
 \section{Cap and Floor}
 \begin{frame}{Caps and Floors}
@@ -1390,6 +1424,18 @@ PV01 = A/10000
 			\includegraphics[width=1.\linewidth]{swaption_example}
 		\end{columns}
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{Homework}
+\begin{itemize}
+\item In order to hedge your position against interest rate movements which kind of contract would you use: 
+\begin{itemize}
+\item a Swap
+\item a Cap/Floor
+\item a Swaption
+\end{itemize}
+List the pros and cons about each one and declare your favourite.
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Differences between Caps and Swaptions}
@@ -1859,12 +1905,22 @@ PV01 = A/10000
 		%\end{columns}
 		\item Other typical investors are long vega, if $K$ is close to the forward rates, vega is much higher.
 		\item A long Vega portfolio means there is positive exposure to increases in implied volatility, while a short Vega portfolio is indicative of volatility vulnerability.
-		\item Remember, high volatility can result in drastic market swings. olatility typically has a negative correlation to the market – meaning spiked volatility can be reflective of downward market velocity. Managing a portfolio's Vega exposure can help understand volatility risk and the trader's comfort level.
+		\item Remember, high volatility can result in drastic market swings. volatility typically has a negative correlation to the market – meaning spiked volatility can be reflective of downward market velocity. Managing a portfolio's Vega exposure can help understand volatility risk and the trader's comfort level.
 		\item Ex: when buying an option, the purchaser wants the premium to increase and when selling an option, the seller wants the premium to decrease. Should implied volatility increase, there will be an increase in the option's premium. Inversely, if there is a decrease in implied volatility, there will be a decrease in the option's premium. 
 		\item Vega changes when there are larger price swings (higher implied volatility) which can be equated to higher uncertainty. Lower implied volatility can be connected to lower uncertainty, which equates to less dramatic swings of the underlying security.
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Reverse Floater Bond}
+\begin{itemize}
+1. Long Vega positions: A long vega position means that you have a positive vega exposure. It is a strategy to profit from an increase in implied volatility. A long call option or a long put option can be used to create a long vega position. 
+
+2. Short Vega positions: A short vega position means that you have a negative vega exposure. It is a strategy to profit from a decrease in implied volatility. A short call option or a short put option can be used to create a short vega position. 
+
+	\item Example: when buying an option, the purchaser wants the premium to increase and when selling an option, the seller wants the premium to decrease. Should implied volatility increase, there will be an increase in the option's premium. Inversely, if there is a decrease in implied volatility, there will be a decrease in the option's premium. 
+	\item Vega changes when there are larger price swings (higher implied volatility) which can be equated to higher uncertainty. Lower implied volatility can be connected to lower uncertainty, which equates to less dramatic swings of the underlying security.
+	\end{itemize}
+\end{frame}
 \end{document}
 
 

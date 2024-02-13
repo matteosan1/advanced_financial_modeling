@@ -24,11 +24,48 @@ Answer the questions in the spaces provided. If you run out of room for an answe
 \section*{Questions}
 \vspace{.5cm}
 \begin{questions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question The 1-year spot rate on US treasury bonds is 9\%, the 2-year spot rate is 9.5\% and the 3-year spot rate is 10\%. 
+\begin{itemize}
+\item Calculate the implied 1-year ahead, 1-year forward rate, $F(0;1,2)$. Explain why a 1-year forward rate of 9.6\% could not be explained by the market;
+\item calculate the forward rates  $F(0; 2, 3$ and $F(0; 1,3)$. Is there a link between $F(0;1,2),F(0;2,3)$ and $F(0;1,3)$ ?
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+\item The forward rates are as follows:
+\begin{equation}
+F(0;1,2)= \cfrac{0.095*2 - 0.09*1}{2-1} = 0.1, \quad F(0;2,3)= \cfrac{0.1*3 - 0.095*2}{3-2} = 0.11, \quad F(0;1,3)= \cfrac{0.1*3 - 0.09*1}{3-1} = 0.105
+\end{equation}
+If you lend €100 at $t=1$ at 9.6\%, your cash flow is -€100 at $t=1$ and €109.6 at $t=2$. You can do better by borrowing now for 1 year $€100/1.09=€91.74$ and lending the same amount for 2 years. Your net cash flow is then €0 at $t=0$, -€100 at $t=1$ (that is $€91.74\cdot 1.09$), and €110 at $t=2$ (that is $€91.74\cdot 1.095^2$). Compared to the first option, you have thus a certain higher cash flow at $t=2$: €110 vs. €109.6.  There is then no reason to accept the 9.6\% rate contract. 
+\item The link between the forward rate is as follows:
+\begin{equation}
+\cfrac{(1+F(0;1,3)^2}{1+F(0;1,2)} = \cfrac{(1+r_3)^3}{(1+r^2)} \Rightarrow (1+F(0;1,3)^2 = (1+F(0;1,2))(1+F(0;2,3))
+\end{equation}
+Hence, with any two of three forward rates, you can deduct the third one.
+\end{itemize}
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
+\begin{solution}
+A flat yield curve means that the market expects the rates to be constant.
+The interpretation of a monotonically upward sloping yield curve depends on the slope. For instance, consider that the 1-year, 2-year and 3-year YTM are respectively 4\%, 5\% and 6\%. Then the forwards are $F(0;1,2)=6\%$, $F(0;2,3)=8\%$ meaning that the rates are expected to grow monotonically. If instead, the 1-year, 2-year and 3-year YTM are for instance  4\%, 5\% and 5.1\%. Then the forward are $F(0;1,2)=6\%'$, $F(0;2,3)=5.3\%$ meaning that the rates are \textbf{not} expected to grow monotonically. 
+The same reasoning holds for a downward sloping yield curve.
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question A bank offers to borrow €100 from you at an interest rate applicable between the end of year 1 and the end of year 2 at a rate of 13\% (i.e. the forward rate). The spot rates for 1-year and 2-year are currently 10\% and 12\% respectively. Explain whether you would take the bank’s offer. 
+\begin{solution}
+The forward rate between year 1 and year 2 is $F(0;1,2)=14\%$. It is then easy to show that it is irrational to accept lending at 13\% at year 1. Indeed, if you lend €100 at $t=1$ at 13\%, your cash flow is -€100 at $t=1$ and €113 at $t=2$. 
+You can do better by borrowing now for 1 year $€100/1.10=€90.91$ and lend the same amount for 2 years. Your net cash flow is then €0 at $t=0$, -€100 at $t=1$ ($€90.91\cdot 1.10$), and €114.04 at $t=2$ (that is $90.91\cdot 1.12^2$). 
+Compared to the first option, you have thus a certain higher cash flow at $t=2$: 114 vs. 113.  There is then no reason for the lender to accept the 13\% rate contract. 
+\end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \question Companies A and B have been offered the following rates per annum on a 20 million 5-year loan:
 \begin{center}
 \begin{tabular}{|c|c|c|}
+\hline
 & Fixed rate & Floating rate \\ \hline
 Company A &  5.0\% & LIBOR+0.1\% \\ \hline
 Company B & 6.4\% & LIBOR+0.6\%  \\ \hline
@@ -78,6 +115,7 @@ rates are 8\% per annum. The remaining cash flows are therefore valued on the as
 total cost of default is therefore the cost of foregoing the following cash flows:
 \begin{center}
 	\begin{tabular}{|l|l|}
+	\hline
 	3 year & 50000 \\ \hline
 	3.5 year & 100000 \\ \hline
 	4 year &  100000 \\ \hline
@@ -125,7 +163,8 @@ exchange rates at the end of year 6 are
 
 \begin{center}
 	\begin{tabular}{|l|l|}
-		Spot & 0.8000 \\ \hline
+\hline
+Spot & 0.8000 \\ \hline
 1 year forward & 0:8388 \\ \hline
 2 year forward & 0:8796 \\ \hline
 3 year forward & 0:9223 \\ \hline
@@ -137,6 +176,7 @@ The value of the swap at the time of the default can be calculated on the assump
 
 \begin{center}
 	\begin{tabular}{|c|c|c|c|c|c|}
+\hline
 Year & Dollar& Sw Fr & Forward &Dollar Equivalent. & Loss \\ \hline
 6 &560000& 300000& 0.8000& 240000 & (320000) \\ \hline
 7 &560000& 300000& 0.8388& 251000 & (308400) \\ \hline
@@ -352,6 +392,45 @@ If time at which we value a swap contract is later than moment of bond issue the
 \end{enumerate}
 \end{solution}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
+Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond? 
+For this exercise assume the all Annuity Factors have a value of 10.0 for simplicity.
+\begin{solution}
+Recall the Asset Swap Spread $s$ can be calculated using 
+Firstly we calculate the swap components giving 
+The Par-Par adjustment is the dominating term and evaluates to
+Par-Par Adjustment =
+
+%100 − 104.58
+%100 !
+%= -4.580%
+%We proceed to calculate the asset swap spread s as
+%s =
+%0.600% - 4.580%
+%10.0
+%= -0.3980%
+%or -39.80 basis points
+\end{solution}
+
+\question Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond?
+
+\begin{solution}
+Using the Asset Swap Spread $s$ can be calculated using  
+%Again we calculate the swap components giving
+%The Par-Par adjustment evaluates to
+%Par-Par Adjustment =
+%
+%100 - 75.280
+%100 !
+%= 24.72%
+%We proceed to calculate the asset swap spread s as
+%s =
+%25.60% + 24.72%
+%10.0
+%= 5.0320%
+%or 503.20 basis points
+\end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \question Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. Is this a martingale ?
