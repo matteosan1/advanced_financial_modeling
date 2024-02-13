@@ -751,7 +751,7 @@ with payment dates $T_i$ for $i = 1,\ldots, n$. Since the value of a floating ra
 \begin{equation}
 	FV = \sum_{i=1}^n C_i p(r^*, T, T_i)
 \end{equation}
-This means that $FV$ is taken as a sum of discounted flows $C_i$ for a short rate $r^*$ at time $T$. To find the value of $r^*$ we have to discount all the Swap cash-flows, sum them up and let the sum be equal to the notional. We have to use the NewtonRaphson algorithm to follow this calculation $r^*$, that will be the correspondent level of $r$ for that equality to happen. 
+This means that $FV$ is taken as a sum of discounted flows $C_i$ for a short rate $r^*$ at time $T$. To find the value of $r^*$ we have to discount all the Swap cash-flows, sum them up and let the sum be equal to the notional. We have to use the Newton-Raphson algorithm to follow this calculation $r^*$, that will be the correspondent level of $r$ for that equality to happen. 
 
 Once $r^*$ is found, we have to calculate the discounted cash-flows substituting it in the discounting factor $e^{-r\Delta t}$ and let them be the strike prices of our call options on Swaps.
 Afterwards, we calculate the payoff of the call options on the cash-flows with
@@ -769,6 +769,25 @@ Therefore, the Swaption is calculated as the sum of $n$ options on discounted bo
 
 After the price of a European Swaption under the Hull-White model is calculated, we have to calibrate it against the market data. Usually this calibration method is carried out taking the target prices to match the ones given by the Black-76 or Normal-Black models and trying to get as close as possible to them.
 
+\begin{question}
+Consider the process 
+\begin{equation*}
+\psi_i(X)=e^{-t_i}|X|,\quad t_i=\{0,1,2,\ldots, N\}
+\end{equation*}
+with $X\approx\mathcal{N}(0,1)$.
+
+Compute 
+\begin{equation*}
+A = \mathbb{E}\left[\max\left(\sum_{k=1}^N \psi_k(X) - K, 0\right)\right]
+\end{equation*}
+both directly using Monte Carlo simulation and by using Jamshidian's decomposition.
+Plot the results against the strike $K$.
+\end{question}
+
+\begin{question}
+Implement the Jamshidian decomposition to price swaptions under the Hull and White short rate model.
+\end{question}
+
 \clearpage
 \section{Longstaff-Schwartz Algorithm}
 
@@ -779,8 +798,7 @@ The approach of Longstaff-Schwartz approximates continuation values for American
 Equipped with such approximations, the option is exercised if the approximate continuation value is lower than the value of immediate exercise. Otherwise it is not exercised.
 
 \subsection{Bermudan Option}
-Consider a bermudan put option with strike $K$ and maturity in $n$ years. Each year you can choose whether to exercise or not.
-
+Consider a Bermudan put option with strike $K$ and maturity in $n$ years. Each year you can choose whether to exercise or not.
 Let's implement a MC which actually simulates, besides the evolution of the market, what an investor holding this option would do. 
 
 We simulate that 1 year has passed, computing the new value of the asset and of the money market account
@@ -791,7 +809,8 @@ We simulate that 1 year has passed, computing the new value of the asset and of 
 	\end{gathered}
 \end{equation}
 
-At this point the investor could exercise. How does he know if it is convenient? In case of exercise he knows exactly the payoff he's getting. In case he continues, he knows that it is the same of having a European Put Option.
+At this point how does the investor know if it is convenient to exercise ? 
+If it does he knows exactly the payoff he's getting. In case he continues, he knows that it is the same of having a European Put Option.
 
 So, in mathematical terms we have the following payoff in 
 \begin{equation}
@@ -800,18 +819,16 @@ So, in mathematical terms we have the following payoff in
 where $P(t_1,T;S(t_1),K)$ is the price of a Put which can be computed analytically! In the jargon of American products, 
 is called the \emph{continuation value}, i.e. the value of holding the option instead of early exercising it.
 
-So the premium of the option is the average of this discounted payoff calculated in each iteration of the Monte Carlo procedure
+The premium of the option is the average of this discounted payoff calculated in each iteration of the Monte Carlo procedure
 \begin{equation}
 	\cfrac{1}{N}\sum_i\max[K-S(t_1), P(t_1,T;S(t_1),K)]
 \end{equation}
 
-We could have priced this product because we have an analytical pricing formula for the put. What if we didn't have it?
+We could have priced this product because we have an analytical pricing formula for the put, but what if we didn't have it?
 
-Brute force solution: for each realization of $S(t_1)$ we run another Monte Carlo to price the put. This method (called \emph{Nested Monte Carlo}) is very time consuming and quite inefficient, for this very simple case it's time of execution grows as $N^2$, which becomes prohibitive when you deal with more than one exercise date !
+\textbf{Brute force solution}: for each realization of $S(t_1)$ we run another Monte Carlo to price the put. This method (called \emph{Nested Monte Carlo}) is very time consuming and quite inefficient. For this very simple case it's time of execution grows as $N^2$, which becomes prohibitive when you deal with more than one exercise date !
 
-Let's search for a finer solution analyzing the relationship between the continuation value and the simulated realization of $S$ at step $t_1$. 
-
-By plotting the discounted payoff at maturity, $P_i$ vs $S_i(T_1)$ (the red line represents the analytical price of the put as a function of $S_i$).
+Let's search then for a finer solution analyzing the relationship between the continuation value and the simulated realization of $S$ at step $t_1$, by plotting the discounted payoff at maturity, $P_i$ vs $S_i(T_1)$ (the red line represents the analytical price of the put as a function of $S_i$), see Fig.~\ref{fig:continuation_function}.
 
 \begin{figure}[htbp]
 	\begin{center}
@@ -856,41 +873,41 @@ The optimal regression parameters $\alpha^*_{d,t}$ are the result of the minimiz
 
 In some circumstances, the quality of the regression can be improved upon when restricting the paths involved in the regression to those where the option is in-the-money.
 
-\begin{question}
-Price an America put option using the LongStaff-Schwartz algorithm. The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.
-\end{question}
-
-\begin{question}
-Price an Bermudan Swaption using the LongStaff-Schwartz algorithm. %The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.
-\end{question}
-
-
 Let's consider now a generic American product. Here is the Longstaff-Schwartz algorithm
 \begin{itemize}
 	\item simulate $I$ index level paths with $M+1$ points in time leading to index level values
 	\begin{equation*}
 		S_{t,i},\quad t \in \{0,\ldots,T\}, i \in \{1,\ldots,I\}
 	\end{equation*};
-\item for $t=T$ the option value is $V_{T,i}=h_T(S_{T,i})$ by arbitrage arguments;
-\item start iterating backwards $t = T-\Delta t, \ldots,\Delta t$:
-\begin{itemize}
-	\item regress the $T_{t,i}$ against the $S_{t,i}, i\in \{1,\ldots, I\}$, given $D$ basis function $b$;
-	\item approximate $C_{t,i}$ by $\hat{C}_{t,i}$ according to Eq.~\ref{eq:continuation_approx} given the optimal parameters $\alpha^*_{d,t}$ from Eq.~\ref{eq:optimization_alphas};
-	\item set 
-	\begin{equation*}
-		V_{t,i}=
-		\begin{cases}
-			h_t(S_{t,i})\quad\text{if }h_t(S_{t,i})>\hat{C}_{t,i}\text{ exercise takes place}\\
-			Y_{t,i}\quad\text{if }h_t(S_{t,i})\leq\hat{C}_{t,i}\text{ exercise does not take place}\\
-		\end{cases}
-	\end{equation*}
-	repeat iteration steps until $t=\Delta t$;
-\end{itemize} 
-\item for $t=0$ calculate the LSM esitmator
-\begin{equation}
-	\hat{V}_0^{LSM}=e^{-r\Delta t}\cfrac{1}{I}\sum_{i=1}^{I}V_{\Delta t, i}
-\end{equation} 
+	\item for $t=T$ the option value is $V_{T,i}=h_T(S_{T,i})$ by arbitrage arguments;
+	\item start iterating backwards $t = T-\Delta t, \ldots,\Delta t$:
+	\begin{itemize}
+		\item regress the $T_{t,i}$ against the $S_{t,i}, i\in \{1,\ldots, I\}$, given $D$ basis function $b$;
+		\item approximate $C_{t,i}$ by $\hat{C}_{t,i}$ according to Eq.~\ref{eq:continuation_approx} given the optimal parameters $\alpha^*_{d,t}$ from Eq.~\ref{eq:optimization_alphas};
+		\item set 
+		\begin{equation*}
+			V_{t,i}=
+			\begin{cases}
+				h_t(S_{t,i})\quad\text{if }h_t(S_{t,i})>\hat{C}_{t,i}\text{ exercise takes place}\\
+				Y_{t,i}\quad\text{if }h_t(S_{t,i})\leq\hat{C}_{t,i}\text{ exercise does not take place}\\
+			\end{cases}
+		\end{equation*}
+		repeat iteration steps until $t=\Delta t$;
+	\end{itemize} 
+	\item for $t=0$ calculate the LSM esitmator
+	\begin{equation}
+		\hat{V}_0^{LSM}=e^{-r\Delta t}\cfrac{1}{I}\sum_{i=1}^{I}V_{\Delta t, i}
+	\end{equation} 
 \end{itemize}
+
+\begin{question}
+Price an Bermudan Swaption using the Longstaff-Schwartz algorithm. %The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.
+\end{question}
+
+\begin{question}
+Price an America put option using the Longstaff-Schwartz algorithm. The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.	
+\end{question}
+
 
 \clearpage
 \section{Callable Bond}
@@ -1207,7 +1224,6 @@ Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigm
 Given an underlying asset $S$ which currently is valued 100 simulate $N$ possible realization of the random variable $S$ both under the \emph{physical} probability measure and the 
 and a 1 year call option on that asset with strike $K=120$ determine 
 
-Other  Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigma=0.2$. Determine the appropriate transformation, according to the Girsanov Theorem which makes the original process driftless. Verify that applying the Radon-Nikodym to the a simulated path of the process the drift indeed disappear.
 
 mu = 0.05
 r = 0.01
