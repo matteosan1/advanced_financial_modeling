@@ -15,10 +15,14 @@
 \subsection{Numeraires}
 \begin{frame}{Numeraires}
   \begin{itemize}
-  \item<1-> Ideally we would like to define a probability measure $\mathbb{Q}^X$ under which the discounted derivative process IS a martingale, such that the expectation of the payoff is analytically tractable (i.e. easy to compute).
-  \item<2-> The question that arises is: how can we determine such measure $\mathbb{Q}^X$ ?
-  \item<3-> The answer is through \textcolor{red}{change of numeraire}.
-  \item<4-> A \textcolor{red}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as a unit of reference when pricing an asset $S_t$
+  \item<1-> Since the main issue in pricing theory is to compute
+  \begin{equation*}
+  	pippo
+  \end{equation*}
+  \item<2-> Ideally we would like to define a probability measure $\mathbb{Q}^X$ under which the discounted derivative process is a martingale and such that the expectation of the payoff is analytically tractable (i.e. easy to compute).
+  \item<3-> The question that arises is: how can we determine such measure $\mathbb{Q}^X$ ?
+  \item<4-> The answer is through \textcolor{red}{change of numeraire}.
+  \item<5-> A \textcolor{red}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as a unit of reference when pricing an asset $S_t$
     \begin{equation*}
       \tilde{S_t}:=\frac{S_t}{N_t}, \quad t \ge 0
     \end{equation*}
@@ -168,6 +172,10 @@
       P(A|B)=\frac{P(B|A)P(A)}{P(B)}
     \end{equation*}
   \end{itemize}
+\begin{tikzpicture}[remember picture,overlay]
+	\node[xshift=6.cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\end{tikzpicture}
+
 \end{frame}
 
 %\begin{frame}{Conditional Expectation}
@@ -510,6 +518,14 @@
 	\end{itemize}
 \end{frame}
 
+\begin{homework}
+	\begin{frame}{\textcolor{white}{Homework}}
+\begin{itemize}
+	\item[white] If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
+\end{itemize}
+\end{frame}
+\end{homework}
+
 %The Relationship between Forward Rate over Second Year
 %and Spot Rate Expected over Second Year
 %Given a forecast of bond B’s price, an investor can choose one of two strategies at date 0:
@@ -811,6 +827,31 @@
 %	\end{itemize}
 %\end{frame}
 
+
+\begin{homework}
+	\begin{frame}{\textcolor{white}{Homework}}
+		\begin{itemize}
+			\item[white] Suppose $W(t)$ is a standard Brownian motion. For each of the following choices of $X_t$, find an equivalent probability measure $\mathbb{Q}$ such that $X_t$ is a Brownian motion in the new measure. Assume $X_0=W_0=0$
+			\begin{equation*}
+				\begin{gathered}
+					dX_t = 2dt + dW_t\\
+					dX_t = 2dt + 6dW_t
+				\end{gathered}
+			\end{equation*}
+		\item[white] Let $X_t$ be the unique solution to the following stochastic differential equation, under $\mathbb{P}$:
+		\begin{equation*}
+			dX_t = X_t(\mu_t dt + \sigma_t dW_t)
+		\end{equation*}
+		where $\mu$ and $\sigma$ are bounded and adapted processes, and $\sigma >0$ almost surely.
+		\begin{itemize}
+			\item[white] Show that $X_t\exp(-\int_0^t \mu_s ds)$ is a martingale.
+			\item[white] Find a probability $\mathbb{Q}$, equivalent to $\mathbb{P}$ under which $X$ is a martingale.
+			\item[white] Find a probability $\tilde{\mathbb{P}}$, equivalent to $\mathbb{P}$, under which the inverse process $X^{-1}$ is a martingale.
+		\end{itemize}
+		\end{itemize}
+	\end{frame}
+\end{homework}
+
 \begin{frame}{Moving Away from $\mathbb{P}$ Measure}
   \begin{itemize}
   \item<1-> Let's go back to the real-world probabilities and assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
@@ -948,12 +989,11 @@
     \vspace{0.5cm}
   \item<2-> In practical terms, this means that it possible to use equation $(ii)$, instead of equation $(i)$, to simulate future payoffs, and hence that it is possible to get rid of the big problem of the equity premium estimation. Equation $(ii)$ just needs estimates of the risk-free rate $r$ and of the volatility $\sigma$, which can be derived from real market quotes.
   \end{itemize}
-	\pause
-  \begin{tikzpicture}[remember picture,overlay]
-    \node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-  \end{tikzpicture}
+	%\pause
+  %\begin{tikzpicture}[remember picture,overlay]
+  %  \node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+  %\end{tikzpicture}
 \end{frame}
-
 
 \begin{frame}{Drift Changes Generalization}
   \begin{block}{Proposition}
