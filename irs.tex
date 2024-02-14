@@ -1,12 +1,5 @@
 \documentclass{beamer}
 \usetheme{afm}
-\usepackage{transparent}
-%\definecolor{ansi-blue-intense}{HTML}{0065CA}
-%\newcommand{\Fontvi}{\fontsize{14}{12}\fontcolor{ansi-blue-intense}\selectfont}
-\definecolor{blue(pigment)}{rgb}{0.2, 0.2, 0.6}
-\let\olditem\item\renewcommand{\item}[1][black]{\color{#1}\olditem}
-
-\newenvironment{ppl}{\fontsize{14}{15.5}\fontseries{b}\fontshape{ui}\fontfamily{ppl}\selectfont}{\par}
 
 \title{Interest Rate Derivatives}
 \subtitle{Main Ineterst Rate Contracts Theory}
@@ -72,7 +65,7 @@
 \subsection{Stochastic Discount Factor and Zero Coupon Bond}
 \begin{frame}{Stochastic Discount Factor}
 	\uncover<1->{
-		\begin{block}{Defintion}
+		\begin{block}{Definition}
 			The \textcolor{red}{(stochastic) discount factor} $D(t, T)$ is the amount at time $t$ that is \emph{equivalent} to one unit of currency payable at time $T$ and is given by
 			\begin{equation}
 				D(t, T) = \frac{B(t)}{B(T)} = e^{-\int_t^T r_s ds}
@@ -348,7 +341,7 @@
 		\item<1-> Then applying the law of iterated expectations we arrive at the final result
 		\begin{equation*}
 			\begin{aligned}
-			\textbf{FRA} &= \tau KP(t,S)-\expectt{Q}{t}[D(t,T)] + 			\expectt{Q}{t}[D(t,S)] = \\
+			\textbf{FRA} &= \tau KP(t,S)-\expectt{Q}{t}[D(t,T)] + \expectt{Q}{t}[D(t,S)] = \\
 				&= \boxed{\tau KP(t,S) - P(t,T) + P(t,S)}
 			\end{aligned}
 		\end{equation*}
@@ -420,13 +413,8 @@
 	\end{itemize}
 \end{frame}
 
-{
-	\setbeamertemplate{background} 
-	{
-		{\transparent{0.7}\includegraphics[width=\paperwidth,height=\paperheight]{addons/blackboard}}
-	}
+\begin{homework}
 	\begin{frame}{}
-		\begin{ppl}
 \begin{itemize}
 	\item[white] The 1-year spot rate on US treasury bonds is 9\%, the 2-year spot rate is 9.5\% and the 3-year spot rate is 10\%. 
 	\begin{itemize}
@@ -435,9 +423,8 @@
 	\end{itemize}
 	\item[white] A bank offers to borrow €100 from you at an interest rate applicable between the end of year 1 and the end of year 2 at a rate of 13\% (i.e. the forward rate). The spot rates for 1-year and 2-year are currently 10\% and 12\% respectively. Explain whether you would take the bank’s offer. 
 \end{itemize}
-		\end{ppl}
 	\end{frame}
-}
+\end{homework}
 
 \section{Interest Rate Swap}
 \begin{frame}{Interest Rate Swap}
@@ -495,13 +482,15 @@
 	\end{tikzpicture}}
 \end{frame}
 
-\begin{frame}{Homework}
+\begin{homework}
+\begin{frame}{}
 \begin{itemize}
-\item A 100 million interest rate swap has a remaining life of 10 months. Under the terms of the swap; 6-month LIBOR is exchanged for 7\% per annum (compounded semiannually). The average of the bid-offer rate being exchanged for 6-month LIBOR in swaps of all maturities is currently 5\% per annum with continuous compounding. The 6-month LIBOR rate was 4.6\% per annum 2 months ago. What is the current value of the swap to the party paying floating ? What is its value to the party paying fixed ?
-\item Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A.
-\item Determine the value of the swap from previous exercise in the way as described in the Relationship between interest rate swap and FRA part.
+\item[white] A 100 million interest rate swap has a remaining life of 10 months. Under the terms of the swap; 6-month LIBOR is exchanged for 7\% per annum (compounded semiannually). The average of the bid-offer rate being exchanged for 6-month LIBOR in swaps of all maturities is currently 5\% per annum with continuous compounding. The 6-month LIBOR rate was 4.6\% per annum 2 months ago. What is the current value of the swap to the party paying floating ? What is its value to the party paying fixed ?
+\item[white] Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A.
+\item[white] Determine the value of the swap from previous exercise in the way as described in the Relationship between interest rate swap and FRA part.
 \end{itemize}
 \end{frame}
+\end{homework}
 
 \subsection{Swap Rate}
 \begin{frame}{Swap Rate as Break-Even Rate}
@@ -884,7 +873,8 @@
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}{Homework}
+\begin{homework}
+\begin{frame}{}
 \begin{itemize}
 \item Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increase, all the rest being equal? What does it mean in term of credit quality expectation by the market for the bond's issuer?
 \item  Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
@@ -893,6 +883,7 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 \item Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond?
 \end{itemize}
 \end{frame}
+\end{homework}
 
 \section{Risk Measures}
 \begin{frame}{Estimating Risk}
@@ -1150,11 +1141,13 @@ PV01 = A/10000
 %%	AGGIUNGERE UN PO' DI SPIEGAZIONE
 %%\end{frame}
 
-\begin{frame}{Homework}
+\begin{homework}
+\begin{frame}{}
 \begin{itemize}
 \item Ex.1
 \end{itemize}
 \end{frame}
+\end{homework}
 
 \section{Cap and Floor}
 \begin{frame}{Caps and Floors}
@@ -1444,7 +1437,8 @@ PV01 = A/10000
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Homework}
+\begin{homework}
+\begin{frame}{}
 \begin{itemize}
 \item In order to hedge your position against interest rate movements which kind of contract would you use: 
 \begin{itemize}
@@ -1455,6 +1449,7 @@ PV01 = A/10000
 List the pros and cons about each one and declare your favourite.
 \end{itemize}
 \end{frame}
+\end{homework}
 
 \begin{frame}{Differences between Caps and Swaptions}
 \begin{itemize}
@@ -1934,23 +1929,17 @@ List the pros and cons about each one and declare your favourite.
 %	\end{itemize}
 %\end{frame}
 
-{
-	\setbeamertemplate{background} 
-	{
-		{\transparent{0.7}\includegraphics[width=\paperwidth,height=\paperheight]{addons/quadretti2}}
-	}
-\begin{frame}{Homework}
-\begin{ppl}
+\begin{homework}
+\begin{frame}{}
 \begin{itemize}
-\item[blue(pigment)] Calculate the analytical expressions for:
+\item[white] Calculate the analytical expressions for:
 \begin{itemize}
-	\item[blue(pigment)] Delta Sensitivity analytically, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
-	\item[blue(pigment)] Delta Vega analytically, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
+	\item[white] Delta Sensitivity analytically, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
+	\item[white] Delta Vega analytically, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
 \end{itemize}
 \end{itemize}
-\end{ppl}
 \end{frame}
-}
+\end{homework}
 
 \end{document}
 
