@@ -298,6 +298,35 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Instantaneous Volatility of Forward Rates}
+\begin{itemize}
+	\item From \cref{eq:caplet_black_vol} it is clear how it is impossible to uniquely determine the instantaneous volatility $\sigma_i(t)$ as there exist plenty of functions that would integrate to $v_i$.
+	\item It is usual to assume the $F_k$ has a \emph{piecewise-constant} volatility $\sigma_i(t)$ (constant in each maturity-expiry interval $i$).
+	\item Nevertheless, to reduce the number of parameters of the model, further assumptions can be made:
+\end{itemize}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+function of time-to-maturity & $\eta_{i-(\beta(t)-1)}$ \\ \hline
+constant regardless of $t$ & $s_i$ \\ \hline
+most general parametrization & $\Phi_i\Psi_{\beta(t)}$ \\ \hline
+maturity/time to maturity & $\Phi_i\Psi_{i-(\beta(t)-1)}$ \\ \hline
+parametric 1 & $[a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c$ \\ \hline
+parametric 2 & $\Phi_i\left([a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c\right)$ \\ \hline
+\end{tabular} 
+\end{center}
+\end{frame}
+
+\begin{frame}{LFM Calibration to Cap/Floor}
+	\begin{itemize}
+		\item Every model is useless if not \emph{calibrated}.
+		\item Which means to find the parameter set that allows the model to reproduce real world results (i.e. prices).
+		\item Calibration of LFM to Cap/Floor is quite straightforward: just input into the model the $\sigma$ implied by the Black formula for cap prices.
+		The \textcolor{red}{joint dynamics of forward rates is not involved in the pricing of a cap}, its payoff is just a sum of caplet payoffs, i.e. marginal distributions of forward rates are enough to compute the expectation, correlation does not matter. 
+		\item Indeed, there are no expectations involving two or more forward rates at the same time, so that correlations are not relevant.
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{Flat and Spot Volatilities}
 	\begin{itemize}
 		\item<1-> In the market, cap prices are not quoted in monetary terms, but rather in terms of the so-called implied Black volatilities. 
@@ -310,7 +339,8 @@
 			\textbf{Caplet}(t, T_{i-1},T_i,K) = \textbf{Caplet}^{Black}(t, T_{i-1}, T_i,K,v_{T_i-caplet}),\quad i=1, \ldots,n
 		\end{equation*} 
 		where $\textbf{Caplet}(t, T_{i-1}, T_i, K) = \textbf{Cap}(t, \mathcal{T}_i,K)-\textbf{Cap}(t, \mathcal{T}_{i-1},K)$
-	\end{itemize}
+		\item<4-> Although being quoted, \textcolor{red}{flat volatilities have little financial meaning}. Conversely spot volatilities cannot be observed directly but are the quantities \textcolor{red}{naturally tied to forward rates as a measure of their uncertainty}.
+		\end{itemize}
 \end{frame}
 
 \begin{frame}{Flat and Spot Volatilities}
@@ -319,70 +349,45 @@
 		\item<2-> To recover correctly cap prices according to the LFM dynamics, we need to have
 		\begin{equation*}
 			\begin{aligned}
-				\textbf{Cap} = \sum_{i=1}^j&\tau_iP(t,T_i)\textbf{Caplet}^{Black}(K,F(t;T_{i-1},T_i),\sqrt{T_{i-1}v_{T_j-cap}}) = \\ &\sum_{i=1}^j\tau_iP(t,T_i)\textbf{Caplet}^{Black}(K,F(t;T_{i-1},T_i),\sqrt{T_{i-1}v_{T_i-caplet}}),\\
-				&\hspace{75mm}\forall j = 1,\dots, n
+				\textbf{Cap} = \sum_{i=1}^j&\tau_iP(t,T_i)\textbf{Caplet}^{Black}(K,F(t;T_{i-1},T_i),\sqrt{T_{i-1}\color{red}{v_{T_j-cap}}}) = \\ &\sum_{i=1}^j\tau_iP(t,T_i)\textbf{Caplet}^{Black}(K,F(t;T_{i-1},T_i),\sqrt{T_{i-1}\color{red}{v_{T_i-caplet}}})\\
+				%&\hspace{75mm}\forall j = 1,\dots, n
 			\end{aligned}
+		\label{eq:spot_flat_vola}
 		\end{equation*}
+		\item<3-> Notice that the same average volatility $v_{T_{j-cap}}$ is assumed for all caplets in the $T_j$-maturity cap. 
+		\item<4-> This appears to be somehow inconsistent. In the cap volatility system, the same caplet is linked to different volatilities when concurring to different caps.	
 	\end{itemize}
 \end{frame}	
 
+%\subsection{Cap/Floor Volatility}
+%\begin{frame}{Flat Volatilities}
+%	\begin{itemize}
+%		\item When comparing to other vanilla derivatives, Cap/Floor pricing offers an additional complexity, as it does not involve a single volatility number. 
+%		\item As seen Cap/Floor can be \textcolor{red}{stripped} into Caplet/Floorlet which should be priced with a different volatility each. 
+%		\item However, in the market, \textbf{Cap} quotes are computed according to the following 
+%		\begin{equation*}
+%			\textbf{Cap}(0,\mathcal{T}_j,K)=N\sum_{i=1}^{j}\tau P(0,T_i) \textbf{Bl}(K,F_i(0),v_{\mathcal{T}_j}^{cap})
+%		\end{equation*}
+%		where the same "average" volatility value $v_{\mathcal{T}_j}^{cap}$ is used in each caplet. 
+%		\item $v_{\mathcal{T}_j}^{cap}$ is called \textcolor{red}{flat volatility}, and is typically quoted for a range of strikes and expiries over liquid floating rates (e.g. 3M and 6M Euribor).
+%	\end{itemize}
+%\end{frame}
 
-
-
-\subsection{Cap/Floor Volatility}
-\begin{frame}{Flat Volatilities}
-	\begin{itemize}
-		\item When comparing to other vanilla derivatives, Cap/Floor pricing offers an additional complexity, as it does not involve a single volatility number. 
-		\item As seen Cap/Floor can be \textcolor{red}{stripped} into Caplet/Floorlet which should be priced with a different volatility each. 
-		\item However, in the market, \textbf{Cap} quotes are computed according to the following 
-		\begin{equation*}
-			\textbf{Cap}(0,\mathcal{T}_j,K)=N\sum_{i=1}^{j}\tau P(0,T_i) \textbf{Bl}(K,F_i(0),v_{\mathcal{T}_j}^{cap})
-		\end{equation*}
-		where the same "average" volatility value $v_{\mathcal{T}_j}^{cap}$ is used in each caplet. 
-		\item $v_{\mathcal{T}_j}^{cap}$ is called \textcolor{red}{flat volatility}, and is typically quoted for a range of strikes and expiries over liquid floating rates (e.g. 3M and 6M Euribor).
-	\end{itemize}
+\begin{frame}{Back to Calibration}
+The calibration procedure can be summarized as follows:
+\begin{enumerate}
+	\item Determine the implied volatilities of Cap/Floor by inverting the Black formula using the market quotes. Those are the $v_{T_{j-cap}}$ flat volatilities;
+	\item recover the correct spot volatilities with a numerical procedure (i.e. \emph{bootstrap}) from Eq.~\ref{eq:spot_flat_vola};
+	\item finally we can go back to the instantaneous parameter of the model through
+	\begin{equation}
+		v_{T_{i-1}-caplet}^2 =\cfrac{1}{T_{i-1}} \int_0^{T_{i-1}}\sigma^2_{i,\beta(t)}dt=\cfrac{1}{T_{i-1}}\sum_{j=1}^1\tau_{j-2,j-1}\sigma^2_{i,j}
+	\end{equation}
+	Note that different parametrizations of the instantaneous volatility $\sigma_{i,j}^2$ lead to different evolutions of its term-structures.
+\end{enumerate}
+\begin{tikzpicture}[remember picture,overlay]
+\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\end{tikzpicture}
 \end{frame}
-
-\begin{frame}{Spot Volatilities}
-	\begin{itemize}
-		\item Notice that the same average volatility $v_{\mathcal{T}_j}^{cap}$ is assumed for all caplets in the $T_j$-maturity cap. 
-		%\item However, when the same caplets concur to a different cap, say a $T_{j+1}$-maturity cap, their average volatility is changed. 
-		\item This appears to be somehow inconsistent. In the cap volatility system, the same caplet is linked to different volatilities when concurring to different caps.
-		\item The correct volatilities can be recovered with a numerical procedure (i.e. \emph{bootstrapping}) from
-		\begin{equation*}
-		\sum_{i=1}^{j}\tau P(0,T_i) \textbf{Bl}(K,F_i(0),v_{\mathcal{T}_j}^{cap}) = \sum_{i=1}^{j}\tau P(0,T_i) \textbf{Bl}(K,F_i(0),v_{\mathcal{T}_{i-1}}^{caplet})
-		\end{equation*}
-		\item $v_{\mathcal{T}_{i-1}}^{caplet}$ are called \textcolor{red}{spot volatilities} (different $v_{\mathcal{T}_{i-1}}^{caplet}$ are assumed for different caplets concurring to the $Tj$-maturity cap).
-		\item Although being quoted, \textcolor{red}{flat volatilities have little financial meaning}. Conversely spot volatilities cannot be observed directly but are the quantities \textcolor{red}{naturally tied to forward rates as a measure of their uncertainty}.
-	\end{itemize}
-	\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-	\end{tikzpicture}
-\end{frame}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 %\begin{frame}{Cap Price}
 %	\begin{itemize}
@@ -400,14 +405,12 @@
 %	\end{itemize}
 %\end{frame}
 
-\begin{frame}{Remarks on LFM and Cap Pricing}
-\begin{itemize}
-	\item<1-> The \textcolor{red}{joint dynamics of forward rates is not involved in the pricing of a cap}, its payoff is just a sum of caplet payoffs, i.e. marginal distributions of forward rates are enough to compute the expectation, correlation does not matter. 
-	\item <2-> Indeed, there are no expectations involving two or more forward rates at the same time, so that correlations are not relevant.
-	\item<3-> From \cref{eq:caplet_black_vol} it is clear how it is impossible to uniquely determine the instantaneous volatility $\sigma_i(t)$ as there exist plenty of functions that would integrate to $v_i$.
-	\item<4-> Since usually one looks at particular interest rate fixings at a finite amount of times, it is customary to specify $\sigma_i(t)$ as a piecewise-constant function.
-	\end{itemize}
-\end{frame}
+%\begin{frame}{Remarks on LFM and Cap Pricing}
+%\begin{itemize}
+%	\item<1-> 
+%	\item<3-> 
+%	\end{itemize}
+%\end{frame}
 
 \begin{frame}{Remarks on LFM and Cap Pricing}
 	\begin{itemize}
@@ -431,13 +434,13 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Cap Price Characterization}
-	\begin{itemize}
-		\item Recall that the $T_{i-1}$-caplet is said to be \emph{at-the-money} when its strike price $K = K_i$ equals the current value $F_i$ of the underlying forward rate. 
-		\item The caplet is said to be \emph{in-the-money} when $F_i > K_i$ and \emph{out-of-the-money} when $F_i < K_i$.
-		\item What about caps ? they are collections of caplets with a common strike $K$. Each caplet, however, would be ATM for a different strike $K_i$. \item Since it is not possible to define the ATM cap strike $K$ in terms of the single ATM caplet $K_i$, we can however select a single rate that takes into account all the forward rates of the underlying caplets: that is the forward swap rate $K = S_{\alpha,\beta}$.
-	\end{itemize}
-\end{frame}
+%\begin{frame}{Cap Price Characterization}
+%	\begin{itemize}
+%		\item Recall that the $T_{i-1}$-caplet is said to be \emph{at-the-money} when its strike price $K = K_i$ equals the current value $F_i$ of the underlying forward rate. 
+%		\item The caplet is said to be \emph{in-the-money} when $F_i > K_i$ and \emph{out-of-the-money} when $F_i < K_i$.
+%		\item What about caps ? they are collections of caplets with a common strike $K$. Each caplet, however, would be ATM for a different strike $K_i$. \item Since it is not possible to define the ATM cap strike $K$ in terms of the single ATM caplet $K_i$, we can however select a single rate that takes into account all the forward rates of the underlying caplets: that is the forward swap rate $K = S_{\alpha,\beta}$.
+%	\end{itemize}
+%\end{frame}
 
 \subsection{Log-normal Swap Model}
 \begin{frame}{A Model for Swaptions}
@@ -602,7 +605,7 @@
 %  \end{itemize}
 %\end{frame}
 
-\begin{frame}{Monte Carlo Pricing of Swaptions}
+\begin{frame}{Monte Carlo Pricing of Swaptions (LFM)}
   \begin{itemize}
   \item<1-> The most general way to price a swaption, as well as any other option with underlying forward rates, is through Monte Carlo simulation. 
   \item<2-> In order to simulate all the processes involved in the payoff, their joint dynamics is discretized with a numerical scheme for SDEs, e.g. the Euler scheme.
@@ -617,7 +620,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Monte Carlo Pricing of Swaptions}
+\begin{frame}{Monte Carlo Pricing of Swaptions (LFM)}
   \begin{itemize}
   \item<1-> Keep in mind that $S_{\alpha,\beta}$ has an expression in terms of the relevant spanning forward rates, and notice that the expectation above depends on the joint distribution of the same $F$’s.
   \item<2-> The dynamics of the $k$-th forward rate, for each $k = \alpha + 1,\ldots, \beta$, under $\mathbb{Q}^\alpha$ is (\cref{eq:forward_rat_dynamics_lfm})
@@ -630,7 +633,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Monte Carlo Pricing of Swaptions}
+\begin{frame}{Monte Carlo Pricing of Swaptions (LFM)}
   \begin{itemize}
   \item<1-> Dynamics of \cref{eq:dynamics_4.1} has neither analytical solution nor known distribution, so we need to use the Euler scheme (actually the log version which is easier to handle).
   \item<2-> By the It$\hat{o}$’s formula,
@@ -839,6 +842,9 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 	\node[xshift=6.cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}
 \end{frame}
+
+
+
 
 \section{Correlated Brownian Motions}
 \subsection{Decorrelation}
