@@ -1213,5 +1213,48 @@ Journal of Mathematical Finance, 2013, 3, 431-436.
 \end{question}
 
 \clearpage
+\section{Principal Component Analysis}
+Principal component analysis (PCA) is a dimension reduction technique in multivariate analysis. It can be used for constructing the components of the stochastic term-structure movements that account for most of the variability, in some appropriately defined sense.
+
+The key mathematical principle behind PCA is the spectral decomposition theorem of linear algebra, which states that any real symmetric $n\times n$ matrix $Q$ can be written as
+\begin{equation}
+Q = ALA^{T}
+\label{eq:spectral_decomposition}
+\end{equation}
+where: $L = \text{diag}(\lambda_1,\ldots, \lambda_n$) is the diagonal matrix of eigenvalues of $Q$ with $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_n$, $A$ is an orthogonal matrix (that is, $A^{-1}=A^{T}$) whose columns $a_1,\ldots, a_n$ are the normalized eigenvectors of $Q$ (that is, $Qa_i = \lambda_i a_i$), which form a \emph{basis}.
+
+Consider a random vector $X$ with mean $\mu = \mathbb{E}[X]$ and covariance matrix $Q = \text{Cov}[X]$. Since $Q$ is symmetric and positive semi-definite,
+the above decomposition Eq.\ref{eq:spectral_decomposition} applies with $\lambda_i\geq 0$ for all $i$. The principal components transform of X is defined as
+\begin{equation}
+Y = A^{T}(X -\mu)
+\end{equation}
+which can be seen as a recentering and rotation of $X$. Note that each $Y_i$ is the projection of $(X-\mu)$ onto the $i$th eigenvector $a_i$ of $Q$ which can be called the $i$th principal component, and $a_i$, the $i$th vector of loadings, fo $X$. We thus obtain the decomposition
+\begin{equation}
+X = \mu + AY = \mu + \sum_{i=1}^n Y_i a_i
+\end{equation}
+
+It can be demonstrated that 
+\begin{equation}
+\sum_{i=1}^n\text{Var}[X_i] = \sum_{i=1}^n\text{Var}[\lambda_i] = \sum_{i=1}^n\text{Var}[Y_i]
+\end{equation}
+hence
+\begin{equation}
+\cfrac{\sum_{i=1}^k\text{Var}[\lambda_i]}{\sum_{i=1}^n\text{Var}[\lambda_i]}
+\end{equation}
+represents the amount of variability in $X$ explained byt the first $k$ principal components $Y_1,\ldots,Y_k$.
+
+Suppose that the first $k$ principal components $Y_1,\ldots,Y_k$ explain a significant amount (e.g. 99\%) of the variability in $X$. It is then most useful to
+approximate $X$ by $X\approx\mu +\sum_{i=1}^{k}Y_ia_i$. That is, the loadings $a_1,\ldots, a_k$ are the main components of the stochastic forward curve movements.
+
+\begin{question}
+The Excel file \href{https://github.com/matteosan1/finance_course/raw/develop/input_files/SNB_yields.xlsx}{SNB\_yields.xls} of the Monthly Statistical Bulletin from the Swiss National Bank contains monthly spot interest rates (that is, yields $R(t,T)$) for Swiss Confederation bonds for a time to maturity $(T-t)$ spectrum of 2, 3, 4, 5, 7, 10, 20 and 30 years. 
+Perform a principal component analysis of the monthly yield curve changes for the forward curve from the last ten years. In particular, determine:
+\begin{enumerate}
+\item the empirical covariance matrix;
+\item its eigenvectors and eigenvalues in decreasing order;
+\item the explained variances of the principal components.
+\end{enumerate}
+\end{question}
+
 \tableofcontents
 \end{document}
