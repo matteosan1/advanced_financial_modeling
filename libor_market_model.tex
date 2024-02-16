@@ -843,34 +843,17 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 \end{tikzpicture}
 \end{frame}
 
-
-
-
 \section{Correlated Brownian Motions}
-\subsection{Decorrelation}
-\begin{frame}{Correlated Brownian Motions}
-  \begin{itemize}
-  \item<1-> Correlation is a linear measure of dependency between random variables. Given two random variables $X$ and $Y$, it is given by
-  	\begin{equation*}
-  		\rho_{X,Y} = \frac{\mathbb{E}((X-\mathbb{E}(X))(Y-\mathbb{E}(Y))}{\sigma_X \sigma_Y}
-  	\end{equation*}
-  \item<2-> In the LFM, we can assume that the Brownian motions driving the dynamics of forward rate are correlated
-    \begin{equation*}
-      <dZ_t^{T^i}, dZ_t^{T^i}> = \rho dt
-    \end{equation*}
-  \item<3-> This model feature is included because the value of a swaption at maturity is influenced by the joint distribution of forward rates and thus by the correlation amongst them. 
-  \item<4-> For example, since the underlying in a swaption is a swap rate which in turn is a weighted average of forward rates, we expect the price of a swaption to increase if the forward rates become more correlated. 
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Correlated Brownian Motions}
-	\begin{itemize}
-		\item In models for short rate it is assumed full correlation, i.e. $\rho_{ij}=1$, which is a tight constraint on the dynamics of the forward rates.
-		\item When trying to improve these models, one of the objectives is to lower the correlation of the forward rates implied by the model. Some authors refer to this objective as to achieving \textcolor{red}{decorrelation}. 
-		\item In the LFM, we can allow it by fine-tuning the corresponding parameters into the dynamics \begin{equation*}
-			dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j}{1+\tau_jF_j}dt+\sigma_kF_k dZ^\alpha_k
-		\end{equation*}
-	\end{itemize}
+\begin{frame}{Instantaneous and Terminal Correlation}
+\begin{itemize}
+\item Let's consider now payoffs whose value depends on more than one rate simultaneously (e.g. swaptions).
+\item The price of these contracts depends on the \emph{terminal correlation} between different forward rates.
+\item In the derivation of the market models it has been assumed that each forward rate $F_i$ was driven by a different Brownian motion $Z_i$ and that each Brownian motion is instantenously 
+\begin{equation}
+< Z_i Z_j> \rho_{ij} dt
+\end{equation}
+\item We need to understand how this correlation translates into the terminal correlation between rates.
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Instantaneous and Terminal Correlation}
@@ -884,7 +867,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 	%with $b_k=\frac{\sigma_{ik}}{\sqrt{\sum_{k=1}^m\sigma_{ik}^2}}$
 	
 	\begin{block}{Definition}
-		The \textcolor{red}{instantaneous correlation} is a quantity summarizing the degree of “dependence” between \textcolor{red}{changes of different forward rates}.
+		The \textcolor{red}{instantaneous correlation} is a quantity summarizing the degree of “dependence” between \textcolor{red}{changes} of different forward rates.
 		\begin{equation*}
 			\rho_{ij} = \frac{dF_i(t) dF_j(t)}{\text{Std}(dF_i(t))\text{Std}(dF_j(t))}
 		\end{equation*}
@@ -894,9 +877,9 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 		%\rho_{i,j}(t) = \sum_{k=1}^m b_{i,k}b_{j,k}, \quad i,j=1,\ldots,n
 		%\end{equation*}
 		%From this formula it is clear that indeed the instantaneous correlation ρ is related to changes dF in for- ward rates. Instead, 
-		The \textcolor{red}{terminal correlation} is a quantity summarizing the degree of “dependence” between \textcolor{red}{two different forward rates at a given \emph{terminal} time-instant}. Typically, the $T_1$ terminal correlation between $F_i$ and $F_j$ is the correlation between $F_i(T_1)$ and $F_j(T_1)$.
+		The \textcolor{red}{terminal correlation} is a quantity summarizing the degree of “dependence” between two different forward rates at a given  \textcolor{red}{terminal time-instant}. Typically, the $T_1$ terminal correlation between $F_i$ and $F_j$ is the correlation between $F_i(T_1)$ and $F_j(T_1)$.
 	\end{block}
-	It is important to understand how instantaneous correlation in the forward-rate dynamics translates into a terminal correlation of simple rates.
+	Is this terminal correlation completely determined by the instantaneous correlations $\rho{ij}$ between $Z_i$ and $Z_j$ ?
 	%\begin{block}{Definition}
 	%The terminal correlation of the LIBOR rates$L(t, T_{i-1}, T_i)$ and $L(t, T_{j-1}, T_j)$ is given by
 	%\begin{equation*}
@@ -904,6 +887,80 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 	%\end{equation*}
 	%\end{block}
 	%\end{itemize}
+\end{frame}
+
+\begin{frame}{Terminal Correlation}
+\begin{itemize}
+\item In general the terminal correlation between different forward rates depends not only on the introduced instantaneous correlations, but also on the way the “total” (caplet volatility) is “distributed” in instantaneous volatility (on $\sigma_{k,\beta(t)}$).
+\item Keeping the same instantaneous correlations and decomposing $v_i$ in two different ways leads to different correlations between $F_i$. 
+%This elementary and fundamental feature of terminal correlation was noticed and pointed out in Rebonato (1998, 1999d).
+\item Also, while the instantaneous correlation does not depend on the particular probability measure, the terminal correlation does. 
+\item The Girsanov theorem establishes that the instantaneous covariance structure is the same for all the equivalent measures under which a process can be expressed, so that the particular measure under which we work makes no difference. This is not the case for terminal correlation. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Terminal Correlation: an Example}
+\begin{itemize}
+\item Consider a payoff $\Pi = (\log(F_3(T_1))-\log(F_3(T_0)))(F_2(T_1))-(F_2(T_0)))$ where $T_0>0$, $T_1=2T_0$, taking the measure $\mathbb{Q}^2$ under which $F_2$ is a martingale
+\begin{equation*}
+\begin{gathered}
+dF_2(t) = \sigma_{2,\beta(t)}F_2(t)dZ_2(t)\\
+dF_3(t) = \cfrac{\tau_3\sigma^2_{3,\beta(t)}F_3^2(t)}{1+\tau_3F_3(t)}dt + \sigma_{3,\beta(t)}F_3(t)dZ_3(t)
+\end{gathered}
+\end{equation*}
+\item After some calculation it is possible to determine the terminal correlation as
+\begin{equation}
+\begin{aligned}
+\mathbb{E}^2[\Pi] & = F_2(0)\rho_{2,3}\int_0^{T_1}\sigma_{2,\beta(t)}\sigma_{3,\beta(t)}dt = \\
+&  = F_2(0)\rho_{2,3}(\sigma_{2,1}\sigma_{3,1}T_0+\sigma_{2,2}\sigma_{3,2}\tau_{0,1})
+\end{aligned}
+\label{eq:terminal_correlation_ex}
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Terminal Correlation: an Example}
+\begin{itemize}
+\item Now from what we have said any \emph{caplet} price involving the rates $F_3, F_2$ would depend only on the average volatilities $v_2^2$ and $v_3^2$ \textcolor{red}{no matter how $\sigma_{k,t}$ are chosen} the Black formula gives the same result.
+\item Contrary from Eq.\ref{eq:terminal_correlation_ex} it is clear that there is a dependecy on the instantenuous volatility.
+\item Consider the cases where $\tau=T_i - T_{i-1}=0.5$, $F_2(0)=F_3(0)=0.05$, $\rho_{2,3}=0.75$, $\sigma_{3,3}=0.1$ and
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$\sigma_{2,1}$ & $\sigma_{3,1}$ & $\sigma_{2,2}$ & $\sigma_{3,2}$ \\ \hline
+0.5 & 0.1 & 0.1 & 0.5 \\ \hline
+0.1 & 0.1 & 0.5 & 0.5 \\ \hline
+\end{tabular}
+\end{center}
+\item In the first case the correlation is $1.875\cdot10^{-3}$ while in the latter $2.343\cdot10^{-4}$.
+\end{itemize}
+\end{frame}
+
+\subsection{Decorrelation}
+%\begin{frame}{Correlated Brownian Motions}
+%  \begin{itemize}
+%  \item<1-> Correlation is a linear measure of dependency between random variables. Given two random variables $X$ and $Y$, it is given by
+%  	\begin{equation*}
+%  		\rho_{X,Y} = \frac{\mathbb{E}((X-\mathbb{E}(X))(Y-\mathbb{E}(Y))}{\sigma_X \sigma_Y}
+%  	\end{equation*}
+%  \item<2-> In the LFM, we can assume that the Brownian motions driving the dynamics of forward rate are correlated
+%    \begin{equation*}
+%      <dZ_t^{T^i}, dZ_t^{T^i}> = \rho dt
+%    \end{equation*}
+%  \item<3-> This model feature is included because the value of a swaption at maturity is influenced by the joint distribution of forward rates and thus by the correlation amongst them. 
+%  \item<4-> For example, since the underlying in a swaption is a swap rate which in turn is a weighted average of forward rates, we expect the price of a swaption to increase if the forward rates become more correlated. 
+%  \end{itemize}
+%\end{frame}
+
+\begin{frame}{Correlated Brownian Motions}
+	\begin{itemize}
+		\item In models for short rate it is assumed full correlation, i.e. $\rho_{ij}=1$, which is a tight constraint on the dynamics of the forward rates.
+		\item When trying to improve these models, one of the objectives is to lower the correlation of the forward rates implied by the model. Some authors refer to this objective as to achieving \textcolor{red}{decorrelation}. 
+		\item In the LFM, this can be easily done by fine-tuning the corresponding parameters into the dynamics 
+\begin{equation*}
+dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j}{1+\tau_jF_j}dt+\sigma_kF_k dZ^\alpha_k
+		\end{equation*}
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{Instantaneous Correlation}
@@ -972,6 +1029,101 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
   	which indeed leads to lower terminal correlation.
   	\item<3-> Swaption payoffs depend on the terminal correlation between several different forward rates which leads (Brigo and Mercurio, 2006) to the conclusion that swaption volatilities are more directly linked with terminal correlations rather than with instantaneous ones.
   \end{itemize}
+\end{frame}
+
+\begin{frame}{LSM Calibration to Swaptions}
+\begin{itemize}
+\item Although there are several methods to compute swaption prices, it is common practice to use Black formula. 
+\item In case we are adopting the LFM, we need to find the instantaneous-volatility and correlation parameters in the LFM dynamics that reflect the swaptions prices observed in the market.
+
+%Remark 6.17.1. (Possible misalignments in the swaption matrix).
+%Usually, one should not completely rely on the swaption matrix provided
+%by a single broker, and, in any case, one should not take it for granted. The
+%problem is that the matrix is not necessarily uniformly updated. The most
+%liquid swaptions are updated regularly, whereas some entries of the matrix
+%refer to older market situations. This “temporal misalignment” in the swaptions matrix can cause troubles, since, when we try a calibration, the model parameters might reflect this misalignment by assuming “weird” values (we will see in Chapter 7 examples leading to imaginary and complex forwardrate volatilities).
+\item The problem is incorporating as much information as possible from such a table into the LFM parameters. 
+
+%\item Whichever method is chosen to proce swaptions, for given values of a, b, c, d and θ we can price all the swaptions in the table, thus obtaining a table of LFM prices for swaptions corresponding to the chosen values of the LFM parameters.
+%\item We can then try and change the parameters a, b, c, d and θ and consider the related Φ’s (6.28) in such a way that the LFM table approaches as much as possible, in some sense, the market swaptions table. We can, for instance, minimize the sum of the squares of the differences of the corresponding swaption prices in the two tables. 
+%\item However, if the number of swaptions is large, four parameters are not sufficient for practical purposes. One then needs to consider richer parametric forms for the instantaneous volatility, such as for example
+%the formulation of TABLE 5, although in this case care must be taken for
+%the resulting market structures to be regular enough.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{LSM Calibration to Swaptions}
+\begin{itemize}
+\item Will instantaneous correlations be inputs or outputs in our models calibration to market quotes of (caps and) swaptions we will consider later on?
+%These swaptions are priced with one of the methods we will see later on, and the model prices will depend on the correlation parameters appearing in ρ. Should we infer ρ itself from swaption market quotes or should we estimate ρ exogenously and impose it, leaving the calibration only to volatility parameters? Are the parameters in ρ inputs or outputs to the calibration?
+%\item Indeed, we might consider a time series of past interest-rate curves data, which are observed under the real world probability measure.
+%This would allow us, through interpolation, to obtain a corresponding time series for the particular forward LIBOR rates being modelled in our LIBOR model. 
+%These series would be observed under the objective or real-world measure. Thanks to the Girsanov theorem this is not a problem, since instantaneous correlations, considered as instantaneous covariations between driving Brownian motions in forward rate dynamics, do not depend on the probability measure under which we are specifying the joint forward rate dynamics. Only the drifts depend on the measure. Then, by using some historical estimation technique, we can obtain an historical estimate of the instantaneous correlation matrix. This historical matrix ρ, or a stylized version of it, can
+%be considered as a given ρ for our LIBOR model, and the remaining free
+%parameters σ are to be used to calibrate market derivatives data at a given
+%instant. In this case (caps and) swaptions calibration will consist in finding
+%the σ’s such that the model (caps and) swaptions prices match, as close as
+%possible, the corresponding market prices. In this “matching” procedure (often
+%an optimization) ρ is fixed from the start to the found historical estimate
+%and we play on the volatility parameters σ to achieve our matching.
+%\item This second possibility considers instantaneous correlations as fitting parameters. The model swaptions prices are functions of ρB, and possibly
+%of some remaining instantaneous volatility parameters, that are forced
+%6.19 The exogenous correlation matrix 291
+%to match as much as possible the corresponding market swaptions prices, so
+%that the parameters values implied by the market, ρB = ρB
+%MKT, are found. In
+%the two-factor angles case for example, one obtains the values of θ1, . . . , θM
+%(and of the volatility parameters not determined by the calibration to caps)
+%that are implied by the market.
+%Which of the two methods is preferable? We will consider again this question
+%later on. In the next section, we try and address the issue of determining
+%a decent historical ρ in case we are to decide later for the “inputs” approach.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{In-Arrears Swap}
+\begin{itemize}
+\item An \emph{in-arrears swap} is an IRS that resets and pays at the same dates $\{T_{\alpha+1},\ldots, T_\beta\}$ and with fixed-leg rate $K$. More precisely, the value of an payer IAS is
+\begin{equation}
+\textbf{IAS}=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i-K)\right]
+\end{equation}
+
+\begin{equation}
+\mathbb{E}_t\left[\cfrac{XD(t,S)}{P(T,S)} \right]=\mathbb{E}_t\left[\mathbb{E}_T\left[\cfrac{XD(t,T)D(T,S)}{P(T,S} \right]\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S}\mathbb{E}_T(D(T,S))\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S}P(T,S)\right]=\mathbb{E}_t(XD(t,T)),\quad (t<T<S)
+%\myendproof
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+&\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i-K)\right] = \\
+&=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\left[\cfrac{1}{P(T_i,T_{i+1}}-(1+\tau_{i+1}K)\right]\right] = \\
+&=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}\left[\cfrac{D(0,T_i)}{P(T_i,T_{i+1}^2}-D(0,T_i)(1+\tau_{i+1}K)\right]\right] = \\
+&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1}\mathbb{E}^{i+1}\left[\cfrac{1}{P(T_i,T_{i+1}^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right] = \\
+&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1}\mathbb{E}^{i+1}\left[(1+\tau_{i+1}F_{i+1}(T_i))^2\right]-P(0,T_i)(1+\tau_{i+1}K)\right]
+\end{aligned}
+\end{equation}
+
+It is easy to compute the expected value, since under $\mathbb{Q}^{i+1}$, $F_{i+1}$ is a martingale
+\begin{equation}
+dF_{i+1}(t) = \sigma_{i+1}(t)F_{i+1}(t)dZ_{i+1}(t)
+\end{equation}
+so that, 
+\begin{equation}
+\mathbb{E}^{i+1}[F_{i+1}^2(T_i)]=F_{i+1}^2(0)\exp\left[\int_0^{T_i}\sigma_{i+1}^2(t)dt\right] = F_{i+1}^2(0)\exp(v_{i+1}^2)
+\end{equation}
+where the $v$ can be determined from cap market prices.
+
+Finally
+\begin{equation}
+\textbf{IAS} =\sum_{i=\alpha+1}^{\beta}\left[
+P(0,T_{i+1})\left[1+2\tau_{i+1}F_{i+1}(0)+\tau_{i+1}^2F_{i+1}^2(0)\exp(v_{i+1}^2)\right]-(1+\tau_{i+1}K)P(0,T_i)\right]
+\end{equation}
+
+Contrary to the plain-vanilla case, this price depends on the volatility of forward rates through the caplet volatilities $v$. Notice however that correlations between different rates are not involved in this product. 
+
+%Remark 13.1.1. If caplet prices are available in the market for each maturity
+%Ti and strike K, we can price an in-arrears swap consistently with %theobserved caplet smile by noting that we can write
+\end{itemize}
 \end{frame}
 
 \end{document}
