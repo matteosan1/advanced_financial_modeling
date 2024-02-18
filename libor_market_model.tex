@@ -1033,7 +1033,6 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
 
 \begin{frame}{LSM Calibration to Swaptions}
 \begin{itemize}
-\item Although there are several methods to compute swaption prices, it is common practice to use Black formula. 
 \item In case we are adopting the LFM, we need to find the instantaneous-volatility and correlation parameters in the LFM dynamics that reflect the swaptions prices observed in the market.
 
 %Remark 6.17.1. (Possible misalignments in the swaption matrix).
@@ -1043,41 +1042,136 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
 %liquid swaptions are updated regularly, whereas some entries of the matrix
 %refer to older market situations. This “temporal misalignment” in the swaptions matrix can cause troubles, since, when we try a calibration, the model parameters might reflect this misalignment by assuming “weird” values (we will see in Chapter 7 examples leading to imaginary and complex forwardrate volatilities).
 \item The problem is incorporating as much information as possible from such a table into the LFM parameters. 
-
-%\item Whichever method is chosen to proce swaptions, for given values of a, b, c, d and θ we can price all the swaptions in the table, thus obtaining a table of LFM prices for swaptions corresponding to the chosen values of the LFM parameters.
-%\item We can then try and change the parameters a, b, c, d and θ and consider the related Φ’s (6.28) in such a way that the LFM table approaches as much as possible, in some sense, the market swaptions table. We can, for instance, minimize the sum of the squares of the differences of the corresponding swaption prices in the two tables. 
-%\item However, if the number of swaptions is large, four parameters are not sufficient for practical purposes. One then needs to consider richer parametric forms for the instantaneous volatility, such as for example
-%the formulation of TABLE 5, although in this case care must be taken for
-%the resulting market structures to be regular enough.
+\item The goal is to find the set of parameters $\bar{x}$ and $\bar{\theta}$ from volatility and correlation parametrizations such that to minimize the difference between the market prices and those computed from LFM.
+\item However, if the number of swaptions is large, it is necessary to consider richer parametric forms, since the problem is over-dimensioned, although in this case care must be taken for the resulting market structures to be regular enough.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{LSM Calibration to Swaptions}
+%\begin{frame}{LSM Calibration to Swaptions}
+%\begin{itemize}
+%\item In the calibration process we should ask ourselves if we infer $\rho$ (correlation structure) itself from swaption market quotes or should we estimate it exogenously and impose it, leaving the calibration only to volatility parameters ?
+%%\item Indeed, we might consider a time series of past interest-rate curves data, which are observed under the real world probability measure.
+%%This would allow us, through interpolation, to obtain a corresponding time series for the particular forward LIBOR rates being modelled in our LIBOR model. 
+%%These series would be observed under the objective or real-world measure. Thanks to the Girsanov theorem this is not a problem, since instantaneous correlations, considered as instantaneous covariations between driving Brownian motions in forward rate dynamics, do not depend on the probability measure under which we are specifying the joint forward rate dynamics. Only the drifts depend on the measure. Then, by using some historical estimation technique, we can obtain an historical estimate of the instantaneous correlation matrix. This historical matrix ρ, or a stylized version of it, can
+%%be considered as a given ρ for our LIBOR model, and the remaining free
+%%parameters σ are to be used to calibrate market derivatives data at a given
+%%instant. In this case (caps and) swaptions calibration will consist in finding
+%%the σ’s such that the model (caps and) swaptions prices match, as close as
+%%possible, the corresponding market prices. In this “matching” procedure (often
+%%an optimization) ρ is fixed from the start to the found historical estimate
+%%and we play on the volatility parameters σ to achieve our matching.
+%%\item This second possibility considers instantaneous correlations as fitting parameters. The model swaptions prices are functions of ρB, and possibly
+%%of some remaining instantaneous volatility parameters, that are forced
+%%6.19 The exogenous correlation matrix 291
+%%to match as much as possible the corresponding market swaptions prices, so
+%%that the parameters values implied by the market, ρB = ρB
+%%MKT, are found. In
+%%the two-factor angles case for example, one obtains the values of θ1, . . . , θM
+%%(and of the volatility parameters not determined by the calibration to caps)
+%%that are implied by the market.
+%%Which of the two methods is preferable? We will consider again this question
+%%later on. In the next section, we try and address the issue of determining
+%%a decent historical ρ in case we are to decide later for the “inputs” approach.
+%\end{itemize}
+%\end{frame}
+
+\begin{frame}{Convexity Correction}
 \begin{itemize}
-\item Will instantaneous correlations be inputs or outputs in our models calibration to market quotes of (caps and) swaptions we will consider later on?
-%These swaptions are priced with one of the methods we will see later on, and the model prices will depend on the correlation parameters appearing in ρ. Should we infer ρ itself from swaption market quotes or should we estimate ρ exogenously and impose it, leaving the calibration only to volatility parameters? Are the parameters in ρ inputs or outputs to the calibration?
-%\item Indeed, we might consider a time series of past interest-rate curves data, which are observed under the real world probability measure.
-%This would allow us, through interpolation, to obtain a corresponding time series for the particular forward LIBOR rates being modelled in our LIBOR model. 
-%These series would be observed under the objective or real-world measure. Thanks to the Girsanov theorem this is not a problem, since instantaneous correlations, considered as instantaneous covariations between driving Brownian motions in forward rate dynamics, do not depend on the probability measure under which we are specifying the joint forward rate dynamics. Only the drifts depend on the measure. Then, by using some historical estimation technique, we can obtain an historical estimate of the instantaneous correlation matrix. This historical matrix ρ, or a stylized version of it, can
-%be considered as a given ρ for our LIBOR model, and the remaining free
-%parameters σ are to be used to calibrate market derivatives data at a given
-%instant. In this case (caps and) swaptions calibration will consist in finding
-%the σ’s such that the model (caps and) swaptions prices match, as close as
-%possible, the corresponding market prices. In this “matching” procedure (often
-%an optimization) ρ is fixed from the start to the found historical estimate
-%and we play on the volatility parameters σ to achieve our matching.
-%\item This second possibility considers instantaneous correlations as fitting parameters. The model swaptions prices are functions of ρB, and possibly
-%of some remaining instantaneous volatility parameters, that are forced
-%6.19 The exogenous correlation matrix 291
-%to match as much as possible the corresponding market swaptions prices, so
-%that the parameters values implied by the market, ρB = ρB
-%MKT, are found. In
-%the two-factor angles case for example, one obtains the values of θ1, . . . , θM
-%(and of the volatility parameters not determined by the calibration to caps)
-%that are implied by the market.
-%Which of the two methods is preferable? We will consider again this question
-%later on. In the next section, we try and address the issue of determining
-%a decent historical ρ in case we are to decide later for the “inputs” approach.
+\item 	In financial lingo, convexity is a broadly understood and often non-specific term for nonlinear behavior of the price of an instrument as a function of evolving markets.
+\item The concept of \emph{convexity adjustment} is required for all asset
+classes when there are payment delays or when the moments of payment do
+not correspond to the payment date of the numeraire. %Generally, if we have a maturity date $T$ but payment takes place at time $T + τ∗$ , convexity has to be taken into account. 
+\item 	From the perspective of financial modeling they arise as the results of valuation done under the \emph{wrong} martingale measure.
+\item The higher the uncertainty in the market (high volatility) the more pronounced the effect of the convexity will become.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Good and the Bad}
+\begin{itemize}
+\item Let us consider a basic interest rate payoff function, which pays a payoff dependent on the Libor rate
+\begin{equation}
+V(t_0) = N D(t_0)\expectt{Q}{t_0}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_i)}\right]=
+	NP(t_0,T_i)\mathbb{E}^{T_i}_{t_0}[F(T_{i-1};T_{i-1},T_i)]
+\end{equation}
+and since $F(T_{i-1};T_{i-1}, T_i)$ is a martingale under the $T_i$-forward measure, we get $V(t_0)=NP(t_0,T_i)F(t_0;T_{i-1}, T_i)$.
+\item Suppose now that we consider the same contract, however, the payment will take place at some earlier time $T_{i-1} < T_i$. The current value of the contract is then
+\begin{equation}
+	V(t_0) = N D(t_0)\expectt{Q}{t_0}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_{i-1})}\right]
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Good and the Bad}
+\begin{itemize}
+\item When changing measures, to the $T_{i-1}$-forward measure, we get the following Radon-Nikodym derivative:
+\begin{equation}
+\cfrac{d\mathbb{Q}^T_{i-1}}{d\mathbb{Q}}=\cfrac{P(T_{i-1},T_{i-1})D(t_0)}{P(t_0,T_{i-1})D(T_{i-1})}
+\end{equation}
+so that
+\begin{equation}
+\begin{aligned}
+V(t_0) &= N D(t_0)\expectt{Q}{T_{i-1}}\left[\cfrac{P(T_{i-1},T_{i-1})D(T_{i-1})}{P(t_0,T_{i-1})D(t_0)}\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_{i-1})}\right] = \\
+&= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right]
+\end{aligned}
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Correction}
+\begin{itemize}
+\item Although the Libor rate is a martingale under the $T_i$-forward
+measure, it is however not a martingale under the $T_{i-1}$-forward measure, i.e.,
+\begin{equation}
+	\mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right]\neq \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right]
+\end{equation}
+\item The difference between these two expectations is commonly referred to as a \textbf{convexity}. 		
+\item By the change of measure technique, we can simplify the expressions above, to some extent. By changing to the $T_i$-forward measure, we find:
+\begin{equation}
+	\cfrac{d\mathbb{Q}^T_{i-1}}{d\mathbb{Q}}=\cfrac{P(T_{i-1},T_i)P(t_0,T_{i-1})}{P(t_0,T_i)P(T_{i-1},T_{i-1})}
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Changing Measures}
+\begin{itemize}
+\item The value of the derivative is then equal to
+\begin{equation}
+\begin{aligned}
+V(t_0) &= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right] = \\
+&=N P(t_0,T_{i-1})\mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\cfrac{P(T_{i-1},T_i)P(t_0,T_{i-1})}{P(t_0,T_i)P(T_{i-1},T_{i-1})}\right]=\\
+&=N \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\cfrac{P(t_0,T_{i-1})}{P(T_{i-1}P(T_i)}\right]\\
+\end{aligned}
+\end{equation}
+which, by simply adding and subtracting $F$ can be rewritten as 
+\begin{equation}
+\begin{aligned}
+V(t_0) &= N \mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right] + N \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\left(\cfrac{P(t_0,T_{i-1})}{P(T_{i-1}, T_i)}-1\right)\right]\\
+&=N\left(F(t_0;T_{i-1},T_i) + \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\left(\cfrac{P(t_0,T_{i-1})}{P(T_{i-1}, T_i)}-1\right)\right]\right)
+\end{aligned}
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Correction}
+\begin{itemize}
+\item The convexity correction can finally be expressed as
+\begin{equation}
+P(t_0,T_i)\mathbb{E}^{T_i}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{P(T_{i-1},T_i)}\right]-F(t_0;T_{i-1},T_i)
+\end{equation}
+\item From the definition of Libor rate: $P(T_{i-1},T_i)=\cfrac{1}{1+\tau_i F(T_{i-1};T_{i-1},T_i)}$ hence
+\begin{equation}
+\mathbb{E}^{T_i}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{P(T_{i-1},T_i)}\right]=F(t_0;T_{i-1},T_i)+\tau_i\mathbb{E}^{T_i}_{t_0}[F^2(T_{i-1};T_{i-1},T_i)]
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Final Remark}
+\begin{itemize}
+\item Note that although $F(T_{i-1};T_{i-1},T_i)$ is a martingale under the $T_i$-forward measure, its square is not. Indeed applying \ito lemma to the dynamics $dF_i(t) = \sigma F_i(t)dW^i_i(t)$, give us
+\begin{equation}
+dF_i^2=\cfrac{1}{2}\sigma^2F_i^2dt+2\sigma F_i^2dW_i
+\end{equation}
+which has a drift term, so it is not a martingale.
 \end{itemize}
 \end{frame}
 
@@ -1087,39 +1181,62 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
 \begin{equation}
 \textbf{IAS}=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i-K)\right]
 \end{equation}
+\item To compute the expectation we can proceed as follows
 
-\begin{equation}
-\mathbb{E}_t\left[\cfrac{XD(t,S)}{P(T,S)} \right]=\mathbb{E}_t\left[\mathbb{E}_T\left[\cfrac{XD(t,T)D(T,S)}{P(T,S} \right]\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S}\mathbb{E}_T(D(T,S))\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S}P(T,S)\right]=\mathbb{E}_t(XD(t,T)),\quad (t<T<S)
-%\myendproof
-\end{equation}
+\begin{equation*}
+\begin{aligned}
+&\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D_i\tau_{i+1}(F_{i+1}(T_i)-K)\right] =\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D_i\left[\cfrac{1}{P(T_i,T_{i+1})}-(1+\tau_{i+1}K)\right]\right] = \\
+&=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}\left[\cfrac{D(0,T_i)}{P(T_i,T_{i+1})^2}-D(0,T_i)(1+\tau_{i+1}K)\right]\right] = \\
+\end{aligned}
+\end{equation*}
+\end{itemize}
+\end{frame}
 
+\begin{frame}{In-Arrears Swap}
 \begin{equation}
 \begin{aligned}
-&\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i-K)\right] = \\
-&=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\left[\cfrac{1}{P(T_i,T_{i+1}}-(1+\tau_{i+1}K)\right]\right] = \\
-&=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}\left[\cfrac{D(0,T_i)}{P(T_i,T_{i+1}^2}-D(0,T_i)(1+\tau_{i+1}K)\right]\right] = \\
-&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1}\mathbb{E}^{i+1}\left[\cfrac{1}{P(T_i,T_{i+1}^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right] = \\
-&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1}\mathbb{E}^{i+1}\left[(1+\tau_{i+1}F_{i+1}(T_i))^2\right]-P(0,T_i)(1+\tau_{i+1}K)\right]
+&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[\cfrac{1}{P(T_i,T_{i+1}^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right] = \\
+&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[(1+\tau_{i+1}F_{i+1}(T_i))^2\right]-P(0,T_i)(1+\tau_{i+1}K)\right]
+\end{aligned}
+\label{eq:exp_ias}
+\end{equation}
+where it has been used the following result
+\begin{equation}
+\begin{aligned}
+&\mathbb{E}_t\left[\cfrac{XD(t,S)}{P(T,S)} \right]=\mathbb{E}_t\left[\mathbb{E}_T\left[\cfrac{XD(t,T)D(T,S)}{P(T,S} \right]\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}\mathbb{E}_T[D(T,S)]\right]= \\ 
+& =\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S}P(T,S)\right]=\mathbb{E}_t[XD(t,T)],\quad (t<T<S)
+%\myendproof
 \end{aligned}
 \end{equation}
+\end{frame}
 
-It is easy to compute the expected value, since under $\mathbb{Q}^{i+1}$, $F_{i+1}$ is a martingale
-\begin{equation}
+\begin{frame}{In-Arrears Swap}
+\begin{itemize}
+\item It is easy relatively easy to compute the expected value in Eq.~\ref{eq:exp_ias}, since under $\mathbb{Q}^{i+1}$, $F_{i+1}$ is a martingale
+\begin{equation*}
 dF_{i+1}(t) = \sigma_{i+1}(t)F_{i+1}(t)dZ_{i+1}(t)
-\end{equation}
+\end{equation*}
 so that, 
 \begin{equation}
-\mathbb{E}^{i+1}[F_{i+1}^2(T_i)]=F_{i+1}^2(0)\exp\left[\int_0^{T_i}\sigma_{i+1}^2(t)dt\right] = F_{i+1}^2(0)\exp(v_{i+1}^2)
+\mathbb{E}^{i+1}[F_{i+1}^2(T_i)]=F_{i+1}^2(0)\exp\left(\int_0^{T_i}\sigma_{i+1}^2(t)dt\right) = F_{i+1}^2(0)\exp(v_{i+1}^2)
 \end{equation}
 where the $v$ can be determined from cap market prices.
-
-Finally
+\item Finally
 \begin{equation}
-\textbf{IAS} =\sum_{i=\alpha+1}^{\beta}\left[
-P(0,T_{i+1})\left[1+2\tau_{i+1}F_{i+1}(0)+\tau_{i+1}^2F_{i+1}^2(0)\exp(v_{i+1}^2)\right]-(1+\tau_{i+1}K)P(0,T_i)\right]
+\begin{aligned}
+\textbf{IAS} = \sum_{i=\alpha+1}^{\beta}&[
+P(0,T_{i+1}) [1+2\tau_{i+1}F_{i+1}(0) + \\ &+\tau_{i+1}^2 F_{i+1}^2(0)\exp(v_{i+1}^2)]-(1+\tau_{i+1}K)P(0,T_i)] \\
+\end{aligned}
+\label{eq:ias_price}
 \end{equation}
+\end{itemize}
+\end{frame}
 
-Contrary to the plain-vanilla case, this price depends on the volatility of forward rates through the caplet volatilities $v$. Notice however that correlations between different rates are not involved in this product. 
+\begin{frame}{In-Arrears Swap}
+\begin{itemize}
+\item Contrary to the plain-vanilla case, IAS price of Eq.~\ref{eq:ias_price} depends on the volatility of forward rates through the caplet volatilities $v$. 
+\item Notice however that correlations between different rates are not involved in this product, as expected by the nature of the contract.
+\item  From Eq.~\ref{eq:ias_price} it is apparent how the valuation results in a vanilla swap-like part plus the convexity correction due to the arrears feature.
 
 %Remark 13.1.1. If caplet prices are available in the market for each maturity
 %Ti and strike K, we can price an in-arrears swap consistently with %theobserved caplet smile by noting that we can write

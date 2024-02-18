@@ -852,148 +852,22 @@
 	\end{frame}
 \end{homework}
 
-\begin{frame}{Moving Away from $\mathbb{P}$ Measure}
-  \begin{itemize}
-  \item<1-> Let's go back to the real-world probabilities and assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
-    \begin{equation*}
-      dS_t = \mu S_t dt + \sigma S_t dW_t
-    \end{equation*}
-  \item<2-> By definition the bank account dynamics is described by (for simplicity let's consider deterministic rates)
-    \begin{equation*}
-      dB_t = rB_tdt\implies B_t = e^{rt}
-    \end{equation*}
-  \item<3-> We want to know what happens to the stock SDE when moving to two different numeraires:
-    \begin{itemize}
-    \item<4-> risk-neutral measure (bank account numeraire);
-    \item<5-> stock measure (stock numeraire).
-    \end{itemize}
-  \end{itemize}
-\end{frame}
 
-\begin{frame}{Risk-Neutral Measure Dynamics}
-  \begin{itemize}
-  \item<1-> We have seen that under the bank account induced measure the process defined as an asset divided by the numeraire is a martingale
-    \begin{equation*}
-      \cfrac{S_t}{B_t} = \expect{B}\left[\frac{S_T}{B_T}\bigg|\mathcal{F}_t\right]
-    \end{equation*}
-  \item<2-> So if we define $Z_t=\cfrac{S_t}{B_t}$, since $Z_t$ is a martingale (no-drift process) it's evolution could be described by
-    \begin{equation}
-      dZ_t = \sigma Z_t dW_t^B
-      \label{eq:z_martingale1}
-    \end{equation}
-    where $dW_t^B$ is a Brownian motion under the $\mathbb{Q}^B$ measure.
-  \end{itemize}
+\begin{homework}
+\begin{frame}{\textcolor{white}{Homework}}
+\begin{itemize}
+\item[white] Consider a stock price which has the following dynamics under the real-world measure $\mathbb{P}$
+\begin{equation*}
+	dS_t = \mu S_t dt + \sigma S_t dW_t
+\end{equation*}
+Determine what happens to the stock SDE when moving to two different numeraires:
+\begin{itemize}
+\item[white] risk-neutral measure (bank account numeraire);
+\item[white] stock measure (stock numeraire).
+\end{itemize}
+\end{itemize}
 \end{frame}
-
-\begin{frame}{Risk-Neutral Measure Dynamics}
-  \begin{itemize}
-  \item<1-> Computing directly the $Z_t$ differential (by It$\hat{o}$'s rule at first order)
-    \begin{equation*}
-      \begin{aligned}
-	d\left(\frac{S_t}{B_t}\right) &= \frac{dS_t}{B_t} + S_t d\left(\frac{1}{B_t}\right) = \\ 
-	&=\frac{dS_t}{B_t} + S_t d\left(e^{-rt}\right) = \frac{dS_t}{B_t} - S_t re^{-rt}dt \\
-	&= \frac{dS_t}{B_t} - r\frac{S_t}{B_t}dt 
-      \end{aligned}
-    \end{equation*}
-  \item<2-> Now substitute for $dS_t$
-    \begin{equation*}
-      d\left(\frac{S_t}{B_t}\right)= \frac{ \mu S_t dt + \sigma S_t dW_t}{B_t} - r\frac{S_t}{B_t}dt = \sigma\frac{S_t}{B_t}\left(\frac{\mu - r}{\sigma}dt + dW_t \right)
-    \end{equation*}	
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Risk-Neutral Measure Dynamics}
-  \begin{itemize}
-  \item<1-> In terms of $Z_t$ it becomes
-    \begin{equation}
-      dZ_t = \sigma Z_t\left(\frac{\mu - r}{\sigma}dt + dW_t \right)
-      \label{eq:z_martingale2}
-    \end{equation}
-  \item<2-> Both \cref{eq:z_martingale2} and~\cref{eq:z_martingale1} represent the dynamics of $Z_t$ so they must be equal
-    \begin{equation*}
-      \cancel{\sigma Z_t}dW_t^B = \cancel{\sigma Z_t}\left(\frac{\mu - r}{\sigma}dt + dW_t\right)
-    \end{equation*}
-  \item<3-> Replacing the Brownian Motion into the real-world dynamics
-    \begin{equation*}
-      \begin{aligned}
-	dS_t &= \mu S_t dt + \sigma S_t \left(dW_t^B - \frac{\mu - r}{\sigma}dt\right) =\\
-	& = \cancel{\mu S_t dt} \cancel{-\mu S_t dt} + rS_t dt + \sigma S_t dW_t^B  = \boxed{rS_t dt + \sigma S_t dW_t^B}
-      \end{aligned}
-    \end{equation*}
-  \item<4-> So \textcolor{red}{under the risk-neutral measure the drift equals the risk-free rate}.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Stock Numeraire Measure Dynamics}
-  \begin{itemize}
-  \item<1-> Now let's see what happens under the stock numeraire.
-  \item<2-> Under the risk-neutral measure $\mathcal{Q}^B$
-    \begin{equation*}
-      \frac{S_0}{B_0} = \expect{B}\left[\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right] \implies
-      S_0 = \expect{B}\left[B_0\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right]
-    \end{equation*}
-  \item<3-> By the Change of Numeraire Theorem under the measure $\mathbb{Q}^A$ induced by asset numeraire $A$
-    \begin{equation*}
-      S_0 = \expect{A}\left[A_0\frac{S_t}{A_t}\bigg|\mathcal{F}_0\right]
-    \end{equation*}
-  \item<4-> Since both expressions represent a price of an asset they must be the same and we can equal the terms inside the expectations. Note that the expectations are computed according two different measures so we keep the factors $d\mathbb{Q}^X$. 
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Stock Numeraire Measure Dynamics}
-  \begin{equation*}
-    \frac{B_0}{B_t}d\mathbb{Q}^B = \frac{A_0}{A_t}d\mathbb{Q}^A\implies \frac{d\mathbb{Q}^A}{d\mathbb{Q}^B}=\frac{B_0A_t}{B_tA_0}
-  \end{equation*}
-  \begin{itemize}
-  \item<2-> We have already derived the analytical GBM solution in the risk-neutral measure (see pg. 14 to 18 of "no\_arbitrage" slides)
-    \begin{equation*} 
-      A_t = A_0 \exp\left(rt-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
-    \end{equation*}
-    \item<3-> So we can replace the numeraire definition into the Radon-Nikodym derivative
-    \begin{equation*}
-      \frac{d\mathbb{Q}^A}{d\mathbb{Q}^B}=\frac{\cancel{A_0}e^{\cancel{rt}-\frac{1}{2}\sigma^2 t + \sigma W^B_t}}{\cancel{e^{rt}}\cancel{A_0}}=\exp\left(-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
-    \end{equation*}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Stock Numeraire Measure Dynamics}
-  \begin{itemize}
-  \item<1-> From the Girsanov theorem, setting the function $\gamma_t = \sigma$, we can get the transformed diffusion process
-    \begin{equation*}
-      dW_t^A = dW_t^B - \sigma dt 
-    \end{equation*}
-  \item<2-> Substituting back into the risk-neutral dynamics we get
-    \begin{equation*}
-      \begin{aligned}
-	dS_t &= r S_t dt + \sigma S_t dW_t^B = 
-	rS_t dt + \sigma S_t (dW_t^A + \sigma dt) \\
-	& = (r + \sigma^2)S_t dt + \sigma S_t dW^A_t
-      \end{aligned}
-    \end{equation*}
-  \end{itemize}
-  %\vspace{3cm}
-%\footnotesize{Exercise: calculate the drift change for the Vasicek Model in case you change from B(t) to P(0,T) numeraire}
-\end{frame}
-
-\begin{frame}{Summarizing the Results}
-  \begin{itemize}
-  \item<1-> To summarize all the results
-    \vspace{0.5cm}
-    \begin{table}
-      \begin{tabular}{llr}
-	$(i)$&$dS_t = \textcolor{red}{\mu} S_t dt + \sigma S_t dW_t$ & Real-world measure \\
-	$(ii)$&$dS_t = \textcolor{red}{r}S_t dt + \sigma S_t dW_t^B$ & Risk-neutral measure \\
-	$(iii)$&$dS_t = \textcolor{red}{(r + \sigma^2)}S_t dt + \sigma S_t dW^A_t$ & Stock measure\\
-      \end{tabular}
-    \end{table}
-    \vspace{0.5cm}
-  \item<2-> In practical terms, this means that it possible to use equation $(ii)$, instead of equation $(i)$, to simulate future payoffs, and hence that it is possible to get rid of the big problem of the equity premium estimation. Equation $(ii)$ just needs estimates of the risk-free rate $r$ and of the volatility $\sigma$, which can be derived from real market quotes.
-  \end{itemize}
-	%\pause
-  %\begin{tikzpicture}[remember picture,overlay]
-  %  \node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-  %\end{tikzpicture}
-\end{frame}
+\end{homework}
 
 \begin{frame}{Drift Changes Generalization}
   \begin{block}{Proposition}
@@ -1188,133 +1062,7 @@ Now let $N_t$ and $U_t$ have dynamics under $\mathbb{Q}^U$ given by
   which shows that $\cfrac{S}{N}$ is a $\mathbb{Q}^N$-martingale (no drift in dynamics).
 \end{frame}
 
-%\begin{frame}{}
-%	Let $\mathcal{P}$ be an equivalent martingale measure (EMM) for the numeraire $H_t$ and $\mathcal{Q}$ an EMM for the numeraire $J_t$.Then given a probability space $(\Omega , \mathcal{F}_T , \mathcal{P}/\mathcal{Q})$, for the numeraire change theorem holds 
-%	\begin{equation}
-	%			V_t = \mathbb{E}^P\left[V_T\frac{H_t}{H_T}|\mathcal{F}_t\right]= \mathbb{E}^Q\left[V_T\frac{J_t}{J_T}|\mathcal{F}_t\right]
-	%		\end{equation}	
-%	Assume that $\mathcal{P}$ and $\mathcal{Q}$ are equivalent and denote the Radon-Nikodym by $\eta_t$. 
-%	We then have
-%	\begin{equation}
-	%			V_t = \mathbb{E}^Q\left[V_T\frac{J_t}{J_T}|\mathcal{F}_t\right]= \mathbb{E}^P\left[V_T\frac{H_t}{H_T}\eta_t|\mathcal{F}_t\right]
-	%		\end{equation}
-%\end{frame}
 
-%\begin{frame}{Drift Change General Form}
-%	In particular, $\eta_t = \frac{H_TJ_t}{H_tJ_T}$ for $t < T$. 
-%	
-%	Suppose that the process under some measure $\mathcal{Q}^H$ associated with the numeraire $H_t$ is given by $dX_t = \mu(X_t,t)dt +
-%	\sigma (X_t,t)dW^H_t$.
-%	
-%	We are interested on the process followed by $X_t$ under another measure $\mathcal{Q}^J$ with numeraire $J_t$. 
-%	
-%	From Girsanov’s theorem, 
-%	\begin{equation}
-%		\eta_t = \frac{d\mathcal{Q}^H}{d\mathcal{Q}^J}|\mathcal{F}_t=\exp(-\frac{1}{2}\int_0^t [\mu^H-\mu^J]^2/\sigma ds ) + \int_0^t [\mu^H-\mu^J]/\sigma dW^J_s
-%	\end{equation}
-%	we know that $\eta$ is an exponential martingale with dynamics 
-%	\begin{equation}
-%		d\eta_t = \alpha_t\eta_tdW^J_t\quad \left(\text{with } 	\alpha_t = [\mu^H-\mu^J]/\sigma \right)
-%	\end{equation}
-%\end{frame}
-%
-%\begin{frame}{Drift Change General Form}
-%	Since 
-%	%	Let $\mathcal{P}$ be an equivalent martingale measure (EMM) for the numeraire $H_t$ and $\mathcal{Q}$ an EMM for the numeraire $J_t$.Then given a probability space $(\Omega , \mathcal{F}_T , \mathcal{P}/\mathcal{Q})$, for the numeraire change theorem holds 
-%	%	\begin{equation}
-%		%			V_t = \mathbb{E}^P\left[V_T\frac{H_t}{H_T}|\mathcal{F}_t\right]= \mathbb{E}^Q\left[V_T\frac{J_t}{J_T}|\mathcal{F}_t\right]
-%		%		\end{equation}	
-%	%	Assume that $\mathcal{P}$ and $\mathcal{Q}$ are equivalent and denote the Radon-Nikodym by $\eta_t$. 
-%	%	We then have
-%	%	\begin{equation}
-%		%			V_t = \mathbb{E}^Q\left[V_T\frac{J_t}{J_T}|\mathcal{F}_t\right]= \mathbb{E}^P\left[V_T\frac{H_t}{H_T}\eta_t|\mathcal{F}_t\right]
-%		%		\end{equation}
-%	%\end{frame}
-%	
-%	We also know that 
-%	
-%	\begin{equation}
-%		\eta_T = \frac{J_0H_T}{H_0J_T}
-%	\end{equation}
-%	Since $\eta$ is a $\mathcal{Q}^J$ martingale
-%	\begin{equation}
-%		d\eta_t = \mathbb{E}^J[\eta_T]=\frac{J_0H_t}{H_0J_t}
-%	\end{equation}
-%\end{frame}
-%
-%
-%\begin{frame}{Drift Change General Form}
-%	Differentiating
-%	\begin{equation}
-%		d\eta_t =\frac{J_0}{H_0}d\left(\frac{H_t}{J_t}\right)=\frac{J_0}{H_0}\sigma^{H/J}dW^J_t
-%	\end{equation}
-%	since $H/J$ is a martingale under $J$ and $d(\frac{H_t}{J_t})=\sigma^{H/J}dW^J_t$.
-%	By comparing the two dynamics for $\eta$
-%	\begin{equation}
-%		\alpha\eta_t = \frac{J_0}{H_0}\sigma^{H/J}\implies \frac{H_t}{J_t}\alpha=\sigma^{H/J}
-%	\end{equation}
-%	or by definition
-%	\begin{equation}
-%		\mu^J = \mu^H - \frac{J_t}{H_t}\sigma_t\sigma^{H/J}
-%	\end{equation}
-%\end{frame}
-%
-%
-%
-%\begin{frame}{Drift Change General Form}
-%	The last step
-%	
-%	\begin{equation}
-%		\sigma^{H/J} = \frac{\sigma_H}{J_t} - \frac{H_t}{J^2_t}\sigma_J
-%	\end{equation}
-%	
-%	dWJ = -g dt + dWH
-%	
-%	If $W^J_t$ is a Wiener process under $\mathcal{Q}^J$, then $W^J_t = W^H_t - \int_0^t \theta_s ds$ where $d\eta_{t,T} = \Gamma_{t,T} \theta_T dW^P_T$.
-%	
-%	Let $H_t$ and $J_t$ have dynamics under $\mathcal{P}$ given by 
-%	\begin{equation}
-%		\begin{gathered}
-%			dH_t = m_H dt + \sigma_H dW^P_t\\
-%			dJ_t = m_J dt + \sigma_J dW^P_t 
-%		\end{gathered}
-%	\end{equation}
-%\end{frame}
-%
-%Using these dynamics and noting that $\eta_t$ is a martingale under $\mathcal{P}$, it can be verified that
-%\begin{equation}
-%	\frac{d\eta_T}{\eta_T} = \left(\frac{\sigma_J}{J_T}-\frac{\sigma_H}{H_T}\right)dW^P_T
-%\end{equation}
-%
-%So, $\theta_t = \frac{\sigma_J}{J_T}-\frac{\sigma_H}{H_T}$.
-%Suppose $\mathcal{P}$ is the measure induced by the bank account numeraire and $\mathcal{Q}$ is the forward measure. For $s < t < T$
-%\begin{equation}
-%	\Gamma_t = \frac{J_t}{J_s}\frac{H_s}{H_T} = \frac{P(t,T)}{P(s,T)}\exp\left(-\int_s^t r_u du\right)
-%\end{equation}
-%
-%Under measure $\mathcal{P}$, $\frac{dP(t,T)}{P(t,T)} = r_t dt + \sigma_P(t)dW_t$.
-%It is a straightforward calculation to show that the process $\Gamma_t$ satifies
-%\begin{equation}
-%	\frac{\Gamma_t}{\Gamma_t}=\frac{dP(t,T)}{P(t,T)} - r_t dt = \sigma_P(t)dW_t
-%\end{equation}
-%
-%This implies that$W^Q_t = W^P_t-\int_0^t\sigma_B(u)du$. Hence,if under $\mathcal{P}$ we have the dynamics $dX_t = m(X_t,t)dt + \sigma(X_t,t)dW_t^P$ then the $\mathcal{Q}$~-process for $X_t$
-%is $dX_t =(m(X_t,t)+\sigma_B(t)\sigma(X_t,t))dt+\sigma(X_t,t)dW^Q_t$.
 
-%\begin{frame}{Decorrelation}
-%	\begin{itemize}
-	%		\item In the LMM, we can assume that the brownian motions driving the dynamics of forward rate are correlated
-	%		\begin{equation}
-		%			<dW_t^{T_i}, dW_t^{T_i}> = \rho_{ij}dt
-		%		\end{equation}
-	%		\item In models for short rate or for i.f.r. it is assumed full correlation $\rho_{ij}=1$, which is a tight constraint on the dynamics of the forward rates.
-	%		\item In the LMM, we can allow decorrelation to better fit the derivatives at hand.
-	%		\item The change of measure with decorrelation implies
-	%		\begin{equation}
-		%			dF(t,T_1,T_2)=\rho_{12}\frac{v_2F(t,T_1,T_2)\tau}{1+\tau F(t,T_1,T_2)}dt + v_2F(t,T_1,T_2)dW^{T_1}_t
-		%		\end{equation}
-	%		\item Correlations have no impacts on Caps.
-	%	\end{itemize}
-%\end{frame}
 
 \end{document}
