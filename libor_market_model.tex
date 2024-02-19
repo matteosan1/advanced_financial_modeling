@@ -298,7 +298,7 @@
 \end{itemize}
 \end{frame}
 
-
+\begin{frame}{Black Formula Derivation}
 Take a geometric Brownian motion $dF(t; T_1, T_2) = \sigma_2(t) F(t; T_1, T_2)dW(t)$, where $\sigma_2$ is the instantaneous volatility, and $W$ a standard Brownian motion under the measure $\mathbb{Q}^2$.
 
 Let us solve this equation and compute the caplet price term $\mathbb{E}^{\mathbb{Q}^2}[F_2(T_1) - X]^+$.
@@ -306,16 +306,15 @@ Let us solve this equation and compute the caplet price term $\mathbb{E}^{\mathb
 By Ito’s formula:
 \begin{equation*}
 \begin{aligned}
-d\ln(F_2(t)) &= \ln^'(F_2)dF_2 + \cfrac{1}{2} \ln(F_2)^{''} dF_2 dF_2 =\\
+d\ln(F_2(t)) &= \ln^{'}(F_2)dF_2 + \cfrac{1}{2} \ln^{''}(F_2) dF_2 dF_2 =\\
 &=\cfrac{1}{F_2}dF_2 - \cfrac{1}{2}\cfrac{1}{(F_2)^2} dF_2 dF_2 = \\
 &=\cfrac{1}{F_2}\sigma_2 F_2dW - \cfrac{1}{2}\cfrac{1}{(F_2)^2}  (\sigma_2 F_2 dW)(\sigma_2 F_2 dW) = \\
-&= \sigma_2 dW - \cfrac{1}{2}\cfrac{1}{(F_2)^2}\sigma^2_2 F^2_2 dWdW =\\
-&= \sigma_2(t) dW(t) - \cfrac{1}{2}\sigma^2_2 dt
+&= \sigma_2 dW - \cfrac{1}{2}\cfrac{1}{(F_2)^2}\sigma^2_2 F^2_2 dWdW = \sigma_2(t) dW(t) - \cfrac{1}{2}\sigma^2_2 dt
 \end{aligned}
 \end{equation*}
+\end{frame}
 
-%So we have $d ln(F_2(t)) = \sigma_2(t)dW(t) - \cfrac{1}{2}\sigma^2_2(t)dt$.
-
+\begin{frame}{Black Formula Derivation}
 Integrate both sides:
 \begin{equation*}
 \begin{gathered}
@@ -328,12 +327,15 @@ Compute the distribution of the random variable in the exponent.
 
 It is Gaussian, since it is a stochastic integral of a deterministic function times
 a Brownian motion.
+\end{frame}
+
+\begin{frame}{Black Formula Derivation}
 Compute the expectation:
 \begin{equation*}
 \begin{gathered}
 \mathbb{E}\left[\int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt\right] = 0 - \cfrac{1}{2}\int_0^T \sigma^2_2(t)dt \\
-\ln(F_2(T)) - \ln(F_2(0)) = \int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt \\
-\text{Var}[\int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt\right] = \mathbb{E}[\left(\int_0^T \sigma_2(t)dW(t) \right)\right] - 0^2 = \int_0^T \sigma^2_2(t)dt
+%\ln(F_2(T)) - \ln(F_2(0)) = \int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt \\
+\text{Var}\left[\int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt\right] = \mathbb{E}\left[\left(\int_0^T \sigma_2(t)dW(t) \right)\right] - 0^2 = \int_0^T \sigma^2_2(t)dt
 \end{gathered}
 \end{equation*}
 where we have used Ito’s isometry in the last step. We thus have
@@ -341,30 +343,55 @@ where we have used Ito’s isometry in the last step. We thus have
 I(T) := - \cfrac{1}{2}\int_0^T \sigma^2_2(t)dt + \int_0^T \sigma^2_2(t)dt \approx m + V\mathcal{N}(0,1)
 \end{equation*}
 Recall that we have $F_2(T) = F_2(0) \exp(I(T)) = F_2(0)e^{m+V \mathcal{N}(0,1)}$.
-Compute now the option price term $\mathbb{E}^{\mathbb{Q}^2}[(F_2(T_1) - X)^+] = [(F_2(0)e^{m+V \mathcal{N}(0,1)} - X)^+] =\int_{-\infty}^{+\infty}
-(F_2(0)e^{m+Vy}-X)^+p_{\mathcal{N}(0,1)}(y)dy$
+\end{frame}
 
-Note that $F_2(0) \exp(m + Vy) - X > 0 if and only if
+\begin{frame}{Black Formula Derivation}
+Compute now the option price term
 \begin{equation*}
-y > \cfrac{-\ln\cfrac{F_2(0)}{X}-m}{V} := \bar{y}
+\mathbb{E}^{\mathbb{Q}^2}[(F_2(T_1) - X)^+] = [(F_2(0)e^{m+V \mathcal{N}(0,1)} - X)^+] =\int_{-\infty}^{+\infty}
+(F_2(0)e^{m+Vy}-X)^+p_{\mathcal{N}(0,1)}(y)dy
+\end{equation*} 
+
+Note that $F_2(0) \exp(m + Vy) - X > 0$ if and only if
+\begin{equation*}
+y > \cfrac{-\ln\frac{F_2(0)}{X}-m}{V} := \bar{y}
 \end{equation*}
 so that
 \begin{equation*}
- $\mathbb{E}^{\mathbb{Q}^2}[(F_2(T_1) - X)^+] =\int_{-\infty}^{+\infty}(F_2(0)\exp(m+Vy)-X)p_{\mathcal{N}(0,1)}(y)dy=
-\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy)-X)p_{\mathcal{N}(0,1)}(y)dy = 
-\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy))dy - \int_{\bar{y}}^{+\infty}X p_{\mathcal{N}(0,1)}(y)dy = 
-\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy)) p_{\mathcal{N}(0,1)}(y)dy - \int_{\bar{y}}^{+\infty}X p_{\mathcal{N}(0,1)}(y)dy = 
-F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}y^2+m+Vy} p_{\mathcal{N}(0,1)}(y)dy-X\int_{\bar{y}}^{+\infty}p_{\mathcal{N}(0,1)}(y)dy =
-F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}y^2+m+Vy} p_{\mathcal{N}(0,1)}(y)dy-X(1-\Phi(\bar{y})) = 
-F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}(y-V)^2 +m-\frac{1}{2}V^2} p_{\mathcal{N}(0,1)}(y)dy-X(1-\Phi(\bar{y})) = 
-
-
+\begin{aligned}
+\mathbb{E}^{\mathbb{Q}^2}[(F_2(T_1) - X)^+] &=\int_{-\infty}^{+\infty}(F_2(0)\exp(m+Vy)-X)p_{\mathcal{N}(0,1)}(y)dy= \\
+&=\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy)-X)p_{\mathcal{N}(0,1)}(y)dy =\ldots
+\end{aligned}
 \end{equation*}
-When including the initial discount factor P(0, T2) and the year fraction τ this
-is exactly the classic market Black’s formula for the T1 − T2 caplet.
+\end{frame}
 
+\begin{frame}{Black Formula Derivation}
+\begin{equation*}
+\begin{aligned}
+\ldots &= 
+\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy))dy - \int_{\bar{y}}^{+\infty}X p_{\mathcal{N}(0,1)}(y)dy = \\
+&=\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy)) p_{\mathcal{N}(0,1)}(y)dy - \int_{\bar{y}}^{+\infty}X p_{\mathcal{N}(0,1)}(y)dy = \\
+&=F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}y^2+m+Vy} p_{\mathcal{N}(0,1)}(y)dy-X\int_{\bar{y}}^{+\infty}p_{\mathcal{N}(0,1)}(y)dy = \\
+&=F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}y^2+m+Vy}dy-X(1-\Phi(\bar{y})) = \\
+&= F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}(y-V)^2 +m-\frac{1}{2}V^2}dy-X(1-\Phi(\bar{y})) = \ldots\\
+\end{aligned}
+\end{equation*}
+\end{frame}
 
-
+\begin{frame}{Black Formula Derivation}
+	\begin{equation*}
+		\begin{aligned}
+			\ldots 
+&=F_2(0)e^{m-\frac{1}{2}V^2}\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}(y-V)^2}dy-X(1-\Phi(\bar{y})) =\\
+&=F_2(0)e^{m-\frac{1}{2}V^2}\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}-V}^{+\infty}e^{-\frac{1}{2}z^2}dz-X(1-\Phi(\bar{y})) = \\
+&= F_2(0)e^{m-\frac{1}{2}V^2}(1-\Phi(\bar{y}-V))-X(1-\Phi(\bar{y})) = \\
+&= F_2(0)e^{m-\frac{1}{2}V^2}\Phi(-\bar{y}+V)-X\Phi(-\bar{y}) = \boxed{F_2(0)\Phi(d_1)-X\Phi(d_2)}
+		\end{aligned}
+	\end{equation*}
+	with $d_{1,2}=\cfrac{\ln\frac{F_2(0)}{X}\pm\frac{1}{2}\int_0^{T_1}\sigma^2_2(t)dt}{\sqrt{\int_0^{T_1}\sigma_2^2(t)dt}}$.
+	
+	When including the initial discount factor $P(0, T2)$ and the year fraction $\tau$ this is exactly the classic market Black’s formula for the $T_1 - T_2$ caplet.
+\end{frame}
 
 \begin{frame}{Instantaneous Volatility of Forward Rates}
 \begin{itemize}
