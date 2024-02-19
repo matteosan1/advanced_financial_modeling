@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np, pandas as pd
 import matplotlib.pyplot as plt
 
 from scipy.stats import norm
@@ -12,15 +12,14 @@ from finmarkets import DiscountCurve, ForwardRateCurve, dt_from_str
 from finmarkets import CapFloorLet, CapFloor, CapFloorType
 
 valuation_date = date.today()
-rates = np.array([0.02, 0.02, 0.07, 0.25, 0.70, 1.10, 1.62, 2.00])/100
-dfs = [1/(1+rates[i])**t for i, t in enumerate([0, 0.25, 0.5, 1, 2, 3, 5, 7])]
-pillar_dates = [valuation_date + relativedelta(months=i*12) for i in [0, 0.25, 0.5, 1, 2, 3, 5, 7]]
-fc = ForwardRateCurve(valuation_date, pillar_dates, rates)
-dc = DiscountCurve(valuation_date, pillar_dates, dfs)
+rates_data = pd.read_csv("../input_files/rates_data.csv")
+pillar_dates = [valuation_date + relativedelta(months=i*12) for i in rates_data['dt']]
 
-cap_maturities = [dt_from_str(m) for m in ["1y", "2y", "3y", "4y", "5y"]]
-cap_volatilities = [0.44, 0.45, 0.44, 0.41, 0.39]
-vol_interp = interp1d(cap_maturities, cap_volatilities, fill_value='extrapolate', kind='slinear')
+fc = ForwardRateCurve(valuation_date, pillar_dates, rates_data['rates'])
+dc = DiscountCurve(valuation_date, pillar_dates, rates_data['dfs'])
+
+cap_data = pd.read_csv("../input_files/cap_data.csv")
+vol_interp = interp1d(cap_data['cap_maturities'], cap_data['cap_volatilities'], fill_value='extrapolate', kind='slinear')
 
 ttm = ['6m', "1y", '18m', "2y", '30m', "3y", '42m', "4y", '54m', "5y"]
 K = 0.013
@@ -31,8 +30,8 @@ def obj_func(sigma, caplet, dc, fc, target_price):
 sigmas = []
 for i in range(len(ttm)-1):
     ttm_val = dt_from_str(ttm[i])
-    if ttm_val < cap_maturities[0]:
-        sigmas.append(cap_volatilities[0])
+    if ttm_val < cap_data['cap_maturities'][0]:
+        sigmas.append(cap_data['cap_volatilities'][0])
     else:
         cap0 = CapFloor(1, valuation_date, ttm[i], "6m", K, CapFloorType.Cap)
         cap1 = CapFloor(1, valuation_date, ttm[i+1], "6m", K, CapFloorType.Cap)

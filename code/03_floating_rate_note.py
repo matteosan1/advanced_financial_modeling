@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 from finmarkets import DiscountCurve, dt_from_str
 from finmarkets.credit import FloatingRateNote
 
-rates = pd.read_csv("https://raw.githubusercontent.com/matteosan1/advanced_financial_modeling/master/input_files/libor.csv")
+rates = pd.read_csv("../input_files/libor.csv")
 
 frn = FloatingRateNote(date.today(), "3Y", "3m")
 pillars = [date.today()+relativedelta(months=dt_from_str(f"{t}M")) for t in rates['T']]

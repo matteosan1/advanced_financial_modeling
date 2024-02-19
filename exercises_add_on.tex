@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt,a4paper]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
@@ -86,12 +86,12 @@
 
 \newcommand{\myendproof}{\hfill\qedsymbol}
 
-\title{Additional Material for AFM Couse 24}
+\title{Additional Material for AFM-24}
 \author{Matteo Sani}
 
 \begin{document}
 \maketitle
-
+\chapter{Arbitrage Free Pricing Theory}
 \section{Random Variables}
 A variable whose value is a number determined by the outcome of a random experiment is called a \textcolor{red}{random variable}.
 
@@ -110,15 +110,15 @@ Hence the random variable $X$ will take values distributed according to the prob
 
 \textcolor{red}{A random variable is always associated to a probability distribution.}
 
-\subsection{Properties and Characteristics of Random Variables}		If a random variable takes only a countable number (finite) of values, it is called \textcolor{red}{discrete}.
-\textbf{Example:} when 3 coins are tossed, the number of heads obtained is the random variable, which assumes the values $\Omega=\{0,1,2,3\}$ ($\Omega$ ia a countable set).
+\subsection{Properties and Characteristics of Random Variables}		
 
-A random variable $X$ which can take any value between a certain interval is called \textcolor{red}{continuous}.
-\textbf{Example:} the height of students in a particular class lies between 160 and 190~cm $(X = \{x|160 \leq x \leq 190\})$.
+If a random variable takes only a countable number (finite) of values, it is called \textcolor{red}{discrete}. As an example imagine when 3 coins are tossed, the number of heads obtained is the random variable, which assumes the values $\Omega=\{0,1,2,3\}$ ($\Omega$ ia a countable set).
 
-Let $X$ be a random variable defined on a domain $\Omega$ of possible outcomes. 
+Contrary, a random variable $X$ which can take any value between a certain interval is called \textcolor{red}{continuous}. Imagine the height of students in a particular class lies between 160 and 190~cm $(X = \{x|160 \leq x \leq 190\})$.
+
+Table \ref{tab:random_variable_prop} lists the main characteristics of discrete and continuous random variables (referred to a random variable $X$ defined on a domain $\Omega$ of possible outcomes). 
 \renewcommand{\arraystretch}{1.6}
-\begin{table}[bt]
+\begin{table}[hbtp]
 	\begin{center}
 	\begin{tabular}{|c|c|} \hline
 			\textbf{Discrete} & \textbf{Continuous} \\ \hline
@@ -130,29 +130,38 @@ Let $X$ be a random variable defined on a domain $\Omega$ of possible outcomes.
 			$F(x_i) = P(X<x_i) = \sum_{x<x_i} P(x)$ & $F(x) = P(X<a) = \int_{-\infty}^{a} f(x) dx$ \\ \hline
 		\end{tabular}
 	\end{center}
+\label{tab:random_variable_prop}
+\caption{List of the main characteristics of discrete and continuous random variables.}
 \end{table}
 
 If we know the distribution of a random variable, we pretty much know all is needed about it. 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[height=3cm]{continouos_random_variable}
-\includegraphics[height=3 cm]{real_data}
+\includegraphics[height=5cm]{continouos_random_variable}
+\includegraphics[height=5cm]{real_data}
+\caption{Examples of a continuous random variable PDF (left) and a corresponding real life realization of the same random variable (right).}
 \end{center}
 \end{figure} 
 	
 But with \textit{real data}, we don't know the full distribution. Fortunately we can characterize it by a couple of numbers (\emph{statistics}).
-\textcolor{red}{mean:}
 \begin{equation}
- \mu = \mathbb{E}[X] = \int_{-\infty}^{\infty} xf(x)dx
-\end{equation}
-\textcolor{red}{variance:}  
-\begin{equation}
+\begin{gathered}
+\text{\textcolor{red}{mean: }
+} \mu = \mathbb{E}[X] = \int_{-\infty}^{\infty} xf(x)dx \\
+\text{\textcolor{red}{variance: }}  
 \sigma^2 = \mathbb{E}[(X-\mu)^2] =\int_{-\infty}^{\infty} (x-\mu)^2f(x)dx
+\end{gathered}
 \end{equation}
 
 \subsection{Expectation and Its Properties}
+Table \ref{tab:expectation_prop} reports a list of the main properties of the expectation operator.
+Essentially all of them come from integration properties, e.g.
+\begin{equation*}
+	\mathbb{E}[aX] = \int_{-\infty}^{\infty} ax f(x) dx = a  \int_{-\infty}^{\infty} x f(x) dx = a\mathbb{E}[X]
+\end{equation*}
+
 \renewcommand{\arraystretch}{1.4}
-\begin{table}[bt]
+\begin{table}[hbt]
 	\begin{center}
 		\begin{tabular}{|c|c|} \hline
 			Scalar multiplication & $\mathbb{E}[aX] = a\mathbb{E}[X]$ \\ \hline
@@ -162,25 +171,22 @@ But with \textit{real data}, we don't know the full distribution. Fortunately we
 			Products (independent variables) & $\mathbb{E}[XY] = \mathbb{E}[X] \mathbb{E}[Y]$ \\ \hline
 		\end{tabular}
 	\end{center}
+\label{tab:expectation_prop}
+\caption{List of the main properties of the expectation operator.}
 \end{table}
-
-Essentially all the expectation properties come from integration properties, e.g.
-\begin{equation*}
-	\mathbb{E}[aX] = \int_{-\infty}^{\infty} ax f(x) dx = a  \int_{-\infty}^{\infty} x f(x) dx = a\mathbb{E}[X]
-\end{equation*}
 
 \section{Stochastic Processes}
 Real world data is noisy (i.e. distorted), and exhibits behaviours that cannot be described by a deterministic model (always produce same result from same inputs, e.g $f(x)=x^3+2$).
-\begin{figure}
+\begin{figure}[htbp]
 	\begin{center}  
-	\includegraphics[height=3cm]{stochastic_process}
+	\includegraphics[height=5cm]{stochastic_process}
 	\end{center}
+\caption{Example of "noisy" process.}
 \end{figure}
-Need to switch to \textcolor{red}{stochastic processes} in order to model the uncertainty of data.  
-A collection of random variables that is indexed by some mathematical set (usually time) is called a \textcolor{red}{stochastic processes}.
 
-\subsection{Stochastic Differential Equation}
-	
+In order to model the behavior of this kind of data (and its intrinsic uncertainty) it is needed to switch to \textcolor{red}{stochastic processes}.  
+A stochastic process is a collection of random variables that is indexed by some mathematical set (usually time).
+
 Stochastic processes are described by \emph{stochastic differential equations} (SDE):
 	
 \begin{equation}
@@ -189,22 +195,16 @@ Stochastic processes are described by \emph{stochastic differential equations} (
 \end{aligned}
 \label{eq:sde}
 \end{equation}
-	
-\begin{tabular}{cl}  
-	\begin{tabular}{c}
-		\includegraphics[height=3.5cm]{brownian_process}
-	\end{tabular}
-& \begin{tabular}{l}
-\parbox{0.45\linewidth}{
-\begin{itemize}
-\item $W(t)$ is called a \emph{Wiener Process}, is normally distributed and independent of everything has happened up to time $t$;
-\item for $s< t$ the stochastic variable $W(t)-W(s)$ has a Gaussian distribution $\mathcal{N}(0, t)$, i.e. the standard deviation grows with the square root of time.
-\end{itemize}  
-}
-\end{tabular}  \\
-\end{tabular}
+where $W(t)$ is called a \emph{Wiener Process} (or Brownian motion), which represent the evolution of random variable which is normally distributed and whose increments are independent of everything has happened up to time $t$, for $s< t$ the stochastic variable $W(t)-W(s)$ has a Gaussian distribution $\mathcal{N}(0, t)$, i.e. the standard deviation grows with the square root of time.
 
-Using simple properties of the normal distribution we can obtain the following results:
+\begin{figure}[htpb]
+\begin{center}
+	\includegraphics[height=5cm]{brownian_process}
+\end{center}
+\caption{Example of eveolution of a stochastic process, on top of the deterministic evolution, a gaussian distributed "noise" (Wiener process) is added.}
+\end{figure}
+
+Using the properties of the normal distribution we can obtain the following results for the Wiener process:
 \begin{equation*}
 \begin{gathered}
 \mathbb{E}[\Delta W] = 0 \\
@@ -237,7 +237,7 @@ Without entering into the details of stochastic calculus we can state the two mo
 \subsection{Martingales}
 With the symbol $\mathcal{F}^X_t$ it is indicated a \textbf{filtration}. It represents the information generated by $X$ on the interval $[0, t]$, i.e. what has happened to $X$ over the interval. 
 
-If the value of a stochastic variable $X$ ca be completely determined given observations of its trajectories $\{X(s); 0\leq s \leq t\}$, then we can write $X\in\mathcal{F}_t^X$ and $X$ is said to be $\mathcal{F}_t^X$\emph{-measurable}.
+If the value of a stochastic variable $X$ can be completely determined given observations of its trajectories $\{X(s); 0\leq s \leq t\}$, then we can write $X\in\mathcal{F}_t^X$ and $X$ is said to be $\mathcal{F}_t^X$\emph{-measurable}.
 If $Y$ is a stochastic process such that $Y(t)\in\mathcal{F}_t^X$ for all $t$ then we say that $Y$ is \emph{adapted} to the filtration $\mathcal{F}_t^X$. 
 
 Given the information (filtration) $\mathcal{F}_t$, for any stochastic variable $X$ consider
@@ -325,29 +325,12 @@ df&={\frac {\partial f}{\partial t}}\,dt+\cancel{{\frac {1}{2}}{\frac {\partial 
 \end{equation*}
 as required.
 
-Let's apply this expansion to $G=\log(S_t)$ 
-\begin{equation*}
-\frac{\partial G}{\partial S}=\frac{1}{S_t},\;\frac{\partial G}{\partial t}=0,\;\frac{\partial^2 G}{\partial S^2}=-\frac{1}{S_t^2}
-\end{equation*}
-
-Substituting back into It$\hat{o}$'s lemma \ref{eq:itos_lemma} and taking $a$ and $b$ values from \ref{eq:log_normal_sde}
-\begin{equation*}
-dG = \left(a\frac{\partial G}{\partial S} + \frac{\partial G}{\partial t} + \frac{1}{2}b^2\frac{\partial^2 G}{\partial S^2}\right)dt + b\frac{\partial G}{\partial S} dW
-\end{equation*}
-
-\begin{equation*}
-d(\log S_t) = \left[\mu S_t\frac{1}{S_t} + \frac{1}{2}\sigma^2S_t^2\left(-\frac{1}{S_t^2}\right)\right]dt + \sigma dW
-\end{equation*}
-
-\begin{equation*}
-\log(S_t) - \log(S_{t-1}) = \log\frac{S_t}{S_{t-1}}=\left(\mu - \frac{1}{2}\sigma^2\right)dt + \sigma dW 
-\end{equation*}	
-
+Back to the Geometric Brownian motion, it can be shown that a solution to Eq.\ref{eq:log_normal_sde} is given by 
 \begin{equation}
 S_t = S_{t-1}\exp\left[\left(\mu-\frac{1}{2}\sigma^2\right)dt + \sigma\mathcal{N}(0,1)\sqrt{dt}\right] 
 \label{eq:lognormal_solution}
 \end{equation}
-	
+
 The variation in $\log(S_t)$ equals a constant (the \emph{drift} $\mu-\frac{1}{2}\sigma^2$) plus a Gaussian distributed random variable. Therefore at some time $t$
 \begin{equation*}
 \log S_t = \mathcal{N}\left[\left(\mu -\frac{\sigma^2}{2}\right)t, \sigma^2 t\right]
@@ -356,8 +339,7 @@ The variation in $\log(S_t)$ equals a constant (the \emph{drift} $\mu-\frac{1}{2
 A random variable whose logarithm is normally distributed is said to be \textcolor{red}{log-normal}.
 			
 One of the most important properties of a log-normal distribution is to be positive definite (a good characteristic for stock prices).
-	
-\clearpage
+
 \section{No Arbitrage Pricing Theory}
 
 A \textcolor{red}{portfolio} is a vector $\mathbf{\theta}\in \mathbb{R}^K$ whose $j$ components represent the number of shares of asset $A_j$ (asset $A_0$ is risk-free). It's value is
@@ -533,13 +515,97 @@ Such a price is given by the expectation of the discounted payoff under the meas
 \end{equation}
 \end{itemize}
 
-\clearpage
-\section{Array in \texttt{Python}}
+\begin{question}[subtitle=Geometric Brownian Motion]
+Show that 
+\begin{equation*}
+S_t = S_{t-1}\exp\left[\left(\mu-\frac{1}{2}\sigma^2\right)dt + \sigma\mathcal{N}(0,1)\sqrt{dt}\right] 
+\end{equation*}
+is a solution of the stochastic differential equation
+\begin{equation*}
+dS_t = \mu S_t dt + \sigma S_t dW_t \\
+\end{equation*}
+\end{question}
+
+\begin{solution}
+Let's apply the Ito's expansion to $G=\log(S_t)$ 
+\begin{equation*}
+\frac{\partial G}{\partial S}=\frac{1}{S_t},\;\frac{\partial G}{\partial t}=0,\;\frac{\partial^2 G}{\partial S^2}=-\frac{1}{S_t^2}
+\end{equation*}
+
+Substituting back into It$\hat{o}$'s lemma and taking $a$ and $b$ values from the SDE for $S$
+\begin{equation*}
+dG = \left(a\frac{\partial G}{\partial S} + \frac{\partial G}{\partial t} + \frac{1}{2}b^2\frac{\partial^2 G}{\partial S^2}\right)dt + b\frac{\partial G}{\partial S} dW
+\end{equation*}
+
+\begin{equation*}
+d(\log S_t) = \left[\mu S_t\frac{1}{S_t} + \frac{1}{2}\sigma^2S_t^2\left(-\frac{1}{S_t^2}\right)\right]dt + \sigma dW
+\end{equation*}
+
+\begin{equation*}
+\log(S_t) - \log(S_{t-1}) = \log\frac{S_t}{S_{t-1}}=\left(\mu - \frac{1}{2}\sigma^2\right)dt + \sigma dW 
+\end{equation*}	
+
+\begin{equation*}
+S_t = S_{t-1}\exp\left[\left(\mu-\frac{1}{2}\sigma^2\right)dt + \sigma\mathcal{N}(0,1)\sqrt{dt}\right] 
+\end{equation*}
+\end{solution}
+
+\begin{question}[subtitle=Martingale]
+Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. 
+Is this a martingale ?
+\end{question}
+
+\begin{question}[subtitle=Stochastic Differential Equation]
+Show that the exponential SDE
+\begin{equation*}
+dX_t = A_t X_tdW_t,\quad X_0=x_0
+\end{equation*}
+has the following solution
+\begin{equation*}
+X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
+\end{equation*}
+\end{question}
+
+\chapter{Monte Carlo Simulation}
+
+\section{Stochastic Simulation}
+In science, we are often more interested in the distribution of a set of outcomes rather than a single event. This may be the probability distribution of a molecule diffusing a specific distance as a function of time, or the price change of a very exotic derivative.
+
+Stochastic simulations allow us to generate a series of experiments on a system in which one step is governed by random chance. These simulations often boil down to flipping a coin to dictate if said step will occur or not.
+
+Of course, sitting in your office chair flipping a coin over and over again is not how one should do a simulation. To get a sense of the probability distribution of some outcome, we often have to simulate the process thousands of times. This means that we need to know how to make our computers do the heavy lifting.
+
+It's often easy to forget just how powerful modern computers can be. What once required a serious computational cluster only twenty years ago can now be done on a 10 mm thick compartment made of rose-gold colored aluminium. 
+
+\section{The Algorithm}
+A Monte Carlo simulation is a mathematical technique that simulates the range of possible outcomes for an uncertain event.
+
+These predictions are based on an estimated range of values instead of a fixed set of values and evolve randomly.
+
+Essentially the process is simulated by replacing every source of uncertainty by random numbers sampled from appropriate distributions (PDF). 
+
+Monte Carlo simulations use a probability distribution for any variable that has inherent uncertainty. Then, it recalculates the results many times, using a different set of random numbers within the estimated range each time. This process generates many probable outcomes, which become more accurate as the number of inputs grows. This property, that the actual result gets closer to the reality with more iterations, is known as the law of large numbers.).
+
+The Monte Carlo method has been described as "faking it a billion times until the reality emerges."
+It relies on the assumption that many random samples mimic patterns in the total population.
+
+Note that depending upon the number of uncertainties and their ranges, a Monte Carlo simulation could involve thousands or even millions of recalculations before it is completed.
+
+Although they might vary from case to case, the general steps to a Monte Carlo simulation are as follows:
+\begin{itemize}
+\item Build the model. Determine the mathematical model.
+\item Choose the variables to simulate. Pick the variables, and determine an appropriate probability distribution (PDF) for each random variable and their range of variability $\Omega$.
+\item Run repeated simulations. Run the random variables through the mathematical model to perform many iterations of the simulation.
+\item Aggregate the results, and determine the mean, standard deviation and variant to determine if the result is as expected. Visualize the results on a histogram.
+\end{itemize}
+
+Imagine to simulate the results of rolling a die: the only variable is the die outcome, so $\Omega =1,2,3,4,5,6$ and the outcome probability is a uniform distribution (i.e. we are using a fair die and outcomes are equiprobable). Hence the simulation consists of sampling uniform distributed integers between 1 and 6.
+
+\subsubsection{Array in \texttt{python}}
 
 The most efficient way to implement array is through \texttt{numpy.array} objects. These are a faster replacement for native \texttt{list} objects which are implemented in \texttt{C} language thus overtake the usual performance bottlenecks. 
 
 One of the main feature of \texttt{numpy.array} is the so called \emph{vectorialization}, which is the capability of applying a certain operation to each element of the array without expliciting the for-loop on them.
-
 \begin{ipython}
 import numpy as np
 import math 
@@ -599,91 +665,6 @@ mean path:
 \end{ioutput}
 
 The output has correctly length 2, since there is just one path (i.e. the mean path) made of two time steps.
-\clearpage
-
-\clearpage
-\section{Stochastic Simulation}
-In science, we are often more interested in the distribution of a set of outcomes rather than a single event. This may be the probability distribution of a molecule diffusing a specific distance as a function of time, or the price change of a very exotic derivative.
-
-Stochastic simulations allow us to generate a series of experiments on a system in which one step is governed by random chance. These simulations often boil down to flipping a coin to dictate if said step will occur or not.
-
-Of course, sitting in your office chair flipping a coin over and over again is not how one should do a simulation. To get a sense of the probability distribution of some outcome, we often have to simulate the process thousands of times. This means that we need to know how to make our computers do the heavy lifting.
-
-It's often easy to forget just how powerful modern computers can be. What once required a serious computational cluster only twenty years ago can now be done on a 10 mm thick compartment made of rose-gold colored aluminium. 
-
-%FIXME few words about mean and C.L.
-
-\begin{question}
-Using a Monte Carlo simulation of coin flip demonstrate the Central Limit Theorem.
-\end{question}
-
-\subsection{1D Random Walk}
-The Random Walk in one dimension is a model for each process which have simple binary outcomes.
-
-The 1D random walk can be used to model how a gambler plays a game such as roulette in a casino. The idea in such games is that the gambler places a small stake on each game (say 1€). When the game is played the gambler will either loose and the total amount of money he has will thus decrease by one unit, or alternatively, he will win the game and in that case he wins back his stake and a prize, which we will set as 1€. As you can see if the gambler repeats this process of staking money and playing the amount of money he has will undergo a random walk in one dimension, since the outcome will be either 1 or -1.
-
-\begin{question}
-Code a function that simulate a 1D random walk. 
-
-\noindent
-\textbf{Hint:} we can decide whether to walk left or right by flipping a coin and seeing if it comes up \emph{heads} or \emph{tails}.
-\end{question}
-
-\subsubsection{Simulating a Gambler}
-
-Importantly there is a difference between the gambler and the 1D random walk, however. The gambler usually only has a finite amount of money to gamble with. If he looses a large number of games he is therefore forced to stop playing. Similarly, the gambler may also have some target for how much money he would like to win. In other words, he should have some figure $N$€, which is more than the amount of money he entered the casino with. He will stop gambling once he has $N$€ in his pocket.
-
-\begin{question}
-Determine with a simulation the probabilities whether the gambler leaves the casino with zero or with $N$€.
-
-Essentially we start the gambler with $X$€ and simulate the process of him playing the game only stopping once he has reached one of the two thresholds.
-
-Write a function called gambler that simulates this procedure, taking three arguments:
-\begin{itemize}
-\item \texttt{start}: the amount of money the gambler starts with; \item \texttt{n}: the target amount of money that the gambler wants to win;
-\item \texttt{p}: the probability of winning each individual game the gambler plays.
-\end{itemize}
-\end{question}
-
-We can also use simulation to determine how many spins of the wheel the gambler will play before leaving the casino (i.e. \emph{hitting time}).
-In other words we want to calculate the number of steps the random walk takes before arriving in one of the two threshold states.
-
-\begin{question}
-Write another function that simulates the changes in the amount of money the gambler has and that returns the number of spins of the wheel that take place.
-\end{question}
-
-\subsection{Martingale Examples}
-Suppose you play the following series of games. In game $i, i = 1, 2,\ldots$, you bet \$1 and roll a fair die. If the outcome is $\{1,2\}$ you win \$1, if it is $\{3,4\}$ nothing happens, and if the outcome is $\{5,6\}$ you lose \$1.
-Let $X_i$ be a random variable representing the amount of money you win or lose in bet $i$, this kind of game is said to be **fair** since
-
-$$\mathbb{E}[X_i]= \sum_{\Omega}p(\omega)\cdot x(\omega) = \frac{2}{6}\cdot 1 + \frac{2}{6}\cdot 0 + \frac{2}{6}\cdot -1 = 0\;\forall i$$
-so no unbalance between losses or wins.
-
-Now define another random variable $Z_n = \sum_{i=1}^{n} X_i$, i.e. the amount of money held at the $n$-th game.
-
-$Z_n$ is a martingale and $\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = Z_{n-1}$.
-
-\paragraph{Proof}
-
-\begin{equation*}
-	\begin{aligned}
-		\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] &= \mathbb{E}[X_1 +\ldots + X_n|X_1,\ldots, X_{n-1}] \\
-		& = \underbrace{\mathbb{E}[X_1|X_1,\ldots, X_{n-1}]}_{X_1} + \ldots + \underbrace{\mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}]}_{X_{n-1}} + \underbrace{\mathbb{E}[X_n|X_1,\ldots, X_{n-1}]}_{\mathbb{E}[X_n]=0} \\
-		& = \mathbb{E}[X_1|X_1,\ldots, X_{n-1}] + \ldots + \mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}] + 0 = Z_{n-1}
-	\end{aligned}
-\end{equation*}
-
-\begin{question}
-Using Monte Carlo simulation implement the game described in the text and check that the expected gain is indeed null.
-\end{question}
-
-\begin{question}
-An unbiased random walk (in any number of dimensions) is another example of a martingale.
-
-In higher dimensions, the set of randomly walked points has interesting geometric properties. In fact, one gets a discrete \emph{fractal}, that is, a set that exhibits stochastic self-similarity on large scales.
-
-Implement a 2D random walk simulation and plot one possible realization.
-\end{question}
 
 \subsection{Simulating Stochastic Differential Equations}
 
@@ -712,23 +693,97 @@ or
 W(t) = \sum_{t_0}^{t} \sqrt{dt}\mathcal{N}(0,1)
 \end{equation}
 
-\begin{question}
+\begin{question}[subtitle=Central Limit Theorem (\texttt{python})]
+Using a Monte Carlo simulation of coin flip demonstrate the Central Limit Theorem.
+\end{question}
+
+\begin{question}[subtitle=Monte Carlo]
+You have determined the value of an interest rate derivative with a Monte Carlo simulation involving 50 scenarios which results in a contract value of 1.2 M€ $\pm$ 5\%. Unfortunately your boss ask you to determine more precisely the derivative value. If you have to meet him in 1 hour and each simulation lasts about 2.5 sec., what is the highest precision you can achieve ?
+\end{question}
+
+\begin{question}[subtitle=1D Random Walk (\texttt{python})]
+Code a function that simulate a 1D random walk. 
+
+\textbf{Note: } the Random Walk in one dimension is a model for each process which have simple binary outcomes.
+The 1D random walk can be used to model how a gambler plays a game such as roulette in a casino. The idea in such games is that the gambler places a small stake on each game (say 1€). When the game is played the gambler will either loose and the total amount of money he has will thus decrease by one unit, or alternatively, he will win the game and in that case he wins back his stake and a prize, which we will set as 1€. As you can see if the gambler repeats this process of staking money and playing the amount of money he has will undergo a random walk in one dimension, since the outcome will be either 1 or -1.
+%\noindent
+%\textbf{Hint:} we can decide whether to walk left or right by flipping a coin and seeing if it comes up \emph{heads} or \emph{tails}.
+\end{question}
+
+\begin{question}[subtitle=Simulating a Gambler  (\texttt{python})]
+Write a function called gambler that simulates this procedure, taking three arguments:
+
+Determine with a simulation the probabilities whether the gambler leaves the casino with zero or with $N$€.
+Essentially we start the gambler with $X$€ and simulate the process of him playing the game only stopping once he has reached one of the two thresholds.
+
+\begin{itemize}
+\item \texttt{start}: the amount of money the gambler starts with; \item \texttt{n}: the target amount of money that the gambler wants to win;
+\item \texttt{p}: the probability of winning each individual game the gambler plays.
+\end{itemize}
+
+\textbf{Note: } importantly there is a difference between the gambler and the 1D random walk, however. The gambler usually only has a finite amount of money to gamble with. If he looses a large number of games he is therefore forced to stop playing. Similarly, the gambler may also have some target for how much money he would like to win. In other words, he should have some figure $N$€, which is more than the amount of money he entered the casino with. He will stop gambling once he has $N$€ in his pocket.
+\end{question}
+
+\begin{question}[subtitle=Spin to End  (\texttt{python})]
+Write another function that simulates the changes in the amount of money the gambler has and that returns the number of spins of the wheel that take place.
+
+\textbf{Note: } we can also use simulation to determine how many spins of the wheel the gambler will play before leaving the casino (i.e. \emph{hitting time}).
+In other words we want to calculate the number of steps the random walk takes before arriving in one of the two threshold states.
+\end{question}
+
+\begin{question}[subtitle=Martingale Examples]
+Suppose you play the following series of games. In game $i, i = 1, 2,\ldots$, you bet \$1 and roll a fair die. If the outcome is $\{1,2\}$ you win \$1, if it is $\{3,4\}$ nothing happens, and if the outcome is $\{5,6\}$ you lose \$1.
+
+Prove that the random process representing the gamer gain is a martingale.ù
+Also using Monte Carlo simulation implement the game described in the text and check that the expected gain is indeed null.
+\end{question}
+
+\begin{solution}
+Let $X_i$ be a random variable representing the amount of money you win or lose in bet $i$, this kind of game is said to be **fair** since
+
+$$\mathbb{E}[X_i]= \sum_{\Omega}p(\omega)\cdot x(\omega) = \frac{2}{6}\cdot 1 + \frac{2}{6}\cdot 0 + \frac{2}{6}\cdot -1 = 0\;\forall i$$
+so no unbalance between losses or wins.
+
+Now define another random variable $Z_n = \sum_{i=1}^{n} X_i$, i.e. the amount of money held at the $n$-th game.
+
+$Z_n$ is a martingale and $\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = Z_{n-1}$.
+
+\begin{equation*}
+	\begin{aligned}
+		\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] &= \mathbb{E}[X_1 +\ldots + X_n|X_1,\ldots, X_{n-1}] \\
+		& = \underbrace{\mathbb{E}[X_1|X_1,\ldots, X_{n-1}]}_{X_1} + \ldots + \underbrace{\mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}]}_{X_{n-1}} + \underbrace{\mathbb{E}[X_n|X_1,\ldots, X_{n-1}]}_{\mathbb{E}[X_n]=0} \\
+		& = \mathbb{E}[X_1|X_1,\ldots, X_{n-1}] + \ldots + \mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}] + 0 = Z_{n-1}
+	\end{aligned}
+\end{equation*}
+\end{solution}
+
+%\begin{question}[subtitle=2D Random Walk  (\texttt{python})]
+%An unbiased random walk (in any number of dimensions) is another example of a martingale.
+%
+%In higher dimensions, the set of randomly walked points has interesting geometric properties. In fact, one gets a discrete \emph{fractal}, that is, a set that exhibits stochastic self-similarity on large scales.
+%
+%Implement a 2D random walk simulation and plot one possible realization.
+%\end{question}
+
+\begin{question}[subtitle=Brownian Motion  (\texttt{python})]
 Simulate a couple of realization of a Brownian motion process with initial value 0.
 Figure~\ref{fig:brownian_motion} reports two realization of the Brownian motion simulated according to the Euler scheme.
-
+\end{question}
+\begin{solution}
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.5\linewidth]{addons/brownian_motion}
 \end{center}
 \label{fig:brownian_motion}
 \end{figure}
-\end{question}
+\end{solution}
 
-\begin{question}
+\begin{question}[subtitle=Geometric Brownian Motion  (\texttt{python})]
 Using the Euler scheme simulate the 4-months (with daily steps) evolution of a Geometric Brownian Motion stochastic process with initial value $S_0=100$, $\mu=0.005$, and $\sigma=0.05$.
 \end{question}
 
-\cprotEnv\begin{question}
+\cprotEnv
+\begin{question}%[subtitle=Geometric Brownian Motion  (\texttt{python})]
 This \href{https://github.com/matteosan1/advanced_financial_modeling/raw/master/input_files}{file} contains a thousand 10-day realizations (with 0.1 day step) of historical price data of a single asset, assume that all the time series are different realizations of the same stochastic process.
 \begin{enumerate}
 \item Make two figures: the first should contain one realization as a function of time, in the second plot the first 50 realizations together as a function of time (\emph{label the axes appropriately}).
@@ -751,7 +806,7 @@ S = np.load(path.open("stock_2023.npy", "rb"))
 \end{ipython}
 \end{question}
 
-\begin{question}
+\begin{question}[subtitle=Heston Model  (\texttt{python})]
 The Heston model can be considered an extension of the Black and Scholes model where the volatility of the underlying asset is not constant, nor even deterministic, but follows a random process.
 
 The basic Heston model assumes that $S_t$, the price of the asset, follows
@@ -778,21 +833,13 @@ The model has five parameters:
 \end{itemize}
 
 Using the Euler scheme simulate a possible realization for $S_t$ and $\sigma_t$ using the parameters: $S_0=100$, $\mu=0.25$, $T=3$, $\nu_0=0.05$, $\kappa=1.2$, $\theta=0.10$, $\xi=0.593$, $\rho=-0.5$.
-
-%\begin{figure}[htbp]
-%\begin{center}
-%\includegraphics[width=0.8\linewidth]{addons/heston}
-%\end{center}
-%\label{fig:heston}
-%\end{figure}
 \end{question}
 
-%\begin{question}
-%Using the Euler scheme simulate few realization from a short rate process following the Hull and White model.
-%\end{question}
+\begin{question}[subtitle=Vasicek Model  (\texttt{python})]
+Using the Euler scheme simulate few realization from a short rate process following the Vasicek Model with parameter values ($r_0=0.03$, $\theta=0.10$, $k=0.3$, $\sigma=0.03$).
+\end{question}
 
-\clearpage
-
+\chapter{Interest Rate Derivatives}
 \section{Forward Rate Agreement}
 Below is presented yet another alternative methods to determine the valuation formula for forward rate agreement.
 
@@ -837,7 +884,7 @@ but according to the \emph{Fundamental Theorem of Pricing II} its value must equ
 \subsection{Forward Rate}
 Forward rate can be defined in other ways (i.e. alternative to FRA break-even rate), all of which highlights once again the connection with no-arbitrage.
 
-\subsubsection{Example 1}
+\subsubsection{Derivation 1}
 According to our assumptions two investors shouldn't be able to earn money from arbitraging between different interest periods. 
 That is, investing at rate $r_1$ for the period $(0, T_1)$ and then \emph{re-investing} at rate $r_{1,2}$ for the time period $(T_1, T_2)$ should be equivalent to invest at rate $r_2$ for the full time period $(0, T_2)$. 
 
@@ -851,7 +898,7 @@ Solving for $r_{1,2}$ leads to
 	F(T_1, T_2) = r_{1,2} = \frac{1}{T_2 - T_1}\Big(\frac{1+r_2 T_2}{1+r_1 T_1} - 1 \Big)
 \end{equation}
 
-\subsubsection{Example 2}
+\subsubsection{Derivation 2}
 Consider a typical forward rate agreement (FRA) involving the three time instants $t < T < S$.
 \begin{itemize}
 \item At $t$: sell one $T$-bond and buy $\cfrac{P(t,T)}{P(t,S)}$ $S$-bonds. This results in a zero net investment;
@@ -865,7 +912,6 @@ This leads to the following definitions of \emph{simple forward rate} for $[T,S]
 F(t; T,S) = \cfrac{1}{S - T}\left(\cfrac{P(t,T)}{P(t,S)} - 1\right)
 \end{equation}
 
-\clearpage
 \section{Interest Rate Swap as FRAs}
 
 The swap payoff 
@@ -892,15 +938,6 @@ the Receiver IRS payoff can be expressed like
 
 Clearly not all the FRAs in the swap, when it has zero value, will have zero value each (\emph{except for the degenerate case of flat yield curve}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
 
-\begin{question}
-Implementing a class or a function that represents an interest rate swap shows that:
-\begin{enumerate}
-\item In a \emph{Payer Swap} with an increasing yield curve the first FRAs will have negative value, the last positive. 
-\item In a \emph{Payer Swap} with a decreasing yield curve the first FRAs will have positive value, the last negative.
-\end{enumerate}
-\end{question}
-
-\clearpage
 \section{Floating Rate Notes}
 Floating rate bond or note (FRN) usually refers to an instrument whose coupon is based on a short term rate (3-month T-bill, 6-month LIBOR). Variable coupon rates are fixed in advance at reset dates, which are 3- or 6-month (interest payment period) earlier.
 
@@ -939,15 +976,6 @@ If the remaining maturity of the above \textbf{FRN} was $(4 + \epsilon)$ year, i
 
 The price of FRN has a range from \emph{par} to \emph{par} + full coupon. It is par right before the reset date and is $C$ right after the reset date (and is linear when pricing date is between two reset dates).
 
-\begin{question}
-	Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. The relevant insterest rates can be taken from \href{https://raw.githubusercontent.com/matteosan1/advanced\_financial\_modeling/master/input_files/libor.csv}{libor.csv}
-	
-	\begin{center}
-		\includegraphics[width=0.6\linewidth]{addons/floating_rate_note}
-	\end{center}
-\end{question}
-\clearpage
-
 \section{Asset Swap}
 
 The underlying bond in the asset swap package is credit risky and can default. The bond purchaser’s claim is on the recovery value of the bond, however she must continue to honor the bond coupons on the swap (of course she may choose to close the swap position at market value). The asset swap seller is therefore taking on this credit risk, which could be hedged with Credit Default Swaps.
@@ -960,22 +988,7 @@ Asset swaps are quoted in the market as a spread, which incorporates both fundin
 
 The bonds of issuers of good credit quality, of some governments such as Germany and good quality government agency bonds trade at negative spreads to swaps, and especially so for the shorter maturity bonds. The opposite is true for poor or low quality credits such as Greek and Argentina sovereigns and many corporate bonds, which trade with positive spreads. For good quality credits a widening of the spread, which is negative, refers to a richening of the bond (decline in bond yield relative to swaps) and for poor quality credits the opposite is true, namely a widening of the positive spread reflects a cheapening of the bond and increase in bond yield.
 
-\begin{question}
-Consider a 1Y risky bond paying quarterly coupons. The bond issuer has a default probability of 5\% during the next year. The interest rate term structure is considered flat at 0.05.
-
-\begin{itemize}
-\item If the bond buyer enters into an asset swap, determine its spread;
-\item check that a CDS with same maturity as the asset swap has similar spread;
-\item finally check how the spread change as a function of the probability of default.
-\end{itemize}
-\begin{center}
-	\includegraphics[width=0.6\linewidth]{addons/asset_swap_spread}
-\end{center}
-\end{question}
-
-\clearpage
 \section{Algorithmic Differentiation}
-
 \emph{Algorithmic Differentiation} (AD), also known as \emph{automatic differentiation}, is a mathematical, computer science technique for computing accurate sensitivities quickly. There are two main modes, namely \textbf{tangent mode} and \text{adjoint mode}. For many models, \emph{adjoint AD (AAD)} can compute sensitivities from to 10x to 1000x faster than numerical bumping or finite differences. AD operates directly on analytics and each line of code is differentiated. Clearly it can be applied to a single trade or a portfolio (or vector) of trades.
 
 If for example we have a computer algorithm that computes $y$ via multiple nested operations such as $y = h(g(f(x)))$ we could illustrate the series of operations as,
@@ -1030,25 +1043,6 @@ Once again let us consider same simple function from before,
 \end{equation}
 In adjoint mode $\bar{y} = dy/dy$ is specified as an input and allows us to enable/disable the adjoint derivative calculation. 
 
-\begin{question}
-Consider the function define in Eq.~\ref{eq:aad_function} and compute the AD both using tangent and adjoint technique.
-\begin{equation}
-\begin{cases}
-\text{Function: } f(x_1, x_2) = 2x_1^2 + 3x_2\\
-\text{Solution: } \frac{df}{dx_1} = 4x_1, \text{ and } \frac{df}{dx_2}=3
-\end{cases}
-\end{equation}
-When for example $x_1=2$ and $x_2 = 3$ we have,
-\begin{equation}
-\frac{df}{dx_1} = 8, \text{ and } \frac{df}{dx_2}=3
-\end{equation}
-\end{question}
-
-\begin{question}
-Consider a 5-years receiver Interest Rate Swap with a 1M notional, exchanging a fixed rate of 5\% with a flat 1\% LIBOR rate. The risk free rate for discounting is considered to be flat a 1.5\%.
-Compute DV01 and PV01 with algorithmic differentiation using both tangent and adjoint modes. Compare the results.
-\end{question}
-\clearpage
 
 \section{Newton-Raphson Method}
 Newton's method, also known as the Newton–Raphson method, is a root-finding algorithm which produces successively better approximations to the roots (or zeroes) of a real-valued function. %The most basic version starts with a real-valued function f, its derivative f′, and an initial guess x0 for a root of f. If f satisfies certain assumptions and the initial guess is close, then
@@ -1070,10 +1064,7 @@ We start the process with some arbitrary initial value $x_0$ (the closer to the 
 	\includegraphics[width=0.6\linewidth]{addons/newton_method}
 \end{center}
 
-\clearpage
-
 \section{Bootstrap}
-
 \emph{Bootstrap} is an algorithm that allows to determine a vector of values that are implicitly defined by a set of equations.
 
 Consider the following system 
@@ -1093,10 +1084,7 @@ Going on, \emph{iteratively}, through each equation we are then able to determin
 
 As a financial example, you can imagine the functions $f_i$ as the pricing equation of bonds with different maturities, each depending on a different set of interest rates, minus the current market price of the bond $c$. Since those are fair prices each $f_i$ can be set equal to 0 and through the bootstrap we can determine the interest rate term-structure implied by the bond market quotes. 
 
-\subsection{Cap Volatilities}
-
 Another practical application of the bootstrap algorithm is to determine the \emph{spot cap volatilities} from the current market prices (note, the market quotes only the flat volatilities).
-
 The main challenges are:
 \begin{enumerate}
 	\item Produce Caplet/Floorlet prices consistent with current levels of Cap/Floor volatilities and therefore be able to re-price the market;
@@ -1105,82 +1093,6 @@ The main challenges are:
 \end{enumerate}
 
 From the prices of different maturity caps, it is possible to \emph{bootstrap} the volatility of each caplet, i.e. the volatility which refers to the forward rate corresponding to the caplet.
-
-\begin{question}
-Given the following set of flat volatilities use the bootstrap algorithm to determine the implied spot volatilities.
-
-Let's \emph{strip} caplet volatilities from the following cap (flat) volatilities which refers to caps with 0.013 strike over EURIBOR-6M whose term structure is shown in Table~\ref{tab:flat_volatilities}(right).
-
-\begin{table}[htpb]
-\begin{center}
-\renewcommand{\arraystretch}{2}
-\begin{tabular}{|c|c|}
-\hline
-Maturity & Volatility \\ \hline
-1y & 44\% \\ \hline
-2y & 45\% \\ \hline
-3y & 44\% \\ \hline
-4y & 41\% \\ \hline
-5y & 39\% \\ \hline
-\end{tabular}
-\quad
-\begin{tabular}{|c|c|}
-\hline
-Pillar & Rate \\ \hline
-3m & 0.0002 \\ \hline
-6m & 0.0007 \\ \hline
-12m & 0.0025 \\ \hline
-2y  & 0.0070 \\ \hline
-3y & 0.0100 \\ \hline
-5y & 0.0162 \\ \hline
-\end{tabular}
-\end{center}
-\label{tab:flat_volatilities}
-\caption{Left, flat volatilities table. Right, term structure of the considered Euribor-6M curve.}
-\end{table}
-
-The bootstrapping procedure proceeds has follows:
-\begin{enumerate}
-\item we start with the nearest instruments, i.e. the spot starting caplet with $6m$ maturity. For maturities shorter than the first quoted value we consider the volatility constant hence:
-\begin{equation}
-\sigma^{spot}_{t_{0,6m}}=\textcolor{ipython-green}{\sigma^{flat}_{t_{0,1y}}}
-\end{equation}
-\item Let’s now price the $1y$ forward starting caplet with $6m$ maturity. Since market cap volatilities are quoted assuming \textbf{no-arbitrage} opportunity we can build the forward starting caplet as the difference of two caps:
-\begin{equation}
-\begin{gathered}
-\text{Cpl}_{1y, 1y6m}(\sigma^{spot}_{1y6m})=\text{Cap}_{1y6m}-\text{Cap}_{1y} \\[0.3cm]
-\text{Cap}_{1y6m}(\textcolor{red}{\sigma^{flat}_{1y6m}})=\text{Cpl}_{0,6m}(\textcolor{red}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{6m,1y}(\textcolor{red}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{1y,1y6m}(\textcolor{red}{\sigma^{flat}_{1y6m}}) \\[0.3cm]
-\text{Cap}_{1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) 
-\end{gathered}
-\end{equation}
-Unfortunately the $18m$ volatility is NOT quoted on the market, so we can:
-\begin{itemize}
-  \item assume for the sake of simplicity that the volatility remains constant between $1y$ and $2y$ caps;
-  \item use an interpolation method such as linear or cubic spline to get the $1y6m$ cap volatility.
-\end{itemize}
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.6\linewidth]{addons/flat_volatilities}
-\end{center}
-\label{fig:flat_volatilities}
-\end{figure}
-
-Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volatility from previous Equation by using a Newton-Raphson or Brent method.
-
-\item We can apply the same method for the $1y6m$ forward starting caplet to get the volatility, $\sigma^{flat}_{2y}$ is quoted so no interpolation is needed here.
-\begin{equation}
-\begin{gathered}
-\text{Cpl}_{1y6m, 2y}(\sigma^{spot}_{2y})= \text{Cap}_{2y}-\text{Cap}_{1y6m} \\[0.3cm]
-\text{Cap}_{2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \ldots + \text{Cpl}_{1y6m,2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) \\[0.3cm]
-\text{Cap}_{1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{1y,1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})
-\end{gathered}
-\end{equation}
-
-\item Keep iteratively to solve for all the remaining volatilities using the very same technique.
-\end{enumerate}
-\end{question}
-\clearpage
 
 \section{Negative Rates}
 
@@ -1214,15 +1126,6 @@ where $\hat{K} = K + \theta_k$.
 \label{fig:lognormal_shifted}
 \end{figure}
 
-\begin{question}
-Write a python function that simulated shifted-geometric Brownian motion paths.
-\end{question}
-
-\begin{question}
-Using the function written in the previous exercise, price caplets with Monte Carlo and using Black formula in a regime with negative interest rates. Compare the two results.
-\end{question}
-
-\clearpage
 \section{Jamshidian Decomposition}
 An option on a portfolio of pure discount bonds can be decomposed into a portfolio of options on the individual discount bonds in the portfolio.
 
@@ -1256,26 +1159,6 @@ Therefore, the Swaption is calculated as the sum of $n$ options on discounted bo
 
 After the price of a European Swaption under the Hull-White model is calculated, we have to calibrate it against the market data. Usually this calibration method is carried out taking the target prices to match the ones given by the Black-76 or Normal-Black models and trying to get as close as possible to them.
 
-\begin{question}
-Consider the process 
-\begin{equation*}
-\psi_i(X)=e^{-t_i}|X|,\quad t_i=\{0,1,2,\ldots, N\}
-\end{equation*}
-with $X\approx\mathcal{N}(0,1)$.
-
-Compute 
-\begin{equation*}
-A = \mathbb{E}\left[\max\left(\sum_{k=1}^N \psi_k(X) - K, 0\right)\right]
-\end{equation*}
-both directly using Monte Carlo simulation and by using Jamshidian's decomposition.
-Plot the results against the strike $K$.
-\end{question}
-
-\begin{question}
-Implement the Jamshidian decomposition to price swaptions under the Hull and White short rate model.
-\end{question}
-
-\clearpage
 \section{Longstaff-Schwartz Algorithm}
 
 Monte Carlo simulation is a flexible and powerful numerical method to value financial derivatives of any kind. However being a forward evolving technique, it is per se not suited to address the valuation of American or Bermudan options which are valued in general by backwards induction. Longstaff-Schwartz provide a numerically efficient method to resolve this problem by what they call \emph{Least-Squares Monte Carlo}.
@@ -1387,16 +1270,6 @@ Let's consider now a generic American product. Here is the Longstaff-Schwartz al
 	\end{equation} 
 \end{itemize}
 
-\begin{question}
-Price an Bermudan Swaption using the Longstaff-Schwartz algorithm. %The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.
-\end{question}
-
-\begin{question}
-Price an America put option using the Longstaff-Schwartz algorithm. The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.	
-\end{question}
-
-
-\clearpage
 \section{Callable Bond}
 A callable bond is a bond in which the issuer reserves the right to redeem the bond at different discrete times, possibly for different redemption values. When a callable bond is bought, no one knows when the bond will be called, however it can nly be called at the times agreed upon at issue.
 
@@ -1416,10 +1289,183 @@ The recommende strategy in both cases is to crete a sort of two column table wit
 For the first type of problems, the second column is the corresponding price in order to receive the desired yield rate, %, keeping in mind the redemption value may be different at the different redemption dates. Then think through what happens whine the bond is bought for the prices in the table but redeemed at other times in the table, an answer the question accrodgingly.
 while for the second is the yield rate tha would produce the given price. %, again keeping in mind the redemption value may be different at the different edemption dates.
 
-\begin{question} A 1000 face value 20-years callable bond with 5\% annual coupons is selling 1150. The bond can be redeemed at the end of 18 years for 950, at the end of 19 years for 975, or at the end of 20 years for 1000. Determine the minimum annual yield rate that a buyer will earn on this bond.
+
+\begin{question}[subtitle=IRS as FRA sum (\texttt{python})]
+Implementing a class or a function that represents an interest rate swap shows that:
+\begin{enumerate}
+\item In a \emph{Payer Swap} with an increasing yield curve the first FRAs will have negative value, the last positive. 
+\item In a \emph{Payer Swap} with a decreasing yield curve the first FRAs will have positive value, the last negative.
+\end{enumerate}
 \end{question}
 
-\begin{question} A 1000 face value 20-year callable bond with 3\% annual coupons can be redeemed according to the following schedule:
+\begin{question}[subtitle=FRN resetting (\texttt{python})]
+Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. The relevant insterest rates can be taken from \href{https://raw.githubusercontent.com/matteosan1/advanced\_financial\_modeling/master/input_files/libor.csv}{libor.csv}
+	
+%\begin{center}
+%\includegraphics[width=0.6\linewidth]{addons/floating_rate_note}
+%\end{center}
+\end{question}
+
+\begin{question}[subtitle=Asset Swap vs CDS (\texttt{python})]
+Consider a 1Y risky bond paying quarterly coupons. The bond issuer has a default probability of 5\% during the next year. The interest rate term structure is considered flat at 0.05.
+
+\begin{itemize}
+\item If the bond buyer enters into an asset swap, determine its spread;
+\item check that a CDS with same maturity as the asset swap has similar spread;
+\item finally check how the spread change as a function of the probability of default.
+\end{itemize}
+%\begin{center}
+%	\includegraphics[width=0.6\linewidth]{addons/asset_swap_spread}
+%\end{center}
+\end{question}
+
+\begin{question}[subtitle=AD for a Simple Function (\texttt{python})]
+Consider the function defined in Eq.~\ref{eq:aad_function} and compute the AD both using tangent and adjoint technique.
+\end{question}
+
+\begin{solution}
+\begin{equation}
+\begin{cases}
+\text{Function: } f(x_1, x_2) = 2x_1^2 + 3x_2\\
+\text{Solution: } \frac{df}{dx_1} = 4x_1, \text{ and } \frac{df}{dx_2}=3
+\end{cases}
+\end{equation}
+When for example $x_1=2$ and $x_2 = 3$ we have,
+\begin{equation}
+\frac{df}{dx_1} = 8, \text{ and } \frac{df}{dx_2}=3
+\end{equation}
+\end{solution}
+
+\begin{question}[subtitle=AD for a Swap (\texttt{python})]
+Consider a 5-years receiver Interest Rate Swap with a 1M notional, exchanging a fixed rate of 5\% with a flat 1\% LIBOR rate. The risk free rate for discounting is considered to be flat a 1.5\%.
+Compute DV01 and PV01 with algorithmic differentiation using both tangent and adjoint modes. Compare the results.
+\end{question}
+
+\begin{question}[subtitle=BS Implied Volatility (\texttt{python})]
+Consider a European call option with the following parameters: $S_0=30$, $K=28$, $T=3m$, $r=0025$ and $\sigma=0.3$.
+%market_price = 3.9790765403377035
+
+Using the Newton-Raphson method determined the implied volatility.
+\end{question}
+
+\begin{question}[subtitle=Cap Volatilities (\texttt{python})]
+Given the following set of flat volatilities use the bootstrap algorithm to determine the implied spot volatilities.
+
+Let's \emph{strip} caplet volatilities from the following cap (flat) volatilities which refers to caps with 0.013 strike over EURIBOR-6M whose term structure is shown in Table~\ref{tab:flat_volatilities}(right).
+
+\begin{table}[htpb]
+\begin{center}
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{|c|c|}
+\hline
+Maturity & Volatility \\ \hline
+1y & 44\% \\ \hline
+2y & 45\% \\ \hline
+3y & 44\% \\ \hline
+4y & 41\% \\ \hline
+5y & 39\% \\ \hline
+\end{tabular}
+\quad
+\begin{tabular}{|c|c|}
+\hline
+Pillar & Rate \\ \hline
+3m & 0.0002 \\ \hline
+6m & 0.0007 \\ \hline
+12m & 0.0025 \\ \hline
+2y  & 0.0070 \\ \hline
+3y & 0.0100 \\ \hline
+5y & 0.0162 \\ \hline
+\end{tabular}
+\end{center}
+\label{tab:flat_volatilities}
+\caption{Left, flat volatilities table. Right, term structure of the considered Euribor-6M curve.}
+\end{table}
+\end{question}
+
+\begin{solution}
+The bootstrapping procedure proceeds has follows:
+\begin{enumerate}
+\item we start with the nearest instruments, i.e. the spot starting caplet with $6m$ maturity. For maturities shorter than the first quoted value we consider the volatility constant hence:
+\begin{equation}
+\sigma^{spot}_{t_{0,6m}}=\textcolor{ipython-green}{\sigma^{flat}_{t_{0,1y}}}
+\end{equation}
+\item Let’s now price the $1y$ forward starting caplet with $6m$ maturity. Since market cap volatilities are quoted assuming \textbf{no-arbitrage} opportunity we can build the forward starting caplet as the difference of two caps:
+\begin{equation}
+\begin{gathered}
+\text{Cpl}_{1y, 1y6m}(\sigma^{spot}_{1y6m})=\text{Cap}_{1y6m}-\text{Cap}_{1y} \\[0.3cm]
+\text{Cap}_{1y6m}(\textcolor{red}{\sigma^{flat}_{1y6m}})=\text{Cpl}_{0,6m}(\textcolor{red}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{6m,1y}(\textcolor{red}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{1y,1y6m}(\textcolor{red}{\sigma^{flat}_{1y6m}}) \\[0.3cm]
+\text{Cap}_{1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) 
+\end{gathered}
+\end{equation}
+Unfortunately the $18m$ volatility is NOT quoted on the market, so we can:
+\begin{itemize}
+  \item assume for the sake of simplicity that the volatility remains constant between $1y$ and $2y$ caps;
+  \item use an interpolation method such as linear or cubic spline to get the $1y6m$ cap volatility.
+\end{itemize}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.6\linewidth]{addons/flat_volatilities}
+\end{center}
+\label{fig:flat_volatilities}
+\end{figure}
+
+Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volatility from previous Equation by using a Newton-Raphson or Brent method.
+
+\item We can apply the same method for the $1y6m$ forward starting caplet to get the volatility, $\sigma^{flat}_{2y}$ is quoted so no interpolation is needed here.
+\begin{equation}
+\begin{gathered}
+\text{Cpl}_{1y6m, 2y}(\sigma^{spot}_{2y})= \text{Cap}_{2y}-\text{Cap}_{1y6m} \\[0.3cm]
+\text{Cap}_{2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \ldots + \text{Cpl}_{1y6m,2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) \\[0.3cm]
+\text{Cap}_{1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{1y,1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})
+\end{gathered}
+\end{equation}
+
+\item Keep iteratively to solve for all the remaining volatilities using the very same technique.
+\end{enumerate}
+\end{solution}
+
+\begin{question}[subtitle=Shifted Brownian Motion (\texttt{python})]
+Write a python function that simulated shifted-geometric Brownian motion paths.
+\end{question}
+
+\begin{question}[subtitle=Negative Rates (\texttt{python})]
+Using the function written in the previous exercise, price caplets with Monte Carlo and using Black formula in a regime with negative interest rates. Compare the two results.
+\end{question}
+
+\begin{question}[subtitle=Jamshidian Trick (\texttt{python})]
+Consider the process 
+\begin{equation*}
+\psi_i(X)=e^{-t_i}|X|,\quad t_i=\{0,1,2,\ldots, N\}
+\end{equation*}
+with $X\approx\mathcal{N}(0,1)$.
+
+Compute 
+\begin{equation*}
+A = \mathbb{E}\left[\max\left(\sum_{k=1}^N \psi_k(X) - K, 0\right)\right]
+\end{equation*}
+both directly using Monte Carlo simulation and by using Jamshidian's decomposition.
+Plot the results against the strike $K$.
+\end{question}
+
+\begin{question}[subtitle=Jamshidian Trick (\texttt{python})]
+Implement the Jamshidian decomposition to price swaptions under the Vasicek short rate model.
+\end{question}
+
+\begin{question}[subtitle=Longstaff and Schwartz (\texttt{python})]
+Price an Bermudan Swaption using the Longstaff-Schwartz algorithm. %The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.
+\end{question}
+
+\begin{question}[subtitle=Longstaff and Schwartz (\texttt{python})]
+Price an America put option using the Longstaff-Schwartz algorithm. The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.	
+\end{question}
+
+\begin{question}[subtitle=Callable Bond (\texttt{python})]
+A 1000 face value 20-years callable bond with 5\% annual coupons is selling 1150. The bond can be redeemed at the end of 18 years for 950, at the end of 19 years for 975, or at the end of 20 years for 1000. Determine the minimum annual yield rate that a buyer will earn on this bond.
+\end{question}
+
+\begin{question}[subtitle=Callable Bond (\texttt{python})]
+A 1000 face value 20-year callable bond with 3\% annual coupons can be redeemed according to the following schedule:
 \begin{itemize}
 	\item 1000 at the end of years 10 through 14;
 	\item 1075 at the end of years 15 through 17;
@@ -1428,31 +1474,36 @@ while for the second is the yield rate tha would produce the given price. %, aga
 Determine the maximum price a buyer should pay in order to earn an annual yield of at least 5\%.
 \end{question}
 
-\begin{question} A 1000 face value 10-year callable bond with 8\% semiannual coupons is bought for 1050.  The bond can be redeemed at the end of any year starting with year 7.  Determine the minimum annual yield for this bond.
+%\begin{question}[subtitle=Callable Bond (\texttt{python})] 
+%A 1000 face value 10-year callable bond with 8\% semiannual coupons is bought for 1050.  The bond can be redeemed at the end of any year starting with year 7.  Determine the minimum annual yield for this bond.
+%\end{question}
+%
+%\begin{question}[subtitle=Callable Bond (\texttt{python})]
+% A 1000 face value 20-years callable bong, reddeemable at 1200, with 5\% annual coupons can be redeemed at the end of year 18, 19, 20. Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 3\%
+%\end{question}
+%
+%\begin{question} A 1000 face value 20-years callable bond with 4\% annual coupons can be redeemed according to the following schedule:
+%1000 at end 12-14, 1025 at end 15-17, 975 at end 18-20.
+%Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 4\%
+%987.66
+%\end{question}
+%
+%\begin{question} A 1000 face value 10\% annual coupon bond is redeemable as follows: 1100 at 15, 16,17, 1000 at 18,19,20. A buyer pays 1500 for this bond, Determine the buyer minimum annual yield.
+%\end{question}
+%
+%\begin{question} A 20-year 10\% 1000 bond that pays interest half-yearly is redeemable (callable) in twelve years at a buy-back (call) price of 1150. The bond's current yield to maturity is 9.50\% annually. You are required to determine 
+%\begin{enumerate}[label=(\alph*),font=\itshape]
+%	\item the yield to call;
+%	\item the yield to call if the buy-back price is only 1100;
+%	\item the yield to call if instead of twelve years the bond can be called in eight years, the buy-back price being 1150.
+%\end{enumerate}
+%\end{question}
+
+\begin{question}[subtitle=To Exercise or Not To Exercise (\texttt{python})]
+Determine the interest rate value threshold that suggest an issuer to exercise a callable bond.
 \end{question}
 
-\begin{question} A 1000 face value 20-years callable bong, reddeemable at 1200, with 5\% annual coupons can be redeemed at the end of year 18, 19, 20. Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 3\%
-\end{question}
-
-\begin{question} A 1000 face value 20-years callable bond with 4\% annual coupons can be redeemed according to the following schedule:
-1000 at end 12-14, 1025 at end 15-17, 975 at end 18-20.
-Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 4\%
-987.66
-\end{question}
-
-\begin{question} A 1000 face value 10\% annual coupon bond is redeemable as follows: 1100 at 15, 16,17, 1000 at 18,19,20. A buyer pays 1500 for this bond, Determine the buyer minimum annual yield.
-\end{question}
-
-\begin{question} A 20-year 10\% 1000 bond that pays interest half-yearly is redeemable (callable) in twelve years at a buy-back (call) price of 1150. The bond's current yield to maturity is 9.50\% annually. You are required to determine 
-\begin{enumerate}[label=(\alph*),font=\itshape]
-	\item the yield to call;
-	\item the yield to call if the buy-back price is only 1100;
-	\item the yield to call if instead of twelve years the bond can be called in eight years, the buy-back price being 1150.
-\end{enumerate}
-\end{question}
-
-\subsection{To Exercise or Not To Exercise}
-
+\begin{solution}
 Bonds with European call option just have a single possible call date. Let's denote the call date by $t_c$ and the notice time as $t_n$. Also, we denote the call price with $X$. 
 
 In general, we can assume that \textbf{it is optimal for the issuer to minimize the value of the contract}. It means the issuer will exercise the option if the price of the callable bond exceeds the exercise price at the notice date. Otherwise, she will give up the option right and the callable bond price is equal to that of the non-option bond.
@@ -1466,48 +1517,14 @@ X\cdot D(t_n, t_c) - P(r,t_n)=0
 where $D(t_n, t_c)$ is the discount factor between notice and exercise dates and $P(r,t_n)$ the price of the callable bond an instant before the notice date.
 
 We know the value of the callable bond $P(r,t_n)$ since it is equal to the value of the non-option bond. The solution of equation is the cross point between the two curves.
+\end{solution}
 
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/callable_bond}
-	\end{center}
-	\label{fig:callable_bond}
-\end{figure}
-
-\begin{question} A 1000 face value 20-years callable bond with 5\% annual coupons is selling 1150. The bond can be redeemed at the end of 18 years for 950, at the end of 19 years for 975, or at the end of 20 years for 1000. Determine the minimum annual yield rate that a buyer will earn on this bond.
-\end{question}
-
-\begin{question} A 1000 face value 20-year callable bond with 3\% annual coupons can be redeemed according to the following schedule:
-\begin{itemize}
-	\item 1000 at the end of years 10 through 14;
-	\item 1075 at the end of years 15 through 17;
-	\item 1125 at the end of years 18 through 20.
-\end{itemize}
-Determine the maximum price a buyer should pay in order to earn an annual yield of at least 5\%.
-\end{question}
-
-\begin{question} A 1000 face value 10-year callable bond with 8\% semiannual coupons is bought for 1050.  The bond can be redeemed at the end of any year starting with year 7.  Determine the minimum annual yield for this bond.
-\end{question}
-
-\begin{question} A 1000 face value 20-years callable bong, redeemable at 1200, with 5\% annual coupons can be redeemed at the end of year 18, 19, 20. Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 3\%
-\end{question}
-
-\begin{question} A 1000 face value 20-years callable bond with 4\% annual coupons can be redeemed according to the following schedule:
-1000 at end 12-14, 1025 at end 15-17, 975 at end 18-20.
-Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 4\%
-987.66
-\end{question}
-
-\begin{question} A 1000 face value 10\% annual coupon bond is redeemable as follows: 1100 at 15, 16,17, 1000 at 18,19,20. A buyer pays 1500 for this bond, Determine the buyer minimum annual yield.
-\end{question}
-
-\begin{question} A 20-year 10\% 1000 bond that pays interest half-yearly is redeemable (callable) in twelve years at a buy-back (call) price of 1150. The bond's current yield to maturity is 9.50\% annually. You are required to determine 
-\begin{enumerate}[label=(\alph*),font=\itshape]
-	\item the yield to call;
-	\item the yield to call if the buy-back price is only 1100;
-	\item the yield to call if instead of twelve years the bond can be called in eight years, the buy-back price being 1150.
-\end{enumerate}
-\end{question}
+%\begin{figure}[htbp]
+%	\begin{center}
+%		\includegraphics[width=0.5\linewidth]{addons/callable_bond}
+%	\end{center}
+%	\label{fig:callable_bond}
+%\end{figure}
 
 %\clearpage
 %\section{Reverse Floater}
@@ -1544,9 +1561,10 @@ Determine the maximum price a buyer is willing to pay in order to earn an annual
 %	\label{fig:cap_vega}
 %\end{figure}
 
-\clearpage
+\chapter{Change of Measure}
 \section{Girsanov Theorem}
-Let’s start with a standard Brownian motion $W_t^{\mathcal{P}} = \mathcal{N}_{\mathcal{P}}(0,t)$ under a probability measure $\mathcal{P}$, and adapted to a filtration $\mathcal{F}_t$. In Fig.~\ref{fig:brownian_motion_nodrift} 30 simulated path evolutions of $W_t^{\mathcal{P}}$ are shown, as expected there is no drift.
+\begin{question}[subtitle=Drifty Brownian Motion]
+Let’s start with a standard Brownian motion $W_t^{\mathbb{P}} = \mathcal{N}_{\mathbb{P}}(0,t)$ under a probability measure $\mathbb{P}$, and adapted to a filtration $\mathcal{F}_t$. In Fig.~\ref{fig:brownian_motion_nodrift} 30 simulated path evolutions of $W_t^{\mathbb{P}}$ are shown, as expected there is no drift.
 	
 \begin{figure}[htbp]
 	\begin{center}
@@ -1578,16 +1596,17 @@ is a Brownian motion under the new measure $\mathcal{Q}$, equivalent to $\mathca
 \begin{equation}
 \cfrac{d\mathcal{Q}}{d\mathcal{P}} = \exp\left(-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s\right)
 \end{equation}
+\end{question}
 
 \begin{question}
 Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigma=0.2$. Determine the appropriate transformation, according to the Girsanov Theorem which makes the original process driftless. Verify that applying the Radon-Nikodym to the a simulated path of the process the drift indeed disappear.
 
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
-	\end{center}
-	\label{fig:brownian_motion_girsanov}
-\end{figure}
+%\begin{figure}[htbp]
+%	\begin{center}
+%		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
+%	\end{center}
+%	\label{fig:brownian_motion_girsanov}
+%\end{figure}
 \end{question}
 
 \begin{question}
@@ -1614,9 +1633,8 @@ N = 10000
 \end{question}
 \clearpage
 
-\section{Moving Away from $\mathbb{P}$ Measure}
-A
-ssume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
+\begin{question}[subtitle=Moving Away from $\mathbb{P}$ Measure]
+Assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
 \begin{equation*}
 dS_t = \mu S_t dt + \sigma S_t dW_t
 \end{equation*}
@@ -1631,8 +1649,10 @@ We want to know what happens to the stock SDE when moving to two different numer
 \item risk-neutral measure (bank account numeraire);
 \item stock measure (stock numeraire).
 \end{itemize}
+\end{question}
 
-\subsection{Risk-Neutral Measure Dynamics}
+\begin{solution}
+%\subsection{Risk-Neutral Measure Dynamics}
 We have seen that under the bank account induced measure the process defined as an asset divided by the numeraire is a martingale
 \begin{equation*}
 \cfrac{S_t}{B_t} = \mathbb{E}^{B}\left[\frac{S_T}{B_T}\bigg|\mathcal{F}_t\right]
@@ -1678,7 +1698,7 @@ dS_t &= \mu S_t dt + \sigma S_t \left(dW_t^B - \frac{\mu - r}{\sigma}dt\right) =
 \end{equation*}
 So \textcolor{red}{under the risk-neutral measure the drift equals the risk-free rate}.
 
-\subsection{Stock Numeraire Measure Dynamics}
+%\subsection{Stock Numeraire Measure Dynamics}
 Now let's see what happens under the stock numeraire.
 Under the risk-neutral measure $\mathcal{Q}^B$
 \begin{equation*}
@@ -1720,7 +1740,7 @@ rS_t dt + \sigma S_t (dW_t^A + \sigma dt) \\
 \end{aligned}
 \end{equation*}
 
-\subsection{Summarizing the Results}
+%\subsection{Summarizing the Results}
 To summarize all the results
 
 \begin{table}[htbp]
@@ -1733,8 +1753,9 @@ $(iii)$&$dS_t = \textcolor{red}{(r + \sigma^2)}S_t dt + \sigma S_t dW^A_t$ & Sto
 \end{center}
 \end{table}
 In practical terms, this means that it possible to use equation $(ii)$, instead of equation $(i)$, to simulate future payoffs, and hence that it is possible to get rid of the big problem of the equity premium estimation. Equation $(ii)$ just needs estimates of the risk-free rate $r$ and of the volatility $\sigma$, which can be derived from real market quotes.
+\end{solution}
 
-\clearpage
+\chapter{Libor Market Models}
 \section{Importance Sampling}
 Assume we want to calculate the expectation $\mathbb{E}[f(X)]$
 \begin{equation}
@@ -1779,7 +1800,6 @@ q(x)&=\cfrac{f(X)p(x)}{\mathbb{E}[f(X)]} \implies \cfrac{1}{n}\cdot\text{Var}[\m
 Naturally, we don’t know $\mathbb{E}[f(X)]$, as the reason we are doing this sampling after all is to find the expectation of $f$.
 However, we can think of the denominator of the previous expression as some normalisation constant, and consider to construct $q$ such that it has \textbf{high} density wherever $f(x)p(x)$ is \textbf{high}.
 
-\subsection{Practical Example}
 For the sake of demonstration, we choose $f=\mathcal{N}(5, 1)$, and the probability distribution $p=\mathcal{N}(9,2)$ which do not overlap too well, see Fig.~\ref{fig:f_and_p}.
 \begin{figure}[htbp]
 \begin{center}
@@ -1821,14 +1841,14 @@ Note that in general it’s not trivial at all to find $q$, and certainly there 
 Implement the importance sampling example outlined above, trying to reproduce the results quoted in the text.
 \end{question}
 
-\begin{question}
+\begin{question}[subtitle=How Unlucky is Unlucky]
 Estimate how unlucky is a 25 standard deviation return
 \begin{equation*}
 \theta := P(X\geq 25) = \mathbb{E}[\mathbbm{1}_{X\geq 25}]  \quad\text{where } X\sim \mathcal{N}(0, 1)
 \end{equation*}
 \end{question}
 
-\begin{question}
+\begin{question}[subtitle=Importance Sampling and Black-Scholes]
 Consider a one year ($T=1$) call option with $S_0=100$ , $K=170$,  $\sigma=0.2$, and $r=0.06$. The option is far out of the money, assuming we need to estimate its value using Monte Carlo simulation, improve the efficiency of the calculation with importance sampling.
 
 \noindent
@@ -1836,49 +1856,48 @@ Interesting reference \emph{Variance Reduction Techniques of Importance Sampling
 Journal of Mathematical Finance, 2013, 3, 431-436.
 \end{question}
 
-\clearpage
-\section{Principal Component Analysis}
-Principal component analysis (PCA) is a dimension reduction technique in multivariate analysis. It can be used for constructing the components of the stochastic term-structure movements that account for most of the variability, in some appropriately defined sense.
-
-The key mathematical principle behind PCA is the spectral decomposition theorem of linear algebra, which states that any real symmetric $n\times n$ matrix $Q$ can be written as
-\begin{equation}
-Q = ALA^{T}
-\label{eq:spectral_decomposition}
-\end{equation}
-where: $L = \text{diag}(\lambda_1,\ldots, \lambda_n$) is the diagonal matrix of eigenvalues of $Q$ with $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_n$, $A$ is an orthogonal matrix (that is, $A^{-1}=A^{T}$) whose columns $a_1,\ldots, a_n$ are the normalized eigenvectors of $Q$ (that is, $Qa_i = \lambda_i a_i$), which form a \emph{basis}.
-
-Consider a random vector $X$ with mean $\mu = \mathbb{E}[X]$ and covariance matrix $Q = \text{Cov}[X]$. Since $Q$ is symmetric and positive semi-definite,
-the above decomposition Eq.\ref{eq:spectral_decomposition} applies with $\lambda_i\geq 0$ for all $i$. The principal components transform of X is defined as
-\begin{equation}
-Y = A^{T}(X -\mu)
-\end{equation}
-which can be seen as a recentering and rotation of $X$. Note that each $Y_i$ is the projection of $(X-\mu)$ onto the $i$th eigenvector $a_i$ of $Q$ which can be called the $i$th principal component, and $a_i$, the $i$th vector of loadings, fo $X$. We thus obtain the decomposition
-\begin{equation}
-X = \mu + AY = \mu + \sum_{i=1}^n Y_i a_i
-\end{equation}
-
-It can be demonstrated that 
-\begin{equation}
-\sum_{i=1}^n\text{Var}[X_i] = \sum_{i=1}^n\text{Var}[\lambda_i] = \sum_{i=1}^n\text{Var}[Y_i]
-\end{equation}
-hence
-\begin{equation}
-\cfrac{\sum_{i=1}^k\text{Var}[\lambda_i]}{\sum_{i=1}^n\text{Var}[\lambda_i]}
-\end{equation}
-represents the amount of variability in $X$ explained byt the first $k$ principal components $Y_1,\ldots,Y_k$.
-
-Suppose that the first $k$ principal components $Y_1,\ldots,Y_k$ explain a significant amount (e.g. 99\%) of the variability in $X$. It is then most useful to
-approximate $X$ by $X\approx\mu +\sum_{i=1}^{k}Y_ia_i$. That is, the loadings $a_1,\ldots, a_k$ are the main components of the stochastic forward curve movements.
-
-\begin{question}
-The Excel file \href{https://github.com/matteosan1/finance_course/raw/develop/input_files/SNB_yields.xlsx}{SNB\_yields.xls} of the Monthly Statistical Bulletin from the Swiss National Bank contains monthly spot interest rates (that is, yields $R(t,T)$) for Swiss Confederation bonds for a time to maturity $(T-t)$ spectrum of 2, 3, 4, 5, 7, 10, 20 and 30 years. 
-Perform a principal component analysis of the monthly yield curve changes for the forward curve from the last ten years. In particular, determine:
-\begin{enumerate}
-\item the empirical covariance matrix;
-\item its eigenvectors and eigenvalues in decreasing order;
-\item the explained variances of the principal components.
-\end{enumerate}
-\end{question}
+%\section{Principal Component Analysis}
+%Principal component analysis (PCA) is a dimension reduction technique in multivariate analysis. It can be used for constructing the components of the stochastic term-structure movements that account for most of the variability, in some appropriately defined sense.
+%
+%The key mathematical principle behind PCA is the spectral decomposition theorem of linear algebra, which states that any real symmetric $n\times n$ matrix $Q$ can be written as
+%\begin{equation}
+%Q = ALA^{T}
+%\label{eq:spectral_decomposition}
+%\end{equation}
+%where: $L = \text{diag}(\lambda_1,\ldots, \lambda_n$) is the diagonal matrix of eigenvalues of $Q$ with $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_n$, $A$ is an orthogonal matrix (that is, $A^{-1}=A^{T}$) whose columns $a_1,\ldots, a_n$ are the normalized eigenvectors of $Q$ (that is, $Qa_i = \lambda_i a_i$), which form a \emph{basis}.
+%
+%Consider a random vector $X$ with mean $\mu = \mathbb{E}[X]$ and covariance matrix $Q = \text{Cov}[X]$. Since $Q$ is symmetric and positive semi-definite,
+%the above decomposition Eq.\ref{eq:spectral_decomposition} applies with $\lambda_i\geq 0$ for all $i$. The principal components transform of X is defined as
+%\begin{equation}
+%Y = A^{T}(X -\mu)
+%\end{equation}
+%which can be seen as a recentering and rotation of $X$. Note that each $Y_i$ is the projection of $(X-\mu)$ onto the $i$th eigenvector $a_i$ of $Q$ which can be called the $i$th principal component, and $a_i$, the $i$th vector of loadings, fo $X$. We thus obtain the decomposition
+%\begin{equation}
+%X = \mu + AY = \mu + \sum_{i=1}^n Y_i a_i
+%\end{equation}
+%
+%It can be demonstrated that 
+%\begin{equation}
+%\sum_{i=1}^n\text{Var}[X_i] = \sum_{i=1}^n\text{Var}[\lambda_i] = \sum_{i=1}^n\text{Var}[Y_i]
+%\end{equation}
+%hence
+%\begin{equation}
+%\cfrac{\sum_{i=1}^k\text{Var}[\lambda_i]}{\sum_{i=1}^n\text{Var}[\lambda_i]}
+%\end{equation}
+%represents the amount of variability in $X$ explained byt the first $k$ principal components $Y_1,\ldots,Y_k$.
+%
+%Suppose that the first $k$ principal components $Y_1,\ldots,Y_k$ explain a significant amount (e.g. 99\%) of the variability in $X$. It is then most useful to
+%approximate $X$ by $X\approx\mu +\sum_{i=1}^{k}Y_ia_i$. That is, the loadings $a_1,\ldots, a_k$ are the main components of the stochastic forward curve movements.
+%v
+%\begin{question}
+%The Excel file \href{https://github.com/matteosan1/finance_course/raw/develop/input_files/SNB_yields.xlsx}{SNB\_yields.xls} of the Monthly Statistical Bulletin from the Swiss National Bank contains monthly spot interest rates (that is, yields $R(t,T)$) for Swiss Confederation bonds for a time to maturity $(T-t)$ spectrum of 2, 3, 4, 5, 7, 10, 20 and 30 years. 
+%Perform a principal component analysis of the monthly yield curve changes for the forward curve from the last ten years. In particular, determine:
+%\begin{enumerate}
+%\item the empirical covariance matrix;
+%\item its eigenvectors and eigenvalues in decreasing order;
+%\item the explained variances of the principal components.
+%\end{enumerate}
+%\end{question}
 
 \tableofcontents
 \end{document}
