@@ -12,7 +12,7 @@
 \usepackage{cancel}
 
 \usepackage{exsheets}
-%\SetupExSheets{counter-format=qu}
+\SetupExSheets{counter-format=qu}
 \SetupExSheets{
   headings = block-subtitle ,
   headings-format = \normalsize\bfseries\sffamily ,
@@ -26,8 +26,8 @@
 }
 
 \geometry{a4paper, margin=2cm}
-
 \usepackage{cprotect}
+\SetupExSheets[solution]{print=true}
 
 \usepackage{xcolor}
 \definecolor{maroon}{cmyk}{0, 0.87, 0.68, 0.32}
@@ -201,7 +201,7 @@ where $W(t)$ is called a \emph{Wiener Process} (or Brownian motion), which repre
 \begin{center}
 	\includegraphics[height=5cm]{brownian_process}
 \end{center}
-\caption{Example of eveolution of a stochastic process, on top of the deterministic evolution, a gaussian distributed "noise" (Wiener process) is added.}
+\caption{Example of evolution of a stochastic process, on top of the deterministic evolution, a Gaussian distributed "noise" (Wiener process) is added.}
 \end{figure}
 
 Using the properties of the normal distribution we can obtain the following results for the Wiener process:
@@ -473,7 +473,7 @@ From a financial point of view, there is no difference between holding the claim
 Let $\mathcal{M}$ be an arbitrage-free market with a risk-less asset. If for every derivative there is a replicating portfolio
 then the market $\mathcal{M}$ is complete. Conversely, if the market $\mathcal{M}$ is complete, and if the unique risk-neutral measure $\mathcal{Q}$ gives positive probability to every market scenario $\omega$, then for every derivative security there is a replicating portfolio.% in the assets $A_j$.
 
-\textbf{complete market$\rightarrow$no-arbitrage}: consider the replicating portfolio $\theta$ of a contingent claim $X$. If $\Pi(0; X) < V_0^\theta$ then at time $t=0$ we buy the claim, sell the portfolio and put the proceeds $V_0^\theta-\Pi_0$ in the bank so the net position is 0. At $t=1$ we will receive the claim payoff $X$ and will have to pay $V_1^\theta =X$  to the holder of the portfolio. This cancels but we still have $e^r(V_0^\theta-\Pi_0)>0$ in the bank. Thus we have an arbitrage. Similary $\Pi(0; X) > V_0^\theta$.
+\textbf{complete market$\rightarrow$no-arbitrage}: consider the replicating portfolio $\theta$ of a contingent claim $X$. If $\Pi(0; X) < V_0^\theta$ then at time $t=0$ we buy the claim, sell the portfolio and put the proceeds $V_0^\theta-\Pi_0$ in the bank so the net position is 0. At $t=1$ we will receive the claim payoff $X$ and will have to pay $V_1^\theta =X$  to the holder of the portfolio. This cancels but we still have $e^r(V_0^\theta-\Pi_0)>0$ in the bank. Thus we have an arbitrage. Similarly $\Pi(0; X) > V_0^\theta$.
 	
 \textbf{no-arbitrage$\rightarrow$complete market}: fix and arbitrary claim $X$ with contract function $\Phi$ and a portfolio such that
 \begin{equation*}
@@ -526,7 +526,7 @@ dS_t = \mu S_t dt + \sigma S_t dW_t \\
 \end{equation*}
 \end{question}
 
-\begin{solution}
+\begin{solution}[print=true]
 Let's apply the Ito's expansion to $G=\log(S_t)$ 
 \begin{equation*}
 \frac{\partial G}{\partial S}=\frac{1}{S_t},\;\frac{\partial G}{\partial t}=0,\;\frac{\partial^2 G}{\partial S^2}=-\frac{1}{S_t^2}
@@ -554,17 +554,46 @@ S_t = S_{t-1}\exp\left[\left(\mu-\frac{1}{2}\sigma^2\right)dt + \sigma\mathcal{N
 Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. 
 Is this a martingale ?
 \end{question}
+\begin{solution}[print=true]
+With $g(t)=2^{W(t)}$, we find:
+\begin{equation*}
+dg(t) = \ln2\cdot 2^{W(t)}dW(t) +\cfrac{(\ln2)^2}{2}2^{W(t)}dt
+\end{equation*}
+Note that $g, g_{x}, g_{xx}$ exist and are continuos. 
+Due to the appearance of a $dt$-term, the process is not a martingale.	
+\end{solution}
 
 \begin{question}[subtitle=Stochastic Differential Equation]
 Show that the exponential SDE
 \begin{equation*}
-dX_t = A_t X_tdW_t,\quad X_0=x_0
+	dX_t = A_t X_tdW_t,\quad X_0=x_0
 \end{equation*}
 has the following solution
 \begin{equation*}
-X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
+	X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
 \end{equation*}
+\textbf{Hint:} Apply Ito's formula to $f(Y_t)$ where $f(x)=x_0 e^x$ and $Y_t=-\frac{1}{2}\int_0^t A_s^2 ds + \int_0^t A_s dB_s$
 \end{question}
+
+\begin{solution}[print=true]
+	The SDE can be expressed as $d(\ln(X_t)) = \cfrac{dX_t}{X_t} = A_t dW_t$ where we have changed to the variable $Y_t = \ln(X_t)$. Applying Ito's formula to $Y_t$ 
+	\begin{equation*}
+		dY_t = \left[a\cfrac{\partial Y}{\partial X} + \cfrac{\partial Y}{\partial t} + \frac{1}{2}b\cfrac{\partial^2 Y}{\partial X^2}\right]+ b\cfrac{\partial Y}{\partial X}dW_t
+	\end{equation*}
+	but $a=0, \frac{\partial Y}{\partial t}=0, b=A_tX_t, \frac{\partial Y}{\partial X}=\frac{1}{X}, \frac{\partial^2 Y}{\partial X^2}=-\frac{1}{X^2}$, so
+	\begin{equation*}
+		dY_t = \left[\cancel{a\cfrac{\partial Y}{\partial X}} + \cancel{\cfrac{\partial Y}{\partial t}} - \frac{1}{2}A_t^2 \cancel{X_t^2}\cfrac{1}{\cancel{X^2}}\right]+ A_t\cancel{X_t}\cfrac{1}{\cancel{X_t}}dW_t = -\frac{1}{2}A_t^2 + A_t dW_t
+	\end{equation*}
+	Integrating and considering the initial condition given by the problem
+	\begin{equation*}
+		\begin{gathered}
+			\ln\left(\frac{X_t}{X_0}\right) = -\frac{1}{2}\int_0^t A_s^2 ds + \int_0^tA_s dW_s \\
+			X_t = X_0 \exp\left(-\frac{1}{2}\int_0^t A_s^2 ds + \int_0^tA_s dW_s \right)
+		\end{gathered}
+	\end{equation*}
+This solution is known as the exponential martingale solution.
+\end{solution}
+
 
 \chapter{Monte Carlo Simulation}
 
@@ -694,12 +723,56 @@ W(t) = \sum_{t_0}^{t} \sqrt{dt}\mathcal{N}(0,1)
 \end{equation}
 
 \begin{question}[subtitle=Central Limit Theorem (\texttt{python})]
-Using a Monte Carlo simulation of coin flip demonstrate the Central Limit Theorem.
+Using a Monte Carlo simulation of coin flip check the Central Limit Theorem:
+\begin{itemize}
+\item the distribution of the mean of repeated experiments is distributed like a Gaussian around the true mean;
+\item as the number of experiments (simulations) increase the precision of the estimate increase.
+\end{itemize}
 \end{question}
+
+\cprotEnv\begin{solution}[print=true]
+\begin{ipython}
+import numpy as np
+
+np.random.seed(1)
+N = 10000
+nflips = [80, 40, 20]
+
+results = np.zeros(shape=(N, len(nflips)))
+for j in range(len(nflips)):
+	for i in range(N):
+		results[i, j] = np.mean(np.random.randint(0, 2, size=nflips[j]))
+
+import matplotlib.pyplot as plt
+
+colors = ['xkcd:blue', 'xkcd:red', 'xkcd:green']
+
+for j, f in enumerate(nflips):
+	plt.hist(results[:, j], bins=np.linspace(0., 1., 20), color=colors[j], alpha=.7, 
+	histtype='stepfilled', edgecolor='black', label=f'{f} flips')
+plt.grid(True)
+plt.legend()
+plt.xlabel("Flip Mean")
+plt.ylabel("Frequency")
+plt.show()
+\end{ipython}
+By fitting the result distributions with a Gaussian it can be checked that the mean is indeed close to 0.5 (we assumed 0 head/1 tail) and that the standard deviation (a.k.a. the "error") on the mean scales as $\frac{1}{\sqrt{\text{nflips}}}$.
+
+\begin{ipython}
+from scipy.stats import norm
+
+for j in range(len(nflips)):
+	fit_result = norm.fit(results[:, j])
+	print (f"n. of flips {nflips[j]}: avg. {fit_result[0]:.3f} +- {fit_result[1]:.3f}")
+\end{ipython}
+\end{solution}
 
 \begin{question}[subtitle=Monte Carlo]
 You have determined the value of an interest rate derivative with a Monte Carlo simulation involving 50 scenarios which results in a contract value of 1.2 M€ $\pm$ 5\%. Unfortunately your boss ask you to determine more precisely the derivative value. If you have to meet him in 1 hour and each simulation lasts about 2.5 sec., what is the highest precision you can achieve ?
 \end{question}
+\begin{solution}
+
+\end{solution}
 
 \begin{question}[subtitle=1D Random Walk (\texttt{python})]
 Code a function that simulate a 1D random walk. 
@@ -709,6 +782,26 @@ The 1D random walk can be used to model how a gambler plays a game such as roule
 %\noindent
 %\textbf{Hint:} we can decide whether to walk left or right by flipping a coin and seeing if it comes up \emph{heads} or \emph{tails}.
 \end{question}
+
+\cprotEnv\begin{solution}
+\begin{ipython}
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(10)
+def random_walk_1d(startpoint, nsteps, p):
+	X = np.zeros(shape=(nsteps,))
+	X[0] = startpoint
+	games = np.random.random(size=nsteps-1)
+	X[1:] = np.where(games>p, 1, -1)
+	return np.cumsum(X)
+
+X = random_walk_1d(0, 100, 0.5)
+
+plt.plot(X)
+plt.show()
+\end{ipython}
+\end{solution}
 
 \begin{question}[subtitle=Simulating a Gambler  (\texttt{python})]
 Write a function called gambler that simulates this procedure, taking three arguments:
@@ -723,6 +816,32 @@ Essentially we start the gambler with $X$€ and simulate the process of him pla
 
 \textbf{Note: } importantly there is a difference between the gambler and the 1D random walk, however. The gambler usually only has a finite amount of money to gamble with. If he looses a large number of games he is therefore forced to stop playing. Similarly, the gambler may also have some target for how much money he would like to win. In other words, he should have some figure $N$€, which is more than the amount of money he entered the casino with. He will stop gambling once he has $N$€ in his pocket.
 \end{question}
+\cprotEnv\begin{solution}
+\begin{ipython}
+# It should be implemented an exit strategy against infinite loop
+# The gambler cannot play for an infinite amount of time
+
+def random_walk_with_stop(startpoint, p, N):
+	X = [startpoint]
+	while True:
+		game = np.random.random()
+		if game < p:
+			X.append(X[-1] + 1)
+		else:
+			X.append(X[-1] - 1)
+		if X[-1] <= 0:
+			return 0
+		elif X[-1] >= N:
+			return 1
+
+simulations = 10000
+outcomes = []
+for _ in range(simulations):
+	outcomes.append(random_walk_with_stop(100, 0.5, 120))
+
+print (f"Probability to hit upper limit: {sum(outcomes)/simulations}")
+\end{ipython}
+\end{solution}
 
 \begin{question}[subtitle=Spin to End  (\texttt{python})]
 Write another function that simulates the changes in the amount of money the gambler has and that returns the number of spins of the wheel that take place.
@@ -730,6 +849,29 @@ Write another function that simulates the changes in the amount of money the gam
 \textbf{Note: } we can also use simulation to determine how many spins of the wheel the gambler will play before leaving the casino (i.e. \emph{hitting time}).
 In other words we want to calculate the number of steps the random walk takes before arriving in one of the two threshold states.
 \end{question}
+\cprotEnv\begin{solution}
+\begin{ipython}
+def random_walk_with_stop_for_steps(startpoint, p, N):
+	games = 0
+	X = [startpoint]
+	while True:
+		game = np.random.random()
+		games += 1
+		if game < p:
+			X.append(X[-1] + 1)
+		else:
+			X.append(X[-1] - 1)
+		if X[-1] <= 0 or X[-1] >= N:
+			return games
+
+simulations = 10000
+games = []
+for _ in range(simulations):
+	games.append(random_walk_with_stop_for_steps(100, 0.5, 120))
+
+print (np.mean(games))
+\end{ipython}
+\end{solution}
 
 \begin{question}[subtitle=Martingale Examples]
 Suppose you play the following series of games. In game $i, i = 1, 2,\ldots$, you bet \$1 and roll a fair die. If the outcome is $\{1,2\}$ you win \$1, if it is $\{3,4\}$ nothing happens, and if the outcome is $\{5,6\}$ you lose \$1.
@@ -738,7 +880,7 @@ Prove that the random process representing the gamer gain is a martingale.ù
 Also using Monte Carlo simulation implement the game described in the text and check that the expected gain is indeed null.
 \end{question}
 
-\begin{solution}
+\cprotEnv\begin{solution}
 Let $X_i$ be a random variable representing the amount of money you win or lose in bet $i$, this kind of game is said to be **fair** since
 
 $$\mathbb{E}[X_i]= \sum_{\Omega}p(\omega)\cdot x(\omega) = \frac{2}{6}\cdot 1 + \frac{2}{6}\cdot 0 + \frac{2}{6}\cdot -1 = 0\;\forall i$$
@@ -755,6 +897,35 @@ $Z_n$ is a martingale and $\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = Z_{n-1}$.
 		& = \mathbb{E}[X_1|X_1,\ldots, X_{n-1}] + \ldots + \mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}] + 0 = Z_{n-1}
 	\end{aligned}
 \end{equation*}
+
+\begin{ipython}
+import matplotlib.pyplot as plt
+import numpy as np
+
+K0 = 10
+simulations = 100000
+games = 500
+
+np.random.seed(1)
+K = np.zeros(shape=(simulations, games))
+for s in range(simulations):
+	K[s, :] = np.random.randint(1, 7, size=games)
+	K[s, :] = np.where(K[s, :]<3, -1, K[s, :])
+	K[s, :] = np.where(K[s, :]>4, 1, K[s, :])
+	K[s, :] = np.where((K[s, :]<5)&(K[s, :]>2), 0, K[s, :])
+	K[s, :] = np.cumsum(K[s, :])
+
+for s in range(10):
+	p = plt.plot(K0 + K[s, :])
+
+mean = np.mean(K[:, -1])
+std = 1.96*np.std(K[:, -1])/np.sqrt(simulations)
+plt.text(20, 42, f"Expected gain: {mean:.2f} +- {std:.2f}", fontsize=20)
+plt.grid(True)
+plt.xlim(0, games)
+plt.xlabel("games", fontsize=14)
+plt.show()
+\end{ipython}
 \end{solution}
 
 %\begin{question}[subtitle=2D Random Walk  (\texttt{python})]
@@ -769,21 +940,64 @@ $Z_n$ is a martingale and $\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = Z_{n-1}$.
 Simulate a couple of realization of a Brownian motion process with initial value 0.
 Figure~\ref{fig:brownian_motion} reports two realization of the Brownian motion simulated according to the Euler scheme.
 \end{question}
-\begin{solution}
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=0.5\linewidth]{addons/brownian_motion}
-\end{center}
-\label{fig:brownian_motion}
-\end{figure}
+\cprotEnv\begin{solution}
+\begin{ipython}
+def BM(mu, sigma, x0, T, tsteps, N):
+	dt = T/tsteps
+	x = np.zeros(shape=(tsteps, N))
+	x[0, :] = x0
+	x[1:, :] = np.random.normal(size=(tsteps-1, N))*np.sqrt(dt)
+	return np.cumsum(x, axis=0)
+	
+np.random.seed(10)
+y = BM(0, 1, 0, 3, 365, 2)
+
+import matplotlib.pyplot as plt
+
+plt.rcParams['figure.figsize'] = (9, 6)
+plt.plot(y[:, 0], label="realization 1", color='xkcd:blue')
+plt.plot(y[:, 1], label="realization 2", color='xkcd:red')
+plt.grid(True)
+plt.xlabel("time")
+plt.xlim(0, 365)
+plt.legend()
+plt.show()
+\end{ipython}
 \end{solution}
 
 \begin{question}[subtitle=Geometric Brownian Motion  (\texttt{python})]
 Using the Euler scheme simulate the 4-months (with daily steps) evolution of a Geometric Brownian Motion stochastic process with initial value $S_0=100$, $\mu=0.005$, and $\sigma=0.05$.
 \end{question}
+\cprotEnv\begin{solution}
+\begin{ipython}
+import numpy as np
 
-\cprotEnv
-\begin{question}%[subtitle=Geometric Brownian Motion  (\texttt{python})]
+def GBM(mu, sigma, X0, T, tsteps, N):
+	X = np.zeros(shape=(tsteps, N))
+	dt = T/tsteps
+	X[0, :] = X0
+	dW = np.random.normal(size=(tsteps-1, N))*np.sqrt(dt)
+	X[1:, :] = np.exp((mu-0.5*sigma**2)*dt+sigma*dW)
+	return np.cumprod(X, axis=0)
+	
+np.random.seed(1)
+
+S = GBM(0.005, 0.05, 100, 120, 120, 1)
+Sdet = GBM(0.005, 0.0, 100, 120, 120, 1)
+
+import matplotlib.pyplot as plt
+
+plt.plot(S, label='Stochastic Path')
+plt.plot(Sdet, linestyle='--', color='red', label='Deterministic Path')
+plt.grid(True)
+plt.xlabel('Time')
+plt.ylabel('Stock Price')
+plt.legend(fontsize='16')
+plt.show()
+\end{ipython}
+\end{solution}
+
+\cprotEnv\begin{question}%[subtitle=Geometric Brownian Motion  (\texttt{python})]
 This \href{https://github.com/matteosan1/advanced_financial_modeling/raw/master/input_files}{file} contains a thousand 10-day realizations (with 0.1 day step) of historical price data of a single asset, assume that all the time series are different realizations of the same stochastic process.
 \begin{enumerate}
 \item Make two figures: the first should contain one realization as a function of time, in the second plot the first 50 realizations together as a function of time (\emph{label the axes appropriately}).
@@ -806,6 +1020,94 @@ S = np.load(path.open("stock_2023.npy", "rb"))
 \end{ipython}
 \end{question}
 
+\cprotEnv\begin{solution}
+\begin{ipython}
+plt.plot(S[50, :], label='Stochastic Path')
+plt.grid(True)
+plt.xlabel('Time')
+plt.ylabel('Stock Price')
+plt.xlim(0,100)
+plt.legend(fontsize='16')
+plt.show()
+
+for i in range(50):
+plt.plot(S[i, :])
+plt.grid(True)
+plt.xlabel('Time')
+plt.ylabel('Stock Price')
+plt.xlim(0,100)
+plt.show()
+\end{ipython}
+
+\begin{ipython}
+mean = np.mean(S, axis=0)
+
+plt.plot(mean)
+plt.grid(True)
+plt.xlabel('Time')
+plt.ylabel('Avg Realized Stock Price')
+plt.xlim(0,100)
+plt.show()
+
+var = np.var(S, axis=0)
+
+plt.plot(var)
+plt.grid(True)
+plt.xlabel('Time')
+plt.ylabel(r'Stock Price $\sigma$')
+plt.xlim(0,100)
+plt.show()
+\end{ipython}
+
+Perform a change on variables on
+$$S_{n+1} = S_ne^{(\mu-0.5\sigma^2)\Delta t + \sigma\sqrt{\Delta t}Z}$$
+to rewrite the model into a simpler form. Specifically, introduce
+$$X_{n+1}=\log\left(\cfrac{S_{n+1}}{S_n}\right)$$ and rewrite the equation.
+
+Is the resulting dynamics linear ? Prove it, or give a counterexample.
+
+$$X_{n+1} = (\mu-0.5\sigma^2)\Delta t + \sigma\sqrt{\Delta t}Z$$
+It is linear; because it is of the form $y = mx + q$.
+
+
+Is the resulting system time-invariant ? Prove it, or give a counterexample.
+
+No, it is not time-invariant. This is because $Z$ does vary with time.
+
+Using the model of the process $X_n$ found above:
+* derive an expression for the expectation $\mathbb{E}[X_n]$;
+* derive an expression for the variance $\text{Var}[X_n]$.
+
+Because $\mathbb{E}[Z]=0$ it implies that
+$$\mathbb{E}[X_n] = (\mu-0.5\sigma^2)\Delta t$$
+
+$$\text{Var}[X_n] = \sigma\sqrt{\Delta t}\cdot\text{Var}[X_n] = \sigma\sqrt{\Delta t}\cdot 1$$
+
+\begin{ipython}
+X = np.zeros_like(S)
+for t in range(S.shape[1]-1):
+	X[:, t] = np.log(S[:, t+1]/S[:, t])
+
+mean = np.mean(X, axis=0)
+
+plt.plot(mean)
+plt.grid(True)
+plt.xlabel('Time')
+plt.ylabel('Avg Realized Stock Price')
+plt.xlim(0,100)
+plt.show()
+
+var = np.var(X, axis=0)
+
+plt.plot(var)
+plt.grid(True)
+plt.xlabel('Time')
+plt.ylabel(r'Stock Price $\sigma$')
+plt.xlim(0,98)
+plt.show()
+\end{ipython}
+\end{solution}
+
 \begin{question}[subtitle=Heston Model  (\texttt{python})]
 The Heston model can be considered an extension of the Black and Scholes model where the volatility of the underlying asset is not constant, nor even deterministic, but follows a random process.
 
@@ -815,7 +1117,7 @@ dS_{t}=\mu S_{t}\,dt+{\sqrt {\nu _{t}}}S_{t}\,dW_{t}^{S}
 \end{equation}
 where the volatility 
 \begin{equation}
-{\displaystyle d\nu _{t}=\kappa (\theta -\nu _{t})\,dt+\xi {\sqrt {\nu _{t}}}\,dW_{t}^{\nu },}
+d\nu _{t}=\kappa (\theta -\nu _{t})\,dt+\xi {\sqrt {\nu_{t}}}\,dW_{t}^{\nu }
 \end{equation}
 and 
 \begin{equation}
@@ -835,9 +1137,127 @@ The model has five parameters:
 Using the Euler scheme simulate a possible realization for $S_t$ and $\sigma_t$ using the parameters: $S_0=100$, $\mu=0.25$, $T=3$, $\nu_0=0.05$, $\kappa=1.2$, $\theta=0.10$, $\xi=0.593$, $\rho=-0.5$.
 \end{question}
 
+\cprotEnv\begin{solution}
+\begin{ipython}
+import numpy as np
+
+def MCHeston(St, mu, T, nu0, kappa, theta, csi, rho, simulations=10000, timeStepsPerYear=100):
+	timesteps = T * timeStepsPerYear
+	dt = 1/timeStepsPerYear
+	
+	S_t = np.zeros(shape=(timesteps, simulations))
+	V_t = np.zeros(shape=(timesteps, simulations))
+	
+	V_t[0, :] = nu0
+	S_t[0, :] = St
+	
+	means = [0, 0]
+	covs = [[1  , rho],
+	[rho, 1  ]]
+	Z = np.random.multivariate_normal(mean=means, cov=covs, size=(simulations, timesteps)).T
+	Z1 = Z[0]
+	Z2 = Z[1]
+	
+	for i in range(1, timesteps):
+		V_t[i, :] = np.maximum(V_t[i-1, :] + kappa*(theta-V_t[i-1, :])*dt + csi*np.sqrt(V_t[i-1, :]*dt)*Z2[i, :], 0)
+		S_t[i, :] = S_t[i-1, :] + mu*S_t[i-1, :]*dt + np.sqrt(V_t[i, :]*dt)*S_t[i-1, :]*Z1[i, :]
+	
+	return S_t, V_t
+
+import matplotlib.pyplot as plt
+
+S0 = 100
+mu = 0.25
+T = 3
+nu0 = 0.05
+kappa = 1.2
+theta = 0.10
+csi = 0.593
+rho = -0.5
+
+np.random.seed(1000)
+S, nu = MCHeston(S0, mu, T, nu0, kappa, theta, csi, rho)
+S_mean = np.mean(S, axis=1)
+nu_mean = np.mean(nu, axis=1)
+
+plt.rcParams['figure.figsize'] = (14,6)
+fig, ax = plt.subplots(1, 2)
+ax[0].plot(nu[:, :30])
+ax[0].plot(nu_mean, color="black")
+ax[0].hlines(theta, 0, 300, linestyle="--", color='black')
+ax[0].grid(True)
+ax[0].set_xlabel("time")
+ax[0].set_ylabel("Volatility")
+ax[0].set_ylim(0, 1.0)
+ax[0].set_xlim(0, 300)
+
+ax[1].plot(S[:, :30])
+ax[1].plot(S_mean, color="black")
+ax[1].grid(True)
+ax[1].set_xlabel("time")
+ax[1].set_ylabel("Asset Value")
+ax[1].set_xlim(0, 300)
+ax[1].set_ylim(0, 380)
+plt.show()
+\end{ipython}
+\end{solution}
+
 \begin{question}[subtitle=Vasicek Model  (\texttt{python})]
 Using the Euler scheme simulate few realization from a short rate process following the Vasicek Model with parameter values ($r_0=0.03$, $\theta=0.10$, $k=0.3$, $\sigma=0.03$).
 \end{question}
+
+\cprotEnv\begin{solution}
+\begin{ipython}
+import numpy as np
+
+from enum import IntEnum
+from scipy.stats import norm
+
+OptionType = IntEnum("OptionType", {"Call":1, "Put":-1})
+
+class Vasicek:
+	def __init__(self, k, theta, sigma):
+		self.theta = theta
+		self.k = k
+		self.sigma = sigma
+
+	def r_generator(self, r0, T, tsteps, N):
+		dt = T/tsteps
+		r = np.zeros(shape=(tsteps, N))
+		r[0, :] = r0
+		epsilon = self.sigma*np.random.normal(size=(tsteps, N))*np.sqrt(dt)
+		for i in range(1, tsteps):
+			r[i, :] = r[i-1, :]+self.k*(self.theta-r[i-1, :])*dt+epsilon[i, :]
+		return r
+
+	def B(self, t, T):
+		return 1/self.k*(1-np.exp(-self.k*(T-t)))
+
+	def A(self, t, T):
+		return np.exp((self.theta-self.sigma**2/(2*self.k**2))*(self.B(t, T)-T+t)-self.sigma**2/(4*self.k)*self.B(t, T)**2)
+
+	def ZCB(self, r, t, T):
+		return self.A(t, T)*np.exp(-self.B(t, T)*r)
+
+	def ZBO(self, r, K, t, T, S, option_type=OptionType.Call):
+		sigma_p = self.sigma*np.sqrt((1-np.exp(-2*self.k*(T-t)))/(2*self.k))*self.B(T, S)
+		h = 1/sigma_p*np.log((self.ZCB(r, t, S))/(self.ZCB(r, t, T)*K))+sigma_p/2
+		arg1 = option_type*h
+		arg2 = option_type*(h-sigma_p)
+		return option_type*(self.ZCB(r, t, S)*norm.cdf(arg1)-K*self.ZCB(r, t, T)*norm.cdf(arg2))
+
+v = Vasicek(0.3, 0.1, 0.03)
+r = v.r_generator(0.03, 10, 200, 10000)
+
+import matplotlib.pyplot as plt
+
+avg = np.mean(r, axis=1)
+
+plt.plot(r[:, :10])
+plt.plot(avg, color='black')
+plt.show()
+\end{ipython}
+\end{solution}
 
 \chapter{Interest Rate Derivatives}
 \section{Forward Rate Agreement}

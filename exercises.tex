@@ -731,7 +731,7 @@ has the following solution
 \begin{equation*}
 X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
 \end{equation*}
-%\textbf{Hint:} Apply \ito formula to $f(Y_t)$ where $f(x)=x_0 e^x$ and $Y_t=-\frac{1}{2}\int_0^t A_s^2 ds + \int_0^t A_s dB_s$
+\textbf{Hint:} Apply \ito formula to $f(Y_t)$ where $f(x)=x_0 e^x$ and $Y_t=-\frac{1}{2}\int_0^t A_s^2 ds + \int_0^t A_s dB_s$
 \fillwithlines{3cm}
 \begin{solution}
 The SDE can be expressed as $d(\ln(X_t)) = \cfrac{dX_t}{X_t} = A_t dW_t$ where we have changed to the variable $Y_t = \ln(X_t)$. Applying \ito formula to $Y_t$ 
