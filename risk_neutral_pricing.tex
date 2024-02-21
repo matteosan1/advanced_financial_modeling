@@ -10,7 +10,18 @@
 	\begin{frame}[plain]
 		\maketitle
 	\end{frame}        
-	
+
+\begin{frame}{Disclaimer}
+Concerning this part I am assuming that:
+\begin{itemize}
+\item you know what is a random process;
+\item you know what is a stochastic differential equation (SDE);
+\item you know a bit of stochastic calculus (Ito's lemma, Ito's integral\ldots);
+\item you know (or have heard of) no-arbitrage pricing theorems;
+\item you know (or have heard of) Monte Carlo Simulation.
+\end{itemize}
+\end{frame}	
+
 \begin{frame}{Few Definitions}
 		It may be helpful to explain (and recall) some of the more technical terms we are going to use.\newline
 		
@@ -29,7 +40,12 @@
 				\includegraphics[width=0.8\linewidth]{filtration}
 		\end{columns}
 		
-		\textbf{Martingale}: is a stochastic process for which, at a particular time, the conditional expectation of the next value in the sequence is equal to the present value, regardless of all prior values. It can be imagined as a \emph{drift-less} process
+		\textbf{Martingale}: formally, a stochastic process is a martingale if
+\begin{equation*} 
+\mathbb{E}[X_{t+1}|\mathcal{F}_t] = X_t
+\end{equation*}
+or the conditional expectation of the next value in the sequence is equal to the present value, regardless of all prior values. 
+It can be imagined as a \emph{drift-less} process
 		\begin{equation*}
 			dX = \cancel{\mu dt} + \sigma dW
 		\end{equation*}
@@ -48,7 +64,7 @@
 		\item Arbitrage opportunities rarely exist in practice. If and when they do, gains are extremely small, and are typically short-lived and difficult to spot. \textcolor{red}{Arbitrage exclusion in the mathematical model is close enough to reality}.
 		\item An \textcolor{red}{equivalent martingale measure} $\mathbb{Q}$ is a probability measure on the space $\Omega$ such that
 		\begin{enumerate}
-			\item $\mathbb{Q}$ is equivalent to $\mathbb{P}$;
+			\item $\mathbb{Q}$ is equivalent to $\mathbb{P}$ (real world measure);
 			\item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a price $\pi_t$
 			\begin{equation*}
 				\pi_t = \expect{Q^0}[D(t,T)V_A|\mathcal{F}_t]
@@ -59,22 +75,21 @@
 \end{frame}
 
 \begin{frame}{Risk-Neutral Measure}
-	\begin{itemize}
-		\item<1->The \textcolor{red}{risk-neutral measure} is agreed upon by the market as a whole just as a consequence of no arbitrage assumption.
-		In other words it is nothing more than an \emph{implied probability distribution}.
-		\item<2-> Implied from observable prices of tradable instruments, and used to determine \textcolor{red}{objective fair prices} for an asset or financial instrument. Probabilities are assessed with the risk taken out of the equation, so it doesn’t play a factor in the anticipated outcome.
-		\item<3-> By contrast, if you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \textcolor{red}{real or physical probability}.
-	\end{itemize}
+\begin{itemize}
+\item  The difference between real-world and risk-neutral measures is in the treatment of the market price of risk.
+\item If you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \textcolor{red}{real or physical probability}.
+\item The \textcolor{red}{risk-neutral measure}, instead, allow determination of a market-consistent value without making any assumption about the market price of risk. That is useful because the price of risk is not directly observable, but the market prices used to calibrate a risk-neutral generator are.
+\item The risk-neutral measure is a direct consequence of no arbitrage assumption. It is an \emph{implied probability distribution} from observable prices of tradable instruments, and used to determine \textcolor{red}{objective fair prices} for a financial instrument.
+\end{itemize}
 \end{frame}
 
-
-	\begin{frame}{Risk Neutral Pricing Foundations}
+\begin{frame}{Risk Neutral Pricing Foundations}
 	Harrison and Pliska proved and formalized the following results:
 	\begin{itemize}
 		\item The market is free of arbitrage if (and only if) there exists an \textcolor{red}{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).
 		\item \textbf{The market is complete if and only if the martingale measure is unique.}
 		
-		(In a complete market, every asset in every possible state of the world has a price.)
+		(Note that market completeness means that any contingent claim can be replicated by a portfolio, or in other words that every asset in every possible state of the world has a price.)
 	\end{itemize}
 	\vfill
 \end{frame}
@@ -143,11 +158,12 @@
 
 \begin{frame}{What is the Monte Carlo Technique ?}
 \begin{itemize}
-	\item From stock prices to interest rates, in the financial world countless factors can influence outcomes, making predictions challenging. 
-	\item \textbf{The Monte Carlo simulation technique} offers a powerful tool to navigate this uncertainty and gain valuable 'insights.
+	\item Our main goal is to compute prices with \cref{eq:risk_neutral_pricing}, which is not always analitycally solvable.
+	\item Also many stochastic factors (stock prices, interest rates\ldots), influences the result, making predictions challenging. 
+	\item \textbf{The Monte Carlo simulation technique} is the right tool to tackle this problems.
 	\item It is a probability-based simulation method which exploits random sampling to analyse uncertain outcomes.
 	\item Instead of relying on single-point estimates, \emph{it generates multiple scenarios based on probability distributions}. 
-	\item This allows to assess the range of potential outcomes, not just a single average, providing a more comprehensive understanding of the problem in hand.
+	\item This allows to assess the range of potential outcomes, not only a single average, providing a more comprehensive understanding of the problem in hand.
 \end{itemize}
 \end{frame}
 
@@ -163,15 +179,17 @@
 	\column{0.4\linewidth}
 	\hfill
 	\includegraphics[width=0.8\linewidth]{central_limit_theorem}
+	\vspace{0.7cm}
 	\column{0.6\linewidth}
-	The \emph{Central Limit Theorem} tells us:
+	The \textbf{Central Limit Theorem}: \emph{the sampling distribution of the mean is normally distributed, as long as the sample size is large enough}.
+	
 	\begin{enumerate}
 		\item the best estimate of a quantity given by MC experiments is the \textbf{mean} of the simulation results;
-		\item with a larger sample size, your sample mean is \textbf{more likely to be close to the real population mean}. In other words, your estimate is more precise.
+		\item with a larger sample size, your sample mean is \textbf{more likely to be close to the real population mean} (more precise estimate).
 	\end{enumerate}
 \end{columns}
 \begin{tikzpicture}[remember picture,overlay]
-\node[xshift=6.cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\node[xshift=-4.cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}
 \end{frame}
 
@@ -189,6 +207,7 @@ has the following solution
 X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
 \end{equation*}
 \end{itemize}
+\textcolor{white}{Exercises for this part involves: SDE solving, martingale definition, Ito's lemma, and a bit of Monte Carlo theory.}
 \end{frame}
 \end{homework}
 

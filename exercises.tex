@@ -26,25 +26,6 @@ Answer the questions in the spaces provided. If you run out of room for an answe
 \begin{questions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question The 1-year spot rate on US treasury bonds is 9\%, the 2-year spot rate is 9.5\% and the 3-year spot rate is 10\%. 
-\begin{itemize}
-\item Calculate the implied 1-year ahead, 1-year forward rate, $F(0;1,2)$. Explain why a 1-year forward rate of 9.6\% could not be explained by the market;
-\item calculate the forward rates  $F(0; 2, 3$ and $F(0; 1,3)$. Is there a link between $F(0;1,2),F(0;2,3)$ and $F(0;1,3)$ ?
-\end{itemize}
-\begin{solution}
-\begin{itemize}
-\item The forward rates are as follows:
-\begin{equation}
-F(0;1,2)= \cfrac{0.095*2 - 0.09*1}{2-1} = 0.1, \quad F(0;2,3)= \cfrac{0.1*3 - 0.095*2}{3-2} = 0.11, \quad F(0;1,3)= \cfrac{0.1*3 - 0.09*1}{3-1} = 0.105
-\end{equation}
-If you lend €100 at $t=1$ at 9.6\%, your cash flow is -€100 at $t=1$ and €109.6 at $t=2$. You can do better by borrowing now for 1 year $€100/1.09=€91.74$ and lending the same amount for 2 years. Your net cash flow is then €0 at $t=0$, -€100 at $t=1$ (that is $€91.74\cdot 1.09$), and €110 at $t=2$ (that is $€91.74\cdot 1.095^2$). Compared to the first option, you have thus a certain higher cash flow at $t=2$: €110 vs. €109.6.  There is then no reason to accept the 9.6\% rate contract. 
-\item The link between the forward rate is as follows:
-\begin{equation}
-\cfrac{(1+F(0;1,3)^2}{1+F(0;1,2)} = \cfrac{(1+r_3)^3}{(1+r^2)} \Rightarrow (1+F(0;1,3)^2 = (1+F(0;1,2))(1+F(0;2,3))
-\end{equation}
-Hence, with any two of three forward rates, you can deduct the third one.
-\end{itemize}
-\end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \question If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
@@ -54,12 +35,6 @@ The interpretation of a monotonically upward sloping yield curve depends on the 
 The same reasoning holds for a downward sloping yield curve.
 \end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question A bank offers to borrow €100 from you at an interest rate applicable between the end of year 1 and the end of year 2 at a rate of 13\% (i.e. the forward rate). The spot rates for 1-year and 2-year are currently 10\% and 12\% respectively. Explain whether you would take the bank’s offer. 
-\begin{solution}
-The forward rate between year 1 and year 2 is $F(0;1,2)=14\%$. It is then easy to show that it is irrational to accept lending at 13\% at year 1. Indeed, if you lend €100 at $t=1$ at 13\%, your cash flow is -€100 at $t=1$ and €113 at $t=2$. 
-You can do better by borrowing now for 1 year $€100/1.10=€90.91$ and lend the same amount for 2 years. Your net cash flow is then €0 at $t=0$, -€100 at $t=1$ ($€90.91\cdot 1.10$), and €114.04 at $t=2$ (that is $90.91\cdot 1.12^2$). 
-Compared to the first option, you have thus a certain higher cash flow at $t=2$: 114 vs. 113.  There is then no reason for the lender to accept the 13\% rate contract. 
-\end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \question Companies A and B have been offered the following rates per annum on a 20 million 5-year loan:
@@ -77,29 +52,6 @@ Company A requires a floating-rate loan; company B requires a fixed-rate loan. D
 A has an apparent comparative advantage in fixed-rate markets but wants to borrow floating. B has an apparent comparative advantage in floating-rate markets but wants to borrow fixed. This provides the basis for the swap. There is a 1.4\% per annum differential between the fixed rates offered to the two companies and a 0.5\% per annum
 differential between the floating rates offered to the two companies. The total gain to all parties from the swap is therefore 1.4-0.5 = 0.9\% per annum. Because the bank gets 0.1\% per annum of this gain, the swap should make each of A and B 0.4\% per
 annum better off. This means that it should lead to A borrowing at LIBOR -0.3\% and to B borrowing at 6\%. 
-\end{solution}
-
-\question A 100 million interest rate swap has a remaining life of 10 months. Under the terms of the swap; 6-month LIBOR is exchanged for 7\% per annum (compounded semiannually). The average of the bid-offer rate being exchanged for 6-month LIBOR in swaps of all maturities is currently 5\% per annum with continuous compounding. The 6-month LIBOR rate was 4.6\% per annum 2 months ago. What is the current value of the swap to the party paying floating ? What is its value to the party paying fixed ?
-
-\begin{solution}
-In four months 6 million ($0.5\times 0.12\times 100$~million) will be received and 4.8 million ($0.5\times 0.096\times 100$~million) will be paid. (We ignore day count issues.) In 10 months 6 million will be received, and the LIBOR rate prevailing in four months-time will be paid. The value of the fixed-rate bond underlying the swap is
-\begin{equation*}
-6 \exp(-0.1 \times 4/12) + 6 \exp(0.1\times  10/12) = 103.328 \text{million}
-\end{equation*}
-The value of the floating-rate bond underlying the swap is 
-\begin{equation*}
-(100 + 4:8) \exp(0.1\times  4/12) = 101364 \text{million}
-\end{equation*}
-The value of the swap to the party paying floating is $103328-  101364 = 1964$~million. 
-The value of the swap to the party paying fixed is the opposite. 
-
-These results can also be derived by decomposing the swap into forward contracts. Consider the party paying floating. The first forward contract involves paying 4.8~million and receiving 6~million in four months. It has a value of $1.2e^{-0.1\cdot 4/12} = 1.161$~million.
-To value the second forward contract, we note that the forward interest rate is 10\% per annum with continuous compounding, or 10.254\% per annum with semiannual compounding. The value of the forward contract is
-\begin{equation*}
-100\times  (0.12\times 0.5-0.10254\times 0.5)e^{-0.1\cdot 10/12} = 0.803 \text{million}
-\end{equation*}
-
-The total value of the forward contract is therefore $1.161 + 0.803 = 1.964$~million.
 \end{solution}
 
 \question  A financial institution has entered into an interest rate swap with company A. Under the terms of the swap, it receives 10\% per annum and pays 6-month LIBOR on a principal of 10 million for 5 years. Payments are made every 6 months. 
@@ -190,82 +142,7 @@ Discounting the numbers in the final column to the end of year 6 at 8\% per annu
 In practice company B is likely to be defaulting and declaring bankruptcy for reasons unrelated to this particular contract and payments on the contract are likely to stop when bankruptcy is declared.
 \end{solution}
 
-\question Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A.
 
-\begin{solution}
-In our case: $Q= 100$~mln - the principal of the swap (in bond notation it is face value FV), LIBOR=0.102 - 6 months LIBOR, T=1.25 - the maturity of the bond as a fraction of the year (15 months is 1.25 of year), r3m=0.10 - 3 months interest rate, r9m=0.105 - 9 months interest rate, r15m=0.11 - 15 months interest rate, rfix=0.08 - fixed interest rate, 2 - number of payments in a year
-
-Since the company A pays floating interest and receives fixed one
-\begin{equation*}
-V=V_{fix}-V_{fl} = \sum_{i=1}^n \cfrac{k}{e^{r_i t_i}} + \cfrac{Q}{e^{r_n t_n}} - \cfrac{k^*}{e^{r_1 t_1}}+\cfrac{Q}{e^{r_1 t_1}}
-\end{equation*}
-
-The fixed leg value is
-\begin{equation*}
-V_{fix} = 4e^{-0.25\cdot 0.1} +  4e^{-0.75\cdot 0.105} +  104e^{-1.25\cdot 0.11} = 98.25\text{mln}
-\end{equation*}
-
-The floating payment is based on LIBOR and the nearest (first) payment is 
-\begin{equation*}
-k^*=0.102\cdot0.5\cdot 100 = 5.1\text{mln}
-\end{equation*}
-Hence:
-\begin{equation*}
-V_{fl}=5.1e^{-0.25\cdot 0.1}+100\cdot e^{-0.25\cdot 0.1} = 102.51
-\end{equation*}
-
-And the final calcualtion
-\begin{equation*}
-V = 98.24-102.51=-4.27\text{mln}
-\end{equation*}
-which is the swap value for company A.
-\end{solution}
-
-\question Determine the value of the swap from previous exercise in the way as described in the Relationship between interest rate swap and FRA part.
-\begin{solution}
-The cash flows that will be exchanged after three months can be calculated at the beginning. The interest rate of 8\% will be exchanged for a rate of 10.2\%. Let us call it FRA1:
-\begin{equation*}
-FRA_1 = 0.5\cdot 100\cdot (0.08-0.102)\cdot e^{-0.25\cdot 0.1}=-1.07
-\end{equation*}
-
-Determination of flows after 9th and 15th month requires two more formulas.
-
-First we have to calculate forward interest rate for the half-year period for 3 months from now. This is required to calculate the cash flow after 9 months. We will use the following formula: $e^{r_{9m}\cdot0.75}=e^{r_{3m}\cdot0.25}e^{F'_{0.25, 0.5}\cdot 0.5}$. Solving the formula for $F'_{0.25, 0.5}$ we have:
-\begin{equation*}
-F'_{0.25, 0.5}=\cfrac{r_{9m}\cdot 0.75-r_{3m}\cdot0.25}{0.5}=0.10750
-\end{equation*}
-
-The rate is continuously compounded therefore we should convert it into semi-annual compounding with the formula $R_m = m\cdot(e^{r_c/m}-1)$, where $r_c$ is continuously compounded and $r_m$ is discretely compounded. Note that $m$ in this formula is the number of payments within a year (not the number of months).
-\begin{equation*}
-F_{0.25, 0.5}=2\cdot(e^{F'_{0.25,0.5}/2}-1)=0.11044
-\end{equation*}
-The present value of the cash flow exchanged in 9 months is:
-\begin{equation*}
-FRA_2=0.5\cdot100\cdot(0.08-0.11044)\cdot e^{-0.75\cdot0.105}=-1.41
-\end{equation*}
-obtained from the FRA contract valuation.
-
-Then the procedure goes on similarly: to calculate the present value of the cash flow that will occur in 1 year and 3 months, we need to calculate forward interest rate for the half-year period for 9 months from now. We will use the following formula: $e^{r_{15m}\cdot 1.25}=e^{r_{9m}\cdot 0.75}e^{F'_{0.75, 0.5}\cdot 0.5}$. Solving the formula for $F'_{0.75, 0.5}$
- we have:
-\begin{equation*}
-F'_{0.75, 0.5}=\cfrac{r_{15m}\cdot1.25-r_{9m}0.75}{0.5}=0.11750
-\end{equation*}
-
-After converting the rate with continuous compounding to the interest rate with semi-annual compounding, we obtain:
-\begin{equation*}
-FRA_{0.75,0.5}=2\cdot(e^{F'_{0.75,0.52}}-1)=2\dot(e^0.117502-1)=0.12102
-\end{equation*}
-
-The present value of the cash flow exchanged in 15 months is:
-\begin{equation*}
-FRA_3=0.5\cdot100\cdot(0.08-0.12102)\cdot e^{-1.25\cdot0.11}=-1.79
-\end{equation*}
-
-The value of the swap is then 
-\begin{equation*}
-V=FRA_1+FRA_2+FRA_3 = -1.07-1.41-1.79=-4.27
-\end{equation*}
-\end{solution}
 
 \question Assume that yield curves in Japan and in the US are flat. The interest rate in Japan is equal to 4\% per annum, and in the US to 9\% per annum (with continuous compounding). The financial institution takes position in the swap contract, under which it receives 5\% on an annual basis of the amount denominated in yen and pays 8\% per annum of the amount denominated in dollars. These amounts are respectively 10 million USD and 1200 million yen. The contract is valid for 3 years and the current exchange rate is 110 USDJPY. What is the value of this currency swap?
 \begin{solution}

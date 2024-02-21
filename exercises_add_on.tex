@@ -11,23 +11,13 @@
 \usepackage{hyperref}
 \usepackage{cancel}
 
-\usepackage{exsheets}
-\SetupExSheets{counter-format=qu}
-\SetupExSheets{
-  headings = block-subtitle ,
-  headings-format = \normalsize\bfseries\sffamily ,
-  % needs v0.16 2014/09/14 to work:
-  subtitle-format = \normalsize\bfseries\sffamily
-}
-
-\SetupExSheets{
-  counter-within = section ,
-  counter-format = se.qu\IfQuestionSubtitleT{:} ,
+\usepackage[use-files]{xsim}
+\xsimsetup{
+	path={exercises},
 }
 
 \geometry{a4paper, margin=2cm}
-\usepackage{cprotect}
-\SetupExSheets[solution]{print=true}
+%\usepackage{cprotect}
 
 \usepackage{xcolor}
 \definecolor{maroon}{cmyk}{0, 0.87, 0.68, 0.32}
@@ -116,7 +106,7 @@ If a random variable takes only a countable number (finite) of values, it is cal
 
 Contrary, a random variable $X$ which can take any value between a certain interval is called \textcolor{red}{continuous}. Imagine the height of students in a particular class lies between 160 and 190~cm $(X = \{x|160 \leq x \leq 190\})$.
 
-Table \ref{tab:random_variable_prop} lists the main characteristics of discrete and continuous random variables (referred to a random variable $X$ defined on a domain $\Omega$ of possible outcomes). 
+Table~\ref{tab:random_variable_prop} lists the main characteristics of discrete and continuous random variables (referred to a random variable $X$ defined on a domain $\Omega$ of possible outcomes). 
 \renewcommand{\arraystretch}{1.6}
 \begin{table}[hbtp]
 	\begin{center}
@@ -154,7 +144,7 @@ But with \textit{real data}, we don't know the full distribution. Fortunately we
 \end{equation}
 
 \subsection{Expectation and Its Properties}
-Table \ref{tab:expectation_prop} reports a list of the main properties of the expectation operator.
+Table~\ref{tab:expectation_prop} reports a list of the main properties of the expectation operator.
 Essentially all of them come from integration properties, e.g.
 \begin{equation*}
 	\mathbb{E}[aX] = \int_{-\infty}^{\infty} ax f(x) dx = a  \int_{-\infty}^{\infty} x f(x) dx = a\mathbb{E}[X]
@@ -325,7 +315,7 @@ df&={\frac {\partial f}{\partial t}}\,dt+\cancel{{\frac {1}{2}}{\frac {\partial 
 \end{equation*}
 as required.
 
-Back to the Geometric Brownian motion, it can be shown that a solution to Eq.\ref{eq:log_normal_sde} is given by 
+Back to the Geometric Brownian motion, it can be shown that a solution to Eq.~\ref{eq:log_normal_sde} is given by 
 \begin{equation}
 S_t = S_{t-1}\exp\left[\left(\mu-\frac{1}{2}\sigma^2\right)dt + \sigma\mathcal{N}(0,1)\sqrt{dt}\right] 
 \label{eq:lognormal_solution}
@@ -515,7 +505,8 @@ Such a price is given by the expectation of the discounted payoff under the meas
 \end{equation}
 \end{itemize}
 
-\begin{question}[subtitle=Geometric Brownian Motion]
+\section*{Exercises}
+\begin{exercise}[subtitle={Geometric Brownian Motion}]
 Show that 
 \begin{equation*}
 S_t = S_{t-1}\exp\left[\left(\mu-\frac{1}{2}\sigma^2\right)dt + \sigma\mathcal{N}(0,1)\sqrt{dt}\right] 
@@ -524,9 +515,9 @@ is a solution of the stochastic differential equation
 \begin{equation*}
 dS_t = \mu S_t dt + \sigma S_t dW_t \\
 \end{equation*}
-\end{question}
+\end{exercise}
 
-\begin{solution}[print=true]
+\begin{solution}
 Let's apply the Ito's expansion to $G=\log(S_t)$ 
 \begin{equation*}
 \frac{\partial G}{\partial S}=\frac{1}{S_t},\;\frac{\partial G}{\partial t}=0,\;\frac{\partial^2 G}{\partial S^2}=-\frac{1}{S_t^2}
@@ -550,11 +541,11 @@ S_t = S_{t-1}\exp\left[\left(\mu-\frac{1}{2}\sigma^2\right)dt + \sigma\mathcal{N
 \end{equation*}
 \end{solution}
 
-\begin{question}[subtitle=Martingale]
+\begin{exercise}[subtitle=Martingale, tags={sde}]
 Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. 
 Is this a martingale ?
-\end{question}
-\begin{solution}[print=true]
+\end{exercise}
+\begin{solution}
 With $g(t)=2^{W(t)}$, we find:
 \begin{equation*}
 dg(t) = \ln2\cdot 2^{W(t)}dW(t) +\cfrac{(\ln2)^2}{2}2^{W(t)}dt
@@ -563,7 +554,7 @@ Note that $g, g_{x}, g_{xx}$ exist and are continuos.
 Due to the appearance of a $dt$-term, the process is not a martingale.	
 \end{solution}
 
-\begin{question}[subtitle=Stochastic Differential Equation]
+\begin{exercise}[subtitle={Stochastic Differential Equation}, , tags={sde}]
 Show that the exponential SDE
 \begin{equation*}
 	dX_t = A_t X_tdW_t,\quad X_0=x_0
@@ -573,9 +564,8 @@ has the following solution
 	X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
 \end{equation*}
 \textbf{Hint:} Apply Ito's formula to $f(Y_t)$ where $f(x)=x_0 e^x$ and $Y_t=-\frac{1}{2}\int_0^t A_s^2 ds + \int_0^t A_s dB_s$
-\end{question}
-
-\begin{solution}[print=true]
+\end{exercise}
+\begin{solution}
 	The SDE can be expressed as $d(\ln(X_t)) = \cfrac{dX_t}{X_t} = A_t dW_t$ where we have changed to the variable $Y_t = \ln(X_t)$. Applying Ito's formula to $Y_t$ 
 	\begin{equation*}
 		dY_t = \left[a\cfrac{\partial Y}{\partial X} + \cfrac{\partial Y}{\partial t} + \frac{1}{2}b\cfrac{\partial^2 Y}{\partial X^2}\right]+ b\cfrac{\partial Y}{\partial X}dW_t
@@ -722,79 +712,44 @@ or
 W(t) = \sum_{t_0}^{t} \sqrt{dt}\mathcal{N}(0,1)
 \end{equation}
 
-\begin{question}[subtitle=Central Limit Theorem (\texttt{python})]
+\section*{Exercises}
+\begin{exercise}[subtitle={Central Limit Theorem  (\texttt{python})}]
 Using a Monte Carlo simulation of coin flip check the Central Limit Theorem:
 \begin{itemize}
 \item the distribution of the mean of repeated experiments is distributed like a Gaussian around the true mean;
 \item as the number of experiments (simulations) increase the precision of the estimate increase.
 \end{itemize}
-\end{question}
+\end{exercise}
 
-\cprotEnv\begin{solution}[print=true]
-\begin{ipython}
-import numpy as np
-
-np.random.seed(1)
-N = 10000
-nflips = [80, 40, 20]
-
-results = np.zeros(shape=(N, len(nflips)))
-for j in range(len(nflips)):
-	for i in range(N):
-		results[i, j] = np.mean(np.random.randint(0, 2, size=nflips[j]))
-
-import matplotlib.pyplot as plt
-
-colors = ['xkcd:blue', 'xkcd:red', 'xkcd:green']
-
-for j, f in enumerate(nflips):
-	plt.hist(results[:, j], bins=np.linspace(0., 1., 20), color=colors[j], alpha=.7, 
-	histtype='stepfilled', edgecolor='black', label=f'{f} flips')
-plt.grid(True)
-plt.legend()
-plt.xlabel("Flip Mean")
-plt.ylabel("Frequency")
-plt.show()
-\end{ipython}
-By fitting the result distributions with a Gaussian it can be checked that the mean is indeed close to 0.5 (we assumed 0 head/1 tail) and that the standard deviation (a.k.a. the "error") on the mean scales as $\frac{1}{\sqrt{\text{nflips}}}$.
-
-\begin{ipython}
-from scipy.stats import norm
-
-for j in range(len(nflips)):
-	fit_result = norm.fit(results[:, j])
-	print (f"n. of flips {nflips[j]}: avg. {fit_result[0]:.3f} +- {fit_result[1]:.3f}")
-\end{ipython}
-\end{solution}
-
-\begin{question}[subtitle=Monte Carlo]
+\begin{exercise}[subtitle={Monte Carlo}]
 You have determined the value of an interest rate derivative with a Monte Carlo simulation involving 50 scenarios which results in a contract value of 1.2 M€ $\pm$ 5\%. Unfortunately your boss ask you to determine more precisely the derivative value. If you have to meet him in 1 hour and each simulation lasts about 2.5 sec., what is the highest precision you can achieve ?
-\end{question}
+\end{exercise}
 \begin{solution}
-
+Given you have to answer in 1 hour, you can run at most: $\frac{3600}{2.5}=1440$ experiments. Since the result precision scale as the square root of the number of simulations
+\begin{equation*}
+\textrm{new uncertainty} = 0.05 \cdot \sqrt{\frac{50}{1440}} \approx 0.01
+\end{equation*}
 \end{solution}
 
-\begin{question}[subtitle=1D Random Walk (\texttt{python})]
+\begin{exercise}[subtitle={1D Random Walk (\texttt{python})}, label={ex:2.2}]
 Code a function that simulate a 1D random walk. 
 
 \textbf{Note: } the Random Walk in one dimension is a model for each process which have simple binary outcomes.
 The 1D random walk can be used to model how a gambler plays a game such as roulette in a casino. The idea in such games is that the gambler places a small stake on each game (say 1€). When the game is played the gambler will either loose and the total amount of money he has will thus decrease by one unit, or alternatively, he will win the game and in that case he wins back his stake and a prize, which we will set as 1€. As you can see if the gambler repeats this process of staking money and playing the amount of money he has will undergo a random walk in one dimension, since the outcome will be either 1 or -1.
-%\noindent
-%\textbf{Hint:} we can decide whether to walk left or right by flipping a coin and seeing if it comes up \emph{heads} or \emph{tails}.
-\end{question}
+\end{exercise}
 
-\cprotEnv\begin{solution}
+\begin{solution}
 \begin{ipython}
 import numpy as np
 import matplotlib.pyplot as plt
 
 np.random.seed(10)
 def random_walk_1d(startpoint, nsteps, p):
-	X = np.zeros(shape=(nsteps,))
-	X[0] = startpoint
-	games = np.random.random(size=nsteps-1)
-	X[1:] = np.where(games>p, 1, -1)
-	return np.cumsum(X)
+    X = np.zeros(shape=(nsteps,))
+    X[0] = startpoint
+    games = np.random.random(size=nsteps-1)
+    X[1:] = np.where(games>p, 1, -1)
+    return np.cumsum(X)
 
 X = random_walk_1d(0, 100, 0.5)
 
@@ -803,7 +758,7 @@ plt.show()
 \end{ipython}
 \end{solution}
 
-\begin{question}[subtitle=Simulating a Gambler  (\texttt{python})]
+\begin{exercise}[subtitle={Simulating a Gambler (\texttt{python})}]
 Write a function called gambler that simulates this procedure, taking three arguments:
 
 Determine with a simulation the probabilities whether the gambler leaves the casino with zero or with $N$€.
@@ -815,73 +770,72 @@ Essentially we start the gambler with $X$€ and simulate the process of him pla
 \end{itemize}
 
 \textbf{Note: } importantly there is a difference between the gambler and the 1D random walk, however. The gambler usually only has a finite amount of money to gamble with. If he looses a large number of games he is therefore forced to stop playing. Similarly, the gambler may also have some target for how much money he would like to win. In other words, he should have some figure $N$€, which is more than the amount of money he entered the casino with. He will stop gambling once he has $N$€ in his pocket.
-\end{question}
-\cprotEnv\begin{solution}
+\end{exercise}
+\begin{solution}
 \begin{ipython}
 # It should be implemented an exit strategy against infinite loop
 # The gambler cannot play for an infinite amount of time
 
 def random_walk_with_stop(startpoint, p, N):
-	X = [startpoint]
-	while True:
-		game = np.random.random()
-		if game < p:
-			X.append(X[-1] + 1)
-		else:
-			X.append(X[-1] - 1)
-		if X[-1] <= 0:
-			return 0
-		elif X[-1] >= N:
-			return 1
+    X = [startpoint]
+    while True:
+        game = np.random.random()
+        if game < p:
+            X.append(X[-1] + 1)
+        else:
+            X.append(X[-1] - 1)
+        if X[-1] <= 0:
+            return 0
+        elif X[-1] >= N:
+            return 1
 
 simulations = 10000
 outcomes = []
 for _ in range(simulations):
-	outcomes.append(random_walk_with_stop(100, 0.5, 120))
+    outcomes.append(random_walk_with_stop(100, 0.5, 120))
 
 print (f"Probability to hit upper limit: {sum(outcomes)/simulations}")
 \end{ipython}
 \end{solution}
 
-\begin{question}[subtitle=Spin to End  (\texttt{python})]
+\begin{exercise}[subtitle={Spin to End (\texttt{python})}]
 Write another function that simulates the changes in the amount of money the gambler has and that returns the number of spins of the wheel that take place.
 
 \textbf{Note: } we can also use simulation to determine how many spins of the wheel the gambler will play before leaving the casino (i.e. \emph{hitting time}).
 In other words we want to calculate the number of steps the random walk takes before arriving in one of the two threshold states.
-\end{question}
-\cprotEnv\begin{solution}
+\end{exercise}
+\begin{solution}
 \begin{ipython}
 def random_walk_with_stop_for_steps(startpoint, p, N):
-	games = 0
-	X = [startpoint]
-	while True:
-		game = np.random.random()
-		games += 1
-		if game < p:
-			X.append(X[-1] + 1)
-		else:
-			X.append(X[-1] - 1)
-		if X[-1] <= 0 or X[-1] >= N:
-			return games
+    games = 0
+    X = [startpoint]
+    while True:
+        game = np.random.random()
+        games += 1
+        if game < p:
+            X.append(X[-1] + 1)
+        else:
+            X.append(X[-1] - 1)
+        if X[-1] <= 0 or X[-1] >= N:
+            return games
 
 simulations = 10000
 games = []
 for _ in range(simulations):
-	games.append(random_walk_with_stop_for_steps(100, 0.5, 120))
+    games.append(random_walk_with_stop_for_steps(100, 0.5, 120))
 
 print (np.mean(games))
 \end{ipython}
 \end{solution}
 
-\begin{question}[subtitle=Martingale Examples]
+\begin{exercise}[subtitle={Martingale Game}]
 Suppose you play the following series of games. In game $i, i = 1, 2,\ldots$, you bet \$1 and roll a fair die. If the outcome is $\{1,2\}$ you win \$1, if it is $\{3,4\}$ nothing happens, and if the outcome is $\{5,6\}$ you lose \$1.
 
-Prove that the random process representing the gamer gain is a martingale.ù
+Prove that the random process representing the gamer gain is a martingale.
 Also using Monte Carlo simulation implement the game described in the text and check that the expected gain is indeed null.
-\end{question}
-
-\cprotEnv\begin{solution}
-Let $X_i$ be a random variable representing the amount of money you win or lose in bet $i$, this kind of game is said to be **fair** since
+\end{exercise}
+\begin{solution}
+Let $X_i$ be a random variable representing the amount of money you win or lose in bet $i$, this kind of game is said to be \emph{fair} since
 
 $$\mathbb{E}[X_i]= \sum_{\Omega}p(\omega)\cdot x(\omega) = \frac{2}{6}\cdot 1 + \frac{2}{6}\cdot 0 + \frac{2}{6}\cdot -1 = 0\;\forall i$$
 so no unbalance between losses or wins.
@@ -909,14 +863,14 @@ games = 500
 np.random.seed(1)
 K = np.zeros(shape=(simulations, games))
 for s in range(simulations):
-	K[s, :] = np.random.randint(1, 7, size=games)
-	K[s, :] = np.where(K[s, :]<3, -1, K[s, :])
-	K[s, :] = np.where(K[s, :]>4, 1, K[s, :])
-	K[s, :] = np.where((K[s, :]<5)&(K[s, :]>2), 0, K[s, :])
-	K[s, :] = np.cumsum(K[s, :])
+    K[s, :] = np.random.randint(1, 7, size=games)
+    K[s, :] = np.where(K[s, :]<3, -1, K[s, :])
+    K[s, :] = np.where(K[s, :]>4, 1, K[s, :])
+    K[s, :] = np.where((K[s, :]<5)&(K[s, :]>2), 0, K[s, :])
+    K[s, :] = np.cumsum(K[s, :])
 
 for s in range(10):
-	p = plt.plot(K0 + K[s, :])
+    p = plt.plot(K0 + K[s, :])
 
 mean = np.mean(K[:, -1])
 std = 1.96*np.std(K[:, -1])/np.sqrt(simulations)
@@ -928,76 +882,24 @@ plt.show()
 \end{ipython}
 \end{solution}
 
-%\begin{question}[subtitle=2D Random Walk  (\texttt{python})]
+%\begin{exercise}[subtitle=2D Random Walk  (\texttt{python})]
 %An unbiased random walk (in any number of dimensions) is another example of a martingale.
 %
 %In higher dimensions, the set of randomly walked points has interesting geometric properties. In fact, one gets a discrete \emph{fractal}, that is, a set that exhibits stochastic self-similarity on large scales.
 %
 %Implement a 2D random walk simulation and plot one possible realization.
-%\end{question}
+%\end{exercise}
 
-\begin{question}[subtitle=Brownian Motion  (\texttt{python})]
+\begin{exercise}[subtitle={Brownian Motion (\texttt{python})}]
 Simulate a couple of realization of a Brownian motion process with initial value 0.
 Figure~\ref{fig:brownian_motion} reports two realization of the Brownian motion simulated according to the Euler scheme.
-\end{question}
-\cprotEnv\begin{solution}
-\begin{ipython}
-def BM(mu, sigma, x0, T, tsteps, N):
-	dt = T/tsteps
-	x = np.zeros(shape=(tsteps, N))
-	x[0, :] = x0
-	x[1:, :] = np.random.normal(size=(tsteps-1, N))*np.sqrt(dt)
-	return np.cumsum(x, axis=0)
-	
-np.random.seed(10)
-y = BM(0, 1, 0, 3, 365, 2)
+\end{exercise}
 
-import matplotlib.pyplot as plt
-
-plt.rcParams['figure.figsize'] = (9, 6)
-plt.plot(y[:, 0], label="realization 1", color='xkcd:blue')
-plt.plot(y[:, 1], label="realization 2", color='xkcd:red')
-plt.grid(True)
-plt.xlabel("time")
-plt.xlim(0, 365)
-plt.legend()
-plt.show()
-\end{ipython}
-\end{solution}
-
-\begin{question}[subtitle=Geometric Brownian Motion  (\texttt{python})]
+\begin{exercise}[subtitle={Geometric Brownian Motion  (\texttt{python})}]
 Using the Euler scheme simulate the 4-months (with daily steps) evolution of a Geometric Brownian Motion stochastic process with initial value $S_0=100$, $\mu=0.005$, and $\sigma=0.05$.
-\end{question}
-\cprotEnv\begin{solution}
-\begin{ipython}
-import numpy as np
+\end{exercise}
 
-def GBM(mu, sigma, X0, T, tsteps, N):
-	X = np.zeros(shape=(tsteps, N))
-	dt = T/tsteps
-	X[0, :] = X0
-	dW = np.random.normal(size=(tsteps-1, N))*np.sqrt(dt)
-	X[1:, :] = np.exp((mu-0.5*sigma**2)*dt+sigma*dW)
-	return np.cumprod(X, axis=0)
-	
-np.random.seed(1)
-
-S = GBM(0.005, 0.05, 100, 120, 120, 1)
-Sdet = GBM(0.005, 0.0, 100, 120, 120, 1)
-
-import matplotlib.pyplot as plt
-
-plt.plot(S, label='Stochastic Path')
-plt.plot(Sdet, linestyle='--', color='red', label='Deterministic Path')
-plt.grid(True)
-plt.xlabel('Time')
-plt.ylabel('Stock Price')
-plt.legend(fontsize='16')
-plt.show()
-\end{ipython}
-\end{solution}
-
-\cprotEnv\begin{question}%[subtitle=Geometric Brownian Motion  (\texttt{python})]
+\begin{exercise}[subtitle={Geometric Brownian Motion  (\texttt{python})}]
 This \href{https://github.com/matteosan1/advanced_financial_modeling/raw/master/input_files}{file} contains a thousand 10-day realizations (with 0.1 day step) of historical price data of a single asset, assume that all the time series are different realizations of the same stochastic process.
 \begin{enumerate}
 \item Make two figures: the first should contain one realization as a function of time, in the second plot the first 50 realizations together as a function of time (\emph{label the axes appropriately}).
@@ -1018,44 +920,37 @@ import numpy as np
 path = np.DataSource("https://github.com/matteosan1/...../input_files")
 S = np.load(path.open("stock_2023.npy", "rb"))
 \end{ipython}
-\end{question}
-
-\cprotEnv\begin{solution}
+\end{exercise}
+\begin{solution}
 \begin{ipython}
 plt.plot(S[50, :], label='Stochastic Path')
 plt.grid(True)
 plt.xlabel('Time')
 plt.ylabel('Stock Price')
-plt.xlim(0,100)
 plt.legend(fontsize='16')
 plt.show()
 
 for i in range(50):
-plt.plot(S[i, :])
+    plt.plot(S[i, :])
 plt.grid(True)
 plt.xlabel('Time')
 plt.ylabel('Stock Price')
-plt.xlim(0,100)
 plt.show()
 \end{ipython}
 
 \begin{ipython}
 mean = np.mean(S, axis=0)
-
 plt.plot(mean)
 plt.grid(True)
 plt.xlabel('Time')
 plt.ylabel('Avg Realized Stock Price')
-plt.xlim(0,100)
 plt.show()
 
 var = np.var(S, axis=0)
-
 plt.plot(var)
 plt.grid(True)
 plt.xlabel('Time')
 plt.ylabel(r'Stock Price $\sigma$')
-plt.xlim(0,100)
 plt.show()
 \end{ipython}
 
@@ -1064,21 +959,12 @@ $$S_{n+1} = S_ne^{(\mu-0.5\sigma^2)\Delta t + \sigma\sqrt{\Delta t}Z}$$
 to rewrite the model into a simpler form. Specifically, introduce
 $$X_{n+1}=\log\left(\cfrac{S_{n+1}}{S_n}\right)$$ and rewrite the equation.
 
-Is the resulting dynamics linear ? Prove it, or give a counterexample.
-
 $$X_{n+1} = (\mu-0.5\sigma^2)\Delta t + \sigma\sqrt{\Delta t}Z$$
 It is linear; because it is of the form $y = mx + q$.
 
+The resulting system is not time-invariant. This is because $Z$ does vary with time.
 
-Is the resulting system time-invariant ? Prove it, or give a counterexample.
-
-No, it is not time-invariant. This is because $Z$ does vary with time.
-
-Using the model of the process $X_n$ found above:
-* derive an expression for the expectation $\mathbb{E}[X_n]$;
-* derive an expression for the variance $\text{Var}[X_n]$.
-
-Because $\mathbb{E}[Z]=0$ it implies that
+Since $\mathbb{E}[Z]=0$ it implies that
 $$\mathbb{E}[X_n] = (\mu-0.5\sigma^2)\Delta t$$
 
 $$\text{Var}[X_n] = \sigma\sqrt{\Delta t}\cdot\text{Var}[X_n] = \sigma\sqrt{\Delta t}\cdot 1$$
@@ -1086,18 +972,16 @@ $$\text{Var}[X_n] = \sigma\sqrt{\Delta t}\cdot\text{Var}[X_n] = \sigma\sqrt{\Del
 \begin{ipython}
 X = np.zeros_like(S)
 for t in range(S.shape[1]-1):
-	X[:, t] = np.log(S[:, t+1]/S[:, t])
+    X[:, t] = np.log(S[:, t+1]/S[:, t])
 
 mean = np.mean(X, axis=0)
+var = np.var(X, axis=0)
 
 plt.plot(mean)
 plt.grid(True)
 plt.xlabel('Time')
 plt.ylabel('Avg Realized Stock Price')
-plt.xlim(0,100)
 plt.show()
-
-var = np.var(X, axis=0)
 
 plt.plot(var)
 plt.grid(True)
@@ -1108,7 +992,7 @@ plt.show()
 \end{ipython}
 \end{solution}
 
-\begin{question}[subtitle=Heston Model  (\texttt{python})]
+\begin{exercise}[subtitle=Heston Model (\texttt{python})]
 The Heston model can be considered an extension of the Black and Scholes model where the volatility of the underlying asset is not constant, nor even deterministic, but follows a random process.
 
 The basic Heston model assumes that $S_t$, the price of the asset, follows
@@ -1135,36 +1019,35 @@ The model has five parameters:
 \end{itemize}
 
 Using the Euler scheme simulate a possible realization for $S_t$ and $\sigma_t$ using the parameters: $S_0=100$, $\mu=0.25$, $T=3$, $\nu_0=0.05$, $\kappa=1.2$, $\theta=0.10$, $\xi=0.593$, $\rho=-0.5$.
-\end{question}
-
-\cprotEnv\begin{solution}
+\end{exercise}
+\begin{solution}
 \begin{ipython}
 import numpy as np
-
-def MCHeston(St, mu, T, nu0, kappa, theta, csi, rho, simulations=10000, timeStepsPerYear=100):
-	timesteps = T * timeStepsPerYear
-	dt = 1/timeStepsPerYear
-	
-	S_t = np.zeros(shape=(timesteps, simulations))
-	V_t = np.zeros(shape=(timesteps, simulations))
-	
-	V_t[0, :] = nu0
-	S_t[0, :] = St
-	
-	means = [0, 0]
-	covs = [[1  , rho],
-	[rho, 1  ]]
-	Z = np.random.multivariate_normal(mean=means, cov=covs, size=(simulations, timesteps)).T
-	Z1 = Z[0]
-	Z2 = Z[1]
-	
-	for i in range(1, timesteps):
-		V_t[i, :] = np.maximum(V_t[i-1, :] + kappa*(theta-V_t[i-1, :])*dt + csi*np.sqrt(V_t[i-1, :]*dt)*Z2[i, :], 0)
-		S_t[i, :] = S_t[i-1, :] + mu*S_t[i-1, :]*dt + np.sqrt(V_t[i, :]*dt)*S_t[i-1, :]*Z1[i, :]
-	
-	return S_t, V_t
-
 import matplotlib.pyplot as plt
+
+def MCHeston(St, mu, T, nu0, kappa, theta, csi, rho, simulations=10000,
+                     timeStepsPerYear=100):
+    timesteps = T * timeStepsPerYear
+    dt = 1/timeStepsPerYear
+    S_t = np.zeros(shape=(timesteps, simulations))
+    V_t = np.zeros(shape=(timesteps, simulations))
+	
+    V_t[0, :] = nu0
+    S_t[0, :] = St
+	
+    means = [0, 0]
+    covs = [[1, rho],[rho, 1]]
+    Z = np.random.multivariate_normal(mean=means, cov=covs,    
+                                      size=(simulations, timesteps)).T
+    Z1 = Z[0]
+    Z2 = Z[1]
+	
+    for i in range(1, timesteps):
+        V_t[i, :] = np.maximum(V_t[i-1, :] + kappa*(theta-V_t[i-1, :])*dt +
+                    csi*np.sqrt(V_t[i-1, :]*dt)*Z2[i, :], 0)
+        S_t[i, :] = S_t[i-1, :] + mu*S_t[i-1, :]*dt + np.sqrt(V_t[i, :]*dt)*
+                    S_t[i-1, :]*Z1[i, :]
+    return S_t, V_t
 
 S0 = 100
 mu = 0.25
@@ -1180,7 +1063,6 @@ S, nu = MCHeston(S0, mu, T, nu0, kappa, theta, csi, rho)
 S_mean = np.mean(S, axis=1)
 nu_mean = np.mean(nu, axis=1)
 
-plt.rcParams['figure.figsize'] = (14,6)
 fig, ax = plt.subplots(1, 2)
 ax[0].plot(nu[:, :30])
 ax[0].plot(nu_mean, color="black")
@@ -1202,13 +1084,14 @@ plt.show()
 \end{ipython}
 \end{solution}
 
-\begin{question}[subtitle=Vasicek Model  (\texttt{python})]
+\begin{exercise}[subtitle=Vasicek Model (\texttt{python})]
 Using the Euler scheme simulate few realization from a short rate process following the Vasicek Model with parameter values ($r_0=0.03$, $\theta=0.10$, $k=0.3$, $\sigma=0.03$).
-\end{question}
-
-\cprotEnv\begin{solution}
+All the necessary formulas can be found in Brigo-Mercurio book.
+\end{exercise}
+\begin{solution}
 \begin{ipython}
 import numpy as np
+import matplotlib.pyplot as plt
 
 from enum import IntEnum
 from scipy.stats import norm
@@ -1216,43 +1099,45 @@ from scipy.stats import norm
 OptionType = IntEnum("OptionType", {"Call":1, "Put":-1})
 
 class Vasicek:
-	def __init__(self, k, theta, sigma):
-		self.theta = theta
-		self.k = k
-		self.sigma = sigma
+    def __init__(self, k, theta, sigma):
+        self.theta = theta
+        self.k = k
+        self.sigma = sigma
 
-	def r_generator(self, r0, T, tsteps, N):
-		dt = T/tsteps
-		r = np.zeros(shape=(tsteps, N))
-		r[0, :] = r0
-		epsilon = self.sigma*np.random.normal(size=(tsteps, N))*np.sqrt(dt)
-		for i in range(1, tsteps):
-			r[i, :] = r[i-1, :]+self.k*(self.theta-r[i-1, :])*dt+epsilon[i, :]
-		return r
+    def r_generator(self, r0, T, tsteps, N):
+        dt = T/tsteps
+        r = np.zeros(shape=(tsteps, N))
+        r[0, :] = r0
+        epsilon = self.sigma*np.random.normal(size=(tsteps, N))*np.sqrt(dt)
+        for i in range(1, tsteps):
+            r[i, :] = r[i-1, :]+self.k*(self.theta-r[i-1, :])*dt+epsilon[i, :]
+        return r
 
-	def B(self, t, T):
-		return 1/self.k*(1-np.exp(-self.k*(T-t)))
+    def B(self, t, T):
+        return 1/self.k*(1-np.exp(-self.k*(T-t)))
 
-	def A(self, t, T):
-		return np.exp((self.theta-self.sigma**2/(2*self.k**2))*(self.B(t, T)-T+t)-self.sigma**2/(4*self.k)*self.B(t, T)**2)
+    def A(self, t, T):
+        return np.exp((self.theta-self.sigma**2/(2*self.k**2))*
+                       (self.B(t, T)-T+t)-self.sigma**2/(4*self.k)*
+                       self.B(t, T)**2)
 
-	def ZCB(self, r, t, T):
-		return self.A(t, T)*np.exp(-self.B(t, T)*r)
+    def ZCB(self, r, t, T):
+        return self.A(t, T)*np.exp(-self.B(t, T)*r)
 
-	def ZBO(self, r, K, t, T, S, option_type=OptionType.Call):
-		sigma_p = self.sigma*np.sqrt((1-np.exp(-2*self.k*(T-t)))/(2*self.k))*self.B(T, S)
-		h = 1/sigma_p*np.log((self.ZCB(r, t, S))/(self.ZCB(r, t, T)*K))+sigma_p/2
-		arg1 = option_type*h
-		arg2 = option_type*(h-sigma_p)
-		return option_type*(self.ZCB(r, t, S)*norm.cdf(arg1)-K*self.ZCB(r, t, T)*norm.cdf(arg2))
+    def ZBO(self, r, K, t, T, S, option_type=OptionType.Call):
+        sigma_p = self.sigma*np.sqrt((1-np.exp(-2*self.k*(T-t)))/
+                  (2*self.k))*self.B(T, S)
+        h = 1/sigma_p*np.log((self.ZCB(r, t, S))/(self.ZCB(r, t, T)*K))+
+            sigma_p/2
+        arg1 = option_type*h
+        arg2 = option_type*(h-sigma_p)
+        return option_type*(self.ZCB(r, t, S)*norm.cdf(arg1)-
+               K*self.ZCB(r, t, T)*norm.cdf(arg2))
 
 v = Vasicek(0.3, 0.1, 0.03)
 r = v.r_generator(0.03, 10, 200, 10000)
 
-import matplotlib.pyplot as plt
-
 avg = np.mean(r, axis=1)
-
 plt.plot(r[:, :10])
 plt.plot(avg, color='black')
 plt.show()
@@ -1463,7 +1348,6 @@ Once again let us consider same simple function from before,
 \end{equation}
 In adjoint mode $\bar{y} = dy/dy$ is specified as an input and allows us to enable/disable the adjoint derivative calculation. 
 
-
 \section{Newton-Raphson Method}
 Newton's method, also known as the Newton–Raphson method, is a root-finding algorithm which produces successively better approximations to the roots (or zeroes) of a real-valued function. %The most basic version starts with a real-valued function f, its derivative f′, and an initial guess x0 for a root of f. If f satisfies certain assumptions and the initial guess is close, then
 
@@ -1507,7 +1391,7 @@ As a financial example, you can imagine the functions $f_i$ as the pricing equat
 Another practical application of the bootstrap algorithm is to determine the \emph{spot cap volatilities} from the current market prices (note, the market quotes only the flat volatilities).
 The main challenges are:
 \begin{enumerate}
-	\item Produce Caplet/Floorlet prices consistent with current levels of Cap/Floor volatilities and therefore be able to re-price the market;
+		\item Produce Caplet/Floorlet prices consistent with current levels of Cap/Floor volatilities and therefore be able to re-price the market;
 	\item being able to “rebase” volatilities when pricing Cap/Floor over not quoted floating rates according to multiple curves framework (e.g. Cap/Floor over 1M or 12M Euribor);
 	\item to make things more complicated, some Caps/Floors are not always quoted over the same LIBOR, for example EUR Cap/Floor are quoted over 3M EURIBOR up to $2y$ maturity and then over 6M EURIBOR.
 \end{enumerate}
@@ -1706,27 +1590,253 @@ The most common questions asked with callable bonds involve either determining t
 
 The recommende strategy in both cases is to crete a sort of two column table with the first representing the time at which the bond can be called.
 
-For the first type of problems, the second column is the corresponding price in order to receive the desired yield rate, %, keeping in mind the redemption value may be different at the different redemption dates. Then think through what happens whine the bond is bought for the prices in the table but redeemed at other times in the table, an answer the question accrodgingly.
-while for the second is the yield rate tha would produce the given price. %, again keeping in mind the redemption value may be different at the different edemption dates.
+For the first type of problems, the second column is the corresponding price in order to receive the desired yield rate, \%, keeping in mind the redemption value may be different at the different redemption dates. Then think through what happens whine the bond is bought for the prices in the table but redeemed at other times in the table, an answer the question accrodgingly.
+while for the second is the yield rate tha would produce the given price. \%, again keeping in mind the redemption value may be different at the different redemption dates.
 
+\section*{Exercises}
+\begin{exercise}[subtitle=Forward Rate Agreement]
+A $3\times 9$ Forward Rate agreement refers to:
+\begin{itemize}
+\item a 90-day LIBOR loan starting 270 days from now;
+\item a 270-day LIBOR loan starting 90 days from now;
+\item a 180-day LIBOR loan starting 90 days from now.
+\end{itemize}
+\end{exercise}
+\begin{solution}
+The correct answer is (c). $3\times 9$ means a 180-day LIBOR loan starting 90 days from now.
+\end{solution}
 
-\begin{question}[subtitle=IRS as FRA sum (\texttt{python})]
-Implementing a class or a function that represents an interest rate swap shows that:
+\begin{exercise}[subtitle=FRA Valuation]
+Suppose we have a $1\times 4$ FRA with a notional principal of €1 million. 
+At contract expiration, the 90-day LIBOR at settlement is 6\% and the contract rate is 5.5\%.
+Calculate the value of the FRA at maturity.
+\end{exercise}
+\begin{solution}
+Since the settlment rate is higher than the contract rate, the buyer will be receiving money from the seller. The payment at settlment is as follow:
+$P = 1M\cdot(6\%-5.5\%)\cdot \cfrac{90}{360} = 1250$
+
+Discounted back 90 days at 6\% gives
+$P = \cfrac{1250}{1+\frac{90}{360}\cdot0.06} = 1231.53$
+\end{solution}
+
+\begin{exercise}[subtitle=Forward Rate Agreement]
+The following term structure of LIBOR is given 
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{c|c}
+90 days & 6.00\% \\ \hline
+180 days & 6.20\% \\ \hline
+270 days & 6.30\% \\ \hline
+360 days & 6.35\% \\
+\end{tabular}
+\end{center}
+\end{table}
+\begin{itemize}
+\item Find the rate on a new 6 × 9 FRA;
+\item Consider an FRA that was established previously at a rate of 5.2 percent with a notional amount of 30~M. The FRA expires in 180 days, and the underlying is 180-day LIBOR. Find the value of the FRA from the perspective of the party paying fixed and receiving floating as of the point in time at which this term structure applies.
+\end{itemize}
+\end{exercise}
+\begin{solution}
+\begin{itemize}
+\item The contract at inception has to be "fair" so the requested rate is the break-even rate of the contract or the forward rate $F(t; T=180, S=270)$, hence
+\begin{equation*}
+K = \cfrac{6.3\cdot\frac{9}{12}-6.2\cdot0.5}{\frac{9}{12}-0.5} = 6.5\%
+\end{equation*}
+\item The old contract value (seen by the party paying fixed) is given by 
+\begin{equation*}
+\textbf{FRA} = -N\cdot[P(t,S)\tau K - P(t,T) + P(t, S)]
+\end{equation*}
+where $t=T=0$, so $P(0,S)=e^{-0.062*0.5}= 0.9695$, $\tau=0.5$ and $P(t,T)=1$.
+\begin{equation*}
+\textbf{FRA} = 237279
+\end{equation*}
+a positive value was expected since $K<L$.
+\end{itemize}
+\end{solution}
+
+\begin{exercise}[subtitle=Forward Rate]
+The 1-year spot rate on US treasury bonds is 9\%, the 2-year spot rate is 9.5\% and the 3-year spot rate is 10\%. 
+\begin{itemize}
+\item Calculate the implied 1-year ahead, 1-year forward rate, $F(0;1,2)$. Explain why a 1-year forward rate of 9.6\% could not be explained by the market;
+\item calculate the forward rates  $F(0; 2, 3$ and $F(0; 1,3)$. Is there a link between $F(0;1,2),F(0;2,3)$ and $F(0;1,3)$ ?
+\end{itemize}
+\end{exercise}
+\begin{solution}
+\begin{itemize}
+\item The forward rates are as follows:
+\begin{equation}
+\begin{aligned}
+F(0;1,2) &= \cfrac{0.095*2 - 0.09*1}{2-1} = 0.1, \quad F(0;2,3)= \cfrac{0.1*3 - 0.095*2}{3-2} = 0.11, \\ 
+F(0;1,3) &= \cfrac{0.1*3 - 0.09*1}{3-1} = 0.105
+\end{aligned}
+\end{equation}
+If you lend €100 at $t=1$ at 9.6\%, your cash flow is -€100 at $t=1$ and €109.6 at $t=2$. 
+
+You can do better by borrowing now for 1 year $€100/1.09=€91.74$ and lending the same amount for 2 years. Your net cash flow is then €0 at $t=0$, -€100 at $t=1$ (that is $€91.74\cdot 1.09$), and €110 at $t=2$ (that is $€91.74\cdot 1.095^2$). 
+
+Compared to the first option, you have thus a certain higher cash flow at $t=2$: €110 vs. €109.6.  There is no reason to accept the 9.6\% rate contract. 
+\item The link between the forward rate is as follows:
+\begin{equation}
+\cfrac{(1+F(0;1,3))^2}{1+F(0;1,2)} = \cfrac{(1+r_3)^3}{(1+r^2)} \Rightarrow (1+F(0;1,3)^2 = (1+F(0;1,2))(1+F(0;2,3))
+\end{equation}
+Hence, with any two of three forward rates, you can deduct the third one.
+\end{itemize}
+\end{solution}
+
+\begin{exercise}[subtitle=Forward Rate]
+A bank offers to borrow €100 from you at an interest rate applicable between the end of year 1 and the end of year 2 at a rate of 13\% (i.e. the forward rate). The spot rates for 1-year and 2-year are currently 10\% and 12\% respectively. Explain whether you would take the bank’s offer. 
+\end{exercise}
+\begin{solution}
+The forward rate between year 1 and year 2 is $F(0;1,2)=14\%$. It can be shown that it is irrational to accept lending at 13\% at year 1. 
+
+Indeed, if you lend €100 at $t=1$ at 13\%, your cash flow is -€100 at $t=1$ and €113 at $t=2$.
+ 
+You can do better by borrowing now for 1 year $€100/1.10=€90.91$ and lend the same amount for 2 years. Your net cash flow is then €0 at $t=0$, -€100 at $t=1$ ($€90.91\cdot 1.10$), and €114.04 at $t=2$ (that is $90.91\cdot 1.12^2$). 
+
+Compared to the first option, you have thus a certain higher cash flow at $t=2$: 114 vs. 113.  There is then no reason for the lender to accept the 13\% rate contract. 
+\end{solution}
+
+\begin{exercise}[subtitle=IRS as FRA sum (\texttt{python})]
+Implementing a \texttt{python} class or a function that represents an interest rate swap shows that:
 \begin{enumerate}
-\item In a \emph{Payer Swap} with an increasing yield curve the first FRAs will have negative value, the last positive. 
-\item In a \emph{Payer Swap} with a decreasing yield curve the first FRAs will have positive value, the last negative.
+\item in a \emph{Payer Swap} with an increasing yield curve the first FRAs will have negative value, the last positive;
+\item in a \emph{Payer Swap} with a decreasing yield curve the first FRAs will have positive value, the last negative.
 \end{enumerate}
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=FRN resetting (\texttt{python})]
+\begin{exercise}[subtitle=Interest Rate Swap]
+A 100~M interest rate swap has a remaining life of 10 months. Under the terms of the swap; 6-month LIBOR is exchanged for 7\% p.a. (compounded semiannually). The average of the bid-offer rate being exchanged for 6-month LIBOR in swaps of all maturities is currently 5\% p.a. with continuous compounding. The 6-month LIBOR rate was 4.6\% p.a. 2 months ago. 
+\begin{itemize}
+\item What is the current value of the swap to the party paying floating ?
+\item What is its value to the party paying fixed ?
+\end{itemize}
+\end{exercise}
+\begin{solution}
+In four months 6~M ($0.5\times 0.12\times 100$~M) will be received and 4.8~M ($0.5\times 0.096\times 100$~M) will be paid. (We ignore day count issues.) In 10 months 6~M will be received, and the LIBOR rate prevailing in four months-time will be paid. The value of the fixed-rate bond underlying the swap is
+\begin{equation*}
+6 \exp(-0.1 \times 4/12) + 6 \exp(0.1\times  10/12) = 103.328\text{~M}
+\end{equation*}
+The value of the floating-rate bond underlying the swap is 
+\begin{equation*}
+(100 + 4:8) \exp(0.1\times  4/12) = 101364 \text{~M}
+\end{equation*}
+The value of the swap to the party paying floating is $103328-  101364 = 1964$~M. 
+The value of the swap to the party paying fixed is the opposite. 
+
+These results can also be derived by decomposing the swap into forward contracts. Consider the party paying floating. The first forward contract involves paying 4.8~M and receiving 6~M in four months. It has a value of $1.2e^{-0.1\cdot 4/12} = 1.161$~M.
+To value the second forward contract, we note that the forward interest rate is 10\% per annum with continuous compounding, or 10.254\% per annum with semiannual compounding. The value of the forward contract is
+\begin{equation*}
+100\times  (0.12\times 0.5-0.10254\times 0.5)e^{-0.1\cdot 10/12} = 0.803 \text{~M}
+\end{equation*}
+
+The total value of the forward contract is therefore $1.161 + 0.803 = 1.964$~M.
+\end{solution}
+
+\begin{exercise}[subtitle=Interest Rate Swap]
+Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100~M. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A.
+\end{exercise}
+\begin{solution}
+In our case: $Q= 100$~M - the principal of the swap (in bond notation it is face value FV), LIBOR=0.102 - 6 months LIBOR, T=1.25 - the maturity of the bond as a fraction of the year (15 months is 1.25 of year), r3m=0.10 - 3 months interest rate, r9m=0.105 - 9 months interest rate, r15m=0.11 - 15 months interest rate, rfix=0.08 - fixed interest rate, 2 - number of payments in a year
+
+Since the company A pays floating interest and receives fixed one
+\begin{equation*}
+V=V_{fix}-V_{fl} = \sum_{i=1}^n \cfrac{k}{e^{r_i t_i}} + \cfrac{Q}{e^{r_n t_n}} - \cfrac{k^*}{e^{r_1 t_1}}+\cfrac{Q}{e^{r_1 t_1}}
+\end{equation*}
+
+The fixed leg value is
+\begin{equation*}
+V_{fix} = 4e^{-0.25\cdot 0.1} +  4e^{-0.75\cdot 0.105} +  104e^{-1.25\cdot 0.11} = 98.25\text{~M}
+\end{equation*}
+
+The floating payment is based on LIBOR and the nearest (first) payment is 
+\begin{equation*}
+k^*=0.102\cdot0.5\cdot 100 = 5.1\text{~M}
+\end{equation*}
+Hence:
+\begin{equation*}
+V_{fl}=5.1e^{-0.25\cdot 0.1}+100\cdot e^{-0.25\cdot 0.1} = 102.51
+\end{equation*}
+
+And the final calcualtion
+\begin{equation*}
+V = 98.24-102.51=-4.27\text{~M}
+\end{equation*}
+which is the swap value for company A.
+\end{solution}
+
+\begin{exercise}[subtitle=Interest Rate Swap]
+Determine the value of the swap from previous exercise in the way as described in the Relationship between interest rate swap and FRA part.
+\end{exercise}
+\begin{solution}
+The cash flows that will be exchanged after three months can be calculated at the beginning. The interest rate of 8\% will be exchanged for a rate of 10.2\%. Let us call it FRA1:
+\begin{equation*}
+FRA_1 = 0.5\cdot 100\cdot (0.08-0.102)\cdot e^{-0.25\cdot 0.1}=-1.07
+\end{equation*}
+
+Determination of flows after 9th and 15th month requires two more formulas.
+
+First we have to calculate forward interest rate for the half-year period for 3 months from now. This is required to calculate the cash flow after 9 months. We will use the following formula: $e^{r_{9m}\cdot0.75}=e^{r_{3m}\cdot0.25}e^{F'_{0.25, 0.5}\cdot 0.5}$. Solving the formula for $F'_{0.25, 0.5}$ we have:
+\begin{equation*}
+F'_{0.25, 0.5}=\cfrac{r_{9m}\cdot 0.75-r_{3m}\cdot0.25}{0.5}=0.10750
+\end{equation*}
+
+The rate is continuously compounded therefore we should convert it into semi-annual compounding with the formula $R_m = m\cdot(e^{r_c/m}-1)$, where $r_c$ is continuously compounded and $r_m$ is discretely compounded. Note that $m$ in this formula is the number of payments within a year (not the number of months).
+\begin{equation*}
+F_{0.25, 0.5}=2\cdot(e^{F'_{0.25,0.5}/2}-1)=0.11044
+\end{equation*}
+The present value of the cash flow exchanged in 9 months is:
+\begin{equation*}
+FRA_2=0.5\cdot100\cdot(0.08-0.11044)\cdot e^{-0.75\cdot0.105}=-1.41
+\end{equation*}
+obtained from the FRA contract valuation.
+
+Then the procedure goes on similarly: to calculate the present value of the cash flow that will occur in 1 year and 3 months, we need to calculate forward interest rate for the half-year period for 9 months from now. We will use the following formula: $e^{r_{15m}\cdot 1.25}=e^{r_{9m}\cdot 0.75}e^{F'_{0.75, 0.5}\cdot 0.5}$. Solving the formula for $F'_{0.75, 0.5}$
+ we have:
+\begin{equation*}
+F'_{0.75, 0.5}=\cfrac{r_{15m}\cdot1.25-r_{9m}0.75}{0.5}=0.11750
+\end{equation*}
+
+After converting the rate with continuous compounding to the interest rate with semi-annual compounding, we obtain:
+\begin{equation*}
+FRA_{0.75,0.5}=2\cdot(e^{F'_{0.75,0.52}}-1)=2\dot(e^0.117502-1)=0.12102
+\end{equation*}
+
+The present value of the cash flow exchanged in 15 months is:
+\begin{equation*}
+FRA_3=0.5\cdot100\cdot(0.08-0.12102)\cdot e^{-1.25\cdot0.11}=-1.79
+\end{equation*}
+
+The value of the swap is then 
+\begin{equation*}
+V=FRA_1+FRA_2+FRA_3 = -1.07-1.41-1.79=-4.27
+\end{equation*}
+\end{solution}
+
+\begin{exercise}[subtitle=FRN resetting (\texttt{python})]
 Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. The relevant insterest rates can be taken from \href{https://raw.githubusercontent.com/matteosan1/advanced\_financial\_modeling/master/input_files/libor.csv}{libor.csv}
-	
-%\begin{center}
-%\includegraphics[width=0.6\linewidth]{addons/floating_rate_note}
-%\end{center}
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=Asset Swap vs CDS (\texttt{python})]
+\begin{exercise}[subtitle=Asset Swap Spread]
+Consider the 10-year German bund DBR 0.5\% which is currently trading at a price of 104.58. Given that the 10-year swap rate is 0.44\% what is the par-par asser swap spread for this bond ? 
+Then consider the corresponding 10-year Greek Governament Bond GGB 3.0\% which is currently trading at a price of 75.28. What is the par-par asset swap spread in this case ?
+(Assume that the annuity factor have a value of 10 for simplicity).
+\end{exercise}
+\begin{solution}
+\begin{equation*}
+s_{DBR} = \cfrac{\frac{100-104.58}{100}}{10} = -46 bps
+\end{equation*}
+\begin{equation*}
+s_{GGB} = \cfrac{\frac{100-75.28}{100}}{10} = 2.47\%
+\end{equation*}
+\end{solution}
+
+\begin{exercise}[subtitle=Asset Swap]
+Describe the asset swap contract for a coupon bond with coupons equal to $C$ and price equal to $P(t)$. 
+What will happen to the price if the spread increase, all the rest being equal ?
+What does it mean in term of credit quality epectation by the market for the bond's issuer ?
+\end{exercise}
+
+\begin{exercise}[subtitle=Asset Swap vs CDS (\texttt{python})]
 Consider a 1Y risky bond paying quarterly coupons. The bond issuer has a default probability of 5\% during the next year. The interest rate term structure is considered flat at 0.05.
 
 \begin{itemize}
@@ -1734,14 +1844,29 @@ Consider a 1Y risky bond paying quarterly coupons. The bond issuer has a default
 \item check that a CDS with same maturity as the asset swap has similar spread;
 \item finally check how the spread change as a function of the probability of default.
 \end{itemize}
-%\begin{center}
-%	\includegraphics[width=0.6\linewidth]{addons/asset_swap_spread}
-%\end{center}
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=AD for a Simple Function (\texttt{python})]
+\begin{exercise}[subtitle=DV01]
+Consider a 2-year Interest Rate Swap on a notional of 1M, with a fixed rate of 5\% and paying Libor rate annually. The term-structure of interest rates is flat at 5\%.
+Estimate the DV01 of the swap numerically.  
+\end{exercise}
+\begin{solution}
+The DV01 can be approximated in two ways:
+\begin{itemize}
+\item $DV01 = \frac{\Delta P(+\delta r)-\Delta P(-\delta r)}{2}$ with $\delta r = 1 bps$
+\begin{equation*}
+DV01 = \cfrac{A(S+\delta r-K) - A(S-\delta r-K)}{2} = A\delta r = (e^{-0.05}+e^{-0.1})\cdot 0.0001 \approx 0.0002
+\end{equation*}
+\item $DV01 = 100\Delta P(\frac{1}{100}bps)$
+\begin{equation*}
+DV01 = 100\cfrac{A(S+ 10^{-6}-K) - A(S-K)}{2} = A 10^{-4} = (e^{-0.05}+e^{-0.1})\cdot10^{-4} \approx 0.0002
+\end{equation*}
+\end{itemize}
+\end{solution}
+
+\begin{exercise}[subtitle=AD for a Simple Function (\texttt{python})]
 Consider the function defined in Eq.~\ref{eq:aad_function} and compute the AD both using tangent and adjoint technique.
-\end{question}
+\end{exercise}
 
 \begin{solution}
 \begin{equation}
@@ -1756,19 +1881,27 @@ When for example $x_1=2$ and $x_2 = 3$ we have,
 \end{equation}
 \end{solution}
 
-\begin{question}[subtitle=AD for a Swap (\texttt{python})]
+\begin{exercise}[subtitle=AD for a Swap (\texttt{python})]
 Consider a 5-years receiver Interest Rate Swap with a 1M notional, exchanging a fixed rate of 5\% with a flat 1\% LIBOR rate. The risk free rate for discounting is considered to be flat a 1.5\%.
 Compute DV01 and PV01 with algorithmic differentiation using both tangent and adjoint modes. Compare the results.
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=BS Implied Volatility (\texttt{python})]
+\begin{exercise}[subtitle=BS Implied Volatility (\texttt{python})]
 Consider a European call option with the following parameters: $S_0=30$, $K=28$, $T=3m$, $r=0025$ and $\sigma=0.3$.
 %market_price = 3.9790765403377035
 
 Using the Newton-Raphson method determined the implied volatility.
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=Cap Volatilities (\texttt{python})]
+\begin{exercise}[subtitle=Shifted Brownian Motion (\texttt{python})]
+Write a python function that simulated shifted-geometric Brownian motion paths.
+\end{exercise}
+
+\begin{exercise}[subtitle=Negative Rates (\texttt{python})]
+Using the function written in the previous exercise, price caplets with Monte Carlo and using Black formula in a regime with negative interest rates. Compare the two results.
+\end{exercise}
+
+\begin{exercise}[subtitle=Cap Volatilities (\texttt{python})]
 Given the following set of flat volatilities use the bootstrap algorithm to determine the implied spot volatilities.
 
 Let's \emph{strip} caplet volatilities from the following cap (flat) volatilities which refers to caps with 0.013 strike over EURIBOR-6M whose term structure is shown in Table~\ref{tab:flat_volatilities}(right).
@@ -1800,60 +1933,9 @@ Pillar & Rate \\ \hline
 \label{tab:flat_volatilities}
 \caption{Left, flat volatilities table. Right, term structure of the considered Euribor-6M curve.}
 \end{table}
-\end{question}
+\end{exercise}
 
-\begin{solution}
-The bootstrapping procedure proceeds has follows:
-\begin{enumerate}
-\item we start with the nearest instruments, i.e. the spot starting caplet with $6m$ maturity. For maturities shorter than the first quoted value we consider the volatility constant hence:
-\begin{equation}
-\sigma^{spot}_{t_{0,6m}}=\textcolor{ipython-green}{\sigma^{flat}_{t_{0,1y}}}
-\end{equation}
-\item Let’s now price the $1y$ forward starting caplet with $6m$ maturity. Since market cap volatilities are quoted assuming \textbf{no-arbitrage} opportunity we can build the forward starting caplet as the difference of two caps:
-\begin{equation}
-\begin{gathered}
-\text{Cpl}_{1y, 1y6m}(\sigma^{spot}_{1y6m})=\text{Cap}_{1y6m}-\text{Cap}_{1y} \\[0.3cm]
-\text{Cap}_{1y6m}(\textcolor{red}{\sigma^{flat}_{1y6m}})=\text{Cpl}_{0,6m}(\textcolor{red}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{6m,1y}(\textcolor{red}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{1y,1y6m}(\textcolor{red}{\sigma^{flat}_{1y6m}}) \\[0.3cm]
-\text{Cap}_{1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y}}) 
-\end{gathered}
-\end{equation}
-Unfortunately the $18m$ volatility is NOT quoted on the market, so we can:
-\begin{itemize}
-  \item assume for the sake of simplicity that the volatility remains constant between $1y$ and $2y$ caps;
-  \item use an interpolation method such as linear or cubic spline to get the $1y6m$ cap volatility.
-\end{itemize}
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.6\linewidth]{addons/flat_volatilities}
-\end{center}
-\label{fig:flat_volatilities}
-\end{figure}
-
-Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volatility from previous Equation by using a Newton-Raphson or Brent method.
-
-\item We can apply the same method for the $1y6m$ forward starting caplet to get the volatility, $\sigma^{flat}_{2y}$ is quoted so no interpolation is needed here.
-\begin{equation}
-\begin{gathered}
-\text{Cpl}_{1y6m, 2y}(\sigma^{spot}_{2y})= \text{Cap}_{2y}-\text{Cap}_{1y6m} \\[0.3cm]
-\text{Cap}_{2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) + \ldots + \text{Cpl}_{1y6m,2y}(\textcolor{ipython-green}{\sigma^{flat}_{2y}}) \\[0.3cm]
-\text{Cap}_{1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})=\text{Cpl}_{0,6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{6m,1y}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}}) + \text{Cpl}_{1y,1y6m}(\textcolor{ipython-green}{\sigma^{flat}_{1y6m}})
-\end{gathered}
-\end{equation}
-
-\item Keep iteratively to solve for all the remaining volatilities using the very same technique.
-\end{enumerate}
-\end{solution}
-
-\begin{question}[subtitle=Shifted Brownian Motion (\texttt{python})]
-Write a python function that simulated shifted-geometric Brownian motion paths.
-\end{question}
-
-\begin{question}[subtitle=Negative Rates (\texttt{python})]
-Using the function written in the previous exercise, price caplets with Monte Carlo and using Black formula in a regime with negative interest rates. Compare the two results.
-\end{question}
-
-\begin{question}[subtitle=Jamshidian Trick (\texttt{python})]
+\begin{exercise}[subtitle=Jamshidian Trick (\texttt{python})]
 Consider the process 
 \begin{equation*}
 \psi_i(X)=e^{-t_i}|X|,\quad t_i=\{0,1,2,\ldots, N\}
@@ -1866,25 +1948,25 @@ A = \mathbb{E}\left[\max\left(\sum_{k=1}^N \psi_k(X) - K, 0\right)\right]
 \end{equation*}
 both directly using Monte Carlo simulation and by using Jamshidian's decomposition.
 Plot the results against the strike $K$.
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=Jamshidian Trick (\texttt{python})]
+\begin{exercise}[subtitle=Jamshidian Trick (\texttt{python})]
 Implement the Jamshidian decomposition to price swaptions under the Vasicek short rate model.
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=Longstaff and Schwartz (\texttt{python})]
+\begin{exercise}[subtitle=Longstaff and Schwartz (\texttt{python})]
 Price an Bermudan Swaption using the Longstaff-Schwartz algorithm. %The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=Longstaff and Schwartz (\texttt{python})]
-Price an America put option using the Longstaff-Schwartz algorithm. The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.	
-\end{question}
+\begin{exercise}[subtitle=Longstaff and Schwartz (\texttt{python})]
+Price an American put option using the Longstaff-Schwartz algorithm. The initial underlying value is $S_0=36$, the volatility is 20\%, the strike price $K=40$, $T=1$, and the risk-free rate 6\% flat.	
+\end{exercise}
 
-\begin{question}[subtitle=Callable Bond (\texttt{python})]
+\begin{exercise}[subtitle=Callable Bond (\texttt{python})]
 A 1000 face value 20-years callable bond with 5\% annual coupons is selling 1150. The bond can be redeemed at the end of 18 years for 950, at the end of 19 years for 975, or at the end of 20 years for 1000. Determine the minimum annual yield rate that a buyer will earn on this bond.
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=Callable Bond (\texttt{python})]
+\begin{exercise}[subtitle=Callable Bond (\texttt{python})]
 A 1000 face value 20-year callable bond with 3\% annual coupons can be redeemed according to the following schedule:
 \begin{itemize}
 	\item 1000 at the end of years 10 through 14;
@@ -1892,52 +1974,36 @@ A 1000 face value 20-year callable bond with 3\% annual coupons can be redeemed 
 	\item 1125 at the end of years 18 through 20.
 \end{itemize}
 Determine the maximum price a buyer should pay in order to earn an annual yield of at least 5\%.
-\end{question}
+\end{exercise}
 
-%\begin{question}[subtitle=Callable Bond (\texttt{python})] 
+%\begin{exercise}[subtitle=Callable Bond (\texttt{python})] 
 %A 1000 face value 10-year callable bond with 8\% semiannual coupons is bought for 1050.  The bond can be redeemed at the end of any year starting with year 7.  Determine the minimum annual yield for this bond.
-%\end{question}
+%\end{exercise}
 %
-%\begin{question}[subtitle=Callable Bond (\texttt{python})]
+%\begin{exercise}[subtitle=Callable Bond (\texttt{python})]
 % A 1000 face value 20-years callable bong, reddeemable at 1200, with 5\% annual coupons can be redeemed at the end of year 18, 19, 20. Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 3\%
-%\end{question}
+%\end{exercise}
 %
-%\begin{question} A 1000 face value 20-years callable bond with 4\% annual coupons can be redeemed according to the following schedule:
+%\begin{exercise} A 1000 face value 20-years callable bond with 4\% annual coupons can be redeemed according to the following schedule:
 %1000 at end 12-14, 1025 at end 15-17, 975 at end 18-20.
 %Determine the maximum price a buyer is willing to pay in order to earn an annual yield of at least 4\%
 %987.66
-%\end{question}
+%\end{exercise}
 %
-%\begin{question} A 1000 face value 10\% annual coupon bond is redeemable as follows: 1100 at 15, 16,17, 1000 at 18,19,20. A buyer pays 1500 for this bond, Determine the buyer minimum annual yield.
-%\end{question}
+%\begin{exercise} A 1000 face value 10\% annual coupon bond is redeemable as follows: 1100 at 15, 16,17, 1000 at 18,19,20. A buyer pays 1500 for this bond, Determine the buyer minimum annual yield.
+%\end{exercise}
 %
-%\begin{question} A 20-year 10\% 1000 bond that pays interest half-yearly is redeemable (callable) in twelve years at a buy-back (call) price of 1150. The bond's current yield to maturity is 9.50\% annually. You are required to determine 
+%\begin{exercise} A 20-year 10\% 1000 bond that pays interest half-yearly is redeemable (callable) in twelve years at a buy-back (call) price of 1150. The bond's current yield to maturity is 9.50\% annually. You are required to determine 
 %\begin{enumerate}[label=(\alph*),font=\itshape]
 %	\item the yield to call;
 %	\item the yield to call if the buy-back price is only 1100;
 %	\item the yield to call if instead of twelve years the bond can be called in eight years, the buy-back price being 1150.
 %\end{enumerate}
-%\end{question}
+%\end{exercise}
 
-\begin{question}[subtitle=To Exercise or Not To Exercise (\texttt{python})]
+\begin{exercise}[subtitle=To Exercise or Not To Exercise (\texttt{python})]
 Determine the interest rate value threshold that suggest an issuer to exercise a callable bond.
-\end{question}
-
-\begin{solution}
-Bonds with European call option just have a single possible call date. Let's denote the call date by $t_c$ and the notice time as $t_n$. Also, we denote the call price with $X$. 
-
-In general, we can assume that \textbf{it is optimal for the issuer to minimize the value of the contract}. It means the issuer will exercise the option if the price of the callable bond exceeds the exercise price at the notice date. Otherwise, she will give up the option right and the callable bond price is equal to that of the non-option bond.
-
-Denote by $r_b$ the \emph{break-even} interest rate which represents the rate value such that the issuer is indifferent between exercising the option or not.
-
-It can be calculated by,
-\begin{equation}
-X\cdot D(t_n, t_c) - P(r,t_n)=0
-\end{equation}
-where $D(t_n, t_c)$ is the discount factor between notice and exercise dates and $P(r,t_n)$ the price of the callable bond an instant before the notice date.
-
-We know the value of the callable bond $P(r,t_n)$ since it is equal to the value of the non-option bond. The solution of equation is the cross point between the two curves.
-\end{solution}
+\end{exercise}
 
 %\begin{figure}[htbp]
 %	\begin{center}
@@ -1983,7 +2049,7 @@ We know the value of the callable bond $P(r,t_n)$ since it is equal to the value
 
 \chapter{Change of Measure}
 \section{Girsanov Theorem}
-\begin{question}[subtitle=Drifty Brownian Motion]
+\begin{exercise}[subtitle=Drifty Brownian Motion]
 Let’s start with a standard Brownian motion $W_t^{\mathbb{P}} = \mathcal{N}_{\mathbb{P}}(0,t)$ under a probability measure $\mathbb{P}$, and adapted to a filtration $\mathcal{F}_t$. In Fig.~\ref{fig:brownian_motion_nodrift} 30 simulated path evolutions of $W_t^{\mathbb{P}}$ are shown, as expected there is no drift.
 	
 \begin{figure}[htbp]
@@ -2016,9 +2082,9 @@ is a Brownian motion under the new measure $\mathcal{Q}$, equivalent to $\mathca
 \begin{equation}
 \cfrac{d\mathcal{Q}}{d\mathcal{P}} = \exp\left(-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s\right)
 \end{equation}
-\end{question}
+\end{exercise}
 
-\begin{question}
+\begin{exercise}
 Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigma=0.2$. Determine the appropriate transformation, according to the Girsanov Theorem which makes the original process driftless. Verify that applying the Radon-Nikodym to the a simulated path of the process the drift indeed disappear.
 
 %\begin{figure}[htbp]
@@ -2027,9 +2093,9 @@ Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigm
 %	\end{center}
 %	\label{fig:brownian_motion_girsanov}
 %\end{figure}
-\end{question}
+\end{exercise}
 
-\begin{question}
+\begin{exercise}
 Given an underlying asset $S$ which currently is valued 100 simulate $N$ possible realization of the random variable $S$ both under the \emph{physical} probability measure and the 
 and a 1 year call option on that asset with strike $K=120$ determine 
 
@@ -2050,10 +2116,10 @@ N = 10000
 	\end{center}
 	\label{fig:brownian_motion_girsanov}
 \end{figure}
-\end{question}
+\end{exercise}
 \clearpage
 
-\begin{question}[subtitle=Moving Away from $\mathbb{P}$ Measure]
+\begin{exercise}[subtitle=Moving Away from $\mathbb{P}$ Measure]
 Assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
 \begin{equation*}
 dS_t = \mu S_t dt + \sigma S_t dW_t
@@ -2069,7 +2135,7 @@ We want to know what happens to the stock SDE when moving to two different numer
 \item risk-neutral measure (bank account numeraire);
 \item stock measure (stock numeraire).
 \end{itemize}
-\end{question}
+\end{exercise}
 
 \begin{solution}
 %\subsection{Risk-Neutral Measure Dynamics}
@@ -2209,7 +2275,7 @@ Hence the variance for the re-formulated importance sampling estimator in Eq.~\r
 \cfrac{1}{n}\cdot\text{Var}\left[\cfrac{p(x)}{q(x)}f(x)\right]
 \end{equation}
 
-This give us a hint on how to find a way to reduce the variance. And indeed it is relatively easy to see that this variance could be reduced to 0 by choosing $q$ as:
+This give us a hint o	n how to find a way to reduce the variance. And indeed it is relatively easy to see that this variance could be reduced to 0 by choosing $q$ as:
 \begin{equation}
 \begin{aligned}
 q(x)&=\cfrac{f(X)p(x)}{\mathbb{E}[f(X)]} \implies \cfrac{1}{n}\cdot\text{Var}[\mathbb{E}[f(X)]] = \cfrac{1}{n}\cdot\mathbb{E}[(\mathbb{E}[f(X)]-\mathbb{E}[\mathbb{E}[f(X)]])^2]=\\
@@ -2257,24 +2323,24 @@ Importance Sampling: mean 0.03603, variance 0.00003
 \end{ioutput}
 Note that in general it’s not trivial at all to find $q$, and certainly there are much more difficult real-word scenarios. For this example I actually plotted $p(x)f(x)$ and then picked a $q$ which resembled it best.
 
-\begin{question}
+\begin{exercise}
 Implement the importance sampling example outlined above, trying to reproduce the results quoted in the text.
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=How Unlucky is Unlucky]
+\begin{exercise}[subtitle=How Unlucky is Unlucky]
 Estimate how unlucky is a 25 standard deviation return
 \begin{equation*}
 \theta := P(X\geq 25) = \mathbb{E}[\mathbbm{1}_{X\geq 25}]  \quad\text{where } X\sim \mathcal{N}(0, 1)
 \end{equation*}
-\end{question}
+\end{exercise}
 
-\begin{question}[subtitle=Importance Sampling and Black-Scholes]
+\begin{exercise}[subtitle=Importance Sampling and Black-Scholes]
 Consider a one year ($T=1$) call option with $S_0=100$ , $K=170$,  $\sigma=0.2$, and $r=0.06$. The option is far out of the money, assuming we need to estimate its value using Monte Carlo simulation, improve the efficiency of the calculation with importance sampling.
 
 \noindent
 Interesting reference \emph{Variance Reduction Techniques of Importance Sampling Monte Carlo Methods for Pricing Options}, 
 Journal of Mathematical Finance, 2013, 3, 431-436.
-\end{question}
+\end{exercise}
 
 %\section{Principal Component Analysis}
 %Principal component analysis (PCA) is a dimension reduction technique in multivariate analysis. It can be used for constructing the components of the stochastic term-structure movements that account for most of the variability, in some appropriately defined sense.
@@ -2287,7 +2353,7 @@ Journal of Mathematical Finance, 2013, 3, 431-436.
 %where: $L = \text{diag}(\lambda_1,\ldots, \lambda_n$) is the diagonal matrix of eigenvalues of $Q$ with $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_n$, $A$ is an orthogonal matrix (that is, $A^{-1}=A^{T}$) whose columns $a_1,\ldots, a_n$ are the normalized eigenvectors of $Q$ (that is, $Qa_i = \lambda_i a_i$), which form a \emph{basis}.
 %
 %Consider a random vector $X$ with mean $\mu = \mathbb{E}[X]$ and covariance matrix $Q = \text{Cov}[X]$. Since $Q$ is symmetric and positive semi-definite,
-%the above decomposition Eq.\ref{eq:spectral_decomposition} applies with $\lambda_i\geq 0$ for all $i$. The principal components transform of X is defined as
+%the above decomposition Eq.~v\ref{eq:spectral_decomposition} applies with $\lambda_i\geq 0$ for all $i$. The principal components transform of X is defined as
 %\begin{equation}
 %Y = A^{T}(X -\mu)
 %\end{equation}
@@ -2309,7 +2375,7 @@ Journal of Mathematical Finance, 2013, 3, 431-436.
 %Suppose that the first $k$ principal components $Y_1,\ldots,Y_k$ explain a significant amount (e.g. 99\%) of the variability in $X$. It is then most useful to
 %approximate $X$ by $X\approx\mu +\sum_{i=1}^{k}Y_ia_i$. That is, the loadings $a_1,\ldots, a_k$ are the main components of the stochastic forward curve movements.
 %v
-%\begin{question}
+%\begin{exercise}
 %The Excel file \href{https://github.com/matteosan1/finance_course/raw/develop/input_files/SNB_yields.xlsx}{SNB\_yields.xls} of the Monthly Statistical Bulletin from the Swiss National Bank contains monthly spot interest rates (that is, yields $R(t,T)$) for Swiss Confederation bonds for a time to maturity $(T-t)$ spectrum of 2, 3, 4, 5, 7, 10, 20 and 30 years. 
 %Perform a principal component analysis of the monthly yield curve changes for the forward curve from the last ten years. In particular, determine:
 %\begin{enumerate}
@@ -2317,7 +2383,15 @@ Journal of Mathematical Finance, 2013, 3, 431-436.
 %\item its eigenvectors and eigenvalues in decreasing order;
 %\item the explained variances of the principal components.
 %\end{enumerate}
-%\end{question}
+%\end{exercise}
 
 \tableofcontents
+
+\chapter*{Solutions}
+\printsolutions*[chapter=1, headings-template=per-chapter]
+\printsolutions*[chapter=2, headings-template=per-chapter]
+\printsolutions*[chapter=3, headings-template=per-chapter]
+\printsolutions*[chapter=4, headings-template=per-chapter]
+\printsolutions*[chapter=5, headings-template=per-chapter]
+
 \end{document}
