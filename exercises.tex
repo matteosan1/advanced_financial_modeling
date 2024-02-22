@@ -25,9 +25,81 @@ Answer the questions in the spaces provided. If you run out of room for an answe
 \vspace{.5cm}
 \begin{questions}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Consider a one-year swap with quarterly payments on days 90, 180, 270 and 360. The underlying is 90-day LIBOR. The annualized LIBOR spot rates today are: L0(90) = 0.0345, L0(180) = 0.0358, L0(270) = 0.0370, L0(360) = 0.0375.
+What should be the fixed rate of this swap?
+A. 3.62%.
+B. 3.68%.
+C. 3.54%.
+Correct Answer: B
+The present value factors are obtained as follows:
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+B0(90) = 1 / (1 + 0.0345 x 90/360) = 0.9914.
+B0(180) = 1 / (1 + 0.0358 x 180/360) = 0.9824.
+B0(270) = 1 / (1 + 0.0370 x 270/360) = 0.9730.
+B0(360) = 1 / (1 + 0.0375 x 360/360) = 0.9639.
+q = 90/360 = 0.25. R = 1/0.25 x (1 - 0.9639) / (0.9914 + 0.9824 + 0.9730 + 0.9639) = 0.0368, or 3.68%.
+%%%%%%%%%%%%%%%%%%%
+Suppose we have entered into a one-year swap with quarterly payments on days 90, 180, 270 and 360. The fixed rate we pay is 3.68% (annualized). The underlying is 90-day LIBOR. The notional principal is $1,000,000. On day 0 the 90-day LIBOR was 3.45%. Suppose we have now moved 60 days into the life of the swap. At day 60, we face a new term structure of LIBORs which is given as follows:
+L60(30) = 0.0425, L60(120) = 0.0432, L60(210) = 0.0437, L60(300) = 0.0444.
+What is the value of the swap?
+A. $7,900.
+B. $5,300.
+C. $4,700.
+Correct Answer: C
+The new set of discount factors is:
+B60(90) = 1 / (1 + 0.0425 x 30/360) = 0.9965.
+B60(180) = 1 / (1 + 0.0432 x 120/360) = 0.9858.
+B60(270) = 1 / (1 + 0.0437 x 210/360) = 0.9751.
+B60(360) = 1 / (1 + 0.0444 x 300/360) = 0.9643.
+
+The present value of the remaining fixed payments of 0.0092 (0.0368/4), including the hypothetical notional principal, is 0.0092 x (0.9965 + 0.9858 + 0.9751 + 0.9643) + 1 x 0.9643 = 1.0004.
+As the market value of the remaining payments on day 90, including the hypothetical final notional principal, is 1.0, we discount 1.00 + 0.0086 (which is 0.0345/4) = 1.0086 back 30 days to obtain 1.0086 x 0.9965 = 1.0051.
+Therefore, the value of the swap is (1.0051 - 1.0004) x 1,000,000 = $4,700.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Consider a one-year interest rate swap with semi-annual payments. The term structure of LIBOR spot rates is given as follows: L0(180) = 7.2%, and L0(360) = 8.0%. What is the annualized fixed rate on the swap?
+A. 7.56%.
+B. 7.84%.
+C. 7.42%.
+Correct Answer: B
+First calculate the present value factors for 180 and 360 days:
+B0(180) = 1 / (1 + 0.072 x 180/360) = 0.9653.
+B0(360) = 1 / (1 + 0.08 x 360/360) = 0.9259.
+
+The fixed rate is (1/0.5) x (1 - 0.9259) / (0.9653 + 0.9259) = 0.0784, or 7.84%.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+Consider a one-year interest rate swap with semi-annual payments. The annualized fixed rate is 7.84%. The term structure of LIBOR spot rates is given as follows:
+On day 0: L0(180) = 7.2%, and L0(360) = 8.0%.
+On day 90: L90(90) = 7.1%, and L90(270) = 7.4%.
+Assume a notional principal of $1 million. What is the market value of the swap from the perspective of the party paying the floating rate on day 90?
+A. $5,100.
+B. $4,200.
+C. -$4,200.
+Correct Answer: A
+Calculate the new present value factors for 90 and 270 days:
+B90(180) = 1 / (1 + 0.071 x 90/360) = 0.9826.
+B90(360) = 1 / (1 + 0.074 x 270/360) = 0.9474.
+
+The present value of the remaining fixed payments of 0.0392 (0.0784/2), including the hypothetical notional principal, is 0.0392 x (0.9826 + 0.9474) + 1 x 0.9474 = 1.0231.
+As the market value of the remaining payments on day 90, including the hypothetical final notional principal, is 1.0, we discount 1.00 + 0.036 (which is 0.072/2) = 1.036 back 90 days to obtain 1.036 x 0.9826 = 1.0180.
+Therefore, the value of the swap is (1.0231 - 1.018) x 1,000,000 = $5,100.
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+Two parties enter into a three-year interest rate swap, which involves the exchange of LIBOR+1% for a fixed rate of 12% on a $100 million notional amount. The LIBOR rate today is 11%, but is expected to increase to 15% in one year and fall back down to 8%. Which statement accurately depicts the flow of net cash flows between the two counter-parties?
+A. The variable rate payer would receive a payment of $4 million at the end of year two, while the fixed rate payer would receive $3 million at the end of year three.
+B. The fixed rate payer would receive a payment of $4 million at the end of year two, while the variable rate payer would receive $3 million at the end of year three.
+C. The fixed rate payer will have to pay $3 million at the end of the second year and $3 million at the end of the third year.
+Correct Answer: B
+With a variable of LIBOR + 1%, the effective interest payment for the variable rate payer will be 12% in year one, 16 in year two, and 9% in year three.
+
+End of yr 1: fixed pays ($100million * 12%): $12 million; Variable pays ($100million * 12%): $12 million. net cash flow received by fixed payer: NIL.
+End of yr 2: fixed pays ($100million * 12%): $12 million; Variable pays ($100million * 16%): $16 million. net cash flow received by fixed payer: $4 million.
+End of yr 3: fixed pays ($100million * 12%): $12 million; Variable pays ($100million * 9%): $9 million. net cash flow received by variable payer: $3 million.
+
+
+%%%%%%%%%%%%%%%%%%%
 \question If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
 \begin{solution}
 A flat yield curve means that the market expects the rates to be constant.
@@ -310,74 +382,6 @@ Using the Asset Swap Spread $s$ can be calculated using
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Calculate the analytical expressions for:
-\begin{itemize}
-\item Delta Sensitivity analytically, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
-\item Delta Vega analytically, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
-\end{itemize}
-\begin{solution}
-The Black formula for a caplet is given by:
-\begin{equation*}
-\textbf{Cpl} = L\delta_k P(0,t_{k+1})[F_k N(d_1)-R_k N(d_2)]
-\end{equation*}
-where:
-\begin{equation*}
-d_1 =\cfrac{\ln(F_k/R_k)+\sigma^2_k t_k/2}{\sigma_k \sqrt{t_k}},\text{ and } d_2 = d_1-\sigma_k \sqrt{t_k}
-\end{equation*}
-
-The delta will just be the first derivative of the equation above in respect to $F$, although one also has to worry about the $F$ being in the $d_1$ and $d_2$ terms.
-
-Ignoring the constants $L\delta_k P(0,t_{k+1})$
-\begin{equation*}
-\Delta =\cfrac{\partial C}{\partial F} = N(d_1) + F\cfrac{\partial N(d_1)}{\partial F} - r_k\cfrac{\partial N(d_2)}{\partial F}
-\end{equation*}
-Next we apply the chain rule:
-\begin{equation*}
-	\cfrac{\partial N(d_1)}{\partial F} = \cfrac{\partial N(d_1)}{\partial d_1}\cfrac{\partial d_1}{\partial F}
-\end{equation*}
-and so:
-\begin{equation*}
-\Delta = N(d_1) + F\cfrac{\partial N(d_1)}{\partial d_1}\cfrac{\partial d_1}{\partial F} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\cfrac{\partial d_2}{\partial F}
-\end{equation*}
-First thing to notice is that since the $d_1$ and $d_2$ definitions:
-\begin{equation*}
-\cfrac{\partial d_1}{\partial F} = \cfrac{\partial d_2}{\partial F}=\cfrac{1}{F_k\sigma_k\sqrt{t_k}}
-\end{equation*}
-and so:
-\begin{equation*}
-\Delta = N(d_1) + \cfrac{1}{F_k\sigma_k\sqrt{t_k}}\left[F\cfrac{\partial N(d_1)}{\partial d_1} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\right]
-\end{equation*}
-Second, lets see how we can simplify the expression inside the parenthesis. Considering that:
-\begin{equation*}
-N(d_1) = \cfrac{1}{\sqrt{2\pi}}\int_{-\infty}^{d_1} e^{-x^2/2}dx
-\end{equation*}	
-it follows that:
-\begin{equation*}
-\cfrac{\partial N(d_1)}{\partial d_1}=N'(d_1)=\cfrac{1}{\sqrt{2\pi}}e^{-d_1^2/2}
-\end{equation*}
-and so:
-\begin{equation*}
-\left[F\cfrac{\partial N(d_1)}{\partial d_1} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\right] = \left[FN'(d_1)-R_kN'(d_2)\right]
-\end{equation*}
-
-Now with a substitution of $d_2$ for $d_1-\sigma_k\sqrt{t_k}$, we have:
-\begin{equation*}
-\begin{gathered}
-R_kN'(d_1 - \sigma_k\sqrt{t_k}) = R_k\cfrac{1}{\sqrt{2\pi}}\exp\left(\cfrac{-(d_1-\sigma_k\sqrt{t_k}))^2}{2}\right) = \\
-= R_k\cfrac{1}{\sqrt{2\pi}}\exp\left(\cfrac{-d_1^2}{2}\right)\exp\left(\cfrac{-2d_1\sigma_k\sqrt{t_k}-(\sigma_k\sqrt{t_k})^2}{2}\right) = \\  = R_kN'(d_1)\exp\left(\cfrac{\ln(F_k/R_k)+\sigma_k^2t_k}{\sigma_k\sqrt{t_k}}\sigma_k\sqrt{t_k}\right)\exp\left(\cfrac{-\sigma_k^2t_k}{2}\right) = \\
-=R_kN'(d_1)\exp\left(\ln(F_k/R_k)+\sigma^2_kt_k/2-\sigma^2_kt_k/2\right) = R_kN'(d_1)\cfrac{F_k}{R_k} = F_kN'(d_1)
-\end{gathered}
-\end{equation*}
-and so
-\begin{equation*}
-	R_kN'(d_2)=F_kN'(d_1)
-\end{equation*}
-So finally, the delta of the caplet would be:
-\begin{equation*}
-\Delta = N(d_1) + \cfrac{1}{F_k\sigma_k\sqrt{t_k}}\left[FN'(d_1)-R_kN'(d_2)\right] =
-N(d_1)
-\end{equation*}
-\end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MARTINGALE

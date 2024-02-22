@@ -1574,6 +1574,18 @@ Let's consider now a generic American product. Here is the Longstaff-Schwartz al
 	\end{equation} 
 \end{itemize}
 
+In their paper, Francis Longstaff and Eduardo Schwartz found that using Laguerre, Hermite, Legendre or simple powers made very little difference in the results. 
+
+There are indeed many more significant choices in the regression techniques:
+\begin{itemize}
+\item the overall power and the choice of variables (e.g. scaled variables);
+\item include all paths or just the in-the-money paths;
+\item regression technique (e.g. Cholesky, QR, SVD);
+\item are polynomials a good choice at all ? Should you consider other kinds of regressions ?
+\end{itemize}
+
+Now, the choice of Laguerre polynomials may facilitate the regression result. Laguerre polynomials are orthogonal with regards to the exponential function. This emphasizes the data at a particular sample and de-emphasizes more distant data. It is possible that the resulting linear system is better behaved then. 
+
 \section{Callable Bond}
 A callable bond is a bond in which the issuer reserves the right to redeem the bond at different discrete times, possibly for different redemption values. When a callable bond is bought, no one knows when the bond will be called, however it can nly be called at the times agreed upon at issue.
 
@@ -2004,6 +2016,78 @@ Determine the maximum price a buyer should pay in order to earn an annual yield 
 \begin{exercise}[subtitle=To Exercise or Not To Exercise (\texttt{python})]
 Determine the interest rate value threshold that suggest an issuer to exercise a callable bond.
 \end{exercise}
+
+\begin{exercise}[subtitle=Vega]
+Calculate the analytical expressions for:
+\begin{itemize}
+\item Delta Sensitivity analytically, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
+\item Delta Vega analytically, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
+\end{itemize}
+\end{exercise}
+
+\begin{solution}
+The Black formula for a caplet is given by:
+\begin{equation*}
+\textbf{Cpl} = L\delta_k P(0,t_{k+1})[F_k N(d_1)-R_k N(d_2)]
+\end{equation*}
+where:
+\begin{equation*}
+d_1 =\cfrac{\ln(F_k/R_k)+\sigma^2_k t_k/2}{\sigma_k \sqrt{t_k}},\text{ and } d_2 = d_1-\sigma_k \sqrt{t_k}
+\end{equation*}
+
+The delta will just be the first derivative of the equation above in respect to $F$, although one also has to worry about the $F$ being in the $d_1$ and $d_2$ terms.
+
+Ignoring the constants $L\delta_k P(0,t_{k+1})$
+\begin{equation*}
+\Delta =\cfrac{\partial C}{\partial F} = N(d_1) + F\cfrac{\partial N(d_1)}{\partial F} - r_k\cfrac{\partial N(d_2)}{\partial F}
+\end{equation*}
+Next we apply the chain rule:
+\begin{equation*}
+	\cfrac{\partial N(d_1)}{\partial F} = \cfrac{\partial N(d_1)}{\partial d_1}\cfrac{\partial d_1}{\partial F}
+\end{equation*}
+and so:
+\begin{equation*}
+\Delta = N(d_1) + F\cfrac{\partial N(d_1)}{\partial d_1}\cfrac{\partial d_1}{\partial F} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\cfrac{\partial d_2}{\partial F}
+\end{equation*}
+First thing to notice is that since the $d_1$ and $d_2$ definitions:
+\begin{equation*}
+\cfrac{\partial d_1}{\partial F} = \cfrac{\partial d_2}{\partial F}=\cfrac{1}{F_k\sigma_k\sqrt{t_k}}
+\end{equation*}
+and so:
+\begin{equation*}
+\Delta = N(d_1) + \cfrac{1}{F_k\sigma_k\sqrt{t_k}}\left[F\cfrac{\partial N(d_1)}{\partial d_1} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\right]
+\end{equation*}
+Second, lets see how we can simplify the expression inside the parenthesis. Considering that:
+\begin{equation*}
+N(d_1) = \cfrac{1}{\sqrt{2\pi}}\int_{-\infty}^{d_1} e^{-x^2/2}dx
+\end{equation*}	
+it follows that:
+\begin{equation*}
+\cfrac{\partial N(d_1)}{\partial d_1}=N'(d_1)=\cfrac{1}{\sqrt{2\pi}}e^{-d_1^2/2}
+\end{equation*}
+and so:
+\begin{equation*}
+\left[F\cfrac{\partial N(d_1)}{\partial d_1} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\right] = \left[FN'(d_1)-R_kN'(d_2)\right]
+\end{equation*}
+
+Now with a substitution of $d_2$ for $d_1-\sigma_k\sqrt{t_k}$, we have:
+\begin{equation*}
+\begin{gathered}
+R_kN'(d_1 - \sigma_k\sqrt{t_k}) = R_k\cfrac{1}{\sqrt{2\pi}}\exp\left(\cfrac{-(d_1-\sigma_k\sqrt{t_k}))^2}{2}\right) = \\
+= R_k\cfrac{1}{\sqrt{2\pi}}\exp\left(\cfrac{-d_1^2}{2}\right)\exp\left(\cfrac{-2d_1\sigma_k\sqrt{t_k}-(\sigma_k\sqrt{t_k})^2}{2}\right) = \\  = R_kN'(d_1)\exp\left(\cfrac{\ln(F_k/R_k)+\sigma_k^2t_k}{\sigma_k\sqrt{t_k}}\sigma_k\sqrt{t_k}\right)\exp\left(\cfrac{-\sigma_k^2t_k}{2}\right) = \\
+=R_kN'(d_1)\exp\left(\ln(F_k/R_k)+\sigma^2_kt_k/2-\sigma^2_kt_k/2\right) = R_kN'(d_1)\cfrac{F_k}{R_k} = F_kN'(d_1)
+\end{gathered}
+\end{equation*}
+and so
+\begin{equation*}
+	R_kN'(d_2)=F_kN'(d_1)
+\end{equation*}
+So finally, the delta of the caplet would be:
+\begin{equation*}
+\Delta = N(d_1) + \cfrac{1}{F_k\sigma_k\sqrt{t_k}}\left[FN'(d_1)-R_kN'(d_2)\right] =
+N(d_1)
+\end{equation*}
+\end{solution}
 
 %\begin{figure}[htbp]
 %	\begin{center}
