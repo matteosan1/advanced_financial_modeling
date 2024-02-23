@@ -263,9 +263,10 @@
 		$P(t,S)\tau K + P(t, S)$.
 		\item<2-> Collecting the terms we get
 		\begin{equation}
-			\boxed{\textbf{FRA}(t,T,S,\tau,N,K)=N[P(t,S)\tau K–P(t,T)+P(t,S)]}\myendproof
+			\boxed{\textbf{FRA}(t,T,S,\tau,N,K)=N[P(t,S)\tau K–P(t,T)+P(t,S)]}
 		\end{equation}
 	\end{itemize}
+	\only<2->\myendproof
 \end{frame}
 
 \subsection{FRA Detailed Proof}
@@ -551,7 +552,7 @@
 	\begin{itemize}
 		\item<1-> Consider again a Payer Forward Swap (this time with notional $N$)
 		\begin{equation*}
-			\boxed{\textbf{PFS}(t,T_\alpha,T_\beta,\tau,N,K)=N(P(t,T_\alpha)-P(t,T_\beta))-NK\sum_{i=\alpha+1}^{\beta} \tau_iP(t,T_i)}
+			\textbf{PFS}(t,T_\alpha,T_\beta,\tau,N,K)=N(P(t,T_\alpha)-P(t,T_\beta))-NK\sum_{i=\alpha+1}^{\beta} \tau_iP(t,T_i)
 		\end{equation*}
 		\item<2-> A swap can be considered as an exchange between two kinds of bond with the same notional reimbursed at maturity. In fact:
 		\begin{itemize}
@@ -718,6 +719,15 @@
 		\item<1-> So why do not banks issue only floating rate notes ?
 		\item<2-> Banks must issue fixed rate coupon bonds to attract customers (think of yourself or insurance companies) but then will hedge the liability  with an investment bank. In this way the final risk exposure will be at a variable rate as they like. 
 		\item<3-> \textcolor{red}{Swaps are both a hedging instrument and a pricing tool.}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Trading and Hedging Swaps}
+	\begin{itemize}
+		\item With a Swap you can have a clear picture of the market. For example if you own the $5y$, you make money if rates go higher, loose money if they go lower.
+		\item With two Swaps instead you can bet on the \textcolor{red}{slope} of the interest rate curve.
+		\item If you bet on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
+		\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
 	\end{itemize}
 \end{frame}
 
@@ -1015,6 +1025,9 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 	\item<3-> This of course is not quite a "parallel" shift of any curve (e.g. a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
 	\item<4-> In a plain vanilla Swap is very close but not equal to BPV. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
 \end{itemize}
+\begin{tikzpicture}[remember picture,overlay]
+	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\end{tikzpicture}
 \end{frame}
 
 %\begin{frame}{Convexity}
@@ -1049,17 +1062,6 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 %
 %If you pay fixed and receive float, the entire swap has a positive DV01. Rates sell off (go higher), and you receive positive PnL on the position = positive DV01.
 
-\begin{frame}{Trading and Hedging Swaps}
-	\begin{itemize}
-		\item With a Swap you can have a clear picture of the market. For example if you own the $5y$, you make money if rates go higher, loose money if they go lower.
-		\item With two Swaps instead you can bet on the \textcolor{red}{slope} of the interest rate curve.
-		\item If you bet on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
-		\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
-	\end{itemize}
-\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
-\end{frame}
 
 %%\begin{frame}{Trading and Hedging Swaps}
 %%	For example, the yield spread is 0.6524\%. An investor believes that this yield spread will narrow as inter-bank credit improves relative to German Sovereign credit. By entering into a position which profits from a rise in the lower (German	Sovereign) yields and / or a fall in the higher (inter-bank) yields, the investor is able to express his view on relative credit pricing.
@@ -1111,7 +1113,7 @@ Estimate the DV01 of the swap numerically.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Caplets as ZCB Put Options}
+\begin{frame}{Caplets as ZCB Options}
 	\begin{itemize}
 		\item<1-> Using the LIBOR rate definition we get
 		\begin{equation*}
@@ -1127,7 +1129,7 @@ Estimate the DV01 of the swap numerically.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Caplets as ZCB Put Options}
+\begin{frame}{Caplets as ZCB Options}
 	\begin{block}{Intepretation}
 		\begin{enumerate}
 		\item Caplets can be seen as \textcolor{red}{put options} on ZCBs. 
@@ -1491,7 +1493,11 @@ List the pros and cons about each one and declare your favourite.
 	\column{0.35\linewidth}
 	\uncover<1->{
 	\includegraphics[width=1\linewidth]{jamshidian_trick}}
-	\end{columns}
+\uncover<5->{	
+\begin{tikzpicture}[remember picture,overlay]
+	\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\end{tikzpicture}}
+\end{columns}
 \end{itemize}
 \end{frame}
 
@@ -1853,9 +1859,6 @@ whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$
 		\item<1-> An investor would want to invest in a reverse floater if the benchmark rate is high and she believes the rate will decrease in the future at a faster pace than the forwards indicate. 
 		\item<2-> Another strategy is to buy a reverse floater if the rates are low now and the investor believes they stay low, even though the forward contracts are implying an increase. If she is correct and the rates do not change, by holding the reverse floater she will outperform floating rate notes on the same index.
 		\item<3-> Hedging against the risk of falling interest rates. If an investor has invested in regular bonds, and if the interest rate falls, then she will receive lower returns than expected. In this scenario, it is extremely helpful to have inverse floaters in the portfolio as it gives higher returns when interest rates fall.
-		\begin{tikzpicture}[remember picture,overlay]
-			\node[xshift=5.8cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-		\end{tikzpicture}
 	\end{itemize}
 \end{frame}
 
