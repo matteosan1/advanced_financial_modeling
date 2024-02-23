@@ -109,6 +109,7 @@
 	\begin{itemize}
 		\item<1-> \textcolor{red}{Zero Coupon Bond} (ZCB) is a contract that pays one unit of money at time $T$. Its price at time $t$ is denoted by $P(t,T)$, and by definition $P(T,T) = 1$.
 		\item<1-> What is the relation between $P(t,T)$ and $D(t,T)$ ? \\
+	\end{itemize}
 		\uncover<2->{
 			\renewcommand{\arraystretch}{1.2}
 			{\tiny {\tiny }}{
@@ -122,14 +123,13 @@
 						random quantity at time $t$ &
 						\renewcommand{\arraystretch}{1.0} 
 						\begin{tabular}{@{}c@{}}
-							being the value of a contract\\ with a payoff at time $T$, must be known in $t$ \\
+							it has a payoff at time $T$, must be known in $t$ \\
 							from 
 							$P(t, T) = \expect{Q}[D(t, T)|\mathcal{F}_t]$
 						\end{tabular} \\ \hline
 					\end{tabular}
 				\end{table}
 		}}
-	\end{itemize}
 \end{frame}
 
 %\begin{frame}{Year Fraction, Day-Count Convention}
@@ -263,10 +263,10 @@
 		$P(t,S)\tau K + P(t, S)$.
 		\item<2-> Collecting the terms we get
 		\begin{equation}
-			\textbf{FRA}(t,T,S,\tau,N,K)=N[P(t,S)\tau K–P(t,T)+P(t,S)]
+			\boxed{\textbf{FRA}(t,T,S,\tau,N,K)=N[P(t,S)\tau K–P(t,T)+P(t,S)]}
 		\end{equation}
-			\myendproof
 	\end{itemize}
+	\only<2->\myendproof
 \end{frame}
 
 \subsection{FRA Detailed Proof}
@@ -396,6 +396,7 @@
 			& = -\frac{\partial \log P(t, T)}{\partial T}
 		\end{aligned}
 	\end{equation}
+\myendproof
 	\end{block}
 \end{frame}
 
@@ -483,7 +484,7 @@
 				\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
 				&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))\\
 				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-N\sum_{i=\alpha+1}^{\beta}(P(t,T_{i-1})-P(t,T_i)) \\
-				&=\boxed{N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)}
+				&=\boxed{N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)}\quad\quad\quad\qedsymbol
 			\end{aligned}
 		\label{eq:swap_as_sum_fra}
 		\end{equation}
@@ -518,6 +519,8 @@
 \end{itemize}
 \end{frame}
 \end{homework}
+
+%%%%%%%%%%%%%%%%%%%%%%  PARTE 1
 
 \subsection{Swap Rate}
 \begin{frame}{Swap Rate as Break-Even Rate}
@@ -725,6 +728,15 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Trading and Hedging Swaps}
+	\begin{itemize}
+		\item With a Swap you can have a clear picture of the market. For example if you own the $5y$, you make money if rates go higher, loose money if they go lower.
+		\item With two Swaps instead you can bet on the \textcolor{red}{slope} of the interest rate curve.
+		\item If you bet on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
+		\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
+	\end{itemize}
+\end{frame}
+
 \subsection{Basis Swaps}
 \begin{frame}{Basis Swap}
 	\begin{itemize}
@@ -741,7 +753,7 @@
 \begin{itemize}
 	\item<1-> A Tenor Basis Swap can be priced according to the following
 	\begin{equation}
-	\textbf{TBS}(t) = \sum_{i=1}^n \tau_i^{L} F^{L}(t;T_{i-1},T_i)P(t,T_i) - \sum_{j=1}^m \tau_j^{S} (F^{S}(t;T_{j-1},T_j)+s)P(t,T_j)
+	\boxed{\textbf{TBS}(t) = \sum_{i=1}^n \tau_i^{L} F^{L}(t;T_{i-1},T_i)P(t,T_i) - \sum_{j=1}^m \tau_j^{S} (F^{S}(t;T_{j-1},T_j)+s)P(t,T_j)}
 	\end{equation}
 	where $L$ (long index) denotes the index with the longer tenor and $S$ (short index) the other with the shorter tenor.
 	\item<2-> Basis Swaps usually quote at par, meaning that the price of the swap is zero and that the present value (PV) of each of the traded legs is the same. 
@@ -873,8 +885,9 @@
 \begin{frame}{Asset Swap Spread}
 	Solving for $s$ we arrive at the final expression
 	\begin{equation}
-		s = \frac{\textbf{CBP}-\overline{\textbf{CBP}}}{\sum_{i=1}^{\beta}\tau_iP(0,T_i)}
+		\boxed{s = \frac{\textbf{CBP}-\overline{\textbf{CBP}}}{\sum_{i=1}^{\beta}\tau_iP(0,T_i)}}
 	\end{equation}
+\myendproof
 	\begin{itemize}
 	\item<2-> An asset swap enables an investor to buy a fixed rate bond and then hedge out the interest rate risk by swapping the fixed payments to floating. In doing so the investor retains the credit risk of the bond but earns a corresponding return. 
 	\item<3-> She is still exposed to the loss of the coupons and redemption on the bond, i.e. the difference between bond and recovery value.
@@ -911,6 +924,8 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 \end{itemize}
 \end{frame}
 \end{homework}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PARTE 2
 
 \section{Risk Measures}
 \begin{frame}{Estimating Risk}
@@ -1016,6 +1031,9 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 	\item<3-> This of course is not quite a "parallel" shift of any curve (e.g. a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
 	\item<4-> In a plain vanilla Swap is very close but not equal to BPV. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
 \end{itemize}
+\begin{tikzpicture}[remember picture,overlay]
+	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\end{tikzpicture}
 \end{frame}
 
 %\begin{frame}{Convexity}
@@ -1050,17 +1068,6 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 %
 %If you pay fixed and receive float, the entire swap has a positive DV01. Rates sell off (go higher), and you receive positive PnL on the position = positive DV01.
 
-\begin{frame}{Trading and Hedging Swaps}
-	\begin{itemize}
-		\item With a Swap you can have a clear picture of the market. For example if you own the $5y$, you make money if rates go higher, loose money if they go lower.
-		\item With two Swaps instead you can bet on the \textcolor{red}{slope} of the interest rate curve.
-		\item If you bet on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
-		\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
-	\end{itemize}
-\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
-\end{frame}
 
 %%\begin{frame}{Trading and Hedging Swaps}
 %%	For example, the yield spread is 0.6524\%. An investor believes that this yield spread will narrow as inter-bank credit improves relative to German Sovereign credit. By entering into a position which profits from a rise in the lower (German	Sovereign) yields and / or a fall in the higher (inter-bank) yields, the investor is able to express his view on relative credit pricing.
@@ -1112,7 +1119,7 @@ Estimate the DV01 of the swap numerically.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Caplets as ZCB Put Options}
+\begin{frame}{Caplets as ZCB Options}
 	\begin{itemize}
 		\item<1-> Using the LIBOR rate definition we get
 		\begin{equation*}
@@ -1123,12 +1130,12 @@ Estimate the DV01 of the swap numerically.
 		\end{equation*}
 		\item<2-> Multiplying by $\frac{1}{1+K\tau}$ we finally get
 		\begin{equation}
-			\textbf{Cpl}=N(1+K\tau)\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(\frac{1}{1+K\tau}-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]
+			\boxed{\textbf{Cpl}=N(1+K\tau)\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(\frac{1}{1+K\tau}-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]}
 		\end{equation}
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Caplets as ZCB Put Options}
+\begin{frame}{Caplets as ZCB Options}
 	\begin{block}{Intepretation}
 		\begin{enumerate}
 		\item Caplets can be seen as \textcolor{red}{put options} on ZCBs. 
@@ -1181,9 +1188,9 @@ Estimate the DV01 of the swap numerically.
 	where
 	\begin{equation*}
 		\begin{gathered}
-			\textbf{Bl}(K,F_i,v_i)=F\Phi(d_1(K,F_i,v_i)) - K\Phi(d_2(K,F_i,v_i)) \\
+			\boxed{\textbf{Bl}(K,F_i,v_i)=F\Phi(d_1(K,F_i,v_i)) - K\Phi(d_2(K,F_i,v_i))} \\
 			d_{1,2} = \frac{\log{\cfrac{F_i}{K}} \pm \cfrac{v_i^2}{2}}{2} \\[0.2cm]
-			v_i = \sigma_{\alpha,\beta}\sqrt{T_{i-1}}	
+			v_i = \sigma_{\alpha,\beta}\sqrt{T_{i-1}}
 		\end{gathered}
 	\end{equation*}
 	\end{block}
@@ -1234,6 +1241,9 @@ Estimate the DV01 of the swap numerically.
 	%	Cpl(t,T,S,\tau,K,v_T,\alpha)=P(t,S)Bl(K-\alpha,F(t,T,S)-\alpha,v_T)
 	%\end{equation}
 \end{itemize}
+\begin{tikzpicture}[remember picture,overlay]
+	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\end{tikzpicture}
 \end{frame}
 
 %\begin{frame}{The Volatility Hump}
@@ -1299,7 +1309,7 @@ Estimate the DV01 of the swap numerically.
 	\end{equation*}
 	\item<2-> If we look at the swaption payoff through this expression modeling as stochastic variable directly $S_{\alpha,\beta}(t)$, instead of each forward rate $F(t;T_{i-1},T_i)$, we can write the swaption price as the expectation of
 	\begin{equation}
-		\textbf{PSw}=\expect{Q}\left[D(t,T_\alpha)A\max(S_{\alpha,\beta}(T_\alpha)-K, 0)\right]
+		\boxed{\textbf{PSw}=\expect{Q}\left[D(t,T_\alpha)A\max(S_{\alpha,\beta}(T_\alpha)-K, 0)\right]}
 	\end{equation}
 	which looks like easier and more intuitive than previous \cref{eq:swaption_payoff_std}.
 \end{itemize}
@@ -1367,18 +1377,17 @@ List the pros and cons about each one and declare your favourite.
 	\item The most common way to price European Swaption is through the Black formula.
 	\item Replacing the forward rate $F(0;t_{i-1},t_i)$ with the swap rate $S_{\alpha,\beta}(0)$ and plugging in the quoted swaption volatility you get Black's formula for swaptions
 	\begin{equation}
-		\begin{aligned}
+		\boxed{\begin{aligned}
 			\textbf{PSw}_{Bl}(0,T,&N,K,S_{\alpha,\beta})=\\
 			&N\left[S_{\alpha,\beta}(0)\Phi(d_1)-K\Phi(d_2)\right]\sum_{i=\alpha+1}^\beta P(0,T_i)\tau_i
-		\end{aligned}	
+		\end{aligned}}
 	\end{equation}
 	where
 	\begin{equation*}
-		d_{1,2} = \frac{\log{\frac{S_{\alpha,\beta}}{K}} \pm \frac{v^2}{2}}{2}
-	\end{equation*}
-	and
-	\begin{equation*}
+		\begin{gathered}
+		d_{1,2} = \cfrac{\log{\frac{S_{\alpha,\beta}}{K}} \pm \frac{v^2}{2}}{2}\\[0.2cm] 
 		v = \sigma_{\alpha,\beta}\sqrt{T_\alpha}
+		\end{gathered}
 	\end{equation*}
 \end{itemize}
 \end{frame}
@@ -1438,12 +1447,14 @@ List the pros and cons about each one and declare your favourite.
 		\item each forward rate can be modeled as a random variable;
 		\item \textbf{no joint action of forward LIBOR rates is involved.}
 	\end{itemize}
-	\item<2-> Unfortunately this is not possible with swaptions. The swap rate is \textcolor{red}{essentially a weighted average of forward rates} $S=\cfrac{\sum F(t;T_{i-1},T_i)}{\sum P(t,T_i)}$, hence its volatility should depend on each forward rate volatilities \textbf{as well as} their correlations.
+	\item<2-> Unfortunately this is not possible with swaptions. The swap rate is \textcolor{red}{essentially a weighted average of forward rates} $S=\frac{\sum F(t;T_{i-1},T_i)}{\sum P(t,T_i)}$, hence its volatility should depend on each forward rate volatilities \textbf{as well as} their correlations.
 	\item<3-> If you take as "fundamental" entity the LIBOR rates you have to deal with the joint action of the simple forward LIBOR rates and so with the \textbf{terminal correlation} between rates of different portions of the yield curve. 
 	\item<4-> This issue will be extensively studied in the context of the Libor Market Models further on down the course.
 	%Can you provide an example ?
 \end{itemize}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  PARTE 3
 
 \subsection{Bond Options}
 \begin{frame}{An Option to Exchange Fixed with Float}
@@ -1482,14 +1493,17 @@ List the pros and cons about each one and declare your favourite.
 	= \left(\sum_i (f_i(\hat{w}) -  f_i(W))\right)^+= \sum_i (f_i(\hat{w}) - f_i(W))\mathbb{1}_{W\ge \hat{w}}
 	\end{equation*}}
 	\uncover<4->{\begin{equation*}
-	= \sum_i \left(K_i - f_i(W)\right)^+
+	= \sum_i \left(K_i - f_i(W)\right)^+\quad\quad\quad\quad\qedsymbol
 	\end{equation*}
-	\myendproof
 	}
 	\column{0.35\linewidth}
 	\uncover<1->{
 	\includegraphics[width=1\linewidth]{jamshidian_trick}}
-	\end{columns}
+\uncover<5->{	
+\begin{tikzpicture}[remember picture,overlay]
+	\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\end{tikzpicture}}
+\end{columns}
 \end{itemize}
 \end{frame}
 
@@ -1529,53 +1543,91 @@ List the pros and cons about each one and declare your favourite.
 	\item The strike of these option is calculated as the value of a ZCB given a \emph{particular} value of the short rate, determined with a root finding procedure.
 	\item In formulas the CBO with maturity $T$ and strike $K$ reads
 	\begin{equation}
-		\textbf{CBP}(t,\mathcal{T},\mathcal{C},K) = \sum_{i=1}^n c_i \textbf{ZBP}(t,T_i,\Pi,r^*)
+		\boxed{\textbf{CBP}(t,\mathcal{T},\mathcal{C},K) = \sum_{i=1}^n c_i \textbf{ZBP}(t,T_i,\Pi,r^*)}
 	\end{equation}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Adapting to Swaptions}
+\begin{frame}{Swaption Pricing under Affine Models}
 \begin{itemize}
-	\item When interest rates are modeled using \textcolor{red}{Affine Short Rate Models} it is rather simple to arrive to the swaption pricing formula.
-	\item \emph{Affine Models} indeed relates ZCB price to a spot rate model according to 
+	\item When interest rates are modeled using \textcolor{red}{Affine Short Rate Models} (Vasicek, Hull-White,\ldots) swpation pricing can be performed semi-analytically.
+	\item \cref{eq:swaption_payoff_std} can be rewritten, expressing the underlying swap in terms of bonds, as
+\begin{equation*}
+\textbf{PSw}=NP(t_0, T_\alpha)\mathbb{E}_t\left[\max\left(1-\sum_{k=\alpha+1}^\beta c_kP(T_\alpha,T_k), 0\right)\right]
+\end{equation*}
+with $c_k=K\tau_k$ for $k=\alpha+1,\ldots,\beta-1$ and $c_\beta=(1+K\tau_\beta)$.
+	\item One of the most striking properties of \emph{Affine Models} is that they relate ZCB price to a spot rate model according to 
 	\begin{equation*}
-		P(t,T) = A(t,T)e^{-B(t,T)r}
+		P(t,T) = A_r(t,T)e^{-B_r(t,T)r}
 	\end{equation*} 
-	\item Hence the value $r^*$ can be determined as a solution of 
-	\begin{equation*}
-		\sum_{i=1}^n A(t,t_i)e^{-B(t,t_i)r^*}
-	\end{equation*}		
-	%%		\item Denote as usual with $\tau_i$ the year fraction between $t_{i-1}$ and $t_i$, fix $c_i=X\tau_i$ and $c_n = 1+X\tau_i$.
-	%%		\item Let the swap notional be equal to N.
-	%%		\item Thus for the price of a payer swaption we have to calculate the following payoff
-	%%		\begin{equation*}
-		%%			\left[1-CB(t,\mathcal{C},T)\right]^+
-		%%		\end{equation*}
-	%%		\item We can calculate this payoff via the procedure outlined before.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Swaption Pricing via Affine Models}
+\begin{frame}{Swaption Pricing under Affine Models}
 \begin{itemize}
-	\item Consider an option on a swap which pays a fixed rate $X$ and receives LIBOR.  
-	\item Modeling the short rate with an affine model we can define $r^*$ at time $T$, such that
-	\begin{equation*}
-		\sum_{i=1}^n c_i A(t,T_i)e^{-B(t,T_i)r^*} = 1
-	\end{equation*}
-	where $c_i$ is the coupon value.
-	\item Setting $X_i = A(t,T_i)e^{-B(t,T_i)r^*}$ the payer swaption price is thus given by
+\item Hence
+\begin{equation*}
+\textbf{PSw}=NP(t_0, T_\alpha)\mathbb{E}_t\left[\max\left(1-\sum_{k=\alpha+1}^\beta c_k A_r(\tau_k)e^{B_r(\tau_k)r(T_\alpha)}, 0\right)\right]
+\end{equation*}
+	\item Using the Jamshidian decomposition the $\max$ operator can be swapped with the sum
+\begin{equation*}
+\textbf{PSw}=NP(t_0, T_\alpha)\sum_{k=\alpha+1}^\beta c_k \mathbb{E}_t\left[\max\left(\bar{K_k} - A_r(\tau_k)e^{B_r(\tau_k)r(T_\alpha)}, 0\right)\right]
+\end{equation*}
+whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$ is determined by solving
+\begin{equation*}
+\sum_{k=\alpha+1}^\beta c_k \left(A_r(\tau_k)e^{B_r(\tau_k)r^{*}}\right) = 1
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Swaption Pricing under Affine Models}
+\begin{itemize}
+\item As noted above for the bond options, each element of the sum in the formula above represents a European put option on a zero-coupon bond, which in the \emph{affine models} has a closed-form solution.
+\item So a payer swaption price is thus given by
 	\begin{equation}
-		\textbf{PSw}(t,T,N) = N\sum_{i=1}^n c_i \textbf{ZBP}(t,T_i,X_i)
+		\boxed{\textbf{PSw}(t,T,N) = N\sum_{k=1}^n c_k \textbf{ZBP}(t,T_k,K_k)}
 	\end{equation}
 	while the receiver swaption price reads
 	\begin{equation}
-		\textbf{RSw}(t,T,N) = N\sum_{i=1}^n c_i \textbf{ZBC}(t,T_i,X_i)
+		\boxed{\textbf{RSw}(t,T,N) = N\sum_{k=1}^n c_k \textbf{ZBC}(t,T_k,K_k)}
 	\end{equation}
 \end{itemize}	
 \begin{tikzpicture}[remember picture,overlay]
 \node[xshift=6.0cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}
 \end{frame}
+
+
+%\begin{frame}{Adapting to Swaptions}
+%\begin{itemize}
+%	\item When interest rates are modeled using \textcolor{red}{Affine Short Rate Models} it is rather simple to arrive to the swaption pricing formula.
+%	\item \emph{Affine Models} indeed relates ZCB price to a spot rate model according to 
+%	\begin{equation*}
+%		P(t,T) = A(t,T)e^{-B(t,T)r}
+%	\end{equation*} 
+%	\item Hence the value $r^*$ can be determined as a solution of 
+%	\begin{equation*}
+%		\sum_{i=1}^n A(t,t_i)e^{-B(t,t_i)r^*}
+%	\end{equation*}		
+%	%%		\item Denote as usual with $\tau_i$ the year fraction between $t_{i-1}$ and $t_i$, fix $c_i=X\tau_i$ and $c_n = 1+X\tau_i$.
+%	%%		\item Let the swap notional be equal to N.
+%	%%		\item Thus for the price of a payer swaption we have to calculate the following payoff
+%	%%		\begin{equation*}
+%		%%			\left[1-CB(t,\mathcal{C},T)\right]^+
+%		%%		\end{equation*}
+%	%%		\item We can calculate this payoff via the procedure outlined before.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Swaption Pricing via Affine Models}
+%\begin{itemize}
+%	\item Consider an option on a swap which pays a fixed rate $X$ and receives LIBOR.  
+%	\item Modeling the short rate with an affine model we can define $r^*$ at time $T$, such that
+%	\begin{equation*}
+%		\sum_{i=1}^n c_i A(t,T_i)e^{-B(t,T_i)r^*} = 1
+%	\end{equation*}
+%	where $c_i$ is the coupon value.
+%\end{frame}
 
 \subsection{Bermudan Swaption}
 \begin{frame}{Bermudan Swaptions}
@@ -1786,9 +1838,9 @@ List the pros and cons about each one and declare your favourite.
 		\textbf{RF}=\max[0, K-\alpha F(T)] = \underbrace{K-\alpha F(T) + \max[\alpha F(T)-K,0]}_{rule 2}
 	\end{equation*}
 	\item<2-> Previous equation gives the payoff as the sum of a fixed leg of an IRS and a Cap with strike $K$
-\begin{equation*}
-	\textbf{RF} = \underbrace{K - \alpha F(T)}_{\text{IRS fixed leg}} + \underbrace{\max[\alpha F(T)-K,0]}_{\text{Cap}}
-\end{equation*}
+\begin{equation}
+	\boxed{\textbf{RF} = \underbrace{K - \alpha F(T)}_{\text{IRS fixed leg}} + \underbrace{\max[\alpha F(T)-K,0]}_{\text{Cap}}}
+\end{equation}
 
 %	\item Which, adding and subtracting $K$ (\emph{rule 1}), and by \emph{rule 5} can be rewritten as
 %	\begin{equation*}
@@ -1813,9 +1865,6 @@ List the pros and cons about each one and declare your favourite.
 		\item<1-> An investor would want to invest in a reverse floater if the benchmark rate is high and she believes the rate will decrease in the future at a faster pace than the forwards indicate. 
 		\item<2-> Another strategy is to buy a reverse floater if the rates are low now and the investor believes they stay low, even though the forward contracts are implying an increase. If she is correct and the rates do not change, by holding the reverse floater she will outperform floating rate notes on the same index.
 		\item<3-> Hedging against the risk of falling interest rates. If an investor has invested in regular bonds, and if the interest rate falls, then she will receive lower returns than expected. In this scenario, it is extremely helpful to have inverse floaters in the portfolio as it gives higher returns when interest rates fall.
-		\begin{tikzpicture}[remember picture,overlay]
-			\node[xshift=5.8cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-		\end{tikzpicture}
 	\end{itemize}
 \end{frame}
 
@@ -1846,8 +1895,8 @@ List the pros and cons about each one and declare your favourite.
 \begin{itemize}
 \item[white] Calculate the analytical expressions for:
 \begin{itemize}
-	\item[white] Delta Sensitivity analytically, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
-	\item[white] Delta Vega analytically, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
+	\item[white] Delta Sensitivity, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
+	\item[white] Vega, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
 \end{itemize}
 \end{itemize}
 \end{frame}

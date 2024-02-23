@@ -3,7 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
-%\usepackage{amssymb}
+\usepackage{amssymb}
 \usepackage{bbm}
 \usepackage{graphicx}
 \usepackage{geometry}
@@ -12,9 +12,7 @@
 \usepackage{cancel}
 
 \usepackage[use-files]{xsim}
-\xsimsetup{
-	path={exercises},
-}
+\xsimsetup{path={exercises},}
 
 \geometry{a4paper, margin=2cm}
 %\usepackage{cprotect}
@@ -73,17 +71,31 @@
 }
 
 \newcommand{\mymatrix}[1]{\ensuremath{\left\downarrow\vphantom{#1}\right.\overset{\xrightarrow[\hphantom{#1}]{\text{simulations (axis 1)}}}{#1}}}
+\usepackage{pifont}
+\newcommand{\myendproof}{\ensuremath{\hfill\square}}
+\newcommand{\HRule}[1]{\color{blue}{\rule{\linewidth}{#1}}}
 
-\newcommand{\myendproof}{\hfill\qedsymbol}
-
-\title{Additional Material for AFM-24}
-\author{Matteo Sani}
+%\title{Additional Material for AFM-24}
+%\author{Matteo Sani}
 
 \begin{document}
+
+\title{\normalsize \textsc{}
+		\\ [2.0cm]
+		\HRule{1.5pt} \\
+		\LARGE \textbf{\textcolor{black}{\uppercase{lecture notes}}
+		\HRule{2.0pt} \\ [0.6cm] \textcolor{black}{\Large{Additional Material for AFM}} \vspace*{10\baselineskip}}
+		}
+\date{}
+\author{\textbf{Author} \\ 
+		Matteo Sani \\
+		A.A. 2023-2024}
+
 \maketitle
+
 \chapter{Arbitrage Free Pricing Theory}
 \section{Random Variables}
-A variable whose value is a number determined by the outcome of a random experiment is called a \textcolor{red}{random variable}.
+A variable whose value is a number determined by the outcome of a random experiment is called a \textbf{random variable}.
 
 Random variables are very different from usual \emph{algebraic variables}:
 \begin{equation*}
@@ -94,17 +106,17 @@ A random variable instead is kind of a mapping between
 \begin{equation*}
 X(\omega):\Omega\rightarrow \mathbb{R}\quad \forall\omega\in\Omega
 \end{equation*}
-such that $X(\omega)$ represents the occurrence probability of the "outcome" $\omega$. $\Omega$ is called \textcolor{red}{sample space} and is the set of all possible future states (or outcomes) of the random process.
+such that $X(\omega)$ represents the occurrence probability of the "outcome" $\omega$. $\Omega$ is called \textbf{sample space} and is the set of all possible future states (or outcomes) of the random process.
 	
 Hence the random variable $X$ will take values distributed according to the probability distribution of the random process, e.g. if $X$ represents the outcomes of rolling a \emph{fair} die $\Omega = [1,2,3,4,5,6]$ and each value has equal probability of 1/6.
 
-\textcolor{red}{A random variable is always associated to a probability distribution.}
+\textbf{A random variable is always associated to a probability distribution.}
 
 \subsection{Properties and Characteristics of Random Variables}		
 
-If a random variable takes only a countable number (finite) of values, it is called \textcolor{red}{discrete}. As an example imagine when 3 coins are tossed, the number of heads obtained is the random variable, which assumes the values $\Omega=\{0,1,2,3\}$ ($\Omega$ ia a countable set).
+If a random variable takes only a countable number (finite) of values, it is called \textbf{discrete}. As an example imagine when 3 coins are tossed, the number of heads obtained is a random variable, which can assume the values $\Omega=\{0,1,2,3\}$ ($\Omega$ ia a countable set).
 
-Contrary, a random variable $X$ which can take any value between a certain interval is called \textcolor{red}{continuous}. Imagine the height of students in a particular class lies between 160 and 190~cm $(X = \{x|160 \leq x \leq 190\})$.
+Contrary, a random variable $X$ which can take any value between a certain interval is called \textbf{continuous}. Imagine, for example, the height of students in a particular class. It lies between 160 and 190~cm $(X = \{x|160 \leq x \leq 190\})$ and can take an infinite number of values.
 
 Table~\ref{tab:random_variable_prop} lists the main characteristics of discrete and continuous random variables (referred to a random variable $X$ defined on a domain $\Omega$ of possible outcomes). 
 \renewcommand{\arraystretch}{1.6}
@@ -120,32 +132,32 @@ Table~\ref{tab:random_variable_prop} lists the main characteristics of discrete 
 			$F(x_i) = P(X<x_i) = \sum_{x<x_i} P(x)$ & $F(x) = P(X<a) = \int_{-\infty}^{a} f(x) dx$ \\ \hline
 		\end{tabular}
 	\end{center}
-\label{tab:random_variable_prop}
 \caption{List of the main characteristics of discrete and continuous random variables.}
+\label{tab:random_variable_prop}
 \end{table}
 
-If we know the distribution of a random variable, we pretty much know all is needed about it. 
+If we know the distribution of a random variable, we pretty much know all is needed about it. 	
+Nevertheless, when dealing with with \textit{real data}, it is quite hard to precisely know its underlying distribution, see Fig.\ref{fig:real_data}. Fortunately we can characterize it by just using a couple of important numbers called \emph{statistics}:
+\begin{equation}
+\begin{gathered}
+\text{mean: } \mu = \mathbb{E}[X] = \int_{-\infty}^{\infty} xf(x)dx \\
+\text{variance: }  
+\sigma^2 = \mathbb{E}[(X-\mu)^2] =\int_{-\infty}^{\infty} (x-\mu)^2f(x)dx
+\end{gathered}
+\end{equation}
+
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[height=5cm]{continouos_random_variable}
 \includegraphics[height=5cm]{real_data}
 \caption{Examples of a continuous random variable PDF (left) and a corresponding real life realization of the same random variable (right).}
+\label{fig:real_data}
 \end{center}
 \end{figure} 
-	
-But with \textit{real data}, we don't know the full distribution. Fortunately we can characterize it by a couple of numbers (\emph{statistics}).
-\begin{equation}
-\begin{gathered}
-\text{\textcolor{red}{mean: }
-} \mu = \mathbb{E}[X] = \int_{-\infty}^{\infty} xf(x)dx \\
-\text{\textcolor{red}{variance: }}  
-\sigma^2 = \mathbb{E}[(X-\mu)^2] =\int_{-\infty}^{\infty} (x-\mu)^2f(x)dx
-\end{gathered}
-\end{equation}
 
 \subsection{Expectation and Its Properties}
 Table~\ref{tab:expectation_prop} reports a list of the main properties of the expectation operator.
-Essentially all of them come from integration properties, e.g.
+Essentially all of them come from the integration properties, e.g.
 \begin{equation*}
 	\mathbb{E}[aX] = \int_{-\infty}^{\infty} ax f(x) dx = a  \int_{-\infty}^{\infty} x f(x) dx = a\mathbb{E}[X]
 \end{equation*}
@@ -161,20 +173,21 @@ Essentially all of them come from integration properties, e.g.
 			Products (independent variables) & $\mathbb{E}[XY] = \mathbb{E}[X] \mathbb{E}[Y]$ \\ \hline
 		\end{tabular}
 	\end{center}
-\label{tab:expectation_prop}
 \caption{List of the main properties of the expectation operator.}
+\label{tab:expectation_prop}
 \end{table}
 
 \section{Stochastic Processes}
-Real world data is noisy (i.e. distorted), and exhibits behaviours that cannot be described by a deterministic model (always produce same result from same inputs, e.g $f(x)=x^3+2$).
+Real world data is noisy (i.e. distorted), and exhibits behaviours that cannot be described by a deterministic model since it always produce the same result from  the same inputs, e.g $f(x)=x^3+2$, while the noise that "affects" real data has a random nature (Fig.\ref{fig:noisy_process}).
 \begin{figure}[htbp]
 	\begin{center}  
 	\includegraphics[height=5cm]{stochastic_process}
 	\end{center}
 \caption{Example of "noisy" process.}
+\label{fig:noisy_process}
 \end{figure}
 
-In order to model the behavior of this kind of data (and its intrinsic uncertainty) it is needed to switch to \textcolor{red}{stochastic processes}.  
+In order to model the behavior of this kind of data (and its intrinsic uncertainty) it is needed to switch to \textbf{stochastic processes}.  
 A stochastic process is a collection of random variables that is indexed by some mathematical set (usually time).
 
 Stochastic processes are described by \emph{stochastic differential equations} (SDE):
@@ -183,15 +196,16 @@ Stochastic processes are described by \emph{stochastic differential equations} (
 \begin{aligned}
 	dX(t) = \mu(t,X(t)) dt &+ \sigma(t,X(t)) dW(t) =\\  & =\underbrace{\mu(t,X(t))dt}_{\textrm{deterministic}} + \underbrace{\sigma(t,X(t)) \mathcal{N}(0,1)\sqrt{dt}}_{\textrm{stochastic}}
 \end{aligned}
-\label{eq:sde}
+\label{eq:generic_sde}
 \end{equation}
-where $W(t)$ is called a \emph{Wiener Process} (or Brownian motion), which represent the evolution of random variable which is normally distributed and whose increments are independent of everything has happened up to time $t$, for $s< t$ the stochastic variable $W(t)-W(s)$ has a Gaussian distribution $\mathcal{N}(0, t)$, i.e. the standard deviation grows with the square root of time.
-
+where $W(t)$ is called a \emph{Wiener Process} (or Brownian motion), which represents the evolution of a normally distributed random variable and whose increments are independent of everything has happened up to time $t$, for $s< t$ the stochastic variable $W(t)-W(s)$ has a Gaussian distribution $\mathcal{N}(0, t)$, i.e. the standard deviation grows with the square root of time.
+Figure\ref{fig:stochastic_process_rappr} shows a schematic representation of a stochastic process.
 \begin{figure}[htpb]
 \begin{center}
-	\includegraphics[height=5cm]{brownian_process}
+	\includegraphics[height=6cm]{brownian_process}
 \end{center}
 \caption{Example of evolution of a stochastic process, on top of the deterministic evolution, a Gaussian distributed "noise" (Wiener process) is added.}
+\label{fig:stochastic_process_rappr}
 \end{figure}
 
 Using the properties of the normal distribution we can obtain the following results for the Wiener process:
@@ -210,7 +224,7 @@ Thus, heuristically, we can say that $[(\Delta W)^2]$ looks more and more "deter
 \boxed{dW^2 = dt}
 \end{equation*}
 
-It is possible to interpret~\ref{eq:sde} as a shorthand for 
+It is possible to interpret~\ref{eq:generic_sde} as a shorthand for 
 \begin{equation*}
 X(t) = X(0) + \int_0^t \mu(s,X(s)) ds + \int_0^t \sigma(s,X(s)) dW(s)
 \end{equation*}
@@ -225,7 +239,7 @@ Without entering into the details of stochastic calculus we can state the two mo
 \end{equation*}
 
 \subsection{Martingales}
-With the symbol $\mathcal{F}^X_t$ it is indicated a \textbf{filtration}. It represents the information generated by $X$ on the interval $[0, t]$, i.e. what has happened to $X$ over the interval. 
+With the symbol $\mathcal{F}^X_t$ it is indicated a \textbf{filtration}. It represents the information generated by the process $X$ on the interval $[0, t]$, i.e. what has happened to $X$ over that time interval. 
 
 If the value of a stochastic variable $X$ can be completely determined given observations of its trajectories $\{X(s); 0\leq s \leq t\}$, then we can write $X\in\mathcal{F}_t^X$ and $X$ is said to be $\mathcal{F}_t^X$\emph{-measurable}.
 If $Y$ is a stochastic process such that $Y(t)\in\mathcal{F}_t^X$ for all $t$ then we say that $Y$ is \emph{adapted} to the filtration $\mathcal{F}_t^X$. 
@@ -235,7 +249,7 @@ Given the information (filtration) $\mathcal{F}_t$, for any stochastic variable 
 	\mathbb{E}[X|\mathcal{F}_t]
 \end{equation*}
 which represents the \textbf{conditional expectation} of $X$.
-By definition it also holds that $\mathbb{E}[\mathbb{1}_{\mathcal{F}}X] = \mathbb{E}[\mathbb{1}_{\mathcal{F}}\mathbb{E}[X|\mathcal{F}]]$.
+By definition it also holds that $\mathbb{E}[\mathbbm{1}_{\mathcal{F}}X] = \mathbb{E}[\mathbbm{1}_{\mathcal{F}}\mathbb{E}[X|\mathcal{F}]]$.
 
 Given $X$ and $Y$ stochastic variables with $Y$ $\mathcal{F}_t$-measurable:
 \begin{equation*}
@@ -247,7 +261,7 @@ If $X$ is a stochastic variable and $s<t$ (\emph{law of iterated expectations}):
 \mathbb{E}[\mathbb{E}[X|\mathcal{F}_t]|\mathcal{F}_s] = \mathbb{E}[X|\mathcal{F}_s]
 \end{equation*}
 
-A \textcolor{red}{$\mathcal{F}_t$-martingale} is a (integrable and adapted) stochastic process which models a fair game with the following remarkable feature
+A \textbf{$\mathcal{F}_t$-martingale} is a (integrable and adapted) stochastic process which models a fair game with the following remarkable feature
 \begin{equation}
 \mathbb{E}[X_t|\mathcal{F}_s] = X_s
 \end{equation}
@@ -266,8 +280,8 @@ X\text{ is a martingale } \iff X\text{ is drift-less } (\mu_t=0)
 Trade random fluctuations deviate a stock price $S_t$ from a steady state.
 The price relative change in $dt$ can be decomposed into two parts
 \begin{itemize}
-\item \textcolor{red}{deterministic}: the expected return from holding the stock during $dt$. It can be expressed as $\mu S_tdt$ (with $\mu$ being the expected rate of return);
-\item \textcolor{red}{stochastic}: models the random changes of the market. A reasonable assumption is to equal this term to $\sigma S_t dW_t$. 
+\item \textbf{deterministic}: the expected return from holding the stock during $dt$. It can be expressed as $\mu S_tdt$ (with $\mu$ being the expected rate of return);
+\item \textbf{stochastic}: models the random changes of the market. A reasonable assumption is to equal this term to $\sigma S_t dW_t$. 
 \end{itemize}
 
 Putting all together, the resulting SDE is
@@ -315,7 +329,7 @@ df&={\frac {\partial f}{\partial t}}\,dt+\cancel{{\frac {1}{2}}{\frac {\partial 
 \end{equation*}
 as required.
 
-Back to the Geometric Brownian motion, it can be shown that a solution to Eq.~\ref{eq:log_normal_sde} is given by 
+Back to the Geometric Brownian motion, it can be shown (see Ex.\ref{ex:gbm}) that a solution to Eq.~\ref{eq:log_normal_sde} is given by 
 \begin{equation}
 S_t = S_{t-1}\exp\left[\left(\mu-\frac{1}{2}\sigma^2\right)dt + \sigma\mathcal{N}(0,1)\sqrt{dt}\right] 
 \label{eq:lognormal_solution}
@@ -325,20 +339,19 @@ The variation in $\log(S_t)$ equals a constant (the \emph{drift} $\mu-\frac{1}{2
 \begin{equation*}
 \log S_t = \mathcal{N}\left[\left(\mu -\frac{\sigma^2}{2}\right)t, \sigma^2 t\right]
 \end{equation*}
-
-A random variable whose logarithm is normally distributed is said to be \textcolor{red}{log-normal}.
+A random variable whose logarithm is normally distributed is said to be \textbf{log-normal}.
 			
-One of the most important properties of a log-normal distribution is to be positive definite (a good characteristic for stock prices).
+One of the most important properties of a log-normal distribution is to be positive definite (a mandatory characteristic for stock prices).
 
 \section{No Arbitrage Pricing Theory}
 
-A \textcolor{red}{portfolio} is a vector $\mathbf{\theta}\in \mathbb{R}^K$ whose $j$ components represent the number of shares of asset $A_j$ (asset $A_0$ is risk-free). It's value is
+A \textbf{portfolio} is a vector $\mathbf{\theta}\in \mathbb{R}^K$ whose $j^{th}$ component represents the number of shares of asset $A_j$ (asset $A_0$ is risk-free). It's value is
 \begin{equation}
 V_t(\mathbf{\theta}, \omega)=\sum_{j=1}^K\theta_jS^j_t(\omega)
 \end{equation} 
-where $S_t^j$ is the value of $j$-th asset, and $\omega$ a market situation. A portfolio is said to be \textcolor{red}{self-financing} if its value changes only due to variations of the asset prices.
+where $S_t^j$ is the value of $j^{th}$ asset, and $\omega$ a market situation. A portfolio is said to be \textbf{self-financing} if its value changes only due to variations of the asset prices.
 
-An \textcolor{red}{arbitrage} is a self financing portfolio $\mathbf{\theta}$ such that
+An \textbf{arbitrage} is a self-financing portfolio $\mathbf{\theta}$ such that
 \begin{equation}
 \begin{cases}
 V_0 = 0 \\
@@ -346,13 +359,13 @@ P(V_{t}\geq 0)=1\text{ and }P(V_{t}\neq 0)>0,\,0<t\leq T
 \end{cases}
 \end{equation}
 where $V_t$ denotes the portfolio value at time $t$ and $T$ is the time the portfolio ceases to be available on the market. 
-\emph{This means that the value of the portfolio is never negative, and guaranteed to be positive at least once over its lifetime.}
+\textbf{This means that the value of the portfolio is never negative, and guaranteed to be positive at least once over its lifetime.}
 
-Informally, \textcolor{red}{arbitrage is a way to make a guaranteed profit from nothing}, by short-selling certain assets at time $t = 0$, using the proceeds to buy other assets, and then settling accounts at time $t$. 
+Informally, \emph{arbitrage is a way to make a guaranteed profit from nothing}, by short-selling certain assets at time $t = 0$, using the proceeds to buy other assets, and then settling accounts at time $t$. 
 Arbitrage may take place when: the same asset does not trade at the same price on all markets, or two assets with identical cash flows do not trade at the same price
-We are going to assuming the market doesn't allow for risk-free profits with no initial investment.
+We are going to assume the market doesn't allow for risk-free profits with no initial investment.
 Indeed arbitrage opportunities rarely exist in practice. If and when they do, gains are extremely small (not for small investors), and are typically short-lived and difficult to spot. 
-\textcolor{red}{Arbitrage exclusion in the mathematical model is close enough to reality}.
+\textbf{Arbitrage exclusion in the mathematical model is close enough to reality}.
 
 \subsection{One Period Model}
 Consider a bank-account $B(t)=e^{rt}$ ($r$ denote the risk-free rate) and assume today's stock price to be $S_0$. In one period of time from now, the price could be 
@@ -363,7 +376,7 @@ S_0\cdot d = S_d \quad\text{with a certain probability $p_d$}\\
 \end{cases}, \text{with }(u > d)
 \end{equation*}
 
-If we want our simple model to \emph{avoid arbitrage opportunities}, we must impose conditions on $u$ and $d$. 
+If we want our model to \emph{forbid arbitrage opportunities}, we must impose conditions on $u$ and $d$. 
 		
 In case $e^r > u$, I could short the stock in $t_0$ and invest the proceeds $S_0$ into the bank account: in both future states in $t_1$, I could buy the stock back for less than my proceeds 
 \begin{equation*}
@@ -381,7 +394,7 @@ Most commonly, investors are risk-averse and today's price is below the expectat
 
 Consequently to price assets, the calculated expected values need to be adjusted for an investor's risk preferences
 Unfortunately, these adjustments would vary between investors and an individual's risk preference is very difficult to quantify.
-\textcolor{red}{It turns out that, under few assumptions, there is an alternative way to do this calculation.}
+\textbf{It turns out that, under few assumptions, there is an alternative way to do this calculation.}
 
 \begin{equation*}
 \begin{aligned}
@@ -390,7 +403,6 @@ S_0 &= \frac{S_0(u-d)e^r}{(u-d)e^r} = \frac{S_0(u-d)e^r + (S_0ud - S_0ud)}{(u-d)
 &= \frac{1}{e^r}\left(S_0u\frac{e^r - d}{u-d} + S_0d\frac{u - e^r}{u-d}\right)
 \end{aligned}
 \end{equation*}
-
 The no arbitrage condition implies the following bounds
 \begin{equation*}
 \boxed{0\le\frac{e^r -d}{u-d}\le 1,\quad 0\le\frac{u - e^r}{u-d}\le 1}
@@ -400,23 +412,23 @@ also
 \boxed{\frac{e^r -d}{u-d} + \frac{u - e^r}{u-d} = 1}
 \label{eq:risk_neutral_probabilities}
 \end{equation}
-
-So we can interpret $p_u=\cfrac{e^r -d}{u-d}$ and $p_d=\cfrac{u - e^r}{u-d}$ as a \textcolor{red}{(risk-neutral) measure} ($\mathcal{Q}$).\vspace{0.3cm}
+So we can interpret $p_u=\cfrac{e^r -d}{u-d}$ and $p_d=\cfrac{u - e^r}{u-d}$ as a \textbf{(risk-neutral) measure} ($\mathbb{Q}$).\vspace{0.3cm}
 		
-A \textcolor{red}{probability measure} is a real-valued function that assigns probabilities to a set of events in a sample space that satisfies measure properties such as countable additivity, and assigning value 1 to the entire space.
+\subsubsection{Risk Neutral Measure}
+A \textbf{probability measure} is a real-valued function that assigns probabilities to a set of events in a sample space that satisfies measure properties such as countable additivity, and assigning value 1 to the entire space.
 
 Rewriting previous expression of $S_0$ in terms of the newly defined probabilities
 \begin{equation}
-S_0 = \frac{S_up_u + S_dp_d}{e^r} = e^{-r}\mathbb{E}^\mathcal{Q}[S_1]
+S_0 = \frac{S_up_u + S_dp_d}{e^r} = e^{-r}\mathbb{E}^\mathbb{Q}[S_1]
 \label{eq:risk_neutral_price}
 \end{equation}
 		
 So the stock price is the discounted stock expectation \emph{under the chosen probability measure} at $t_1$.
 	
-There exists a \emph{risk-neutral measure} if and only \textcolor{red}{if arbitrages do not exist}.
-
-\textbf{no-arbitrage$\rightarrow$risk-neutral measure}: requiring the model to be arbitrage-free sets conditions on $u, d$ and $e^r$ such that $p_u$ and $p_d$ define a probability measure (risk-neutral measure).
-\textbf{risk-neutral measure$\rightarrow$no-arbitrage}: consider an arbitrary portfolio $\theta$ and check that given the assumptions must be arbitrage-free
+It can be proven that there exists a \emph{risk-neutral measure} if and only \emph{if arbitrages do not exist}. 
+\begin{itemize}
+\item \textbf{no-arbitrage$\Rightarrow$risk-neutral measure}: requiring the model to be arbitrage-free sets conditions on $u, d$ and $e^r$ such that $p_u$ and $p_d$ define a probability measure (risk-neutral measure).
+\item \textbf{risk-neutral measure$\Rightarrow$no-arbitrage}: consider an arbitrary portfolio $\theta$ and check that given the assumptions must be arbitrage-free
 \begin{equation*}
 V_0 = xB_0 + yS_0 = 0
 \end{equation*}
@@ -431,15 +443,18 @@ To make $\theta$ an arbitrage opportunity must be $V_1\geq 0$.
 Imagine our portfolio has $y > 0$ then there is arbitrage if and only if $u - e^r \geq 0$ and $d - e^r \geq 0$
 which can not happen according to the assumptions. 
 			
-Thus, if $y > 0$ \emph{the portfolio is not an arbitrage one}. The case $y < 0$ is treated in the same way. 
-But what does it mean "risk-neutral measure" ?
-		
-The \textcolor{red}{risk-neutral measure} is agreed upon by the market as a whole just as a consequence of no arbitrage assumption.
-In other words it is nothing more than an \emph{implied probability distribution}.
-Implied from observable prices of tradable instruments, and used to determine \textcolor{red}{objective fair prices} for an asset or financial instrument. Probabilities are assessed with the risk taken out of the equation, so it doesn’t play a factor in the anticipated outcome.
-By contrast, if you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \textcolor{red}{real or physical probability}.
+Thus, if $y > 0$ \emph{the portfolio is not an arbitrage one}. The case $y < 0$ is treated in the same way.
+\myendproof
+\end{itemize}
 
-A \emph{contingent claim} (financial derivative) is any stochastic variable $X$ of the form $X=\Phi(Z)$ , where $Z$ is a stochastic process driving the stock price process above. 
+But what does it mean "risk-neutral measure" ?
+The \emph{risk-neutral measure} is agreed upon by the market as a whole just as a consequence of no arbitrage assumption.
+In other words it is nothing more than an \emph{implied probability distribution}.
+Implied from observable prices of tradable instruments, and used to determine \emph{objective fair prices} for an asset or financial instrument. Probabilities are assessed with the risk taken out of the equation, so it doesn’t play a factor in the anticipated outcome.
+By contrast, if you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \emph{real or physical probability}.
+
+\subsubsection{Market Completness}
+A \emph{contingent claim} (financial derivative) is any stochastic variable $X$ of the form $X=\Phi(Z)$, where $Z$ is a stochastic process driving the stock price process above. 
 The function $\Phi$ is called the \emph{contract function}.
 
 As an example consider an European call option on the stock $S$ with strike $K$, (assume $S_0d < K < S_0u$)
@@ -449,23 +464,20 @@ X = \begin{cases}
 \Phi(d) = 0
 \end{cases}
 \end{equation*}
-		
 We aim at determine the "fair" price $\Pi(t; X)$, if it exists, for a given contingent claim $X$.
 
-A portfolio $\mathbf{\theta}$ in the assets $A$ is a \textcolor{red}{replicating portfolio} for a contingent claim $X$ if
+A portfolio $\mathbf{\theta}$ in the assets $A$ is a \textbf{replicating portfolio} for a contingent claim $X$ if
 \begin{equation}
 V_t = \sum_{j=1}^K \theta_j S_t^j(\omega_i)\quad\forall i=1,2,\ldots,N
 \end{equation}
-
+where $V_t$ is the asset price at time $t$.
 If all claims (assets) can be replicated the market is said to be \textbf{complete}.
 From a financial point of view, there is no difference between holding the claim and holding the portfolio, no matter what happens on the stock market, the value of the claim and of the stock will be the same.
 	
-Let $\mathcal{M}$ be an arbitrage-free market with a risk-less asset. If for every derivative there is a replicating portfolio
-then the market $\mathcal{M}$ is complete. Conversely, if the market $\mathcal{M}$ is complete, and if the unique risk-neutral measure $\mathcal{Q}$ gives positive probability to every market scenario $\omega$, then for every derivative security there is a replicating portfolio.% in the assets $A_j$.
-
-\textbf{complete market$\rightarrow$no-arbitrage}: consider the replicating portfolio $\theta$ of a contingent claim $X$. If $\Pi(0; X) < V_0^\theta$ then at time $t=0$ we buy the claim, sell the portfolio and put the proceeds $V_0^\theta-\Pi_0$ in the bank so the net position is 0. At $t=1$ we will receive the claim payoff $X$ and will have to pay $V_1^\theta =X$  to the holder of the portfolio. This cancels but we still have $e^r(V_0^\theta-\Pi_0)>0$ in the bank. Thus we have an arbitrage. Similarly $\Pi(0; X) > V_0^\theta$.
-	
-\textbf{no-arbitrage$\rightarrow$complete market}: fix and arbitrary claim $X$ with contract function $\Phi$ and a portfolio such that
+Conversely, if the market is complete, and if the \emph{unique} risk-neutral measure $\mathcal{Q}$ gives positive probability to every market scenario $\omega$, then for every derivative security there is a replicating portfolio.
+\begin{itemize}
+\item \textbf{complete market$\Rightarrow$no-arbitrage}: consider the replicating portfolio $\theta$ of a contingent claim $X$. If $\Pi(0; X) < V_0^\theta$ then at time $t=0$ we buy the claim, sell the portfolio and put the proceeds $V_0^\theta-\Pi_0$ in the bank so the net position is 0. At $t=1$ we will receive the claim payoff $X$ and will have to pay $V_1^\theta =X$  to the holder of the portfolio. This cancels but we still have $e^r(V_0^\theta-\Pi_0)>0$ in the bank. Thus we have an arbitrage. Similarly $\Pi(0; X) > V_0^\theta$.
+\item \textbf{no-arbitrage$\Rightarrow$complete market}: fix and arbitrary claim $X$ with contract function $\Phi$ and a portfolio such that
 \begin{equation*}
 \begin{cases}
 V_1 = x e^r + yS_0u = \Phi(u)\\
@@ -484,29 +496,33 @@ y &= \cfrac{1}{S_0}\cfrac{\Phi(u)-\Phi(d)}{u-d}
 
 Under the conditions which makes our model arbitrage-free, there exists a martingale (risk-neutral) measure and the free arbitrage price of a contingent claim $X$ is given by 
 \begin{equation*}
-\Pi(0; X) = e^{-r}\mathbb{E}^{\mathcal{Q}}[X]
+\Pi(0; X) = e^{-r}\mathbb{E}^{\mathbb{Q}}[X]
 \end{equation*} 
-The martingale measure $\mathcal{Q}$ is uniquely identified by~\ref{eq:risk_neutral_probabilities}.
+The martingale measure $\mathbb{Q}$ is uniquely identified by~\ref{eq:risk_neutral_probabilities}.
 		
 Indeed, the market is complete, so from the replicating portfolio we know that $\Pi(0;X) = V_0$ and using~\ref{eq:risk_neutral_probabilities} and~\ref{eq:replica_portfolio_value} we can explicitly calculate the price as
 \begin{equation*}
 \Pi(0;X) = e^{-r}\left[\cfrac{e^r-d}{u-d}\Phi(u)+\cfrac{u-e^r}{u-d}\Phi(d)\right] = e^{-r}\left[q_u\Phi(u)+q_d\Phi(d)\right]
 \end{equation*}
 the expected value, under the martingale measure.
-Such a price is given by the expectation of the discounted payoff under the measure $\mathcal{Q}^0$.
-		
+Such a price is given by the expectation of the discounted payoff under the measure $\mathbb{Q}$.
+\end{itemize}
+\myendproof
+
+\subsubsection{No Arbitrage Pricing Summary}
 \begin{itemize}
-\item The market is free of arbitrage if (and only if) there exists an \textcolor{red}{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).
+\item The market is free of arbitrage if (and only if) there exists an \textbf{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).
 \item The market is complete if and only if the martingale measure is unique.
 \item In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure
 \begin{equation}
-\Pi_t = \mathbb{E}^{\mathcal{Q}^0}[D(t,T)V_A|\mathcal{F}_t]
+\Pi_t = \mathbb{E}^{\mathbb{Q}}[D(t,T)V_A|\mathcal{F}_t]
 \label{eq:risk_neutral_pricing}
 \end{equation}
 \end{itemize}
 
 \section*{Exercises}
 \begin{exercise}[subtitle={Geometric Brownian Motion}]
+\label{ex:gbm}
 Show that 
 \begin{equation*}
 S_t = S_{t-1}\exp\left[\left(\mu-\frac{1}{2}\sigma^2\right)dt + \sigma\mathcal{N}(0,1)\sqrt{dt}\right] 
@@ -590,11 +606,8 @@ This solution is known as the exponential martingale solution.
 \section{Stochastic Simulation}
 In science, we are often more interested in the distribution of a set of outcomes rather than a single event. This may be the probability distribution of a molecule diffusing a specific distance as a function of time, or the price change of a very exotic derivative.
 
-Stochastic simulations allow us to generate a series of experiments on a system in which one step is governed by random chance. These simulations often boil down to flipping a coin to dictate if said step will occur or not.
-
-Of course, sitting in your office chair flipping a coin over and over again is not how one should do a simulation. To get a sense of the probability distribution of some outcome, we often have to simulate the process thousands of times. This means that we need to know how to make our computers do the heavy lifting.
-
-It's often easy to forget just how powerful modern computers can be. What once required a serious computational cluster only twenty years ago can now be done on a 10 mm thick compartment made of rose-gold colored aluminium. 
+Stochastic simulations allow us to generate a series of experiments on a system in which one or more steps is governed by random chance. These simulations often boil down to "flipping a coin" to dictate if said step will occur or not.
+To get a sense of the probability distribution of some outcome, we often have to simulate the process thousands of times. This means that we need to know how to make our computers do the heavy lifting.
 
 \section{The Algorithm}
 A Monte Carlo simulation is a mathematical technique that simulates the range of possible outcomes for an uncertain event.
@@ -603,28 +616,32 @@ These predictions are based on an estimated range of values instead of a fixed s
 
 Essentially the process is simulated by replacing every source of uncertainty by random numbers sampled from appropriate distributions (PDF). 
 
-Monte Carlo simulations use a probability distribution for any variable that has inherent uncertainty. Then, it recalculates the results many times, using a different set of random numbers within the estimated range each time. This process generates many probable outcomes, which become more accurate as the number of inputs grows. This property, that the actual result gets closer to the reality with more iterations, is known as the law of large numbers.).
-
-The Monte Carlo method has been described as "faking it a billion times until the reality emerges."
-It relies on the assumption that many random samples mimic patterns in the total population.
-
+Monte Carlo simulations use a probability distribution for any variable that has inherent uncertainty, it recalculates the results many times, using a different set of random numbers each time. This process generates many probable outcomes, which become more accurate as the number of inputs grows.
 Note that depending upon the number of uncertainties and their ranges, a Monte Carlo simulation could involve thousands or even millions of recalculations before it is completed.
+
+The Monte Carlo method has been described as "faking it a billion times until the reality emerges". It relies on the assumption that many random samples mimic patterns in the total population.
 
 Although they might vary from case to case, the general steps to a Monte Carlo simulation are as follows:
 \begin{itemize}
-\item Build the model. Determine the mathematical model.
-\item Choose the variables to simulate. Pick the variables, and determine an appropriate probability distribution (PDF) for each random variable and their range of variability $\Omega$.
-\item Run repeated simulations. Run the random variables through the mathematical model to perform many iterations of the simulation.
-\item Aggregate the results, and determine the mean, standard deviation and variant to determine if the result is as expected. Visualize the results on a histogram.
+\item Determine the mathematical model.
+\item Pick the stochastic variables, and determine an appropriate probability distribution (PDF) for each and their range of variability $\Omega$.
+\item Run the random variables through the mathematical model to perform many simulations (or experiments).
+\item Aggregate the results, and determine the mean, standard deviation and variant to determine if the result is as expected. Alternatively visualize the result distribution on a histogram.
 \end{itemize}
+
+\subsubsection{An Example}
 
 Imagine to simulate the results of rolling a die: the only variable is the die outcome, so $\Omega =1,2,3,4,5,6$ and the outcome probability is a uniform distribution (i.e. we are using a fair die and outcomes are equiprobable). Hence the simulation consists of sampling uniform distributed integers between 1 and 6.
 
-\subsubsection{Array in \texttt{python}}
+\subsection{Array in \texttt{python}}
 
-The most efficient way to implement array is through \texttt{numpy.array} objects. These are a faster replacement for native \texttt{list} objects which are implemented in \texttt{C} language thus overtake the usual performance bottlenecks. 
+A convenient way of storing the results of a Monte Carlo simulation in \texttt{python} is using \texttt{numpy.array} objects. 
 
-One of the main feature of \texttt{numpy.array} is the so called \emph{vectorialization}, which is the capability of applying a certain operation to each element of the array without expliciting the for-loop on them.
+These are a faster replacement for native \texttt{list} objects which are implemented in \texttt{C} language thus overtaking the usual performance bottlenecks of the \texttt{python} language. 
+
+One of the most interesting feature of \texttt{numpy.array} is the so called \emph{vectorialization}, which is the capability of applying a certain operation to each element of the array without expliciting the for-loop on them.
+
+The following example shows the result of applying the logarithm to a list of numbers first in the "traditional" way then using vectorialization.
 \begin{ipython}
 import numpy as np
 import math 
@@ -637,9 +654,9 @@ data_vec = np.array(data)
 print (np.log(data_vec))
 \end{ipython}
 
-When dealing with multidimensional arrays you need to pay attention to the \emph{axis} you want to perform the operation.
+When dealing with multidimensional arrays you need to pay attention to the \emph{axis} you want to perform such operations.
 
-Imagine a $m\times N$ matrix representing $N$ simulation of the variation of a Brownian motion $dW$ for $m$ time steps.
+In fact imagine a $m\times N$ matrix representing $N$ simulation of the variation of a Brownian motion $dW$ for $m$ time steps.
 
 \begin{equation}
 	\text{\tiny time (axis 0)}\mymatrix{\begin{pmatrix}
@@ -650,9 +667,9 @@ Imagine a $m\times N$ matrix representing $N$ simulation of the variation of a B
 	\end{pmatrix}}
 \label{numpy_array}
 \end{equation}
-\vfill
-If I would like to get each realization of $W$ I have to sum all the changes $dW$ for each simulation (hence sum up along the "time" axis)the Brownian. In \texttt{python} this can be done by using \texttt{numpy.cumsum} (cumulative sum) function specifying that the sum has to be done along \texttt{axis=0}. In this very simple example we have 3 simulations and 2 time steps.
-\vfill
+If I would like to get each realization of $W$ I have to sum all the changes $dW$ for each simulation (hence sum up along the "time" axis). 
+
+This can be done by using \texttt{numpy.cumsum} (cumulative sum) function specifying that the sum has to be done along \texttt{axis=0}. In the following simple example we have 3 simulations and 2 time steps.
 
 \begin{ipython}
 import numpy as np
@@ -683,7 +700,7 @@ mean path:
 [2. 7.]
 \end{ioutput}
 
-The output has correctly length 2, since there is just one path (i.e. the mean path) made of two time steps.
+The output has correctly length 2, since there is just one path, i.e. the mean path, made of two time steps.
 
 \subsection{Simulating Stochastic Differential Equations}
 
@@ -694,9 +711,9 @@ dX(t) = \mu(t,X(t))dt + \sigma(t,X(t))dW(t)
 \label{eq:sde}
 \end{equation}
 
-The Monte Carlo simulation of such a process can be carried out according to the \emph{Euler scheme} as follows: consider the value of $X$ at time $t=t_i$, the value compute $X(t_{i+1})$ is evaluated from the dynamics of X (Eq.~\ref{eq:sde}), setting $\Delta t = t_{i+1} - t_{i}$, and sampling from a standard normal $\mathcal{N}(0,1)$ in order to "evolve" the stochastic term $dW$
+The Monte Carlo simulation of such a process can be carried out according to the \emph{Euler scheme} as follows: consider the value of $X$ at time $t=t_i$, the value $X(t_{i+1})$ is evaluated directly \emph{discretizing}  the dynamics of X (Eq.~\ref{eq:sde}). Set $\Delta t = t_{i+1} - t_{i}$, and sample from a standard normal $z = \mathcal{N}(0,1)$ in order to "evolve" the stochastic term $dW$, then 
 \begin{equation}
-X(t_{i+1}) = X(t_i) + \mu(t_i,X(t_i))\Delta t + \sigma(t_i,X(t_i))\sqrt{\Delta t}\mathcal{N}(0,1)
+X(t_{i+1}) = X(t_i) + \mu(t_i,X(t_i))\Delta t + \sigma(t_i,X(t_i))\sqrt{\Delta t}z
 \end{equation}
 
 In the specific case of a simple Brownian motion the dynamics is given by
@@ -707,7 +724,7 @@ so
 \begin{equation}
 W(t+dt) = W(t) + \sqrt{dt}\mathcal{N}(0,1)
 \end{equation}
-or
+or, for the entire realization
 \begin{equation}
 W(t) = \sum_{t_0}^{t} \sqrt{dt}\mathcal{N}(0,1)
 \end{equation}
@@ -1019,6 +1036,18 @@ The model has five parameters:
 \end{itemize}
 
 Using the Euler scheme simulate a possible realization for $S_t$ and $\sigma_t$ using the parameters: $S_0=100$, $\mu=0.25$, $T=3$, $\nu_0=0.05$, $\kappa=1.2$, $\theta=0.10$, $\xi=0.593$, $\rho=-0.5$.
+
+\textbf{Note: } in order to sample from two correlated Brownian motions you need to use the following snippet of code
+\begin{ipython}
+import numpy as np
+from scipy.stats import multivariate_normal
+
+rho = 0.5
+mean = [0.02, 0.05]
+cov = np.array([[1, rho],[rho, 1]])
+
+dW12 = multivariate_normal(mean=mean, cov=cov)
+\end{ipython}
 \end{exercise}
 \begin{solution}
 \begin{ipython}
@@ -1217,31 +1246,109 @@ This leads to the following definitions of \emph{simple forward rate} for $[T,S]
 F(t; T,S) = \cfrac{1}{S - T}\left(\cfrac{P(t,T)}{P(t,S)} - 1\right)
 \end{equation}
 
-\section{Interest Rate Swap as FRAs}
+\subsection{Classes}
 
-The swap payoff 
+Classes are a key ingredient of \emph{Object Oriented Programming} (OOP) and they are implemented basically in every modern programming language which follows this paradigm.
+OOP is a programming model in which programs are organized around data, or objects, rather than functions and logic.
 
-\begin{equation}
-	\sum_{i=\alpha+1}^{\beta} D(t,T_i)N \tau_i \left[K-L(T_{i-1},T_i)\right]
-	\label{eq:payoff_payer_irs}
-\end{equation}	
-can be re-interpreted as a portfolio of FRAs. Indeed using the payoff of a FRA
-\begin{equation}
-	\textbf{FRA}= N\tau P(t,S)(K - F(t;T,S))
-	\label{eq:fram_payoff_withF}
-\end{equation}
-the Receiver IRS payoff can be expressed like
-\begin{equation}
-	\begin{aligned}
-		\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\mathbb{E}^Q[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
-		&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))\\
-		&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-N\sum_{i=\alpha+1}^{\beta}(P(t,T_{i-1})-P(t,T_i)) \\
-		&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)
-	\end{aligned}
-\label{eq:swap_as_sum_fra}
-\end{equation}
+\textbf{Any object can be thought of as a dataset with unique attributes and behavior} (examples can range from physical entities, such as a human being that is described by properties like name and birthday, to abstract concepts as a discount curve). 
+In this framework classes are a mean for creating objects (a particular data structure), providing initial values for its state (\emph{attributes}), and implementations of behavior (\emph{methods}).
 
-Clearly not all the FRAs in the swap, when it has zero value, will have zero value each (\emph{except for the degenerate case of flat yield curve}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
+\textbf{In other words classes are collections of functions that operate on a dataset, and instances of that class represent individual datasets (or if you prefer a specialization of that class).}
+
+Class examples are: a building (with number of entrances, number of floors, a flag to know if there is a garden\ldots), a dog (with age, fur color\ldots) or a computer (with manufacturer, RAM size, CPU type\ldots).
+While examples of corresponding instances are: the Empire State Building (a specific building), Lassie (a very particular dog), or your computer.
+
+Let's see how classes can be implemented by coding step by step an object representing a discount curve. Such a curve associate discount factors to a set of dates (often called pillars) and will have the ability to return a discount factor for any date the user will provide trhough interpolation.
+
+First of all, we have to import the necessary modules, in this case the \texttt{datetime} and the interpolation function.
+Then the \texttt{class} keyword followed by the class name is used to start the actual definition.
+
+\begin{ipython}
+from datetime import date
+from scipy.interpolate import interp1d
+
+class DiscountCurve:
+\end{ipython}
+
+After declaring the class name, the \emph{constructor method} must be defined. This is always denoted by \texttt{\_\_init\_\_()}. The \texttt{\_\_init\_\_} method, as every other method in a class, takes \texttt{self} as the first argument, and then any number of parameters as required. The constructor allows to specify the initial state of a class by setting its attribute values. For this example, we want to provide a set of dates and the corresponding set of discount factors.
+
+The \texttt{self} parameter is used to create class attributes. Variables whose name starts with \texttt{self.} have \emph{class scope}, which means are available within each class method. To use the parameters and associate them with a particular instance of the class, within the \texttt{\_\_init\_\_} method, create variables for each argument like this: \texttt{self.variableName\ =\ param}.
+
+\begin{ipython}
+from datetime import date
+from scipy.interpolate import interp1d
+
+# this is the class definition
+# usually classes use camel naming convention
+class DiscountCurve:
+    # the special method __init__ allows to instantiate a class
+    # with an initial dataset
+    def __init__(self, pillars, dfs):
+        self.pillars = pillars
+        self.dfs = dfs
+\end{ipython}
+
+We haven't yet defined any "behavior" for our class, so let's add a \emph{method} to return a discount factor given an arbitrary date.
+
+\begin{ipython}
+from datetime import date
+from numpy import interp
+
+# this is the class definition
+# usually classes use camel naming convention
+class DiscountCurve:
+    # the special method __init__ allows to instantiate a class
+    # with an initial dataset
+    def __init__(self, pillars, dfs):
+        self.pillars = pillars
+        self.dfs = dfs
+
+    def df(self, d):
+        dates = [p.toordinal() for p in self.pillars]
+        return interp(d.toordinal(), dates, self.dfs)
+\end{ipython}
+
+Note that to access class attributes and methods the dot (\texttt{.}) operator has to be used. 
+
+Now that we have coded our class we can test it.
+
+\begin{ipython}
+dc = DiscountCurve([date(2024, 1, 1), date(2025, 1, 1)], [1, 0.9])
+df = dc.df(date(2024,7,2))
+print (df)
+\end{ipython}
+\begin{ioutput}
+0.95
+\end{ioutput}
+
+Using classes is very convenient since allows to avoid the usage of many separated functions acting on different data sets. The code becomes messy very quickly.
+
+%\section{Interest Rate Swap as FRAs}
+%
+%The swap payoff 
+%
+%\begin{equation}
+%	\sum_{i=\alpha+1}^{\beta} D(t,T_i)N \tau_i \left[K-L(T_{i-1},T_i)\right]
+%	\label{eq:payoff_payer_irs}
+%\end{equation}	
+%can be re-interpreted as a portfolio of FRAs. Indeed using the payoff of a FRA
+%\begin{equation}
+%	\textbf{FRA}= N\tau P(t,S)(K - F(t;T,S))
+%	\label{eq:fram_payoff_withF}
+%\end{equation}
+%the Receiver IRS payoff can be expressed like
+%\begin{equation}
+%	\begin{aligned}
+%		\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\mathbb{E}^Q[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
+%		&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))\\
+%		&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-N\sum_{i=\alpha+1}^{\beta}(P(t,T_{i-1})-P(t,T_i)) \\
+%		&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)
+%	\end{aligned}
+%\label{eq:swap_as_sum_fra}
+%\end{equation}
+%
+%Clearly not all the FRAs in the swap, when it has zero value, will have zero value each (\emph{except for the degenerate case of flat yield curve}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
 
 \section{Floating Rate Notes}
 Floating rate bond or note (FRN) usually refers to an instrument whose coupon is based on a short term rate (3-month T-bill, 6-month LIBOR). Variable coupon rates are fixed in advance at reset dates, which are 3- or 6-month (interest payment period) earlier.
@@ -1389,12 +1496,12 @@ Going on, \emph{iteratively}, through each equation we are then able to determin
 As a financial example, you can imagine the functions $f_i$ as the pricing equation of bonds with different maturities, each depending on a different set of interest rates, minus the current market price of the bond $c$. Since those are fair prices each $f_i$ can be set equal to 0 and through the bootstrap we can determine the interest rate term-structure implied by the bond market quotes. 
 
 Another practical application of the bootstrap algorithm is to determine the \emph{spot cap volatilities} from the current market prices (note, the market quotes only the flat volatilities).
-The main challenges are:
-\begin{enumerate}
-		\item Produce Caplet/Floorlet prices consistent with current levels of Cap/Floor volatilities and therefore be able to re-price the market;
-	\item being able to “rebase” volatilities when pricing Cap/Floor over not quoted floating rates according to multiple curves framework (e.g. Cap/Floor over 1M or 12M Euribor);
-	\item to make things more complicated, some Caps/Floors are not always quoted over the same LIBOR, for example EUR Cap/Floor are quoted over 3M EURIBOR up to $2y$ maturity and then over 6M EURIBOR.
-\end{enumerate}
+%The main challenges are:
+%\begin{enumerate}
+%		\item Produce Caplet/Floorlet prices consistent with current levels of Cap/Floor volatilities and therefore be able to re-price the market;
+%	\item being able to “rebase” volatilities when pricing Cap/Floor over not quoted floating rates according to multiple curves framework (e.g. Cap/Floor over 1M or 12M Euribor);
+%	\item to make things more complicated, some Caps/Floors are not always quoted over the same LIBOR, for example EUR Cap/Floor are quoted over 3M EURIBOR up to $2y$ maturity and then over 6M EURIBOR.
+%\end{enumerate}
 
 From the prices of different maturity caps, it is possible to \emph{bootstrap} the volatility of each caplet, i.e. the volatility which refers to the forward rate corresponding to the caplet.
 
@@ -1409,7 +1516,7 @@ Begin June 2014, the rates set by ECB were negative for the first time (-10 bps)
 
 In a negative interest rate environment, the ZCBs, may get values that are higher than one unit of currency. This would imply that the Libor rate would be negative. When the the rate is negative the Black-Scholes pricing equation is not properly defined (the logarithm of a negative quantity...).
 
-Instead of using the Geometric Brownian Motion dynamics, the arithmetic Brownian Motion (ABM), that give rise to negative realizations could, for example be chosen. Such a solution, although straight-forward, has a significant disadvantage, however, as the normal distribution has much flatter tails as compared to a log-normal process.
+Instead of using the Geometric Brownian Motion dynamics, the arithmetic Brownian Motion (ABM), that give rise to negative realizations could, for example be chosen. Such a solution, although straight-forward, has a significant disadvantage, however, as the normal distribution has much flatter tails as compared to a log-normal process. Figure\ref{fig:lognormal_shifted} shows the density of various log-normal  distributions. Notice how the bigger is the shift the wider is the distribution.
 
 So instead of completely changing the underlying dynamics, the industrial standard fro dealing with the negativity has become to \emph{shift} the original process.
 
@@ -1427,41 +1534,42 @@ where $\hat{K} = K + \theta_k$.
 \begin{center}
 	\includegraphics[width=0.6\linewidth]{addons/lognormal_shifted}
 \end{center}
+\caption{Density of various log-normal  distributions. Notice how the bigger is the shift the wider is the distribution.}
 \label{fig:lognormal_shifted}
 \end{figure}
 
-\section{Jamshidian Decomposition}
-An option on a portfolio of pure discount bonds can be decomposed into a portfolio of options on the individual discount bonds in the portfolio.
-
-Hence, we can think of the European Swaption as a sum of European
-options on Zero-Coupon bonds. This method is called Jamshidian’s decomposition, and is mathematically explained as follows:
-\begin{equation}
-	\max\left[\sum_{i=1}^n C_i p(r, t, s_i) - K, 0\right] = \sum_{i=1}^n C_i \max\left[p(r, t, s_i) - K_i, 0\right]
-	\label{eq:jamshidian_decomposition}
-\end{equation}
-
-Consider a European Swaption with strike rate $K$, maturity $T$ and nominal $FV$
-with payment dates $T_i$ for $i = 1,\ldots, n$. Since the value of a floating rate bond is worth its face value, we can take it as an option on a bond paying $C_i = K_{s_i}$ with strike price $FV$. This option will be exercised when $r(T) < r^*$ where $r^*$ is the solution to
-\begin{equation}
-	FV = \sum_{i=1}^n C_i p(r^*, T, T_i)
-\end{equation}
-This means that $FV$ is taken as a sum of discounted flows $C_i$ for a short rate $r^*$ at time $T$. To find the value of $r^*$ we have to discount all the Swap cash-flows, sum them up and let the sum be equal to the notional. We have to use the Newton-Raphson algorithm to follow this calculation $r^*$, that will be the correspondent level of $r$ for that equality to happen. 
-
-Once $r^*$ is found, we have to calculate the discounted cash-flows substituting it in the discounting factor $e^{-r\Delta t}$ and let them be the strike prices of our call options on Swaps.
-Afterwards, we calculate the payoff of the call options on the cash-flows with
-the strike price mentioned and sum them up. The payoff of this sum of options
-will thus be
-\begin{equation}
-	\max\left[\sum_{i=1}^n C_ip(r, T, T_i)-FV, 0\right]
-\end{equation}
-which using Eq.~\ref{eq:jamshidian_decomposition} we find is equivalent to
-\begin{equation}
-	\sum_{i=1}^n C_i \max\left[p(r, T, T_i)-FV_i, 0\right]
-\end{equation}
-where $FV_i = p(r^*, T, T_i)$. 
-Therefore, the Swaption is calculated as the sum of $n$ options on discounted bonds with the exercise price of the $i$th option equal to $FV_i$.
-
-After the price of a European Swaption under the Hull-White model is calculated, we have to calibrate it against the market data. Usually this calibration method is carried out taking the target prices to match the ones given by the Black-76 or Normal-Black models and trying to get as close as possible to them.
+%\section{Jamshidian Decomposition}
+%An option on a portfolio of pure discount bonds can be decomposed into a portfolio of options on the individual discount bonds in the portfolio.
+%
+%Hence, we can think of the European Swaption as a sum of European
+%options on Zero-Coupon bonds. This method is called Jamshidian’s decomposition, and is mathematically explained as follows:
+%\begin{equation}
+%	\max\left[\sum_{i=1}^n C_i p(r, t, s_i) - K, 0\right] = \sum_{i=1}^n C_i \max\left[p(r, t, s_i) - K_i, 0\right]
+%	\label{eq:jamshidian_decomposition}
+%\end{equation}
+%
+%Consider a European Swaption with strike rate $K$, maturity $T$ and nominal $FV$
+%with payment dates $T_i$ for $i = 1,\ldots, n$. Since the value of a floating rate bond is worth its face value, we can take it as an option on a bond paying $C_i = K_{s_i}$ with strike price $FV$. This option will be exercised when $r(T) < r^*$ where $r^*$ is the solution to
+%\begin{equation}
+%	FV = \sum_{i=1}^n C_i p(r^*, T, T_i)
+%\end{equation}
+%This means that $FV$ is taken as a sum of discounted flows $C_i$ for a short rate $r^*$ at time $T$. To find the value of $r^*$ we have to discount all the Swap cash-flows, sum them up and let the sum be equal to the notional. We have to use the Newton-Raphson algorithm to follow this calculation $r^*$, that will be the correspondent level of $r$ for that equality to happen. 
+%
+%Once $r^*$ is found, we have to calculate the discounted cash-flows substituting it in the discounting factor $e^{-r\Delta t}$ and let them be the strike prices of our call options on Swaps.
+%Afterwards, we calculate the payoff of the call options on the cash-flows with
+%the strike price mentioned and sum them up. The payoff of this sum of options
+%will thus be
+%\begin{equation}
+%	\max\left[\sum_{i=1}^n C_ip(r, T, T_i)-FV, 0\right]
+%\end{equation}
+%which using Eq.~\ref{eq:jamshidian_decomposition} we find is equivalent to
+%\begin{equation}
+%	\sum_{i=1}^n C_i \max\left[p(r, T, T_i)-FV_i, 0\right]
+%\end{equation}
+%where $FV_i = p(r^*, T, T_i)$. 
+%Therefore, the Swaption is calculated as the sum of $n$ options on discounted bonds with the exercise price of the $i$th option equal to $FV_i$.
+%
+%After the price of a European Swaption under the Hull-White model is calculated, we have to calibrate it against the market data. Usually this calibration method is carried out taking the target prices to match the ones given by the Black-76 or Normal-Black models and trying to get as close as possible to them.
 
 \section{Longstaff-Schwartz Algorithm}
 
@@ -1504,12 +1612,12 @@ We could have priced this product because we have an analytical pricing formula 
 
 Let's search then for a finer solution analyzing the relationship between the continuation value and the simulated realization of $S$ at step $t_1$, by plotting the discounted payoff at maturity, $P_i$ vs $S_i(T_1)$ (the red line represents the analytical price of the put as a function of $S_i$), see Fig.~\ref{fig:continuation_function}.
 
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.8\linewidth]{addons/lsm_paths}
-	\end{center}
-	\label{fig:lsm_paths}
-\end{figure}
+%\begin{figure}[htbp]
+%	\begin{center}
+%		\includegraphics[width=0.8\linewidth]{addons/lsm_paths}
+%	\end{center}
+%	\label{fig:lsm_paths}
+%\end{figure}
 
 The analytical price of the put is a curve which kinds of interpolate the cloud of Monte Carlo points. This suggest us that
 \textbf{the price at time $t_1$ can be computed by means of an average on all discounted payoff (i.e. the barycentre of the cloud made of discounted payoff)}.
@@ -1521,6 +1629,7 @@ As an example in Fig.~\ref{fig:continuation_function} there is a curve found by 
 	\begin{center}
 		\includegraphics[width=0.5\linewidth]{addons/continuation_function}
 	\end{center}
+	\caption{Simulations of the continuation value for the option. The Black-Scholes price and the best fit of a $5^{th}$ order polynomial are also shown.}
 	\label{fig:continuation_function}
 \end{figure}
 
@@ -1533,7 +1642,7 @@ The formula is obviously fast, the cost of the algorithm being just the best fit
 
 \subsection{The Algorithm}
 The major insight of Longstaff-Schwartz is to estimate the continuation value $C_{t,i}$ by ordinary least-squares regression, therefore the name Least Square Monte Carlo for the algorithm. 
-They propose to regress the $I$ continuation values $Y_{t,i}$ against the I simulated levels $S_{t,i}$. Given $D$ basis functions $b_i:\mathbb{R}^D\rightarrow\mathcal{R}$ for the regression, the continuation value $C_{t,i}$ is according to the approach approximated by
+Their goal is to regress the $I$ continuation values $Y_{t,i}$ against the I simulated levels $S_{t,i}$. Given $D$ basis functions $b_i:\mathbb{R}^D\rightarrow\mathcal{R}$ for the regression, the continuation value $C_{t,i}$ is according to the approach approximated by
 \begin{equation}
 	\hat{C}_{t,i}=\sum_{i=1}^D \alpha^*_{d,t}b_d(S_{t,i})
 	\label{eq:continuation_approx}
@@ -1574,14 +1683,26 @@ Let's consider now a generic American product. Here is the Longstaff-Schwartz al
 	\end{equation} 
 \end{itemize}
 
+In their paper, Francis Longstaff and Eduardo Schwartz found that using Laguerre, Hermite, Legendre or simple powers made very little difference in the results. 
+
+There are indeed many more significant choices in the regression techniques:
+\begin{itemize}
+\item the overall power and the choice of variables (e.g. scaled variables);
+\item include all paths or just the in-the-money paths;
+\item regression technique (e.g. Cholesky, QR, SVD);
+\item are polynomials a good choice at all ? Should you consider other kinds of regressions ?
+\end{itemize}
+
+Now, the choice of Laguerre polynomials may facilitate the regression result. Laguerre polynomials are orthogonal with regards to the exponential function. This emphasizes the data at a particular sample and de-emphasizes more distant data. It is possible that the resulting linear system is better behaved then. 
+
 \section{Callable Bond}
-A callable bond is a bond in which the issuer reserves the right to redeem the bond at different discrete times, possibly for different redemption values. When a callable bond is bought, no one knows when the bond will be called, however it can nly be called at the times agreed upon at issue.
+A callable bond is a bond in which the issuer reserves the right to redeem the bond at different discrete times, possibly for different redemption values. When a callable bond is bought, no one knows when the bond will be called, however it can only be called at the times agreed upon at issue.
 
 Investors have a variety of tools and techniques at their disposal, which enable them to assess the value of callable bonds and make informed investment decisions. Examples are:
 \begin{itemize}
 \item \textbf{Yield to Call (YTC)} It is a measure of the return an investor can expect if a callable bond is called by the issuer. It takes into account the call price, the coupon rate, and the time to call. YTC is an important metric for investors because it allows them to compare the potential return of a callable bond to that of a non-callable bond. However, it is important to note that YTC assumes that the issuer will call the bond at the first opportunity, which may not always be the case.
-\item \textbf{Yield to Worst (YTW)} It is a measure of the return an investor can expect if a callable bond is not called by the issuer. It takes into account the yield to maturity and the yield to call, whichever is lower. YTW is important for investors because it provides a more conservative estimate of the potential return of a callable bond. It is also important to note that YTW assumes that the bond will not be called, which may not always be the case.
-\item \textbf{Option-Adjusted spread (OAS)} It is a measure of the yield spread between a callable bond and a risk-free bond of the same maturity. It takes into account the optionality of the callable bond, which allows the issuer to call the bond at any time. OAS is important for investors because it provides a more accurate estimate of the credit risk associated with a callable bond.
+%\item \textbf{Yield to Worst (YTW)} It is a measure of the return an investor can expect if a callable bond is not called by the issuer. It takes into account the yield to maturity and the yield to call, whichever is lower. YTW is important for investors because it provides a more conservative estimate of the potential return of a callable bond. It is also important to note that YTW assumes that the bond will not be called, which may not always be the case.
+%\item \textbf{Option-Adjusted spread (OAS)} It is a measure of the yield spread between a callable bond and a risk-free bond of the same maturity. It takes into account the optionality of the callable bond, which allows the issuer to call the bond at any time. OAS is important for investors because it provides a more accurate estimate of the credit risk associated with a callable bond.
 \item \textbf{Duration} It is a measure of the sensitivity of a bond's price to changes in interest rates. It takes into account the bond's cash flows, maturity, and yield. Duration is important for investors because it allows them to assess the risk associated with a callable bond. Callable bonds typically have shorter durations than non-callable bonds, which means that they are less sensitive to changes in interest rates.
 \item \textbf{Monte Carlo Simulation}.
 \end{itemize}
@@ -2005,6 +2126,78 @@ Determine the maximum price a buyer should pay in order to earn an annual yield 
 Determine the interest rate value threshold that suggest an issuer to exercise a callable bond.
 \end{exercise}
 
+\begin{exercise}[subtitle=Vega]
+Calculate the analytical expressions for:
+\begin{itemize}
+\item Delta Sensitivity analytically, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
+\item Delta Vega analytically, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
+\end{itemize}
+\end{exercise}
+
+\begin{solution}
+The Black formula for a caplet is given by:
+\begin{equation*}
+\textbf{Cpl} = L\delta_k P(0,t_{k+1})[F_k N(d_1)-R_k N(d_2)]
+\end{equation*}
+where:
+\begin{equation*}
+d_1 =\cfrac{\ln(F_k/R_k)+\sigma^2_k t_k/2}{\sigma_k \sqrt{t_k}},\text{ and } d_2 = d_1-\sigma_k \sqrt{t_k}
+\end{equation*}
+
+The delta will just be the first derivative of the equation above in respect to $F$, although one also has to worry about the $F$ being in the $d_1$ and $d_2$ terms.
+
+Ignoring the constants $L\delta_k P(0,t_{k+1})$
+\begin{equation*}
+\Delta =\cfrac{\partial C}{\partial F} = N(d_1) + F\cfrac{\partial N(d_1)}{\partial F} - r_k\cfrac{\partial N(d_2)}{\partial F}
+\end{equation*}
+Next we apply the chain rule:
+\begin{equation*}
+	\cfrac{\partial N(d_1)}{\partial F} = \cfrac{\partial N(d_1)}{\partial d_1}\cfrac{\partial d_1}{\partial F}
+\end{equation*}
+and so:
+\begin{equation*}
+\Delta = N(d_1) + F\cfrac{\partial N(d_1)}{\partial d_1}\cfrac{\partial d_1}{\partial F} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\cfrac{\partial d_2}{\partial F}
+\end{equation*}
+First thing to notice is that since the $d_1$ and $d_2$ definitions:
+\begin{equation*}
+\cfrac{\partial d_1}{\partial F} = \cfrac{\partial d_2}{\partial F}=\cfrac{1}{F_k\sigma_k\sqrt{t_k}}
+\end{equation*}
+and so:
+\begin{equation*}
+\Delta = N(d_1) + \cfrac{1}{F_k\sigma_k\sqrt{t_k}}\left[F\cfrac{\partial N(d_1)}{\partial d_1} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\right]
+\end{equation*}
+Second, lets see how we can simplify the expression inside the parenthesis. Considering that:
+\begin{equation*}
+N(d_1) = \cfrac{1}{\sqrt{2\pi}}\int_{-\infty}^{d_1} e^{-x^2/2}dx
+\end{equation*}	
+it follows that:
+\begin{equation*}
+\cfrac{\partial N(d_1)}{\partial d_1}=N'(d_1)=\cfrac{1}{\sqrt{2\pi}}e^{-d_1^2/2}
+\end{equation*}
+and so:
+\begin{equation*}
+\left[F\cfrac{\partial N(d_1)}{\partial d_1} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\right] = \left[FN'(d_1)-R_kN'(d_2)\right]
+\end{equation*}
+
+Now with a substitution of $d_2$ for $d_1-\sigma_k\sqrt{t_k}$, we have:
+\begin{equation*}
+\begin{gathered}
+R_kN'(d_1 - \sigma_k\sqrt{t_k}) = R_k\cfrac{1}{\sqrt{2\pi}}\exp\left(\cfrac{-(d_1-\sigma_k\sqrt{t_k}))^2}{2}\right) = \\
+= R_k\cfrac{1}{\sqrt{2\pi}}\exp\left(\cfrac{-d_1^2}{2}\right)\exp\left(\cfrac{-2d_1\sigma_k\sqrt{t_k}-(\sigma_k\sqrt{t_k})^2}{2}\right) = \\  = R_kN'(d_1)\exp\left(\cfrac{\ln(F_k/R_k)+\sigma_k^2t_k}{\sigma_k\sqrt{t_k}}\sigma_k\sqrt{t_k}\right)\exp\left(\cfrac{-\sigma_k^2t_k}{2}\right) = \\
+=R_kN'(d_1)\exp\left(\ln(F_k/R_k)+\sigma^2_kt_k/2-\sigma^2_kt_k/2\right) = R_kN'(d_1)\cfrac{F_k}{R_k} = F_kN'(d_1)
+\end{gathered}
+\end{equation*}
+and so
+\begin{equation*}
+	R_kN'(d_2)=F_kN'(d_1)
+\end{equation*}
+So finally, the delta of the caplet would be:
+\begin{equation*}
+\Delta = N(d_1) + \cfrac{1}{F_k\sigma_k\sqrt{t_k}}\left[FN'(d_1)-R_kN'(d_2)\right] =
+N(d_1)
+\end{equation*}
+\end{solution}
+
 %\begin{figure}[htbp]
 %	\begin{center}
 %		\includegraphics[width=0.5\linewidth]{addons/callable_bond}
@@ -2048,41 +2241,41 @@ Determine the interest rate value threshold that suggest an issuer to exercise a
 %\end{figure}
 
 \chapter{Change of Measure}
-\section{Girsanov Theorem}
-\begin{exercise}[subtitle=Drifty Brownian Motion]
-Let’s start with a standard Brownian motion $W_t^{\mathbb{P}} = \mathcal{N}_{\mathbb{P}}(0,t)$ under a probability measure $\mathbb{P}$, and adapted to a filtration $\mathcal{F}_t$. In Fig.~\ref{fig:brownian_motion_nodrift} 30 simulated path evolutions of $W_t^{\mathbb{P}}$ are shown, as expected there is no drift.
-	
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_nodrift}
-	\end{center}
-	\label{fig:brownian_motion_nodrift}
-	\caption{Thirty realization of the simple Brownian motion $W_t^{\mathcal{P}}$.}
-\end{figure}
-
-For exemplification, let us now construct a "drifty" process $Y_t=\mu t+\sigma W_t^{\mathcal{P}}\in \mathcal{N}_{\mathcal{P}}(\mu t, \sigma^2 t)$, that is a Wiener process with drift $\mu$ and diffusion $\sigma$; in other words, $\mathbb{E}^{\mathcal{P}}[Y_t]=\mu t$ and $\text{Var}^{\mathbb{P}}[Y_t]=\mathbb{E}^{\mathcal{P}}[Y^2_t]-\mathbb{E}^{\mathcal{P}}[Y_t]^2=\sigma^2 t$.
-
-%Incidentally, note the terminology: the drift is not an expectation, but rather the rate of change in expectation, and the diffusion is not a standard deviation, but rather the square root of the rate of change in variance. 
-Figure~\ref{fig:brownian_motion_drift} shows 30 simulated paths for the evolution of $Y_t$ ($\mu = 0.8$ and $\sigma =1.25$). There the drift is visually apparent.
-\begin{figure}[htbp]
-\begin{center}
-	\includegraphics[width=0.5\linewidth]{addons/brownian_motion_drift}
-\end{center}
-\label{fig:brownian_motion_drift}
-	\caption{Thirty realization of the "drifty" Brownian motion $Y_t$.}
-\end{figure}
-
-We aim at applying a change of measure from $\mathcal{P}$ into a new probability $\mathcal{Q}$, such that $Y_t$ becomes driftless (a martingale) under $\mathcal{Q}: \mathbb{E}^{\mathcal{Q}}[Y_t]=0$, yet with the same diffusion as under $\mathcal{P}$: $\text{Var}^{\mathcal{Q}}[Y_t]=\sigma^2 t$
-
-Let $\mu^{*}$ be a new drift and assume $\\gamma_t = \frac{\mu_t^{*}-\mu_t}{\sigma_t}$. According to the Girsanov Theorem the process
-\begin{equation}
-dW^{*}_t = -\gamma_t dt + dW_t
-\end{equation}
-is a Brownian motion under the new measure $\mathcal{Q}$, equivalent to $\mathcal{P}$, is defined by the Radon-Nikodym derivative
-\begin{equation}
-\cfrac{d\mathcal{Q}}{d\mathcal{P}} = \exp\left(-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s\right)
-\end{equation}
-\end{exercise}
+\section*{Exercises}
+%\begin{exercise}[subtitle=Drifty Brownian Motion]
+%Let’s start with a standard Brownian motion $W_t^{\mathbb{P}} = \mathcal{N}_{\mathbb{P}}(0,t)$ under a probability measure $\mathbb{P}$, and adapted to a filtration $\mathcal{F}_t$. In Fig.~\ref{fig:brownian_motion_nodrift} 30 simulated path evolutions of $W_t^{\mathbb{P}}$ are shown, as expected there is no drift.
+%	
+%\begin{figure}[htbp]
+%	\begin{center}
+%		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_nodrift}
+%	\end{center}
+%	\label{fig:brownian_motion_nodrift}
+%	\caption{Thirty realization of the simple Brownian motion $W_t^{\mathcal{P}}$.}
+%\end{figure}
+%
+%For exemplification, let us now construct a "drifty" process $Y_t=\mu t+\sigma W_t^{\mathcal{P}}\in \mathcal{N}_{\mathcal{P}}(\mu t, \sigma^2 t)$, that is a Wiener process with drift $\mu$ and diffusion $\sigma$; in other words, $\mathbb{E}^{\mathcal{P}}[Y_t]=\mu t$ and $\text{Var}^{\mathbb{P}}[Y_t]=\mathbb{E}^{\mathcal{P}}[Y^2_t]-\mathbb{E}^{\mathcal{P}}[Y_t]^2=\sigma^2 t$.
+%
+%%Incidentally, note the terminology: the drift is not an expectation, but rather the rate of change in expectation, and the diffusion is not a standard deviation, but rather the square root of the rate of change in variance. 
+%Figure~\ref{fig:brownian_motion_drift} shows 30 simulated paths for the evolution of $Y_t$ ($\mu = 0.8$ and $\sigma =1.25$). There the drift is visually apparent.
+%\begin{figure}[htbp]
+%\begin{center}
+%	\includegraphics[width=0.5\linewidth]{addons/brownian_motion_drift}
+%\end{center}
+%\label{fig:brownian_motion_drift}
+%	\caption{Thirty realization of the "drifty" Brownian motion $Y_t$.}
+%\end{figure}
+%
+%We aim at applying a change of measure from $\mathcal{P}$ into a new probability $\mathcal{Q}$, such that $Y_t$ becomes driftless (a martingale) under $\mathcal{Q}: \mathbb{E}^{\mathcal{Q}}[Y_t]=0$, yet with the same diffusion as under $\mathcal{P}$: $\text{Var}^{\mathcal{Q}}[Y_t]=\sigma^2 t$
+%
+%Let $\mu^{*}$ be a new drift and assume $\\gamma_t = \frac{\mu_t^{*}-\mu_t}{\sigma_t}$. According to the Girsanov Theorem the process
+%\begin{equation}
+%dW^{*}_t = -\gamma_t dt + dW_t
+%\end{equation}
+%is a Brownian motion under the new measure $\mathcal{Q}$, equivalent to $\mathcal{P}$, is defined by the Radon-Nikodym derivative
+%\begin{equation}
+%\cfrac{d\mathcal{Q}}{d\mathcal{P}} = \exp\left(-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s\right)
+%\end{equation}
+%\end{exercise}
 
 \begin{exercise}
 Consider a Wiener process with drift $\mu=0.05$ and diffusion coefficient $\sigma=0.2$. Determine the appropriate transformation, according to the Girsanov Theorem which makes the original process driftless. Verify that applying the Radon-Nikodym to the a simulated path of the process the drift indeed disappear.
@@ -2110,14 +2303,13 @@ T = 1
 M = 252
 dt = T/M
 N = 10000
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
-	\end{center}
-	\label{fig:brownian_motion_girsanov}
-\end{figure}
+%\begin{figure}[htbp]
+%	\begin{center}
+%		\includegraphics[width=0.5\linewidth]{addons/brownian_motion_girsanov}
+%	\end{center}
+%	\label{fig:brownian_motion_girsanov}
+%\end{figure}
 \end{exercise}
-\clearpage
 
 \begin{exercise}[subtitle=Moving Away from $\mathbb{P}$ Measure]
 Assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
@@ -2130,7 +2322,7 @@ By definition the bank account dynamics is described by (for simplicity let's co
 dB_t = rB_tdt\implies B_t = e^{rt}
 \end{equation*}
 
-We want to know what happens to the stock SDE when moving to two different numeraires:
+Show what happens to the stock SDE when moving to two different numeraires:
 \begin{itemize}
 \item risk-neutral measure (bank account numeraire);
 \item stock measure (stock numeraire).
@@ -2182,7 +2374,7 @@ dS_t &= \mu S_t dt + \sigma S_t \left(dW_t^B - \frac{\mu - r}{\sigma}dt\right) =
 & = \cancel{\mu S_t dt} \cancel{-\mu S_t dt} + rS_t dt + \sigma S_t dW_t^B  = \boxed{rS_t dt + \sigma S_t dW_t^B}
 \end{aligned}
 \end{equation*}
-So \textcolor{red}{under the risk-neutral measure the drift equals the risk-free rate}.
+So \textbf{under the risk-neutral measure the drift equals the risk-free rate}.
 
 %\subsection{Stock Numeraire Measure Dynamics}
 Now let's see what happens under the stock numeraire.
@@ -2291,6 +2483,7 @@ For the sake of demonstration, we choose $f=\mathcal{N}(5, 1)$, and the probabil
 \begin{center}
 \includegraphics[width=0.5\linewidth]{addons/f_and_p}
 \end{center}
+\caption{Distributions of the function $f$ and its probability distribution $p$.}
 \label{fig:f_and_p}
 \end{figure}
 
@@ -2302,6 +2495,7 @@ Intuitively one can see why sampling from this distribution is a bad idea: for m
 \begin{center}
 \includegraphics[width=0.5\linewidth]{addons/bad_sampling}
 \end{center}
+\caption{Distribution of the samples from $f$ with the original probability distribution $p$.}
 \label{fig:bad_sampling}
 \end{figure}
 
@@ -2313,6 +2507,7 @@ Therefore, as outlined above, to make the sampling more efficient, we can try a 
 \includegraphics[width=0.4\linewidth]{addons/fp_and_q}
 \includegraphics[width=0.4\linewidth]{addons/good_sampling}
 \end{center}
+\caption{(left) New probability distribution $q$, notice how it almost overlap with $f$. (right) Distribution of the samples from $f$ with the new probability distribution $q$. Now the distribution is way much narrower.}
 \label{fig:fp_and_q}
 \end{figure}
 

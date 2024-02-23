@@ -159,6 +159,7 @@
 			\end{gathered}
 		\end{equation*}
 		and similarly for $k > i$.
+\myendproof
 	\item<2-> At this point, we can turn around the argument to have the following existence result.
 	\end{itemize}
 \end{frame}
@@ -421,6 +422,8 @@ parametric 2 & $\Phi_i\left([a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c\right)$ \\ \
 		\item Indeed, there are no expectations involving two or more forward rates at the same time, so that correlations are not relevant.
 	\end{itemize}
 \end{frame}
+
+%%%%%%%%%%%%%%%  PARTE 1
 
 \begin{frame}{Flat and Spot Volatilities}
 	\begin{itemize}
@@ -844,6 +847,8 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
   \end{itemize}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%% PARTE 2
+
 \begin{frame}{Confidence Interval}
   \begin{columns}
     \column{0.6\linewidth}
@@ -933,10 +938,19 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
       \mathbb{E}^j[\Pi_{an}(T_\alpha)] = \mathbb{E}^j[\Pi_{an}(0)] = 0
     \end{equation*}
   \end{itemize}
+\pause
 \begin{tikzpicture}[remember picture,overlay]
 	\node[xshift=6.cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}
 \end{frame}
+
+%\begin{homework}
+%\begin{frame}{\textcolor{white}{Homework}}
+%\begin{itemize}
+%
+%\end{itemize}
+%\end{frame}
+%\end{homework}
 
 \section{Correlated Brownian Motions}
 \begin{frame}{Instantaneous and Terminal Correlation}
@@ -1170,6 +1184,7 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
 %\end{itemize}
 %\end{frame}
 
+\section{Convexity}
 \begin{frame}{Convexity Correction}
 \begin{itemize}
 \item 	In financial lingo, convexity is a broadly understood and often non-specific term for nonlinear behavior of the price of an instrument as a function of evolving markets.
@@ -1181,7 +1196,7 @@ not correspond to the payment date of the numeraire. %Generally, if we have a ma
 \end{itemize}
 \end{frame}
 
-\begin{frame}{The Good and the Bad}
+\begin{frame}{The Good, the Bad\ldots}
 \begin{itemize}
 \item Let us consider a basic interest rate payoff function, which pays a payoff dependent on the Libor rate
 \begin{equation}
@@ -1270,6 +1285,7 @@ which has a drift term, so it is not a martingale.
 \end{itemize}
 \end{frame}
 
+\subsection{In Arrears Swap}
 \begin{frame}{In-Arrears Swap}
 \begin{itemize}
 \item An \emph{in-arrears swap} is an IRS that resets and pays at the same dates $\{T_{\alpha+1},\ldots, T_\beta\}$ and with fixed-leg rate $K$. More precisely, the value of an payer IAS is
