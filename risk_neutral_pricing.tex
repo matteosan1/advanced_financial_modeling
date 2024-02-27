@@ -11,7 +11,8 @@
 		\maketitle
 	\end{frame}        
 
-\begin{frame}{Disclaimer}
+\begin{frame}{}
+\begin{block}{Disclaimer}	
 Concerning this part I am assuming that:
 \begin{itemize}
 \item you know what is a random process;
@@ -20,6 +21,7 @@ Concerning this part I am assuming that:
 \item you know (or have heard of) no-arbitrage pricing theorems;
 \item you know (or have heard of) Monte Carlo Simulation.
 \end{itemize}
+\end{block}
 \end{frame}	
 
 \begin{frame}{Few Definitions}
@@ -67,7 +69,7 @@ It can be imagined as a \emph{drift-less} process
 			\item $\mathbb{Q}$ is equivalent to $\mathbb{P}$ (real world measure);
 			\item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a price $\pi_t$
 			\begin{equation*}
-				\pi_t = \expect{Q^0}[D(t,T)V_A|\mathcal{F}_t]
+				\pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
 			\end{equation*}
 			which is a $\mathbb{Q}$-martingale.
 		\end{enumerate}
@@ -78,7 +80,7 @@ It can be imagined as a \emph{drift-less} process
 \begin{itemize}
 \item  The difference between real-world and risk-neutral measures is in the treatment of the market price of risk.
 \item If you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \textcolor{red}{real or physical probability}.
-\item The \textcolor{red}{risk-neutral measure}, instead, allow determination of a market-consistent value without making any assumption about the market price of risk. That is useful because the price of risk is not directly observable, but the market prices used to calibrate a risk-neutral generator are.
+\item The \textcolor{red}{risk-neutral measure}, instead, allows determination of a market-consistent value without making any assumption about the market price of risk. That is useful because the price of risk is not directly observable, but the market prices used to calibrate a risk-neutral generator are.
 \item The risk-neutral measure is a direct consequence of no arbitrage assumption. It is an \emph{implied probability distribution} from observable prices of tradable instruments, and used to determine \textcolor{red}{objective fair prices} for a financial instrument.
 \end{itemize}
 \end{frame}
@@ -150,7 +152,7 @@ It can be imagined as a \emph{drift-less} process
 		\item The market is complete if and only if the martingale measure is unique;
 		\item \textbf{In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure}
 		\begin{equation}
-			\Pi_t = \expect{Q^0}[D(t,T)V_A|\mathcal{F}_t]
+			\Pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
 			\label{eq:risk_neutral_pricing}
 		\end{equation}
 	\end{itemize}

@@ -47,7 +47,7 @@
 		\item<0-> The \emph{short rate} $r_t$ can be modeled either by a deterministic or a stochastic process.
 		\item<1-> \textbf{Deterministic case}: from the definition of money market account it follows that 
 		\begin{equation*}
-			V(0) = A \implies V(t) = A\cdot B(t)
+			V(0) = A\cdot B(0) \implies V(t) = A\cdot B(t)
 		\end{equation*}
 		\item<2-> If we want to have at time $T$ exactly 1 unit of currency
 		\begin{equation*}
@@ -72,7 +72,7 @@
 			\end{equation}
 	\end{block}}
 	\begin{itemize}
-		\item<2-> Can you guess which are its dimensions ?	
+		\item<2-> Can you guess what is the unit of measurement of a discount factor ?	
 		\item<3-> In many pricing application (e.g. Black-Scholes formula) $r$ is assumed to be a \textcolor{red}{deterministic} function of time, and so are $B(t)$ and $D(t,T)$:
 		\begin{itemize}
 			\item<3-> this is motivated by the small influence interest rate variations have on equity prices.
@@ -180,7 +180,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Forward Rate Agreement}
+\begin{frame}{FRA Example}
 	\begin{itemize}
 	\item A FRA is an agreement that enables to \emph{hedge} against unfavourable movements in interest rates by fixing a rate on a notional amount that is (usually) of the same size and term as the exposure that starts sometime in the future. 
 	\vfill
@@ -190,7 +190,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{FRA Example}
+\begin{frame}{FRA Time Table}
 	\begin{itemize}
 		\item Consider a $1\times 3$ FRA (1-month into 3-month): the 1 in the $1\times 3$ refers to 1 month' time when settlement (fixing) takes place, and the 3 to the expiry date of the FRA from deal date, i.e. the rate quoted for the FRA is a 1-month rate at the time of settlement
 	\begin{center}
@@ -209,10 +209,10 @@
 		\end{equation}
 		\item<3-> In order to assign a value at this contract we have to tackle two issues:
 		\begin{itemize}
-			\item<4-> estimate the future value of $L(T, S)$;
-			\item<5-> discount the result from $S$ to today (time $t$).
+			\item<3-> estimate the future value of $L(T, S)$;
+			\item<3-> discount the result from $S$ to today (time $t$).
 		\end{itemize}
-		\item<6-> There are several ways to arrive at the final result: \textbf{no arbitrage is the common denominator.}
+		\item<4-> There are several ways to arrive at the final result: \textbf{no arbitrage is the common denominator.}
 	\end{itemize}
 \end{frame}
 
@@ -244,7 +244,7 @@
 		}
 		\item<2-> First interpret $A$ as an amount of money held at time $S$. At $T$ it's worth 1, indeed 
 		\begin{equation*}
-			P(T,S)A = P(T,S)\frac{1}{P(T,S)}=1
+			\mathbb{E}[D(T,S)A] = P(T,S)A = P(T,S)\frac{1}{P(T,S)}=1
 		\end{equation*}
 		which in turn, at time $t$, equals to
 		\begin{equation*}
@@ -269,6 +269,21 @@
 	\only<2->\myendproof
 \end{frame}
 
+\begin{frame}{Intermezzo}
+\begin{block}{Expectation Tower Property}
+Consider a filtered probability space: $(\Omega, \mathcal{F}_{t\geq 0}, \mathbb{P})$.
+For any $0\leq s \leq t$ and stochastic process $\{X_t\}_{t\geq 0}$, we have the following Tower property:
+\begin{equation}	
+\mathbb{E}[\mathbb{E}[X|\mathcal{F}_t]|\mathcal{F}_s]=\mathbb{E}[X|\mathcal{F}_s]
+\end{equation}
+\end{block}
+The LHS represents \emph{the best prediction at time $s$ of what the best prediction at time $t$ of $X$ would be}. 
+
+Imagine $X_t$ represents a candidate's vote counts and $s=4$~hours and $t=12$~hours.
+
+The tower property says that if you are expecting that you will expect whatever the count is going to be at time $t>s$, then you are already predicting it at time $s$. 
+\end{frame}
+
 \subsection{FRA Detailed Proof}
 \begin{frame}{FRA Detailed Proof}
 \begin{itemize}
@@ -277,7 +292,7 @@
 \expectt{Q}{t}[\tau D(t,S)(K - L(T,S))] = 	\expectt{Q}{t}[\tau D(t,S)K - \tau D(t,S)L(T,S)]
 	\label{eq:fra_as_expectation}
 	\end{equation}
-	To ease the notation $\expectt{Q}{t}[X] = \expectt{Q}{t}[X|\mathcal{F}_t]$.
+	(\textbf{note: } to ease the notation $\expectt{Q}{t}[X] = \expect{Q}[X|\mathcal{F}_t]$).
 	\item<2-> From which we can easily derive using the definition of \textbf{ZCB} value
 	\begin{equation*}
 		\begin{aligned}
@@ -287,7 +302,7 @@
 	\end{equation*}
 	\item<3-> For a discount factor the following holds
 	\begin{equation*}
-		D(t,S) = D(t,T)D(T,S)
+		D(t,S) = D(t,T)D(T,S)\quad(\text{since }e^{-\int_t^S r_s ds} = e^{-\int_t^T r_s ds - \int_T^S r_s ds}) 
 	\end{equation*}
 \end{itemize}
 \end{frame}
@@ -318,7 +333,8 @@
 		\item<1-> Then using the definition of LIBOR rate $L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}$
 		\begin{equation*}
 			\begin{aligned}
-			\textbf{FRA} = &\tau KP(t,S)-\mathbb{E}_t\left[D(t,T)P(T,S)\left(\frac{1}{P(T,S)}-1\right)\right]= \\
+			\textbf{FRA} &= \tau KP(t,S) - \expectt{Q}{t}\left[\cancel{\tau}D(t,T)\left(\cfrac{1-P(T,S)}{\cancel{\tau} P(T,S)}\right)P(T,S)\right] = \\
+			&=\tau KP(t,S)-\mathbb{E}_t\left[D(t,T)P(T,S)\left(\frac{1}{P(T,S)}-1\right)\right]= \\
 			&=\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t[D(t,T)P(T,S)]
 			\end{aligned}
 		\end{equation*}
@@ -326,19 +342,20 @@
 		\begin{equation*}
 			\textbf{FRA} = \tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[D(t,T)\mathbb{E}_T[D(T,S)]\right]
 		\end{equation*}		
-		\item<2-> Bringing the discount factor inside the expectation
-		\begin{equation*}
-			\begin{aligned}
-			\textbf{FRA} = &\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[\mathbb{E}_T[D(t,T)D(T,S)]\right]=\\
-			&=\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[\mathbb{E}_T[D(t,S)]\right]
-			\end{aligned}
-		\end{equation*}		
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{FRA Detailed Proof}
 	\begin{itemize}
-		\item<1-> Then applying the law of iterated expectations we arrive at the final result
+	\item<1-> Bringing the discount factor inside the expectation
+	\begin{equation*}
+		\begin{aligned}
+		\textbf{FRA} &= \tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[D(t,T)\mathbb{E}_T[D(T,S)]\right] \\
+		&=\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[\mathbb{E}_T[D(t,T)D(T,S)]\right]=\\
+		&=\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[\mathbb{E}_T[D(t,S)]\right]
+	\end{aligned}
+\end{equation*}		
+		\item<2-> Then applying the law of iterated expectations we arrive at the final result
 		\begin{equation*}
 			\begin{aligned}
 			\textbf{FRA} &= \tau KP(t,S)-\expectt{Q}{t}[D(t,T)] + \expectt{Q}{t}[D(t,S)] = \\
@@ -347,6 +364,7 @@
 		\end{equation*}
 		\myendproof
 	\end{itemize}
+\pause
 \begin{tikzpicture}[remember picture,overlay]
 	\node[xshift=6.cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}
@@ -360,17 +378,15 @@
 			F(t;T,S):=\frac{1}{\tau(T,S)}\left[\frac{P(t,T)-P(t,S)}{P(t,S)}\right]
 			\label{eq:forward_rate_definition}
 		\end{equation}
+		The forward rate can be interpreted as a rate observed in $t$ and spanning the time period $S-T$.
 	\end{block}
-	
-	The forward rate can be interpreted as a rate observed in $t$ and spanning the time period $S-T$.
-	
-	%Its value depends on no-arbitrage consideration.
+		%Its value depends on no-arbitrage consideration.
 	
 \end{frame}
 
 \begin{frame}{Forward Rate}
 	\begin{itemize}
-		\item We can now rewrite the value of the FRA in terms of the \emph{simply-compounded forward rate}
+		\item We can now re-write the value of the FRA in terms of the \emph{simply-compounded forward rate}
 		\begin{equation}
 			\begin{aligned}
 			&\textbf{FRA}=N[\tau KP(t,S)-P(t,T)+P(t,S)] = \\
@@ -390,9 +406,9 @@
 	The \textcolor{red}{instantaneous forward rate} $f(t, T)$ is defined as 
 	\begin{equation}
 		\begin{aligned}
-			f(t, T) &:= \lim_{S\rightarrow T^+} F(t;T,S) \\
-			& = \lim_{\epsilon\rightarrow 0}  \frac{1}{\tau(T,T+\epsilon)}\frac{P(t,T)-P(t,T+\epsilon)}{P(t,T+\epsilon)} \\
-			& = \lim_{\epsilon\rightarrow 0} - \frac{1}{P(t,T)} \frac{P(t,T+\epsilon)-P(t,T)}{\epsilon} \\
+			f(t, T) &:= \lim_{S\rightarrow T^+} F(t;T,S) =\\
+			& = \lim_{\epsilon\rightarrow 0}  \frac{1}{\tau(T,T+\epsilon)}\frac{P(t,T)-P(t,T+\epsilon)}{P(t,T+\epsilon)} = \\
+			& = \lim_{\epsilon\rightarrow 0} - \frac{1}{P(t,T)} \frac{P(t,T+\epsilon)-P(t,T)}{\epsilon} =\\
 			& = -\frac{\partial \log P(t, T)}{\partial T}
 		\end{aligned}
 	\end{equation}
@@ -444,6 +460,7 @@
 		\begin{equation*}
 			N\tau(T_{i-1}, T_i)L(T_{i-1}, T_i)
 		\end{equation*}
+		where for simplicity we are assuming the same payment dates for the two legs.
 		\item<2-> When the fixed leg is paid, the IRS is termed \textcolor{red}{Payer IRS}. If the opposite holds, we have a \textcolor{red}{Receiver IRS}.
 		\item<3-> The discounted payoff of a Payer IRS can be expressed as:
 		\begin{equation}
@@ -467,9 +484,9 @@
 		\begin{equation*}
 			\begin{aligned}
 				\textbf{RFS}&(t,T,\tau,N,K) = N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
-				&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))\\
-				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N\sum_{i=\alpha+1}^{\beta}(P_{i-1}-P_i), \quad\text{ where }P(t, T_i) = P_i \\
-				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N[(P_\alpha -\cancel{P_{\alpha+1}}) + (\cancel{P_{\alpha+1}} \cancel-{P_{\alpha+2}}) + \ldots + (\cancel{P_{\beta-1}} - P_{\beta}) \\
+				&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))=\\
+				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N\sum_{i=\alpha+1}^{\beta}(P_{i-1}-P_i)=\quad (\text{where }P(t, T_i) = P_i) \\
+				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N[(P_\alpha -\cancel{P_{\alpha+1}}) + (\cancel{P_{\alpha+1}} \cancel-{P_{\alpha+2}}) + \ldots + (\cancel{P_{\beta-1}} - P_{\beta})] \\
 			\end{aligned}
 		\end{equation*}
 	\end{itemize}
@@ -493,7 +510,7 @@
 
 \begin{frame}{IRS and FRA}
 	\begin{itemize}
-		\item<1-> Clearly not all the FRAs in a swap with zero value have zero value (\emph{except for the degenerate case of flat yield curve}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
+		\item<1-> Even if a swap at inception has a null NPV, not all the FRAs in a swap with zero value have zero value (\emph{except for the degenerate case of flat yield curve}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
 		\item<2-> In a \emph{Payer Swap} with an increasing yield curve the first FRAs will have negative value, the last positive. Still their NPV's sum is zero.
 		\item<3-> If the market doesn't move so much the swap rate payer will have to pay a net interest differential in the first part of the contract life, and to receive net interest in the second.
 		\item<4-> So the rate payer will have to fund the payments for the first part of the contract and to invest at his best the receipt during the second part. (This is a very hot topic nowadays; this feature is sometimes referred to as the funding profile of the contract).
@@ -520,10 +537,9 @@
 \end{frame}
 \end{homework}
 
-%%%%%%%%%%%%%%%%%%%%%%  PARTE 1
-
 \subsection{Swap Rate}
 \begin{frame}{Swap Rate as Break-Even Rate}
+	As we have done with the FRA break-even rate we can define:
 	\begin{block}{Definition}
 	The fixed rate $K$ which makes the above expression null is called \textcolor{red}{forward swap rate}:
 	\begin{equation}
@@ -536,7 +552,7 @@
 
 \begin{frame}{Swap Payoff Alternative Expression}
 	\begin{itemize}
-		\item<1-> Consider a Payer IRS with $N=1$ (using \cref{eq:swap_as_sum_fra})
+		\item<1-> Consider a Payer IRS with $N=1$ for simplicity (using \cref{eq:swap_as_sum_fra})
 		\begin{equation*}
 			\textbf{PFS} = P(t,T_\alpha)-P(t,T_\beta)-\sum_{i=\alpha+1}^{\beta}\tau_iKP(t,T_i)
 		\end{equation*}
@@ -552,6 +568,76 @@
 		(\textbf{note:} this expression will be useful when pricing swaptions).
 	\end{itemize}
 \end{frame}
+
+\begin{frame}{Swap Curve}
+\begin{itemize}
+	\item The \emph{swap curve} is a graphical representation of the relationship between the fixed interest rate and the maturity of of interest rate swaps (typically ranging from 1 to 30 years).
+	\item These swap rates are determined through market transactions, reflecting the market's consensus on future interest rate expectations.
+	\begin{columns}
+		\column{0.35\linewidth}
+		\begin{center}
+			\includegraphics[width=1.0\linewidth]{sde\_simulations}
+		\end{center}
+		\column{0.65\linewidth}
+		\small{
+		\item An upward-sloping \emph{(normal)} curve indicates longer-term interest rates are higher than short-term rates (expectations of economic growth and inflation). 
+		\item A downward-sloping \emph{(inverted)} curve suggests short-term rates are higher than long-term rates (potential economic downturns or market uncertainties). 
+		\item A flat curve indicates that short and long-term rates are relatively similar, indicating a neutral market sentiment.}
+	\end{columns}
+\end{itemize} 
+\end{frame}
+
+\begin{frame}{Yield vs Swap Curve} 
+\begin{itemize}
+\item The yield curve reflects the yields of various fixed-income securities, including government bonds, corporate bonds, and mortgage-backed securities.
+\item Several factors can impact swap curve movements (changes in interest rates, market sentiment, economic indicators, and central bank policies). 
+\item The swap curve reflects exchanged rates over various time horizons. It offers a more accurate representation of market expectations and risk perceptions, as it is based on actual transactions.
+%\item When interest rates are expected to rise, the swap curve tends to steepen as longer-term rates increase at a faster pace than shorter-term rates. Conversely, during periods of economic uncertainty, the swap curve may flatten as investors seek the safety of shorter-term instruments.
+\end{itemize}
+\begin{center}
+	\includegraphics[width=0.4\linewidth]{sde\_simulations}
+\end{center}
+\end{frame}
+
+\begin{frame}{Trading and Hedging Strategies}
+\begin{itemize}
+\item Suppose there is an unexpected increase in inflation expectations due to rising commodity prices. This change would likely cause the swap curve to shift upward, reflecting the higher expected future interest rates. 
+\item Market participants who anticipate this shift may adjust their swap positions accordingly, either by entering into longer-term swaps or adjusting the mix of fixed and floating rates in their portfolios.
+\item When evaluating the swap curve, market participants should compare the benefits and drawbacks of floating and fixed rates. \item Floating rates (such as those linked to LIBOR or EURIBOR), can provide flexibility and potentially lower costs, as they reflect the prevailing market conditions. 
+\item On the other hand, fixed rates offer certainty and protection against potential interest rate hikes. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Trading and Hedging Strategies}
+	\begin{itemize}
+\item Market participants need to carefully assess their risk appetite and market expectations to determine the most suitable rate structure for their swap transactions.
+\item Considering these options, market participants may find that a floating rate position is more advantageous if they anticipate a downward sloping swap curve. This would allow them to benefit from lower fixed interest payments over time. 
+\item On the other hand, if market expectations suggest an upward sloping swap curve, a fixed rate position may be more suitable to lock in a higher fixed interest rate.
+%\item From the perspective of a fixed-rate receiver, the swap curve determines the level of fixed interest payments they will receive over the life of the swap. 
+%\item If the swap curve is upward sloping, the receiver would demand a higher fixed rate to compensate for the expected rise in interest rates. 
+%\item Conversely, if the swap curve is downward sloping, it suggests that market expectations for future interest rates are declining, and a fixed-rate receiver would be willing to accept a lower fixed rate.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Trading and Hedging Strategies}
+	\begin{itemize}
+		\item With a Swap you can have a clear picture of the market. For example if you own the $5y$, you make money if rates go higher, loose money if they go lower.
+		\item With two Swaps instead you can bet on the \textcolor{red}{slope} of the interest rate curve.
+		\item If you bet on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
+		\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
+	\end{itemize}
+\end{frame}
+
+%1. Diversification: One of the most fundamental strategies for managing swap curve risks is diversification. By spreading investments across different points on the swap curve, investors can reduce their exposure to specific interest rate changes. For example, if an investor holds a portfolio of plain vanilla swaps with varying maturities, they are less vulnerable to sudden shifts in the swap curve at a particular point in time. Diversification allows for a balanced risk exposure and can help protect against adverse market conditions.
+%
+%2. Hedging: Hedging is another strategy commonly used to manage swap curve risks. By entering into offsetting positions, investors can protect themselves from potential losses due to changes in the swap curve. For instance, if an investor holds a long position in a plain vanilla swap, they can hedge their risk by taking a short position in another swap with similar characteristics but at a different point on the swap curve. This way, any adverse movement in the swap curve would be offset by gains in the hedging position.
+%
+%3. Dynamic Positioning: Instead of maintaining a static portfolio of plain vanilla swaps, some investors opt for dynamic positioning. This strategy involves actively adjusting the positions in response to changes in the swap curve. By closely monitoring the swap curve and making timely adjustments, investors can take advantage of favorable movements and minimize the impact of adverse shifts. For example, if the swap curve steepens, an investor may choose to increase their exposure to longer-dated swaps to capture higher yields.
+%
+%4. duration matching: Duration matching is a strategy that aims to minimize interest rate risk by aligning the duration of a plain vanilla swap with the investor's investment horizon. Duration represents the weighted average time to receive or pay cash flows from a swap. By matching the duration of the swap with the investment horizon, investors can reduce the impact of changes in the swap curve on their portfolio's value. This strategy is particularly useful for risk-averse investors who prioritize stability and predictability.
+%
+%5. Utilizing Options: Options can also be utilized to manage swap curve risks effectively. By purchasing interest rate options, investors can protect themselves against adverse movements in the swap curve while still benefiting from favorable changes. For instance, an investor can buy a put option on a plain vanilla swap, which gives them the right to sell the swap at a specified price if the swap curve moves unfavorably. This provides downside protection while allowing for potential upside gains.
+
 
 \subsection{Swap and Bond Switching}
 \begin{frame}{Swap and Bond Switching}
@@ -725,15 +811,6 @@
 		\item<1-> So why do not banks issue only floating rate notes ?
 		\item<2-> Banks must issue fixed rate coupon bonds to attract customers (think of yourself or insurance companies) but then will hedge the liability  with an investment bank. In this way the final risk exposure will be at a variable rate as they like. 
 		\item<3-> \textcolor{red}{Swaps are both a hedging instrument and a pricing tool.}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Trading and Hedging Swaps}
-	\begin{itemize}
-		\item With a Swap you can have a clear picture of the market. For example if you own the $5y$, you make money if rates go higher, loose money if they go lower.
-		\item With two Swaps instead you can bet on the \textcolor{red}{slope} of the interest rate curve.
-		\item If you bet on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
-		\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
 	\end{itemize}
 \end{frame}
 
