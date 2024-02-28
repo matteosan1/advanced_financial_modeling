@@ -571,12 +571,12 @@ The tower property says that if you are expecting that you will expect whatever 
 
 \begin{frame}{Swap Curve}
 \begin{itemize}
-	\item The \emph{swap curve} is a graphical representation of the relationship between the fixed interest rate and the maturity of of interest rate swaps (typically ranging from 1 to 30 years).
+	\item The \emph{swap curve} is a graphical representation of the relationship between the fixed interest rate and the maturity of IRS (typically ranging from 1 to 30 years).
 	\item These swap rates are determined through market transactions, reflecting the market's consensus on future interest rate expectations.
 	\begin{columns}
 		\column{0.35\linewidth}
 		\begin{center}
-			\includegraphics[width=1.0\linewidth]{sde\_simulations}
+			\includegraphics[width=1.1\linewidth]{swap_curve}
 		\end{center}
 		\column{0.65\linewidth}
 		\small{
@@ -589,13 +589,13 @@ The tower property says that if you are expecting that you will expect whatever 
 
 \begin{frame}{Yield vs Swap Curve} 
 \begin{itemize}
-\item The yield curve reflects the yields of various fixed-income securities, including government bonds, corporate bonds, and mortgage-backed securities.
-\item Several factors can impact swap curve movements (changes in interest rates, market sentiment, economic indicators, and central bank policies). 
-\item The swap curve reflects exchanged rates over various time horizons. It offers a more accurate representation of market expectations and risk perceptions, as it is based on actual transactions.
+\item Several factors can impact swap curve movements (changes in interest rates, market sentiment, economic indicators, and central bank policies).
+\item One way to intepret it is to make a comparison with the yield curve.
+\item Since the swap curve reflects exchanged rates over various time horizons, it offers a more accurate representation of market expectations and risk perceptions, as it is based on actual transactions.
 %\item When interest rates are expected to rise, the swap curve tends to steepen as longer-term rates increase at a faster pace than shorter-term rates. Conversely, during periods of economic uncertainty, the swap curve may flatten as investors seek the safety of shorter-term instruments.
 \end{itemize}
 \begin{center}
-	\includegraphics[width=0.4\linewidth]{sde\_simulations}
+	\includegraphics[width=0.4\linewidth]{swap_spread}
 \end{center}
 \end{frame}
 
@@ -603,19 +603,18 @@ The tower property says that if you are expecting that you will expect whatever 
 \begin{itemize}
 \item Suppose there is an unexpected increase in inflation expectations due to rising commodity prices. This change would likely cause the swap curve to shift upward, reflecting the higher expected future interest rates. 
 \item Market participants who anticipate this shift may adjust their swap positions accordingly, either by entering into longer-term swaps or adjusting the mix of fixed and floating rates in their portfolios.
-\item When evaluating the swap curve, market participants should compare the benefits and drawbacks of floating and fixed rates. \item Floating rates (such as those linked to LIBOR or EURIBOR), can provide flexibility and potentially lower costs, as they reflect the prevailing market conditions. 
+\item When evaluating the swap curve, market participants should compare the benefits and drawbacks of floating and fixed rates. 
+\item Floating rates (such as those linked to LIBOR or EURIBOR), can provide flexibility and potentially lower costs, as they reflect the prevailing market conditions. 
 \item On the other hand, fixed rates offer certainty and protection against potential interest rate hikes. 
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Trading and Hedging Strategies}
-	\begin{itemize}
+\begin{itemize}
 \item Market participants need to carefully assess their risk appetite and market expectations to determine the most suitable rate structure for their swap transactions.
-\item Considering these options, market participants may find that a floating rate position is more advantageous if they anticipate a downward sloping swap curve. This would allow them to benefit from lower fixed interest payments over time. 
-\item On the other hand, if market expectations suggest an upward sloping swap curve, a fixed rate position may be more suitable to lock in a higher fixed interest rate.
-%\item From the perspective of a fixed-rate receiver, the swap curve determines the level of fixed interest payments they will receive over the life of the swap. 
-%\item If the swap curve is upward sloping, the receiver would demand a higher fixed rate to compensate for the expected rise in interest rates. 
-%\item Conversely, if the swap curve is downward sloping, it suggests that market expectations for future interest rates are declining, and a fixed-rate receiver would be willing to accept a lower fixed rate.
+\item From the perspective of a fixed-rate receiver, the swap curve determines the level of fixed interest payments they will receive over the life of the swap. 
+\item If the swap curve is upward sloping, the receiver would demand a higher fixed rate to compensate for the expected rise in interest rates. 
+\item Conversely, if the swap curve is downward sloping, it suggests that market expectations for future interest rates are declining, and a fixed-rate receiver would be willing to accept a lower fixed rate.
 \end{itemize}
 \end{frame}
 
@@ -746,9 +745,13 @@ The tower property says that if you are expecting that you will expect whatever 
 
 \begin{frame}{Floating Rate Note (FRN)}
 	\begin{itemize}
-	\item The intuition behind this formula is quite straightforward: if we set $T_\alpha =t$. \textcolor{red}{At the date of the first reset, the bond price equals par.} 
+	\item The intuition behind this formula is quite straightforward: if we set $T_\alpha =t$. 
+	\begin{equation*}
+		\textbf{FRN} = N P(t, T_\alpha) = N P(t, t) = N
+	\end{equation*}
+	\textcolor{red}{At the date of the first reset, the bond price equals par.} 
 	\item This result also holds for all the dates equal to the reset of the floating rates (an \textbf{FRN} is equivalent to a roll-over strategy of short-term loans).
-	\item This property is sometimes summarized by the sentence "the \textbf{FRN} always trade at par".
+	\item This property is sometimes summarized by the sentence \emph{"the \textbf{FRN} always trade at par"}.
 	\item The \textbf{FRN} is a debt security in which coupon payments adjust according to changes in interest rates. The coupons are closely tied to current short-term spot rates, such that their prices are always at or near par value (no arbitrage). 
 	%\item Provide an example of Italian government floating rate note. Did they trade at par in recent times ? Provide an explanation.
 	\end{itemize}
