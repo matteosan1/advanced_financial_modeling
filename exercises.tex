@@ -660,7 +660,25 @@ X_t = X_0 \exp\left(-\frac{1}{2}\int_0^t A_s^2 ds + \int_0^tA_s dW_s \right)
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\question Let $W_1(t)$ and $W_2(t)$ a 2D-Brownian motion defined on a probability space $(\Omega, \mathcal{F}, \mathbb{P})$. Consider two price processes $\{S_1(t):t\geq 0\}$ and $\{S_2(t):t\geq 0\}$ with corresponding SDEs given by
+
+\question Calculate the integral $\int_0^T W_t dW_t$.
+\begin{solution}
+According to Ito's formula
+\begin{equation*}
+d[(W_t)^2] = 2W_t dW_t + dt
+\end{equation*}
+Hence,
+\begin{equation*}
+\int_0^T W_t dW_t = \cfrac{1}{2}\int_0^T(d[(W_t)^2] - dt = \cfrac{1}{2}(W^2_T - T)
+\end{equation*}
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Let $W_1(t)$ and $W_2(t)$ a
+ 2D-Brownian motion defined on a probability space $(\Omega, \mathcal{F}, \mathbb{P})$. Consider two price processes $\{S_1(t):t\geq 0\}$ and $\{S_2(t):t\geq 0\}$ with corresponding SDEs given by
 \begin{equation*}
 \begin{aligned}
 dS_1(t) &= 2S_1(t)dW_1(t) + 3S_1(t)dW_2(t)\\
