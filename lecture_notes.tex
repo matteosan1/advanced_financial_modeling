@@ -10,6 +10,7 @@
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{cancel}
+\usepackage{forest}
 
 \usepackage[use-files]{xsim}
 \xsimsetup{path={exercises},}
@@ -82,9 +83,10 @@
 
 \title{\normalsize \textsc{}
 		\\ [2.0cm]
-		\HRule{1.5pt} \\
+		\HRule{2.0pt} \\
+		\HRule{2.0pt} \\ [0.6cm]
 		\LARGE \textbf{\textcolor{black}{\uppercase{lecture notes}}
-		\HRule{2.0pt} \\ [0.6cm] \textcolor{black}{\Large{Additional Material for AFM}} \vspace*{10\baselineskip}}
+		\HRule{2.0pt} \\ [0.6cm] \textcolor{black}{\Large{Additional Material for AFM Course}} \vspace*{10\baselineskip}}
 		}
 \date{}
 \author{\textbf{Author} \\ 
@@ -93,6 +95,23 @@
 
 \maketitle
 
+%\begin{forest}
+%[$t_0$
+%	[$p_{\text{def}}$]
+%	[$(1-p_{\text{def}})$
+%		[$(1-p_{\text{def}})p_{\text{def}}$]
+%		[$(1-p_{\text{def}})^2$
+%			[$(1-p_{\text{def}})^2 p_{\text{def}}$]
+%			[$(1-p_{\text{def}})^3$
+%				[$(1-p_{\text{def}})^3 p_{\text{def}}$]
+%				[$(1-p_{\text{def}})^4$
+%					[\vdots]
+%				]
+%			]
+%		]
+%	]
+%]
+%\end{forest}
 \chapter{Arbitrage Free Pricing Theory}
 \section{Random Variables}
 A variable whose value is a number determined by the outcome of a random experiment is called a \textbf{random variable}.
@@ -2003,7 +2022,7 @@ When for example $x_1=2$ and $x_2 = 3$ we have,
 \end{solution}
 
 \begin{exercise}[subtitle=AD for a Swap (\texttt{python})]
-Consider a 5-years receiver Interest Rate Swap with a 1M notional, exchanging a fixed rate of 5\% with a flat 1\% LIBOR rate. The risk free rate for discounting is considered to be flat a 1.5\%.
+Consider a 5-years receiver Interest Rate Swap with a 1M notional, exchanging a fixed rate of 5\% with a flat 1\% LIBOR rate, with annual payments. 
 Compute DV01 and PV01 with algorithmic differentiation using both tangent and adjoint modes. Compare the results.
 \end{exercise}
 

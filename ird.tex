@@ -786,7 +786,7 @@ The tower property says that if you are expecting that you will expect whatever 
 		\item<2-> Remember that a variable rate mortgage is perceived risky by the average individual as salary is more or less fixed, but for bank this is not the case because it is left unarmed by the rate rise. Indeed if rates go up
 		\begin{itemize}
 			\item the bank loses in the higher coupons it has to pay to the bond holders;
-			\item the bank gains in the highest rates it charges on new loans at the same time.
+			\item the bank gains in the higher rates it charges on new loans at the same time.
 		\end{itemize}
 		\item<3-> This is the most basic example of \emph{asset liability matching}.
 		\item<4-> The same more or less holds for a rate decrease.%, but with some caveats.
@@ -795,27 +795,30 @@ The tower property says that if you are expecting that you will expect whatever 
 
 \begin{frame}{Concepts behind the Formulas}
 	\begin{itemize}
-		\item<0->Banks like floating rates exposure: 
+		\item<0->Although banks like more floating rates exposure, there are pros and cons for this choice: 
 		\begin{itemize}
 			\item<1-> [\goodcheck] the liability value (the bond floating rate) resets with rates;
-			\item<1-> [\goodcheck] often smaller costs then fixed rates;
+			\item<1-> [\goodcheck] often the costs are smaller then fixed rates;
 			\item<1-> [\goodcheck]surely less expensive in the case of a long-term loan (e.g. 30-year mortgage), lenders require higher fixed rates in that case, due to bad accuracy in forecast economic conditions over such a long period of time.
 		%\end{itemize}
 		%\begin{itemize}
 			\item<2-> [\badcheck] higher interest rate risk (risk of rising rates in the future);
-			\item<2-> [\badcheck] with inverted yield curve, the cost of debt may actually be higher than fixed-rate debt (however, this is the exception rather than the norm).
+			\item<2-> [\badcheck] with inverted yield curve, the cost of debt may actually be higher than fixed-rate. They have to offer higher interest rates to attract buyers, especially for long-term debt. since investors are demanding more compensation for the perceived economic slowdown risk (however, this is the exception rather than the norm).
 		\end{itemize}
 % There is a general assumption that interest rates will rise – or, increase – over time,
+		\item<3-> So why do not banks issue only floating rate notes ?
+		\item<4-> Banks must issue fixed rate coupon bonds to attract customers (think of yourself or insurance companies) but then will hedge the liability  with an investment bank. In this way the final risk exposure will be at a variable rate as they like. 
+		%\item<3-> \textcolor{red}{Swaps are both a hedging instrument and a pricing tool.}
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Concepts behind the Formulas}
-	\begin{itemize}
-		\item<1-> So why do not banks issue only floating rate notes ?
-		\item<2-> Banks must issue fixed rate coupon bonds to attract customers (think of yourself or insurance companies) but then will hedge the liability  with an investment bank. In this way the final risk exposure will be at a variable rate as they like. 
-		\item<3-> \textcolor{red}{Swaps are both a hedging instrument and a pricing tool.}
-	\end{itemize}
-\end{frame}
+%\begin{frame}{Concepts behind the Formulas}
+%	\begin{itemize}
+%		\item<1-> So why do not banks issue only floating rate notes ?
+%		\item<2-> Banks must issue fixed rate coupon bonds to attract customers (think of yourself or insurance companies) but then will hedge the liability  with an investment bank. In this way the final risk exposure will be at a variable rate as they like. 
+%		\item<3-> \textcolor{red}{Swaps are both a hedging instrument and a pricing tool.}
+%	\end{itemize}
+%\end{frame}
 
 \subsection{Basis Swaps}
 \begin{frame}{Basis Swap}
@@ -825,40 +828,54 @@ The tower property says that if you are expecting that you will expect whatever 
 	\item For instance a typical Basis Swap is one in which a floating leg indexed to EURIBOR-6M is exchanged against one indexed to EURIBOR-3M.
 	\end{itemize}
 	\begin{center}
-		\includegraphics[width=0.5\linewidth]{tenor_basis_swap}
+		\includegraphics[width=0.6\linewidth]{tenor_basis_swap}
 	\end{center}
 \end{frame}
 
 \begin{frame}{Basis Swap Valuation}
 \begin{itemize}
-	\item<1-> A Tenor Basis Swap can be priced according to the following
+	\only<1-2>{
+	\item A Tenor Basis Swap can be priced according to the following expression
 	\begin{equation}
-	\boxed{\textbf{TBS}(t) = \sum_{i=1}^n \tau_i^{L} F^{L}(t;T_{i-1},T_i)P(t,T_i) - \sum_{j=1}^m \tau_j^{S} (F^{S}(t;T_{j-1},T_j)+s)P(t,T_j)}
+	\boxed{
+	\begin{aligned}\textbf{TBS}(t) = \sum_{i=1}^n \tau_i^{L} F^{L}&(t;T_{i-1},T_i)P(t,T_i) - \\
+	&- \sum_{j=1}^m \tau_j^{S} (F^{S}(t;T_{j-1},T_j)+s)P(t,T_j)
+	\end{aligned}
+	}
 	\end{equation}
-	where $L$ (long index) denotes the index with the longer tenor and $S$ (short index) the other with the shorter tenor.
+	where $L$ (long index) denotes the index with the longer tenor and $S$ (short index) the other with the shorter tenor.}
+	\only<3->{
+	\item A Tenor Basis Swap can be priced according to the following expression
+	\begin{equation}
+	\boxed{
+	\begin{aligned}\textbf{TBS}(t) = \sum_{i=1}^n \tau_i^{L} F^{L}&(t;T_{i-1},T_i)P(t,T_i) - \\
+	&-\sum_{j=1}^m \tau_j^{S} (F^{S}(t;T_{j-1},T_j)+\textcolor{red}{s})P(t,T_j)
+	\end{aligned}
+	}
+	\end{equation}
+	where $L$ (long index) denotes the index with the longer tenor and $S$ (short index) the other with the shorter tenor.}
+
 	\item<2-> Basis Swaps usually quote at par, meaning that the price of the swap is zero and that the present value (PV) of each of the traded legs is the same. 
-	\item<3-> This is made possible by adding a \textcolor{red}{basis spread $s$} to the Ibor index with the lower frequency tenor.
+	\item<3-> This is made possible by adding a \textcolor{red}{basis spread $s$} to the LIBOR index with the lower frequency tenor.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Basis Swap Spread}
 	\begin{itemize}
-	\item But according to the \textcolor{red}{single curve framework} there should be no basis as the value of the floating leg
-	is given by (forward start case)s
+	\item But according to the \textcolor{red}{single curve framework} there should be no basis as the value of the floating leg is given by (assuming $N=1$)
 	\begin{equation*}
-	P(0, T_0) - P(0, T_n)
+	P(0, T_0) - P(0, T_n), \quad \text{(forward start case)}
 	\end{equation*}
-	or the following (spot case)
+	or by 
 	\begin{equation*}
-	1 - P(0, T_n)
+	1 - P(0, T_n), \quad \text{(spot case)}
 	\end{equation*}
-	(assuming $N=1$).
 	\begin{columns}
 	\column{0.4\linewidth}
-	\item In both cases what matters are the first reset date and the last payment date; hence if they are the same for the two legs (regardless the reset frequency and the index tenor), the basis should be zero.
-	\column{0.5\linewidth}
+	\item In both cases what matters are the first and the last payment dates; hence if they are the same for the two legs (regardless the reset frequency and the index tenor), the basis should be zero.
+	\column{0.4\linewidth}
 		\begin{center}
-		\includegraphics[width=1.\linewidth]{Basis-Swap-spreads-Euribor-3M-Vs-Euribor-6M-Euribor-6M-Vs-Euribor-12M-and-Eonia-Vs}
+		\includegraphics[width=1.1\linewidth]{Basis-Swap-spreads-Euribor-3M-Vs-Euribor-6M-Euribor-6M-Vs-Euribor-12M-and-Eonia-Vs}
 		\end{center}
 	\end{columns}
 	\end{itemize}
@@ -868,9 +885,9 @@ The tower property says that if you are expecting that you will expect whatever 
 \section{Credit Risk and Asset Swap}
 \begin{frame}{Adding Credit Risk}
 	\begin{itemize}
-		\item When we make the real world enter the picture, a typical bank will pay a spread over LIBOR representing the \textcolor{red}{credit risk} (and other stuff, but leave this extra aside for the moment). 
+		\item When we make the real world enter the picture, a typical bank will pay a spread over LIBOR representing the \textcolor{red}{credit risk} (and other stuff, but leave this extra aside here). 
 		%\item For the swap to be worth 0 at inception the fixed rate must be higher as well. 
-		\item<2-> Hence a bank which has credit risk will have to pay
+		\item<2-> Hence a bank, which \emph{has credit risk},  will have to pay
 		\begin{enumerate}
 			\item a higher coupon if it issues a bond with fixed coupon;
 			\item a spread over the variable rate if it opts for a floating rate bond.
@@ -884,9 +901,9 @@ The tower property says that if you are expecting that you will expect whatever 
 	\begin{itemize}
 		\item<1-> An \textcolor{red}{Asset Swap} (AS) can be defined as a \emph{synthetic floating-rate note}.
 		\item In fact, the Asset Swap transforms a fixed rate into a floating one, \textcolor{red}{leaving the credit risk profile unchanged}.
-		\item<1-> In the following we are going to consider \textcolor{red}{Par Asset Swaps}. 
+		\item<1-> There are several kinds of Asset Swap contract, in the following we are going to consider \textcolor{red}{Par Asset Swaps}. 
 		\item<2-> The package is made of a position in a bond and another in a swap.
-		\item<3-> In case of \textcolor{red}{default} of the bond issuer, the Asset Swap buyer \textcolor{red}{must pay the fixed leg and the principal in the swap} but \textcolor{red}{does not receive the coupon} of the defaulted bond. 
+		\item<3-> In case of \textbf{default} of the bond issuer, the Asset Swap buyer \textbf{must pay the fixed leg and the principal in the swap} but \textcolor{red}{does not receive the coupon} of the defaulted bond. 
 	\end{itemize}
 \end{frame}
 
@@ -901,12 +918,12 @@ The tower property says that if you are expecting that you will expect whatever 
 	At valuation time $t$ the \emph{three} following facts are observed:
 	\begin{itemize}
 		\item<2-> the AS buyer buys a generic \emph{risky} coupon bond at the market price $\overline{\textbf{CBP}}(t,T,K,1)$;
-		\item<3-> the AS seller pays/receives to/from the asset swap buyer the difference $\Delta = \overline{\textbf{CBP}}(t,T,K,N)-1$ in such a way that the net sum paid from the AS buyer is always 1; 
+		\item<3-> the AS seller pays/receives to/from the asset swap buyer the difference $\Delta = \overline{\textbf{CBP}}(t,T,K,1)-1$ in such a way that the net sum paid from the AS buyer is always 1; 
 		\begin{itemize}
 			\item \textcolor{red}{if the bond trades above par} the difference $\Delta$ is paid to the AS buyer by the seller;
 			\item conversely \textcolor{red}{if the bond trades below par} the difference $\Delta$ is paid to the AS seller by the buyer.
 		\end{itemize}
-		\item<4-> A swap is then started between the two counter-parties such that the AS seller receives a fixed leg equal to the coupon stream of the bond and the AS buyer receives the floating leg given by LIBOR rate plus a \textcolor{red}{spread ($s$)}.
+		\item<4-> A swap is then started between the two counter-parties such that the AS seller receives a fixed leg equal to the coupon stream of the bond and the AS buyer receives the floating leg given by LIBOR rate plus a \textcolor{red}{spread ($s$)} (again for simplicity the floating payment dates are the same as the fixed leg ones).
 	\end{itemize}
 \end{frame}
 
@@ -926,11 +943,11 @@ The tower property says that if you are expecting that you will expect whatever 
 
 \begin{frame}{Valuation of the Asset Swap}
 	\begin{itemize}
-		\item We can replace the future rates with the forward rates, and by its definition (\cref{eq:forward_rate_definition})
+		\item We can replace the future rates with the forward rates definition in terms of ZCB, and by its definition (\cref{eq:forward_rate_definition})
 		\begin{equation*}
 			\begin{aligned}
-			&\sum_{i=1}^\beta \tau_i P(0,T_i)F(t;T_{i-1},T_i) =  \sum_{i=1}^\beta \cancel{P(0,T_i)}\frac{P(0,T_{i-1})-P(0,T_i)}{\cancel{P(0,T_i)}} = \\
-			&= P(0,0) \cancel{- P(0,T_1)} + \cancel{P(0,T_1)} \cancel{- P(0,T_2)} + \cancel{P(0,T_2)} + \\
+			\sum_{i=1}^\beta &\tau_i P(0,T_i)F(t;T_{i-1},T_i) =  \sum_{i=1}^\beta \cancel{\tau_i P(0,T_i)}\frac{P(0,T_{i-1})-P(0,T_i)}{\cancel{\tau_i P(0,T_i)}} = \\
+			= &P(0,0) \cancel{- P(0,T_1)} + \cancel{P(0,T_1)} \cancel{- P(0,T_2)} + \cancel{P(0,T_2)} + \\
 			&\ldots \cancel{- P(0, T_{\beta-1})} \cancel{+ P(0, T_{\beta-1})}-P(0,T_\beta) = 1-P(0,T_\beta) 
 			\end{aligned}
 		\end{equation*}
@@ -949,13 +966,13 @@ The tower property says that if you are expecting that you will expect whatever 
 		\item Canceling out the 1s
 		\begin{equation*}
 			\begin{aligned}
-				\textbf{AS}=&-\overline{\textbf{CBP}}+K\sum_{i=1}^\beta\tau_i P(0,T_i) +P(0,T_\beta) \\
-				& + \sum_{i=1}^{\beta}\tau_i P(0,T_i)s=0
+				\textbf{AS}=&-\overline{\textbf{CBP}}+K\sum_{i=1}^\beta\tau_i P(0,T_i) + \\
+				& + P(0,T_\beta) + \sum_{i=1}^{\beta}\tau_i P(0,T_i)s=0
 			\end{aligned}
 		\end{equation*}
 		\item Finally we know that
 		\begin{equation*}
-			K\sum_{i=1}^\beta\tau_i P(0,T_i) + P(0,T_\beta)
+			\textbf{CBP} = P(0,T_\beta) + K\sum_{i=1}^\beta\tau_i P(0,T_i)
 		\end{equation*}
 		represents the price of coupons and principal of a  risk-free bond which can be denoted by \textbf{CBP}.
 	\end{itemize}
@@ -970,17 +987,24 @@ The tower property says that if you are expecting that you will expect whatever 
 \myendproof
 	\begin{itemize}
 	\item<2-> An asset swap enables an investor to buy a fixed rate bond and then hedge out the interest rate risk by swapping the fixed payments to floating. In doing so the investor retains the credit risk of the bond but earns a corresponding return. 
-	\item<3-> She is still exposed to the loss of the coupons and redemption on the bond, i.e. the difference between bond and recovery value.
-	\item<4-> In economic terms the purpose of the Asset Swap Spread is to compensate the Asset Swap buyer for taking these risks, which is measured by the spread.
-	\item<5-> If the credit worthiness of the issuer reduces ($\overline{\textbf{CBP}}$ decreases), rates remain constant, so $s$ increases.
+	\item<3-> The investor is \emph{still exposed to the loss of the coupons and redemption on the bond}, i.e. the difference between bond and recovery value.
+	\item<4-> In economic terms the purpose of the Asset Swap Spread is to compensate the Asset Swap buyer for taking these risks, which is \textbf{measured} by the spread. If the credit worthiness of the issuer reduces ($\overline{\textbf{CBP}}$ decreases), rates remain constant, so $s$ increases.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Asset Swap: Credit Considerations}
 	\begin {itemize}
 %	\item If the bond defaults, the AS buyer has to continue paying on the swap, which can no longer be funded with the coupon from the bond, or the swap can be closed out at market value. The asset swap buyer also loses the par redemption of the bond, receiving whatever recovery rate the bond issuer pays. 
-	\item A trader may want to hedge the credit risk carried on with the asset swap entering into a Credit Default Swap (CDS).
-	\item A CDS is a credit insurance contract where the protection buyer pays \emph{spread} ($s_{CDS}$)and in case of a credit event, the protection seller must pay the contingency payment so that the buyer receives no losses from the default.
+	\item A trader may want to hedge anyway the credit risk carried on with the asset swap entering into a \emph{Credit Default Swap (CDS)}.
+	\item A CDS is a credit insurance contract where the protection buyer pays \emph{spread} ($s_{CDS}$) and in case of a credit event, the protection seller must pay the contingency payment so that the buyer receives no losses from the default.
+	\end{itemize}
+\begin{center}
+\includegraphics[width=0.7\linewidth]{credit-default-swaps}
+\end{center}
+\end{frame}
+
+\begin{frame}{Asset Swap: Credit Considerations}
+	\begin {itemize}
 	\item Like $s_{AS}$, also $s_{CDS}$ is quoted on the market, tracking the perceived credit worthiness of the underlying reference entity.
 	\item To avoid arbitrage opportunities, $s_{AS}$ of bond with maturity $T$ must be very close to corresponding maturity CDS spread $s_{CDS}$
 	\begin{itemize}
@@ -988,8 +1012,8 @@ The tower property says that if you are expecting that you will expect whatever 
 		\item if $s_{AS} - s_{CDS} < 0$ can do the opposite.
 	\end{itemize}
 	\end{itemize}
-	\begin{tikzpicture}[remember picture,overlay]
-		\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\begin{tikzpicture}[remember picture,overlay]
+\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}
 \end{frame}
 
@@ -1005,18 +1029,18 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 \end{frame}
 \end{homework}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PARTE 2
 
 \section{Risk Measures}
 \begin{frame}{Estimating Risk}
 \begin{itemize}
-\item After pricing a trader/investor computes Swap risk for hedging.
+\item After pricing a trader/investor computes \textbf{swap risk} for hedging.
+\item Main risk is \emph{interest rate risk}; check the sensitivity of our portfolio (how its value moves with the rates).
 \item There are several metrics to assess the risk and different ways to measure their actual value:
 \begin{itemize}
-	\item \textbf{analytical}: involves deriving a closed-form solution which can be complex and is not always possible;
+	\item \textbf{analytical}: involves deriving a closed-form expression which can be complex (and not always possible);
 	\item \textbf{numerical}: one bumps the yield curve calibration instruments and reprice the swap. The change in price gives the risk;
 	\item \textbf{curve Jacobians}: when yield curves have been calibrated, the solver slope 'Jacobian' can be kept and used to give the change in swap price for a change in forwards/discount factors;
-	\item \textbf{algorithmic differentiation}: can be used to compute risk "automatically" at the same time as computing the price. It produces accurate and fast risk.
+	\item \textbf{algorithmic differentiation}: can be used to compute risk "automatically" at the same time as computing the price. It produces accurate and fast risk estimates.
 \end{itemize}
 \end{itemize}
 \end{frame}
@@ -1064,7 +1088,7 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 \begin{itemize}
 	\item<1-> If you want to know the \emph{linear} risk associated to a Interest Rate Swap if the market actually moves, you can make a slightly different calculation than above.
 	\item<2-> The \textcolor{red}{Dollar value of a basis point (DV01)} refers to the exposure of a Swap position to a \textbf{down-shift} move of 1~bp in the forward rate curve.
-	\item<3-> In the \emph{real} scenario the fixed rate is, well, fixed and floating rates move, so you can consider what happens to the NPV if every forecast rate $r_i$ are changed in parallel by the same amount
+	\item<3-> In the \emph{real} scenario the fixed rate is, well, fixed and floating rates move, so you can consider what happens to the NPV if every rate $r_i$ is changed in parallel by the same amount
 	\begin{equation*}
 	\textbf{DV01} = \sum_j \frac{\partial \textbf{PFS}}{\partial r_j} = -\sum_{j}\tau_jP_j+\sum_{j}\left(K\sum_{i=\alpha+1}^\beta\tau_i\frac{\partial P_i}{\partial r_j} - \sum_{k=\alpha+1}^\beta L_k\tau_k\frac{\partial P_k}{\partial r_j}\right)
 	\end{equation*}
@@ -1092,7 +1116,7 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 	\begin{equation*}
 	\Delta \textbf{PFS}(\delta r)\approx \frac{\partial \textbf{PFS} }{\partial r}\delta r + \frac{1}{2}\frac{\partial^2 \textbf{PFS}}{\partial r^2}\delta r^2
 	\end{equation*}
-	\item<2-> Then bumping $\delta r$ by $\pm 1$~bp and dividing by 2 eliminates the convexity element and very accurately approximates the real DV01
+	\item<2-> Then bumping $\delta r$ by $\pm 1$~bp and dividing by 2 eliminates the convexity element and very accurately approximates the DV01
 	\begin{equation*}
 	\textbf{DV01} = \frac{\Delta \textbf{PFS}(+1~bp)-\Delta \textbf{PFS}(-1~bp)}{2}=\frac{\partial \textbf{PFS} }{\partial r}
 	\end{equation*}
@@ -1105,16 +1129,21 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 
 \begin{frame}{Market Rate Sensitivity}
 \begin{itemize}
-	\item<0-> Forecast and discount curves used in pricing formulas are those \emph{implied} by the market quotes of interest rate instruments (i.e. futures, OIS, etc\ldots). They are usually determined through a technique called \textbf{bootstrap}.
-	\item<1-> Another popular, though more complicated, method to assess the risk is to shock each input instrument used in the bootstrapping by 1~bp one by one, rebuild the curves, and then reprice the instrument of interest to obtain its curve sensitivity. 
-	\item<2-> This is called \textcolor{red}{Market Rate Sensitivity} and its value is given by the sum of each Swap $NPV$ variations.
-	\item<3-> This of course is not quite a "parallel" shift of any curve (e.g. a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
-	\item<4-> In a plain vanilla Swap is very close but not equal to BPV. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
+	\item<1-> Forecast and discount curves used in pricing formulas are those \emph{implied} by the market quotes of interest rate instruments (i.e. futures, OIS, etc\ldots). They are usually determined through a technique called \textbf{bootstrap}.
+	\item<2-> Another popular, though more complicated, method to assess the risk is to shock each input instrument used in the bootstrapping by 1~bp one by one, rebuild the curves, and then reprice the instrument of interest to obtain its curve sensitivity. 
+	\item<3-> This is called \textcolor{red}{Market Rate Sensitivity} and its value is given by the sum of each Swap $NPV$ variations.
+	\item<4-> This of course is not quite a "parallel" shift of any curve (e.g. a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
 \end{itemize}
-\uncover<4->{
+\end{frame}
+
+\begin{frame}{Market Rate Sensitivity}
+In a plain vanilla Swap is very close but not equal to DV01. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
+\begin{center}
+\includegraphics[width=0.5\linewidth]{dv01}
+\end{center}
 \begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}}
+\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\end{tikzpicture}
 \end{frame}
 
 %\begin{frame}{Convexity}
@@ -1219,8 +1248,14 @@ Estimate the DV01 of the swap numerically.
 \begin{frame}{Caplets as ZCB Options}
 	\begin{block}{Intepretation}
 		\begin{enumerate}
-		\item Caplets can be seen as \textcolor{red}{put options} on ZCBs. 
-		\item Similarly floorlets are \textcolor{red}{call options} on ZCBs.
+		\item Caplets can be seen as \textcolor{red}{put options} on ZCBs
+\begin{equation*}
+\textbf{Cpl}=N'\expect{Q}\left[D(t,T_{i-1})\left(K'-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]
+\end{equation*}
+		\item Similarly floorlets are \textcolor{red}{call options} on ZCBs
+\begin{equation}
+\textbf{Flr}=N'\expect{Q}\left[D(t, T_{i-1})\left(P(T_{i-1},T_i)-K'\right)^+ \Big\rvert \mathcal{F}_t\right]
+\end{equation}
 		\end{enumerate}
 	\end{block}
 \end{frame}
@@ -1228,11 +1263,11 @@ Estimate the DV01 of the swap numerically.
 \section{The Black Model}
 \begin{frame}{The Black Model - Overview}
 	\begin{itemize}
-		\item The \textcolor{red}{Black Model} extends the Black-Scholes formula to \emph{caplets}, \emph{swaptions}. % and \emph{bond options}. %It uses the forward coordinates, not the spot ones; this last is not a minor issue indeed.
-		\item The main difference with respect to the Black-Scholes set up is that \textcolor{red}{forward rates (or swap rates...) are log-normally distributed}, rather than the spot price of the underlying ($F(t;T_{i-1},T_i)$ (or $S_\alpha(t)$) are modeled as log-normal random variables). 
-		\item It should be stated that Black’s formulae did not originally correspond to prices that arise from the application of martingale pricing theory to some particular model. 
-		\item With the market models, later on will provide a belated justification for these formulae but we shall see that the justifications are mutually inconsistent. 
-		\item Indeed, it may be shown that if forward rates have deterministic volatilities then it it is not possible for swap rates to also have deterministic volatilities. Therefore Black’s formulae for caplets and swaptions cannot both hold within the same model. 
+		\item The \textcolor{red}{Black Model} extends the Black-Scholes formula to \emph{caplets} and \emph{swaptions}. % and \emph{bond options}. %It uses the forward coordinates, not the spot ones; this last is not a minor issue indeed.
+		\item The main difference with respect to the Black-Scholes set up is that \textcolor{red}{forward rates $F(t;T_{i-1},T_i)$ (or swap rates $S_{\alpha\beta}(t)$) are log-normally distributed}, rather than the spot price of the underlying. 
+		\item It should be stated that Black’s formulas did not originally correspond to prices that arise from the application of martingale pricing theory to some particular model. 
+		\item The advent of the \emph{market models} will provide a belated justification for these formulas but we shall see that the justifications are mutually inconsistent. 
+		\item Indeed, it may be shown that if forward rates have deterministic volatilities then it is not possible for swap rates to also have deterministic volatilities. Therefore Black’s formulas for caplets and swaptions cannot both hold within the same model. 
 	\end{itemize}
 \end{frame}
 
@@ -1262,7 +1297,7 @@ Estimate the DV01 of the swap numerically.
 	\begin{block}{Definition}
 	\begin{equation}
 		\begin{aligned}
-		\textbf{Cap}_{Bl}(0, \tau,N,K,\sigma_{\alpha,\beta}) &= N\sum_{i=\alpha+1}^{\beta}\textbf{Caplet}_{Bl}(T_i, \tau,K,\sigma_{\alpha,\beta}) = \\ &=N\sum_{i=\alpha+1}^{\beta}\tau P(0,T_i) \textbf{Bl}(K,F(0;T_{i-1},T_i),v_i)
+		\textbf{Cap}_{Bl}(0, \tau,N,K,\sigma_{\alpha,\beta}) &= N\sum_{i=\alpha+1}^{\beta}\textbf{Cpl}_{Bl}(T_i, \tau,K,\sigma_{\alpha,\beta}) = \\ &=N\sum_{i=\alpha+1}^{\beta}\tau P(0,T_i) \textbf{Bl}(K,F(0;T_{i-1},T_i),v_i)
 		\end{aligned}
 		\label{eq:cap_black}
 	\end{equation}
@@ -1280,7 +1315,7 @@ Estimate the DV01 of the swap numerically.
 \begin{frame}{Problems with the Black Model}
 \begin{itemize}
 	\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
-	\item In the Black model \textcolor{red}{negative rates are not allowed}. Hence a zero strike floor cannot be priced
+	\item In the Black model \textcolor{red}{negative rates are not allowed}.
 	\begin{equation*}
 		d_{1,2} = \frac{\boxed{\log{\frac{F}{K}}} \pm \cfrac{v^2}{2}}{2} 
 	\end{equation*}
@@ -1288,9 +1323,6 @@ Estimate the DV01 of the swap numerically.
 	\item Moreover in the Black model the empirical evidence of the "smile" (volatility vs $K$) is not accounted for, i.e. $\sigma$ is a constant. Two caps identical but for the strike need a different volatility to recover two different market prices if one uses Black formula.
 	%\item And this is clear if one looks at the distribution and at the process of $F(t, T, S)$; the volatility does not depend on the strike of the option. It is a characteristic of the forward rate.
 \end{itemize}
-	\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-	\end{tikzpicture}
 \end{frame}
 
 \begin{frame}{The Practitioner Solutions}
@@ -1305,7 +1337,7 @@ Estimate the DV01 of the swap numerically.
 \begin{itemize}
 	\item It can be shown that Black formula provides valid solutions if strike and forward rate are \textcolor{red}{shifted}. For a $(T,S)$ caplet with strike $K$ we get
 	\begin{equation}
-		\textbf{Caplet}_{Bl}(t,T,S,\tau,K,v_T,\alpha) = P(t,S) Bl(K+\alpha,F(t;T,S)+\alpha,v_T)
+		\textbf{Cpl}_{Bl}(t,T,S,\tau,K,v_T,\alpha) = P(t,S) Bl(K+\alpha,F(t;T,S)+\alpha,v_T)
 	\end{equation}
 	where $d_1$ and $d_2$ read as before and instead $v_i$ is now given by
 	\begin{equation*}
