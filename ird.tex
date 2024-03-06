@@ -486,7 +486,7 @@ The tower property says that if you are expecting that you will expect whatever 
 				\textbf{RFS}&(t,T,\tau,N,K) = N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
 				&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))=\\
 				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N\sum_{i=\alpha+1}^{\beta}(P_{i-1}-P_i)=\quad (\text{where }P(t, T_i) = P_i) \\
-				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N[(P_\alpha -\cancel{P_{\alpha+1}}) + (\cancel{P_{\alpha+1}} \cancel-{P_{\alpha+2}}) + \ldots + (\cancel{P_{\beta-1}} - P_{\beta})] \\
+				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N[(P_\alpha -\cancel{P_{\alpha+1}}) + (\cancel{P_{\alpha+1}} - \cancel{P_{\alpha+2}}) + \ldots + (\cancel{P_{\beta-1}} - P_{\beta})] \\
 			\end{aligned}
 		\end{equation*}
 	\end{itemize}
@@ -786,7 +786,7 @@ The tower property says that if you are expecting that you will expect whatever 
 		\item<2-> Remember that a variable rate mortgage is perceived risky by the average individual as salary is more or less fixed, but for bank this is not the case because it is left unarmed by the rate rise. Indeed if rates go up
 		\begin{itemize}
 			\item the bank loses in the higher coupons it has to pay to the bond holders;
-			\item the bank gains in the highest rates it charges on new loans at the same time.
+			\item the bank gains in the higher rates it charges on new loans at the same time.
 		\end{itemize}
 		\item<3-> This is the most basic example of \emph{asset liability matching}.
 		\item<4-> The same more or less holds for a rate decrease.%, but with some caveats.
@@ -795,15 +795,15 @@ The tower property says that if you are expecting that you will expect whatever 
 
 \begin{frame}{Concepts behind the Formulas}
 	\begin{itemize}
-		\item<0->Banks like floating rates exposure: 
+		\item<0->Although banks like more floating rates exposure, there are pros and cons for this choice: 
 		\begin{itemize}
 			\item<1-> [\goodcheck] the liability value (the bond floating rate) resets with rates;
-			\item<1-> [\goodcheck] often smaller costs then fixed rates;
+			\item<1-> [\goodcheck] often the costs are smaller then fixed rates;
 			\item<1-> [\goodcheck]surely less expensive in the case of a long-term loan (e.g. 30-year mortgage), lenders require higher fixed rates in that case, due to bad accuracy in forecast economic conditions over such a long period of time.
 		%\end{itemize}
 		%\begin{itemize}
 			\item<2-> [\badcheck] higher interest rate risk (risk of rising rates in the future);
-			\item<2-> [\badcheck] with inverted yield curve, the cost of debt may actually be higher than fixed-rate debt (however, this is the exception rather than the norm).
+			\item<2-> [\badcheck] with inverted yield curve, the cost of debt may actually be higher than fixed-rate. They have to offer higher interest rates to attract buyers, especially for long-term debt. since investors are demanding more compensation for the perceived economic slowdown risk (however, this is the exception rather than the norm).
 		\end{itemize}
 % There is a general assumption that interest rates will rise – or, increase – over time,
 		\item<3-> So why do not banks issue only floating rate notes ?
@@ -828,7 +828,7 @@ The tower property says that if you are expecting that you will expect whatever 
 	\item For instance a typical Basis Swap is one in which a floating leg indexed to EURIBOR-6M is exchanged against one indexed to EURIBOR-3M.
 	\end{itemize}
 	\begin{center}
-		\includegraphics[width=0.5\linewidth]{tenor_basis_swap}
+		\includegraphics[width=0.6\linewidth]{tenor_basis_swap}
 	\end{center}
 \end{frame}
 
@@ -923,7 +923,7 @@ The tower property says that if you are expecting that you will expect whatever 
 			\item \textcolor{red}{if the bond trades above par} the difference $\Delta$ is paid to the AS buyer by the seller;
 			\item conversely \textcolor{red}{if the bond trades below par} the difference $\Delta$ is paid to the AS seller by the buyer.
 		\end{itemize}
-		\item<4-> A swap is then started between the two counter-parties such that the AS seller receives a fixed leg equal to the coupon stream of the bond and the AS buyer receives the floating leg given by LIBOR rate plus a \textcolor{red}{spread ($s$)} (again for simplicity the floating payment dates are the same as the fixed leg).
+		\item<4-> A swap is then started between the two counter-parties such that the AS seller receives a fixed leg equal to the coupon stream of the bond and the AS buyer receives the floating leg given by LIBOR rate plus a \textcolor{red}{spread ($s$)} (again for simplicity the floating payment dates are the same as the fixed leg ones).
 	\end{itemize}
 \end{frame}
 
@@ -1029,12 +1029,12 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 \end{frame}
 \end{homework}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PARTE 2
 
 \section{Risk Measures}
 \begin{frame}{Estimating Risk}
 \begin{itemize}
 \item After pricing a trader/investor computes \textbf{swap risk} for hedging.
+\item Main risk is \emph{interest rate risk}; check the sensitivity of our portfolio (how its value moves with the rates).
 \item There are several metrics to assess the risk and different ways to measure their actual value:
 \begin{itemize}
 	\item \textbf{analytical}: involves deriving a closed-form expression which can be complex (and not always possible);
@@ -1133,12 +1133,17 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 	\item<2-> Another popular, though more complicated, method to assess the risk is to shock each input instrument used in the bootstrapping by 1~bp one by one, rebuild the curves, and then reprice the instrument of interest to obtain its curve sensitivity. 
 	\item<3-> This is called \textcolor{red}{Market Rate Sensitivity} and its value is given by the sum of each Swap $NPV$ variations.
 	\item<4-> This of course is not quite a "parallel" shift of any curve (e.g. a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
-	\item<5-> In a plain vanilla Swap is very close but not equal to DV01. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
 \end{itemize}
-\uncover<5->{
+\end{frame}
+
+\begin{frame}{Market Rate Sensitivity}
+In a plain vanilla Swap is very close but not equal to DV01. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
+\begin{center}
+\includegraphics[width=0.5\linewidth]{dv01}
+\end{center}
 \begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}}
+\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+\end{tikzpicture}
 \end{frame}
 
 %\begin{frame}{Convexity}
@@ -1243,8 +1248,14 @@ Estimate the DV01 of the swap numerically.
 \begin{frame}{Caplets as ZCB Options}
 	\begin{block}{Intepretation}
 		\begin{enumerate}
-		\item Caplets can be seen as \textcolor{red}{put options} on ZCBs. 
-		\item Similarly floorlets are \textcolor{red}{call options} on ZCBs.
+		\item Caplets can be seen as \textcolor{red}{put options} on ZCBs
+\begin{equation*}
+\textbf{Cpl}=N'\expect{Q}\left[D(t,T_{i-1})\left(K'-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]
+\end{equation*}
+		\item Similarly floorlets are \textcolor{red}{call options} on ZCBs
+\begin{equation}
+\textbf{Flr}=N'\expect{Q}\left[D(t, T_{i-1})\left(P(T_{i-1},T_i)-K'\right)^+ \Big\rvert \mathcal{F}_t\right]
+\end{equation}
 		\end{enumerate}
 	\end{block}
 \end{frame}
@@ -1252,11 +1263,11 @@ Estimate the DV01 of the swap numerically.
 \section{The Black Model}
 \begin{frame}{The Black Model - Overview}
 	\begin{itemize}
-		\item The \textcolor{red}{Black Model} extends the Black-Scholes formula to \emph{caplets}, \emph{swaptions}. % and \emph{bond options}. %It uses the forward coordinates, not the spot ones; this last is not a minor issue indeed.
-		\item The main difference with respect to the Black-Scholes set up is that \textcolor{red}{forward rates (or swap rates...) are log-normally distributed}, rather than the spot price of the underlying ($F(t;T_{i-1},T_i)$ (or $S_\alpha(t)$) are modeled as log-normal random variables). 
-		\item It should be stated that Black’s formulae did not originally correspond to prices that arise from the application of martingale pricing theory to some particular model. 
-		\item With the market models, later on will provide a belated justification for these formulae but we shall see that the justifications are mutually inconsistent. 
-		\item Indeed, it may be shown that if forward rates have deterministic volatilities then it it is not possible for swap rates to also have deterministic volatilities. Therefore Black’s formulae for caplets and swaptions cannot both hold within the same model. 
+		\item The \textcolor{red}{Black Model} extends the Black-Scholes formula to \emph{caplets} and \emph{swaptions}. % and \emph{bond options}. %It uses the forward coordinates, not the spot ones; this last is not a minor issue indeed.
+		\item The main difference with respect to the Black-Scholes set up is that \textcolor{red}{forward rates $F(t;T_{i-1},T_i)$ (or swap rates $S_{\alpha\beta}(t)$) are log-normally distributed}, rather than the spot price of the underlying. 
+		\item It should be stated that Black’s formulas did not originally correspond to prices that arise from the application of martingale pricing theory to some particular model. 
+		\item The advent of the \emph{market models} will provide a belated justification for these formulas but we shall see that the justifications are mutually inconsistent. 
+		\item Indeed, it may be shown that if forward rates have deterministic volatilities then it is not possible for swap rates to also have deterministic volatilities. Therefore Black’s formulas for caplets and swaptions cannot both hold within the same model. 
 	\end{itemize}
 \end{frame}
 
@@ -1286,7 +1297,7 @@ Estimate the DV01 of the swap numerically.
 	\begin{block}{Definition}
 	\begin{equation}
 		\begin{aligned}
-		\textbf{Cap}_{Bl}(0, \tau,N,K,\sigma_{\alpha,\beta}) &= N\sum_{i=\alpha+1}^{\beta}\textbf{Caplet}_{Bl}(T_i, \tau,K,\sigma_{\alpha,\beta}) = \\ &=N\sum_{i=\alpha+1}^{\beta}\tau P(0,T_i) \textbf{Bl}(K,F(0;T_{i-1},T_i),v_i)
+		\textbf{Cap}_{Bl}(0, \tau,N,K,\sigma_{\alpha,\beta}) &= N\sum_{i=\alpha+1}^{\beta}\textbf{Cpl}_{Bl}(T_i, \tau,K,\sigma_{\alpha,\beta}) = \\ &=N\sum_{i=\alpha+1}^{\beta}\tau P(0,T_i) \textbf{Bl}(K,F(0;T_{i-1},T_i),v_i)
 		\end{aligned}
 		\label{eq:cap_black}
 	\end{equation}
@@ -1304,7 +1315,7 @@ Estimate the DV01 of the swap numerically.
 \begin{frame}{Problems with the Black Model}
 \begin{itemize}
 	\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
-	\item In the Black model \textcolor{red}{negative rates are not allowed}. Hence a zero strike floor cannot be priced
+	\item In the Black model \textcolor{red}{negative rates are not allowed}.
 	\begin{equation*}
 		d_{1,2} = \frac{\boxed{\log{\frac{F}{K}}} \pm \cfrac{v^2}{2}}{2} 
 	\end{equation*}
@@ -1312,9 +1323,6 @@ Estimate the DV01 of the swap numerically.
 	\item Moreover in the Black model the empirical evidence of the "smile" (volatility vs $K$) is not accounted for, i.e. $\sigma$ is a constant. Two caps identical but for the strike need a different volatility to recover two different market prices if one uses Black formula.
 	%\item And this is clear if one looks at the distribution and at the process of $F(t, T, S)$; the volatility does not depend on the strike of the option. It is a characteristic of the forward rate.
 \end{itemize}
-	\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-	\end{tikzpicture}
 \end{frame}
 
 \begin{frame}{The Practitioner Solutions}
@@ -1329,7 +1337,7 @@ Estimate the DV01 of the swap numerically.
 \begin{itemize}
 	\item It can be shown that Black formula provides valid solutions if strike and forward rate are \textcolor{red}{shifted}. For a $(T,S)$ caplet with strike $K$ we get
 	\begin{equation}
-		\textbf{Caplet}_{Bl}(t,T,S,\tau,K,v_T,\alpha) = P(t,S) Bl(K+\alpha,F(t;T,S)+\alpha,v_T)
+		\textbf{Cpl}_{Bl}(t,T,S,\tau,K,v_T,\alpha) = P(t,S) Bl(K+\alpha,F(t;T,S)+\alpha,v_T)
 	\end{equation}
 	where $d_1$ and $d_2$ read as before and instead $v_i$ is now given by
 	\begin{equation*}

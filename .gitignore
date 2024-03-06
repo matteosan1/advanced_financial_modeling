@@ -1,4 +1,5 @@
 .ipynb_checkpoints
+exercises
 .jupyter
 __pycache__
 *~
@@ -15,4 +16,5 @@ __pycache__
 *.gz
 *.nav
 *.snm
+*.xsim
 *.vrb
