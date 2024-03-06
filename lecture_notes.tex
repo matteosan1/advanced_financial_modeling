@@ -1477,19 +1477,33 @@ In adjoint mode $\bar{y} = dy/dy$ is specified as an input and allows us to enab
 \section{Newton-Raphson Method}
 Newton's method, also known as the Newton–Raphson method, is a root-finding algorithm which produces successively better approximations to the roots (or zeroes) of a real-valued function. %The most basic version starts with a real-valued function f, its derivative f′, and an initial guess x0 for a root of f. If f satisfies certain assumptions and the initial guess is close, then
 
-The idea is to start with an initial guess, then to approximate the function by its tangent line, and finally to compute the $x$-intercept of this tangent line. This $x$-intercept will typically be a better approximation to the original function's root than the first guess, and the method can be iterated.
+The idea is to start with an initial guess $x_0$, then to approximate the function by its tangent line ($g(x)$), 
+\begin{equation*}
+g(x) = f(x_0) + \cfrac{\partial f}{\partial x}(x_0)(x - x_0)
+\end{equation*}
+and finally to compute the $x$-intercept of this tangent line. This $x$-intercept will typically be a better approximation to the original function's root than the first guess, and the method can be iterated.
 
-If the tangent line to the curve $f(x)$ at $x = x_n$ intercepts the $x$-axis at $x_{n+1}$ then the slope is
-\begin{equation}
-	f'(x_n)=\dfrac {f(x_{n})-0}{x_{n}-x_{n+1}}
-\end{equation}
+Suppose the tangent line to the curve $f(x)$ at $x = x_n$ intercepts the $x$-axis at $x_{n+1}$ then we have two cases:
+\begin{enumerate}
+\item the original function value in $x_{n+1}$ is "close enough" to 0 such that we are happy with this approximate solution:
+\begin{equation*}
+f(x_{n+1}) < \texttt{tol}=10^{-8}
+\end{equation*}
+where the parameter \texttt{tol} is set in advance. In this case we are done and the algorithm stops;
+\item otherwise we need to solve for $x_{n+1}$ and iterate the process again. Indeed 
+\begin{equation*}
+g(x_{n+1}) = f(x_n) + \cfrac{\partial f}{\partial x}(x_n)(x_{n+1} - x_n) = 0
+\end{equation*}
 
-Solving for $x_{n+1}$ gives
-\begin{equation}
-	x_{n+1}=x_{n}-{\frac {f(x_{n})}{f'(x_{n})}}
-\end{equation}
+from which we get
+\begin{equation*}
+f(x_{n})-0 = f'(x_n)(x_{n}-x_{n+1}) \Rightarrow x_{n+1}=x_n-\frac {f(x_n)}{f'(x_n)}
+\end{equation*}
 
-We start the process with some arbitrary initial value $x_0$ (the closer to the zero, the better). The method will usually converge, provided this initial guess is close enough to the unknown zero, and that $f'(x_0) \neq 0$.
+Another iteration is then started from $x_{n+1}$.
+\end{enumerate}
+
+The method will usually converge, provided this initial guess is close enough to the unknown zero, and that $f'(x_0) \neq 0$.
 \begin{center}
 	\includegraphics[width=0.6\linewidth]{addons/newton_method}
 \end{center}
