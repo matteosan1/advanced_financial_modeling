@@ -1553,21 +1553,20 @@ List the pros and cons about each one and declare your favourite.
     \end{center}
 \end{frame}
 
-\begin{frame}{Differences between Caps and Swaptions}
-\begin{itemize}
-	\item<1-> Caps can be decomposed into more elementary products: \textcolor{red}{caplets}. Value each caplet one by one and then add their prices
-	\begin{itemize}
-		\item each forward rate can be modeled as a random variable;
-		\item \textbf{no joint action of forward LIBOR rates is involved.}
-	\end{itemize}
-	\item<2-> Unfortunately this is not possible with swaptions. The swap rate is \textcolor{red}{essentially a weighted average of forward rates} $S=\frac{\sum F(t;T_{i-1},T_i)}{\sum P(t,T_i)}$, hence its volatility should depend on each forward rate volatilities \textbf{as well as} their correlations.
-	\item<3-> If you take as "fundamental" entity the LIBOR rates you have to deal with the joint action of the simple forward LIBOR rates and so with the \textbf{terminal correlation} between rates of different portions of the yield curve. 
-	\item<4-> This issue will be extensively studied in the context of the Libor Market Models further on down the course.
-	%Can you provide an example ?
-\end{itemize}
-\end{frame}
+%\begin{frame}{Differences between Caps and Swaptions}
+%\begin{itemize}
+%	\item<1-> Caps can be decomposed into more elementary products: \textcolor{red}{caplets}. Value each caplet one by one and then add their prices
+%	\begin{itemize}
+%		\item each forward rate can be modeled as a random variable;
+%		\item \textbf{no joint action of forward LIBOR rates is involved.}
+%	\end{itemize}
+%	\item<2-> Unfortunately this is not possible with swaptions. The swap rate is \textcolor{red}{essentially a weighted average of forward rates} $S=\frac{\sum F(t;T_{i-1},T_i)}{\sum P(t,T_i)}$, hence its volatility should depend on each forward rate volatilities \textbf{as well as} their correlations.
+%	\item<3-> If you take as "fundamental" entity the LIBOR rates you have to deal with the joint action of the simple forward LIBOR rates and so with the \textbf{terminal correlation} between rates of different portions of the yield curve. 
+%	\item<4-> This issue will be extensively studied in the context of the Libor Market Models further on down the course.
+%	%Can you provide an example ?
+%\end{itemize}
+%\end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  PARTE 3
 
 \subsection{Bond Options}
 \begin{frame}{An Option to Exchange Fixed with Float}
@@ -1748,7 +1747,7 @@ whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$
 	\item<1-> It is a swaption in which the optionality can be exercised at a \textcolor{red}{predetermined set of dates} (not only one).
 	\item<2-> It is useful for hedging callable bonds (especially if step-up, i.e. with the coupon increasing with time).
 	\item<3-> A \textcolor{red}{Bermudan Swaption} gives the holder the right but not the obligation to enter in an interest rate swap contract at different dates (usually the swap reset dates) with some days of notification to the counter-party.
-	\item<4-> The interest rate swap the holder can enter into, is the same existing contract, so if the holder does not exercise at the first date in the call schedule, the option for the following periods is written on shorter swaps.
+	\item<4-> The interest rate swap the holder can enter into, is the same existing contract, so if the holder does not exercise at the first date in the call schedule, the option for the following periods is just written on shorter swaps.
 \end{itemize}
 \end{frame}
 
