@@ -1573,8 +1573,8 @@ List the pros and cons about each one and declare your favourite.
 \begin{itemize}
 	\item<1-> We have seen that a Swap can be viewed as an exchange of bonds (fixed for float).
 	\item<2-> Hence a Swaption can be regarded as an \textcolor{red}{option to exchange fixed for floating} bonds (or vice versa).
-	\item<3-> To fully characterize this point we need an expression for a \textcolor{red}{Coupon Bond Option}.
-	\item <4-> Most \emph{short rate models} have a closed formula for the Zero Coupon Bond price. It would be even simpler if we could express a Coupon Bond Option as a portfolio of Zero Coupon Bond Options.
+	\item<3-> In case it would be possible to get a simple expression for a \textcolor{red}{Coupon Bond Option} we could use to price Swaptions.
+	\item <4-> It would be even simpler if we could express a Coupon Bond Option as a portfolio of Zero Coupon Bond Options.
 	\item<5-> Luckily we can do that thanks to a recipe known as \textcolor{red}{Jamshidian's decomposition}.
 \end{itemize}
 \end{frame}
@@ -1602,10 +1602,10 @@ List the pros and cons about each one and declare your favourite.
 	\left(K - \sum_i f_i(W)\right)^+ = \left(\sum_i f_i(\hat{w}) -  \sum_i f_i(W)\right)^+ = 
 	\end{equation*}}
 	\uncover<3->{\begin{equation*}
-	= \left(\sum_i (f_i(\hat{w}) -  f_i(W))\right)^+= \sum_i (f_i(\hat{w}) - f_i(W))\mathbb{1}_{W\ge \hat{w}}
+	= \left(\sum_i (f_i(\hat{w}) -  f_i(W))\right)^+= \sum_i (f_i(\hat{w}) - f_i(W))\mathbbm{1}_{W\ge \hat{w}}
 	\end{equation*}}
 	\uncover<4->{\begin{equation*}
-	= \sum_i \left(K_i - f_i(W)\right)^+\quad\quad\quad\quad\qedsymbol
+	= \sum_i \left(K_i - f_i(W)\right)^+\quad\qedsymbol
 	\end{equation*}
 	}
 	\column{0.35\linewidth}
@@ -1613,7 +1613,7 @@ List the pros and cons about each one and declare your favourite.
 	\includegraphics[width=1\linewidth]{jamshidian_trick}}
 \uncover<5->{	
 \begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+	\node[xshift=1.5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
 \end{tikzpicture}}
 \end{columns}
 \end{itemize}
@@ -1637,11 +1637,11 @@ List the pros and cons about each one and declare your favourite.
 \begin{itemize}
 	\item<1-> Now apply the Jamshidian's decomposition to previous payoff.
 	\item<2-> First need to find the interest rate value $r^*$ such that $\sum_{i=1}^n c_i \Pi(t, T_i, r^*) = K$.
-	\item<3-> Assuming the interest rate model satisfies the required condition
+	\item<3-> Assuming the interest rate model satisfies the required condition (which is true for Short Rate models for example)
 	\begin{equation*}
 		\frac{\partial \Pi(t,T_i,r(t))}{\partial r}<0,\;\forall 0<t<s
 	\end{equation*}
-	we can rewrite the payoff as
+	we can write the payoff as
 	\begin{equation}
 		\textbf{CBP}(t,T_i,\Pi,r^*) = \sum_{i=1}^n c_i [\Pi(t, T_i, r^*)-\Pi(t, T_i, r(t))]^+
 	\label{eq:bond_option_payoff}
@@ -1668,7 +1668,7 @@ List the pros and cons about each one and declare your favourite.
 \textbf{PSw}=NP(t_0, T_\alpha)\mathbb{E}_t\left[\max\left(1-\sum_{k=\alpha+1}^\beta c_kP(T_\alpha,T_k), 0\right)\right]
 \end{equation*}
 with $c_k=K\tau_k$ for $k=\alpha+1,\ldots,\beta-1$ and $c_\beta=(1+K\tau_\beta)$.
-	\item One of the most striking properties of \emph{Affine Models} is that they relate ZCB price to a spot rate model according to 
+	\item One of the most striking properties of \emph{Affine Models} is that they relate ZCB price to a spot rate modeled according to 
 	\begin{equation*}
 		P(t,T) = A_r(t,T)e^{-B_r(t,T)r}
 	\end{equation*} 
@@ -1777,14 +1777,14 @@ whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$
 
 \begin{frame}{Bermudan Swaption Pricing}
 \begin{itemize}
-	\item<1-> Some interest rate instruments can be priced just looking at the term structure (FRA and Swaps)
+	\item<1-> Some interest rate instruments can be priced just looking at the term structure of interest rates (FRA and Swaps)
 	\begin{itemize}
 		\item the only problem is: which is the right term structure ? (this is a lesson from the 2008 crisis).
 	\end{itemize}
 	\item<2-> Some other instruments cannot be priced only with the yield curve: we need the future (risk-neutral) evolution of the rates.
 	%\item Non-linearities come in !
 	%\item Swaptions are non-linear products and may require to model the correlation between forward LIBOR rates.
-	\item<3-> Given the complexity of Bermudan swaption valuation, there is no closed form solution. Therefore, we need to select an interest rate term structure model and a numeric solution to price this contract numerically.		
+	\item<3-> Given the complexity of Bermudan swaption valuation (which belongs to the latter class), there is no closed form solution. Therefore, we need to select an interest rate term structure model and a numeric solution to price this contract numerically.		
 	\item<4-> Typically tree techniques or the Longstaff-Schwartz method are used.
 	\begin{tikzpicture}[remember picture,overlay]
 		\node[xshift=5.8cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
@@ -1833,10 +1833,10 @@ whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$
 \subsection{Callable Bonds}
 \begin{frame}{Callable Coupon Bond}
 \begin{itemize}
-	\item<1-> A \textcolor{red}{callable bond} is a bond in which, on the call date(s) (there can be more than one), the issuer has the right, but not the obligation, to buy back (redeem) the bonds from the bond holders at a defined call price.
+	\item<1-> A \textcolor{red}{callable bond} is a bond in which, on the call date(s) (there can be more than one), the \textbf{issuer} has the right, but not the obligation, to buy back (redeem) the bonds from the bond holders at a defined call price.
 	\item<2-> We have seen that a swap can be regarded as an exchange of bonds. It is easy to guess that a replica for the callable bond price can be obtained by simply adding a (swap-)option to the swap used to price the underlying bond.
 	\item<3-> If there are multiple callability dates is clear that the swaption we need is a Bermudan one.
-	\item<4-> With a receiver bermudan swaption with the same contractual conventions of the Swap (i.e. the strike of the swaption is equal to the coupon of the bond) we can offset the swap. %; which represents the economic equivalent of calling the bond at par.
+	\item<4-> With a receiver bermudan swaption with the same contractual conventions of the bond (i.e. the strike of the swaption is equal to the coupon of the bond) we can offset it. %; which represents the economic equivalent of calling the bond at par.
 	%\item So $\max(CCBP(T,S,K,\tau)-100, 0)$ can be represented as $\max(K-S(T_j,\beta)(T), 0)$.
 	%\item Intuition: long on the bond, short on the rates.
 \end{itemize}
@@ -1973,20 +1973,26 @@ whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$
 \end{frame}
 
 \begin{frame}{Reverse Floater Bond}
+		\begin{columns}
+			\column{0.45\linewidth}
+		An investor would want to invest in a reverse floater if the benchmark rate is high and she believes the rate will decrease in the future at a faster pace than the forwards indicate.
+			\column{0.4\linewidth}
+				\includegraphics[width=0.8\linewidth]{reverse_floater_payoff}
+		\end{columns}
 	\begin{itemize}
-		\item<1-> An investor would want to invest in a reverse floater if the benchmark rate is high and she believes the rate will decrease in the future at a faster pace than the forwards indicate. 
-		\item<2-> Another strategy is to buy a reverse floater if the rates are low now and the investor believes they stay low, even though the forward contracts are implying an increase. If she is correct and the rates do not change, by holding the reverse floater she will outperform floating rate notes on the same index.
-		\item<3-> Hedging against the risk of falling interest rates. If an investor has invested in regular bonds, and if the interest rate falls, then she will receive lower returns than expected. In this scenario, it is extremely helpful to have inverse floaters in the portfolio as it gives higher returns when interest rates fall.
+	\item<2-> One can also buy a reverse floater if the rates are low now and believes they stay low, even though the forward contracts are implying an increase. If rates do not change, by holding the reverse floater outperform floating rate notes on the same index.
+	\item<3-> Third if an investor has invested in bonds, and if interest rate falls, she will receive lower returns than expected. In this scenario, inverse floaters in the portfolio provide higher returns.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Reverse Floater Bond}
 	\begin{itemize}
-		\item As with all investments that employ leverage, inverse floaters introduce a significant amount of interest rate risk. 
-		\item Other typical investors are long vega, if $K$ is close to the forward rates, vega is much higher.
-		\item A long vega position means that you have a positive vega exposure. It is a strategy to profit from an increase in implied volatility. A long call option or a long put option can be used to create a long vega position. 
-		\item A short vega position means that you have a negative vega exposure. It is a strategy to profit from a decrease in implied volatility. A short call option or a short put option can be used to create a short vega position. 
-		\item Remember, high volatility can result in drastic market swings. volatility typically has a negative correlation to the market – meaning spiked volatility can be reflective of downward market velocity. Managing a portfolio's Vega exposure can help understand volatility risk and the trader's comfort level.
+%		\item As with all leveraged investments, inverse floaters introduce significant interest rate risk. 
+		\item Other typical investors are \textbf{long vega}: if $K$ is close to the forward rates, vega is much higher (do you know why ?).
+		\item Such a position means you have a \emph{positive vega exposure}, i.e. take profit from an increase in volatility: 
+		a long call/put option can be used. 
+		\item A \emph{short vega} position instead means you have a negative vega exposure (profit from a decrease in volatility). \item A short call/put option can be used to create a short vega position. 
+		\item High volatility can result in drastic market swings. It typically has a negative correlation to the market, i.e. spiked volatility can be result into downward market velocity.
 	\end{itemize}
 \end{frame}
 %
