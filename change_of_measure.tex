@@ -21,9 +21,9 @@
 			\label{eq:risk_neutral_pricing}
 		\end{equation}
   ideally we would like to define a probability measure $\mathbb{Q}^X$ under which the discounted derivative process is a martingale and such that the expectation of the payoff is analytically tractable (i.e. easy to compute).
-  \item<3-> The question that arises is: how can we determine such measure $\mathbb{Q}^X$ ?
-  \item<4-> The answer is through \textcolor{red}{change of numeraire}.
-  \item<5-> A \textcolor{red}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as a unit of reference when pricing an asset $S_t$
+  \item<2-> The question that arises is: how can we determine such measure $\mathbb{Q}^X$ ?
+  \item<3-> The answer is through \textcolor{red}{change of numeraire}.
+  \item<4-> A \textcolor{red}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as a unit of reference when pricing an asset $S_t$
     \begin{equation*}
       \tilde{S_t}:=\frac{S_t}{N_t}, \quad t \ge 0
     \end{equation*}
@@ -62,10 +62,10 @@
   \item<3-> In particular a change of numeraire implies also a change in the underlying measure (probability distribution). Indeed, starting with the bank account numeraire
     \begin{equation*}
       \begin{cases}
-        \cfrac{S_1}{B_t} = \cfrac{\sum_i S^i_1 p_i}{e^{rt}}\\
-        \cfrac{S_2}{B_t} = \cfrac{\sum_i S^i_2 p_i}{e^{rt}}
+        \cfrac{S}{B_t} = \cfrac{\sum_i S_i p_i}{e^{rt}}\\
+        \cfrac{U}{B_t} = \cfrac{\sum_i U_i p_i}{e^{rt}}
       \end{cases}\implies
-      \frac{S_1}{S_2} = \frac{\sum_i S^i_1 p_i}{\sum_j S^j_2 p_j} = \sum_i S_1^i \frac{p_i}{\sum_j S^j_2 p_j} = \sum_i S_1^1 \pi_i
+      \frac{S}{U} = \frac{\sum_i S_i p_i}{\sum_j U_j p_j} = \sum_i S_i \frac{p_i}{\sum_j U_j p_j} = \sum_i S_i \pi_i
     \end{equation*}
   \end{itemize}
 \end{frame}
@@ -141,13 +141,13 @@
 
 \begin{frame}{Intuition from Expected Value}
   \begin{itemize}
-  \item To get a sense of what a Radon-Nikodym derivative is we can write the expected value of a generic function $F(x)$ under a measure $\mathcal{P}$, with associated density function $p(x)$ as
+  \item To get a sense of what a Radon-Nikodym derivative is we can write the expected value of a generic function $F(x)$ under a measure $\mathbb{P}$, with associated density function $p(x)$ as
     \begin{equation*}
       \expect{P}=\int F(x)p(x)dx
     \end{equation*}
   \item Suppose there exists a function $q(x)$, which satisfies the mathematical conditions required to be a density function. Then we can write
     \begin{equation*}
-      \expect{P}=\int F(x)f(x)\frac{q(x)}{q(x)}dx
+      \expect{P}=\int F(x)p(x)\frac{q(x)}{q(x)}dx
     \end{equation*}
   \item If we define $\psi(x)=F(x)\frac{p(x)}{q(x)}$ the expected value can be written as 
     \begin{equation*}
@@ -247,6 +247,7 @@
   \end{equation*}
 	where we have used the fact that the expectation arguments under $U$ must equal to get \cref{eq:radon_nikodym_der2}. 
   \end{itemize}
+\myendproof
 \end{frame}
 
 \begin{frame}{Change of Numeraire (Proof part 1)}
@@ -289,7 +290,7 @@
     \item give a simple rule to write (the otherwise difficult to derive) Radon-Nikodym derivative;
       \item \textcolor{red}{the risk-neutral price is invariant under change of numeraire}
     \begin{equation*}
-    	Price = \expectt{N}{t}\left[\cfrac{N_0 S_T}{N_T}\right] = \expectt{U}{t}\left[\cfrac{U_0 S_T}{U_T}\right]
+    	\text{Price} = \expectt{N}{t}\left[\cfrac{N_0 S_T}{N_T}\right] = \expectt{U}{t}\left[\cfrac{U_0 S_T}{U_T}\right]
     \end{equation*}
     \end{enumerate}
 \end{frame}
@@ -730,7 +731,7 @@
       \mathbb{P}^* = \expect{P}\left[\exp\left(-\frac{1}{2}\int_0^t \gamma_s^2 ds + \int_0^t \gamma_s dW_s \right)\right]
     \end{equation}
     and that $\tilde{W}$ is a Brownian motion on $\mathbb{P}^*$.
-  \item<2-> In practice, don't need to determine the new measure $\mathcal{P}^*$.
+  \item<2-> In practice, don't need to determine the new measure $\mathbb{P}^*$.
   \item<3-> It is enough to know it exists, such that we can work with the resulting SDE of the process of interest under the new measure.	
   \begin{tikzpicture}[remember picture,overlay]
 	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
@@ -1007,7 +1008,7 @@ Now let $N_t$ and $U_t$ have dynamics under $\mathbb{Q}^U$ given by
       &=\mu_t^N(X_t)-\sigma_t(X_t)\rho\left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)'
     \end{aligned}
   \end{equation}
-  \textcolor{red}{which proves the first part of the statement}.
+  which proves the \textcolor{red}{first part} of the statement.
 \end{frame}
 
 \begin{frame}{Drift Changes (Proof)}
@@ -1033,7 +1034,7 @@ Now let $N_t$ and $U_t$ have dynamics under $\mathbb{Q}^U$ given by
   \end{equation}
 \myendproof
 
-  \textcolor{red}{which proves also the second part of the proposition}.
+ which proves also the \textcolor{red}{second part} of the proposition.
   
   %As an exercise, once you know the Vasicek short rate model, try to determine the new drift when moving from bank account to forward meeasure.%the result is an application of the previous formula with $X = r$, $Q = P^T$ , $\sigma(X_t,t) = \sigma$, $\sigma_B (t) = -A(t, T)\sigma$ and $m(X_t,t) = a(b-rt)$.
 \end{frame}
