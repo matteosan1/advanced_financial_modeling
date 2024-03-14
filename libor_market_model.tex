@@ -1,5 +1,6 @@
 \documentclass{beamer}
 \usetheme{afm}
+\usepackage{bm}
 
 \title{Libor Market Models}
 \course{Advanced Financial Modeling}
@@ -45,7 +46,7 @@
   \item<1-> $t = 0$ is the current time and the set $\{T_0, T_1, \dots, T_n\}$ of expiry-maturity dates is the tenor structure. %with the corresponding year fractions $\tau_i$ associated with the expiry-maturity pair $(T_{i−1}, T_i)$, for all $i > 0$;
   \item<2-> The simply-compounded forward interest rate resetting at its expiry date $T_{i-1}$ and with maturity $T_i$ is denoted by $F_i(t) = F(t; T_{i-1}, T_i)$;
   \item<3-> $\mathbb{Q}^i$ is the equivalent martingale measure (EMM) associated with the numeraire $P(\cdot, T_i)$, i.e. the $T_i$-forward measure;
-  \item<4-> $Z^i$ is a $n$-dimensional \textcolor{red}{correlated} Brownian motion under $\mathbb{Q}^i$, with \emph{instantaneous} correlation matrix $\rho$, i.e. $dZ^i(t) dZ^i(t) = \rho dt$.
+  \item<4-> $\bm{Z}^i$ is a $n$-dimensional \textcolor{red}{correlated} Brownian motion under $\mathbb{Q}^i$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $d\bm{Z}^i(t) d\bm{Z}^i(t) = \bm{\rho} dt$. (\emph{Note that the superscript in a random variable refers to the measure, subscript to the component})
   \end{itemize}
 \uncover<5->{
   We have already seen that $F_i$ is a martingale under the corresponding $T_i$-forward measure, on the interval $[0, T_{i-1}]$, \textcolor{red}{hence each $F_i$ has a drift-less dynamics under $\mathbb{Q}^i$.}}
@@ -84,7 +85,6 @@
 	  \end{itemize}
 \end{frame}
 
-
 \begin{frame}{Forward Rate Dynamics in LMM}
   \begin{block}{Proposition}
     Under the assumptions of the Libor Market Model, the dynamics of each $F_k$, for $k = 1,\ldots, n$, under the forward measure $\mathbb{Q}^i$ with $i \in \{1,\ldots, n\}$, is:
@@ -104,11 +104,12 @@
 \begin{frame}{Forward Rate Dynamics in LMM (Proof)}
   \begin{itemize}
   \item<1-> By assumption, there exist a Libor Market Model satisfying \cref{eq:forward_process_lmm}.
-  \item<2-> We would like to determine the deterministic functions $\mu_k^i(t, \bar{F}(t))$, with ($\bar{F}(t)$ is the vector $(F_1(t),\ldots, F_n(t))$), that satisfies
+  \item<2-> We would like to determine the deterministic functions $\mu_k^i(t, \bm{\tilde{F}}(t))$, that satisfies
     \begin{equation}
-      dF_k(t) = \mu_k^i(t, \bar{F}(t))F_k(t)dt + \sigma_k(t)F_k(t)dZ^i_k(t),\quad k\neq i
+      dF_k(t) = \mu_k^i(t, \bm{\tilde{F}}(t))F_k(t)dt + \sigma_k(t)F_k(t)dZ^i_k(t),\quad k\neq i
       \label{eq:forward_dynamics_in_lfm}
     \end{equation}
+ where $\bm{\tilde{F}}(t)$ is the vector $(F_1(t),\ldots, F_n(t))$.
   \item<3-> Let's apply the change of measure from $\mathbb{Q}^i$ to $\mathbb{Q}^k$, then impose that the $\mathbb{Q}^k$ resulting drift is null. 
   \item<4-> The Radon-Nikodym derivative of $\mathbb{Q}^{i-1}$ w.r.t. $\mathbb{Q}^i$ at time $t$ is
     \begin{equation*}
@@ -281,9 +282,9 @@
 	\begin{equation*}
 		\textbf{Cap}=\mathbb{E}^B\left[\sum_{i=\alpha+1}^\beta 	\tau_iD(0, T_i)(F(T_{i-1}; T_{i-1}, T_i) - K)^+\right]
 	\end{equation*}
-	\item<2-> Given the linearity of the expectation operator, we can apply the change of measure technique to move to $\mathbb{Q}^i$, i.e. the $T$-forward measure associated to bond price $P(\cdot,T_i)$
+	\item<2-> Given the linearity of the expectation operator, we can apply the change of measure technique to move to $\mathbb{Q}^i$, i.e. the $T_i$-forward measure associated to bond price $P(\cdot,T_i)$
 	\begin{equation*}
-		\textbf{Cap}= \sum_{i=\alpha+1}^\beta \tau_i P(0, T_i)\expect{i}[(F(T_{i-1}; T_{i-1}, T_i) - K)^+] = \sum_{i=\alpha+1}^\beta P(0, T_i)\textbf{Caplet}
+		\textbf{Cap}= \sum_{i=\alpha+1}^\beta \tau_i P(0, T_i)\mathbb{E}^{T_i}[(F(T_{i-1}; T_{i-1}, T_i) - K)^+] = \sum_{i=\alpha+1}^\beta P(0, T_i)\textbf{Caplet}
 	\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -294,7 +295,7 @@
 	\begin{equation*}
 		\textbf{Caplet} = \mathbb{E}^i[(F_i(T_{i-1}) - K)^+]
 	\end{equation*}
-	just remember that under $\mathbb{Q}^i$ the process $F_i$ is a martingale.
+	just remember that under $\mathbb{Q}^{T_i}$ the process $F_i$ is a martingale.
 	\item Given its log-normal distribution, the above expectation is computed as \textcolor{red}{a Black and Scholes price for a stock call option whose underlying “stock” is $F_i$, struck at $K$, with maturity $T_{i-1}$, with zero constant “risk-free rate” and instantaneous percentage volatility $\sigma_i(t)$.}
 \end{itemize}
 \end{frame}
@@ -391,7 +392,7 @@ so that
 	\end{equation*}
 	with $d_{1,2}=\cfrac{\ln\frac{F_2(0)}{X}\pm\frac{1}{2}\int_0^{T_1}\sigma^2_2(t)dt}{\sqrt{\int_0^{T_1}\sigma_2^2(t)dt}}$.
 	
-	When including the initial discount factor $P(0, T2)$ and the year fraction $\tau$ this is exactly the classic market Black’s formula for the $T_1 - T_2$ caplet.
+	When including the initial discount factor $P(0, T_2)$ and the year fraction $\tau$ this is exactly the classic market Black’s formula for the $T_1 - T_2$ caplet.
 \end{frame}
 
 \begin{frame}{Instantaneous Volatility of Forward Rates}
@@ -432,7 +433,7 @@ parametric 2 & $\Phi_i\left([a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c\right)$ \\ \
 		\begin{equation*}
 			\textbf{Cap}(t, \mathcal{T}_j, K) = \sum_{i=1}^j \textbf{Caplet}^{Black}(t, T_{i-1}, T_i,K,v_{T_j-cap}),\quad j=1, \ldots,n
 		\end{equation*}
-		\item<3-> While the implied \textcolor{red}{spot volatilities} are the solutions $v_{T_1-caplet},\ldots, v_{T_n-caplet}$ of
+		\item<3-> But also the implied \textcolor{red}{spot volatilities} can be defined: they are the solutions $v_{T_1-caplet},\ldots, v_{T_n-caplet}$ of
 		\begin{equation*}
 			\textbf{Caplet}(t, T_{i-1},T_i,K) = \textbf{Caplet}^{Black}(t, T_{i-1}, T_i,K,v_{T_i-caplet}),\quad i=1, \ldots,n
 		\end{equation*} 
@@ -443,7 +444,7 @@ parametric 2 & $\Phi_i\left([a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c\right)$ \\ \
 
 \begin{frame}{Flat and Spot Volatilities}
 	\begin{itemize}
-		\item<1-> Notice that flat volatility $v_{T_1-cap}$ is that implied by the Black formula by putting the same average volatility in all caplets up to $T_j$, whereas the spot volatility $v_{T_i-caplet}$ is just the implied average volatility from caplet over $[T_{i-1}, T_i]$.
+		\item<1-> Notice that the flat volatility $v_{T_1-cap}$ is that implied by the Black formula by putting the same average volatility in all caplets up to $T_j$, whereas the spot volatility $v_{T_i-caplet}$ is just the implied average volatility from a caplet over $[T_{i-1}, T_i]$.
 		\item<2-> To recover correctly cap prices according to the LFM dynamics, we need to have
 		\begin{equation*}
 			\begin{aligned}
