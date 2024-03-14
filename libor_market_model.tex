@@ -46,7 +46,7 @@
   \item<1-> $t = 0$ is the current time and the set $\{T_0, T_1, \dots, T_n\}$ of expiry-maturity dates is the tenor structure. %with the corresponding year fractions $\tau_i$ associated with the expiry-maturity pair $(T_{i−1}, T_i)$, for all $i > 0$;
   \item<2-> The simply-compounded forward interest rate resetting at its expiry date $T_{i-1}$ and with maturity $T_i$ is denoted by $F_i(t) = F(t; T_{i-1}, T_i)$;
   \item<3-> $\mathbb{Q}^i$ is the equivalent martingale measure (EMM) associated with the numeraire $P(\cdot, T_i)$, i.e. the $T_i$-forward measure;
-  \item<4-> $\bm{Z}^i$ is a $n$-dimensional \textcolor{red}{correlated} Brownian motion under $\mathbb{Q}^i$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $d\bm{Z}^i(t) d\bm{Z}^i(t) = \bm{\rho} dt$. (\emph{Note that the superscript in a random variable refers to the measure, subscript to the component})
+  \item<4-> $\bm{Z}^i$ is a $n$-dimensional \textcolor{red}{correlated} Brownian motion under $\mathbb{Q}^i$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $d\bm{Z}^i(t) d\bm{Z}^i(t)' = \bm{\rho} dt$. (\emph{Note that the superscript in a random variable refers to the measure, subscript to the component})
   \end{itemize}
 \uncover<5->{
   We have already seen that $F_i$ is a martingale under the corresponding $T_i$-forward measure, on the interval $[0, T_{i-1}]$, \textcolor{red}{hence each $F_i$ has a drift-less dynamics under $\mathbb{Q}^i$.}}
@@ -130,7 +130,7 @@
 	d\zeta^i_t &= \frac{P(0, T_i)}{P(0, T_{i-1})}dF_i(t)\tau_i = \frac{P(0, T_i)}{P(0, T_{i-1})}\tau_i\sigma_i(t)F_i(t)dZ^i_i(t) = \\ &= \frac{\tau_i\sigma_i(t)F_i(t)}{1+F_i(t)\tau_i}\zeta_t^idZ^i_i(t)=\lambda \zeta_t^idZ^i_i(t)
       \end{aligned}
     \end{equation*}
-  \item<2-> Thus, the Radon-Nikodym derivative $\zeta^i$ is an exponential martingale with associated process $\lambda$ that is the $n$-dimensional vector $\lambda = \left(0,\ldots,\frac{\tau_i\sigma_iF_i}{1+F_i\tau_i},\ldots, 0\right)$
+  \item<2-> Thus, the Radon-Nikodym derivative $\zeta^i$ is an exponential martingale with associated process $\lambda$. % that is the $n$-dimensional vector $\lambda = \left(0,\ldots,\frac{\tau_i\sigma_iF_i}{1+F_i\tau_i},\ldots, 0\right)$
   \end{itemize}
 \end{frame}
 
@@ -138,13 +138,14 @@
   \begin{itemize}
   \item<1-> So from the Girsanov theorem:
     \begin{equation*}
-      dZ^i(t) = dZ^{i-1}(t)+\rho\lambda dt = dZ^{i-1}(t)+\rho^{ji}\frac{\tau_i\sigma_i(t)F_i(t)}{1+F_i(t)\tau_i} dt
+      d\bm{Z}^i(t) = d\bm{Z}^{i-1}(t)+\bm{\rho}\lambda dt 
     \end{equation*}
+%\Rightarrow dZ_i^i = dZ_i^{i-1}(t)+\rho^{ji}\frac{\tau_i\sigma_i(t)F_i(t)}{1+F_i(t)\tau_i} dt
   \item<2-> Applying this inductively we obtain
     \begin{equation*}
   	\begin{cases}
-	k < i : dZ^i_j = dZ^k_j + \sum_{h=k+1}^i \rho^{jh}\cfrac{\tau_h\sigma_h(t)F_h(t)}{1+F_h(t)\tau_h} dt;\\
-	k > i : dZ^i_j = dZ^k_j - \sum_{h=k+1}^i \rho^{jh}\cfrac{\tau_h\sigma_h(t)F_h(t)}{1+F_h(t)\tau_h} dt;\\
+	k < i : dZ^i_j = dZ^k_j + \sum\limits_{h=k+1}^i \rho^{jh}\cfrac{\tau_h\sigma_h(t)F_h(t)}{1+F_h(t)\tau_h} dt;\\
+	k > i : dZ^i_j = dZ^k_j - \sum\limits_{h=k+1}^i \rho^{jh}\cfrac{\tau_h\sigma_h(t)F_h(t)}{1+F_h(t)\tau_h} dt;\\
   	\end{cases}
     \end{equation*}
   \end{itemize}
@@ -262,7 +263,7 @@
 	\begin{block}{Proposition}
 		The price of the $i$-th caplet implied by the Libor market model coincides with that given by the corresponding Black caplet formula:
 		\begin{equation}
-			\textbf{Caplet}^{LFM}(0, T_{i-1}, T_i, K, v_i)= \tau_i P(0, T_i) Bl(K, F(0; T_{i-1}, T_i), v_i\sqrt{T_{i-1}})
+			\textbf{Caplet}^{LFM}(0, T_{i-1}, T_i, K, v_i)= \tau_i P(0, T_i) Bl(K, F(0; T_{i-1}, T_i), v_i)
 		\end{equation}
 		where
 		\begin{equation}
@@ -395,66 +396,66 @@ so that
 	When including the initial discount factor $P(0, T_2)$ and the year fraction $\tau$ this is exactly the classic market Black’s formula for the $T_1 - T_2$ caplet.
 \end{frame}
 
+\begin{frame}{LFM Calibration to Cap/Floor}
+\begin{itemize}
+	\item<1-> Every model is useless if not \textbf{calibrated}. Which means to find the parameter set that allows the model to reproduce real world results (i.e. prices).
+	\item<2-> Calibration of LFM to Cap/Floor is quite straightforward: you can derive the model $\sigma$s starting from the implied volatilities by the Black formula for cap prices.
+	\item<3-> The \textcolor{red}{joint dynamics of forward rates is not involved in the pricing of a cap}, its payoff is just a sum of caplet payoffs, i.e. marginal distributions of forward rates are enough to compute the expectation, correlation does not matter. 
+	\item<4-> Indeed, there are no expectations involving two or more forward rates at the same time, so that correlations are not relevant.
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Instantaneous Volatility of Forward Rates}
 \begin{itemize}
-	\item From \cref{eq:caplet_black_vol} it is clear how it is impossible to uniquely determine the instantaneous volatility $\sigma_i(t)$ as there exist plenty of functions that would integrate to $v_i$.
+	\item From \cref{eq:caplet_black_vol} ($v_i^2 = \frac{1}{T_{i-1}}\int_0^{T_{i-1}}\sigma_i^2(t)dt
+	$) it is clear how it is impossible to uniquely determine the instantaneous volatility $\sigma_i(t)$ as there exist plenty of functions that would integrate to $v_i$.
 	\item It is usual to assume the $F_k$ has a \emph{piecewise-constant} volatility $\sigma_i(t)$ (constant in each maturity-expiry interval $i$).
-	\item Nevertheless, to reduce the number of parameters of the model, further assumptions can be made:
+	\item Nevertheless, to reduce the number of parameters of the model, further assumptions can be made (below some examples):
 \end{itemize}
 \begin{center}
 \begin{tabular}{|c|c|}
 \hline
 function of time-to-maturity & $\eta_{i-(\beta(t)-1)}$ \\ \hline
 constant regardless of $t$ & $s_i$ \\ \hline
-most general parametrization & $\Phi_i\Psi_{\beta(t)}$ \\ \hline
+%most general parametrization & $\Phi_i\Psi_{\beta(t)}$ \\ \hline
 maturity/time to maturity & $\Phi_i\Psi_{i-(\beta(t)-1)}$ \\ \hline
-parametric 1 & $[a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c$ \\ \hline
-parametric 2 & $\Phi_i\left([a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c\right)$ \\ \hline
+parametric & $[a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c$ \\ \hline
+%parametric 2 & $\Phi_i\left([a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c\right)$ \\ \hline
 \end{tabular} 
 \end{center}
-\end{frame}
-
-\begin{frame}{LFM Calibration to Cap/Floor}
-	\begin{itemize}
-		\item Every model is useless if not \emph{calibrated}.
-		\item Which means to find the parameter set that allows the model to reproduce real world results (i.e. prices).
-		\item Calibration of LFM to Cap/Floor is quite straightforward: just input into the model the $\sigma$ implied by the Black formula for cap prices.
-		The \textcolor{red}{joint dynamics of forward rates is not involved in the pricing of a cap}, its payoff is just a sum of caplet payoffs, i.e. marginal distributions of forward rates are enough to compute the expectation, correlation does not matter. 
-		\item Indeed, there are no expectations involving two or more forward rates at the same time, so that correlations are not relevant.
-	\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%  PARTE 1
 
 \begin{frame}{Flat and Spot Volatilities}
-	\begin{itemize}
-		\item<1-> In the market, cap prices are not quoted in monetary terms, but rather in terms of the so-called implied Black volatilities. 
-		\item<2-> The implied \textcolor{red}{flat volatilities} are the solutions $v_{T_1-cap},\ldots, v_{T_n-cap}$ of the equations
-		\begin{equation*}
-			\textbf{Cap}(t, \mathcal{T}_j, K) = \sum_{i=1}^j \textbf{Caplet}^{Black}(t, T_{i-1}, T_i,K,v_{T_j-cap}),\quad j=1, \ldots,n
-		\end{equation*}
-		\item<3-> But also the implied \textcolor{red}{spot volatilities} can be defined: they are the solutions $v_{T_1-caplet},\ldots, v_{T_n-caplet}$ of
-		\begin{equation*}
-			\textbf{Caplet}(t, T_{i-1},T_i,K) = \textbf{Caplet}^{Black}(t, T_{i-1}, T_i,K,v_{T_i-caplet}),\quad i=1, \ldots,n
-		\end{equation*} 
-		where $\textbf{Caplet}(t, T_{i-1}, T_i, K) = \textbf{Cap}(t, \mathcal{T}_i,K)-\textbf{Cap}(t, \mathcal{T}_{i-1},K)$
-		\item<4-> Although being quoted, \textcolor{red}{flat volatilities have little financial meaning}. Conversely spot volatilities cannot be observed directly but are the quantities \textcolor{red}{naturally tied to forward rates as a measure of their uncertainty}.
-		\end{itemize}
+\begin{itemize}
+	\item<1-> In the market, cap prices are not quoted in monetary terms, but rather in terms of the implied Black volatilities. 
+	\item<2-> The implied \textcolor{red}{flat volatilities} are the solutions $v_{T_1-cap},\ldots, v_{T_n-cap}$ of the equations
+	\begin{equation*}
+		\textbf{Cap}(t, \mathcal{T}_j, K) = \sum_{i=1}^j \textbf{Caplet}^{Bl}(t, T_{i-1}, T_i,K,v_{T_j-cap}),\quad j=1, \ldots,n
+	\end{equation*}
+	\item<3-> Although being quoted, \textcolor{red}{flat volatilities have little financial meaning}. Conversely the \textcolor{red}{spot volatilities} cannot be observed directly but are the quantities \textcolor{red}{naturally tied to forward rates as a measure of their uncertainty}.	
+	\item<4-> They are the solutions $v_{T_1-caplet},\ldots, v_{T_n-caplet}$ of
+	\begin{equation*}
+		\textbf{Caplet}(t, T_{i-1},T_i,K) = \textbf{Caplet}^{Bl}(t, T_{i-1}, T_i,K,v_{T_i-caplet}),\quad i=1, \ldots,n
+	\end{equation*} 
+	%where $\textbf{Caplet}(t, T_{i-1}, T_i, K) = \textbf{Cap}(t, \mathcal{T}_i,K)-\textbf{Cap}(t, \mathcal{T}_{i-1},K)$
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Flat and Spot Volatilities}
-	\begin{itemize}
-		\item<1-> Notice that the flat volatility $v_{T_1-cap}$ is that implied by the Black formula by putting the same average volatility in all caplets up to $T_j$, whereas the spot volatility $v_{T_i-caplet}$ is just the implied average volatility from a caplet over $[T_{i-1}, T_i]$.
-		\item<2-> To recover correctly cap prices according to the LFM dynamics, we need to have
-		\begin{equation*}
-			\begin{aligned}
-				\textbf{Cap} = \sum_{i=1}^j&\tau_iP(t,T_i)\textbf{Caplet}^{Black}(K,F(t;T_{i-1},T_i),\sqrt{T_{i-1}\color{red}{v_{T_j-cap}}}) = \\ &\sum_{i=1}^j\tau_iP(t,T_i)\textbf{Caplet}^{Black}(K,F(t;T_{i-1},T_i),\sqrt{T_{i-1}\color{red}{v_{T_i-caplet}}})\\
-				%&\hspace{75mm}\forall j = 1,\dots, n
-			\end{aligned}
-		\label{eq:spot_flat_vola}
-		\end{equation*}
-		\item<3-> Notice that the same average volatility $v_{T_{j-cap}}$ is assumed for all caplets in the $T_j$-maturity cap. 
-		\item<4-> This appears to be somehow inconsistent. In the cap volatility system, the same caplet is linked to different volatilities when concurring to different caps.	
+\begin{itemize}
+	\item<1-> Notice that the flat volatility $v_{T_j-cap}$ is that implied by the Black formula by putting the same average volatility in all caplets up to $T_j$, whereas the spot volatility $v_{T_i-caplet}$ is just the implied average volatility from a caplet over $[T_{i-1}, T_i]$.
+	\item<2-> To recover correctly cap prices according to the LFM dynamics, we need to have
+	\begin{equation}
+		\begin{aligned}
+		\textbf{Cap} = \sum_{i=1}^j&\tau_iP(t,T_i)\textbf{Caplet}^{Bl}(K,F(t;T_{i-1},T_i),\sqrt{T_{i-1}\color{red}{v_{T_j-cap}}}) = \\ &\sum_{i=1}^j\tau_iP(t,T_i)\textbf{Caplet}^{Bl}(K,F(t;T_{i-1},T_i),\sqrt{T_{i-1}\color{red}{v_{T_i-caplet}}})\\
+		%&\hspace{75mm}\forall j = 1,\dots, n
+		\end{aligned}
+	\label{eq:spot_flat_vola}
+	\end{equation}
+	%\item<3-> Notice that the same average volatility $v_{T_{j-cap}}$ is assumed for all caplets in the $T_j$-maturity cap. 
+	\item<3-> This appears to be somehow inconsistent. In the cap volatility system, the same caplet is linked to different volatilities when concurring to different caps.	
 	\end{itemize}
 \end{frame}	
 
@@ -475,17 +476,18 @@ parametric 2 & $\Phi_i\left([a(T_{i-1}-t) + d]e^{-b(T_{i-1}-t)} + c\right)$ \\ \
 \begin{frame}{Back to Calibration}
 The calibration procedure can be summarized as follows:
 \begin{enumerate}
-	\item Determine the implied volatilities of Cap/Floor by inverting the Black formula using the market quotes. Those are the $v_{T_{j-cap}}$ flat volatilities;
-	\item recover the correct spot volatilities with a numerical procedure (i.e. \emph{bootstrap}) from Eq.~\ref{eq:spot_flat_vola};
-	\item finally we can go back to the instantaneous parameter of the model through
+	\item<1-> determine the implied volatilities of Cap/Floor by inverting the Black formula using the market quotes. Those are the $v_{T_{j-cap}}$ flat volatilities;
+	\item<2-> recover the correct spot volatilities with a numerical procedure (i.e. \emph{bootstrap}) from Eq.~\ref{eq:spot_flat_vola};
+	\item<3-> finally we can go back to the instantaneous parameter of the model through
 	\begin{equation}
-		v_{T_{i-1}-caplet}^2 =\cfrac{1}{T_{i-1}} \int_0^{T_{i-1}}\sigma^2_{i,\beta(t)}dt=\cfrac{1}{T_{i-1}}\sum_{j=1}^1\tau_{j-2,j-1}\sigma^2_{i,j}
+		v_{T_{i-1}-caplet}^2 =\cfrac{1}{T_{i-1}} \int_0^{T_{i-1}}\sigma^2_{i,j}dt%=\cfrac{1}{T_{i-1}}\sum_{j=1}^{i-1}\tau_{j-1,j}\sigma^2_{i,j}
 	\end{equation}
 	Note that different parametrizations of the instantaneous volatility $\sigma_{i,j}^2$ lead to different evolutions of its term-structures.
 \end{enumerate}
+\uncover<4->{
 \begin{tikzpicture}[remember picture,overlay]
 \node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
+\end{tikzpicture}}
 \end{frame}
 
 %\begin{frame}{Cap Price}
@@ -561,13 +563,13 @@ The calibration procedure can be summarized as follows:
 			A_{\alpha,\beta} := \sum^\beta_{i=\alpha+1}\tau_i P(t, T_i)
 		\end{equation*}
 		which is referred to as the \textcolor{red}{annuity} or the \textcolor{red}{present value of a basis point}, given $\alpha, \beta \in \{0,\ldots, n\}, \alpha < \beta$. 
-	  \item<2-> Moreover it has the representation of the value at a time $t$ of a traded asset that is a buy-and-hold portfolio consisting, for each $i$, of $\tau_i$ units of the zero coupon bond maturing at $T_i$, thus it is a plausible numeraire.
+	  \item<2-> Moreover it has the representation of the value at a time $t$ of a traded asset that is a portfolio consisting, for each $i$, of $\tau_i$ units of the zero coupon bond maturing at $T_i$, thus it is a plausible numeraire.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Choice of the Numeraire}
   \begin{itemize}
-  \item<1-> Denoted by $\mathbb{Q}^{\alpha,\beta}$ the EMM associated with the numeraire $A_{\alpha,\beta}$, the forward swap rate process $S_{\alpha,\beta}$ is a martingale under $\mathbb{Q}^{\alpha,\beta}$, on the interval $[t, T_\alpha]$.
+  \item<1-> Denoted by $\mathbb{Q}^{\alpha,\beta}$ the measure associated with the numeraire $A_{\alpha,\beta}$, the forward swap rate process $S_{\alpha,\beta}$ is a martingale under $\mathbb{Q}^{\alpha,\beta}$, on the interval $[t, T_\alpha]$.
   \begin{equation*}
   	S_{\alpha,\beta}(t) = \cfrac{P(t,T_\alpha)-P(t,T_\beta)}{\sum_{i=\alpha+1}^{\beta}\tau_iP(t,T_i)}
   \end{equation*}
@@ -605,7 +607,7 @@ The calibration procedure can be summarized as follows:
     The price of a payer swaption implied by the swap market model coincides with that given by the corresponding Black swaptions formula:
     \begin{equation}
       \textbf{PSw}^{LSM}(T_\alpha,T_\beta,K,v_{\alpha,\beta})=
-      A_{\alpha, \beta}(0) \textbf{Sw}^{Black}(K,S_{\alpha,\beta}, v_{\alpha,\beta})
+      A_{\alpha, \beta}(0) \textbf{Sw}^{Bl}(K,S_{\alpha,\beta}, v_{\alpha,\beta})
       \label{eq:black_swaptions}
     \end{equation}
     where 
@@ -619,7 +621,7 @@ The calibration procedure can be summarized as follows:
 
 \begin{frame}{LSM and Black Price Equivalence (Proof)}
 	\begin{itemize}
-		\item From the risk-neutral pricing formula after a change of numerarie (to the annuity)
+		\item From the risk-neutral pricing formula after the change of numeraire (to the annuity)
 		\begin{equation*}
 			\begin{aligned}
 			\textbf{Sw}&=\mathbb{E}^B\left[D(0,T_\alpha)A_{\alpha,\beta}(T_\alpha)(S_{\alpha,\beta}(T_\alpha)-K)^+\right] = \\
@@ -627,7 +629,7 @@ The calibration procedure can be summarized as follows:
 			&= A_{\alpha,\beta}(0)\mathbb{E}^{\alpha,\beta}\left[(S_{\alpha,\beta}(T_\alpha)-K)^+\right]
 		\end{aligned}
 		\end{equation*}
-		\item Given the swap rate lognormal distribution of \cref{eq:swap_rate_dynamics}, computing the last expectation leads to Black’s formula for swaptions.
+		\item Given the swap rate log-normal distribution of \cref{eq:swap_rate_dynamics}, computing the last expectation leads to Black’s formula for swaptions.
 		\item Indeed, the above expectation is \textcolor{red}{the classical Black and Scholes price for a call option whose underlying “asset” is $S_{\alpha,\beta}$, struck at $K$, with maturity $T_\alpha$, with 0 constant “risk-free rate” and instantaneous percentage volatility $\sigma_{\alpha,\beta}(t)$.}
 	\end{itemize}
 \end{frame}
@@ -635,10 +637,9 @@ The calibration procedure can be summarized as follows:
 \subsection{Incompatibility between LFM and LSM}
 \begin{frame}{Incompatibility between LFM and LSM}
   A crucial question rises: \textcolor{red}{are the two main Market Models, theoretically consistent ?} 
-  \pause
-  
   Can the assumptions of log-normality of both LIBOR forward rates and forward swap rates coexist? 
   \pause
+  
   In order to give an answer we can proceed as follows:
   \begin{enumerate}
   \item<2-> assume the hypothesis of the LFM, namely that each forward rate $F_i$ is log-normal under its related forward measure $\mathbb{Q}^i$;
@@ -721,7 +722,7 @@ The calibration procedure can be summarized as follows:
 
 \begin{frame}{Monte Carlo Pricing of Swaptions (LFM)}
   \begin{itemize}
-  \item<1-> Keep in mind that $S_{\alpha,\beta}$ has an expression in terms of the relevant spanning forward rates, and notice that the expectation above depends on the joint distribution of the same $F$’s.
+  \item<1-> Keep in mind that $S_{\alpha,\beta}$ has an expression in terms of the relevant spanning forward rates, and notice that the expectation above depends on the joint distribution of the same $\bm{F}$’s.
   \item<2-> The dynamics of the $k$-th forward rate, for each $k = \alpha + 1,\ldots, \beta$, under $\mathbb{Q}^\alpha$ is (\cref{eq:forward_rat_dynamics_lfm})
 \begin{equation}
   dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\rho_{kj}\tau_j\sigma_jF_j}{1+\tau_jF_j}dt+\sigma_kF_k dW^\alpha_k, \quad t<T_\alpha
@@ -811,7 +812,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 \subsection{Confidence Interval}
 \begin{frame}{Confidence Interval}
   \begin{itemize}
-  \item<1-> Consider a general payoff at time $T$, $\Pi(T)$, depending on a vector of spanning forward LIBOR rates $\bar{F}(t)$. %, for $t \in [0, T]$, where typically $T$ is smaller than or equal to the expiry of the first forward rate.
+  \item<1-> Consider a general payoff at time $T$, $\Pi(T)$, depending on a vector of spanning forward LIBOR rates $\bm{\tilde{F}}(t)$. %, for $t \in [0, T]$, where typically $T$ is smaller than or equal to the expiry of the first forward rate.
   \item<2-> We simulate various scenarios of $\Pi(T)$ under the $T$-forward measure. Let $m$ be the number of simulated paths, the Monte Carlo price of the payoff is
     \begin{equation*}
       \expect{Q}[D(0,T)\Pi(T)] = P(0,T)\mathbb{E}^T[\Pi(T)]\approx \frac{P(0,T)}{m}\sum_{j=1}^{m}\Pi_j(T)
@@ -854,7 +855,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
   \begin{columns}
     \column{0.6\linewidth}
     \begin{itemize}
-    \item Once we have chosen the desired value for such a probability, we can find the corresponding value for $\epsilon$. For a typical choice of accuracy of 98\%: $\epsilon \approx 2.33 \cfrac{Std(\Pi)}{\sqrt{m}}$
+    \item Once we have chosen the desired value for such a probability, we can find the corresponding value for $\epsilon$. For a typical choice of accuracy of 98\%: $\epsilon \approx 2.33 \cfrac{\text{Std}(\Pi)}{\sqrt{m}}$
     \item Notice, again, that as $m$ increases, the window shrinks as $1/\sqrt{m}$.
     \end{itemize}
     \column{0.4\linewidth}
@@ -874,20 +875,20 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
     \end{equation*}
     Hence $\Pi_c(\gamma)$ has expectation $\mathbb{E}[\Pi]$ and variance
     \begin{equation*}
-      Var(\Pi_c(\gamma)) = Var(\Pi) + \gamma^2 Var(\Pi_{an}) + 2\gamma Cov(\Pi, \Pi_{an})
+      \text{Var}(\Pi_c(\gamma)) = \text{Var}(\Pi) + \gamma^2 \text{Var}(\Pi_{an}) + 2\gamma \text{Cov}(\Pi, \Pi_{an})
     \end{equation*}
   \end{enumerate}
 \end{frame}
 
 \begin{frame}{Monte Carlo Variance Reduction}
 	\begin{enumerate}\addtocounter{enumi}{2}
-	\item This can be minimized by choosing the appropriate $\gamma$ $\left(\text{from }\frac{\partial Var(\Pi_c)}{\partial\gamma}=0\right)$
+	\item This can be minimized by choosing the appropriate $\gamma$ $\left(\text{from }\frac{\partial \text{Var}(\Pi_c)}{\partial\gamma}=0\right)$
 	\begin{equation*}
-	\gamma^* = -\frac{Cov(\Pi, \Pi_{an})}{Var(\Pi_{an})} = -\frac{Corr(\Pi, \Pi_{an})Std(\Pi)}{Std(\Pi_{an})}, \quad \left(Corr_{XY}=\frac{Cov_{XY}}{Std_X Std_Y}\right)
+	\gamma^* = -\frac{Cov(\Pi, \Pi_{an})}{\text{Var}(\Pi_{an})} = -\frac{\text{Corr}(\Pi, \Pi_{an})\text{Std}(\Pi)}{\text{Std}(\Pi_{an})}, \quad \left(\text{Corr}_{XY}=\frac{\text{Cov}_{XY}}{\text{Std}_X \text{Std}_Y}\right)
 	\end{equation*}
   	and the minimum variance of $\Pi_c$ is computed as
     \begin{equation*}
-     Var(\Pi_c(\gamma^*)) = Var(\Pi)(1 - Corr(\Pi, \Pi_{an})^2)
+     \text{Var}(\Pi_c(\gamma^*)) = \text{Var}(\Pi)(1 - \text{Corr}(\Pi, \Pi_{an})^2)
     \end{equation*}
     that is \textcolor{red}{smaller than the variance of $\Pi$}. Moreover, the \textcolor{red}{larger the correlation between $\Pi$ and $\Pi_{an}$ the larger the difference between the two variances}.
   \end{enumerate}
@@ -897,16 +898,16 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 	\begin{enumerate}\addtocounter{enumi}{3}
   \item<1-> Moving to the standard deviation
 	\begin{equation*}
-		Std(\Pi_c(\gamma^*)) = Std(\Pi) \sqrt{(1 - Corr(\Pi, \Pi_{an})^2)}
+		\text{Std}(\Pi_c(\gamma^*)) = \text{Std}(\Pi) \sqrt{(1 - \text{Corr}(\Pi, \Pi_{an})^2)}
 	\end{equation*}
 	the variance reduction will increase with the correlation between $\Pi$ and $\Pi_{an}$. 
 	\item<2-> Now if we consider the confidence interval for $\Pi_c$ 
 	\begin{equation*}
-		98\% C.L. =\left[\Pi_c(\gamma,m) - 2.33\cdot\frac{Std(\Pi_c)}{\sqrt{m}};\Pi_c(\gamma,m) + 2.33\cdot\frac{Std(\Pi_c)}{\sqrt{m}}\right] 
+		98\% C.L. =\left[\Pi_c(\gamma,m) - 2.33\cdot\frac{\text{Std}(\Pi_c)}{\sqrt{m}};\Pi_c(\gamma,m) + 2.33\cdot\frac{\text{Std}(\Pi_c)}{\sqrt{m}}\right] 
 	\end{equation*}
 	we get a narrower width by a factor of
 	\begin{equation*}
-		\sqrt{1 - Corr(\Pi, \Pi_{an}; m)^2}
+		\sqrt{1 - \text{Corr}(\Pi, \Pi_{an}; m)^2}
 	\end{equation*}
 	\end{enumerate}
 \end{frame}
@@ -960,7 +961,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 \item The price of these contracts depends on the \emph{terminal correlation} between different forward rates.
 \item In the derivation of the market models it has been assumed that each forward rate $F_i$ was driven by a different Brownian motion $Z_i$ and that each Brownian motion is instantenously 
 \begin{equation}
-< Z_i Z_j> \rho_{ij} dt
+< Z_i Z_j> = \rho_{ij} dt
 \end{equation}
 \item We need to understand how this correlation translates into the terminal correlation between rates.
 \end{itemize}
@@ -989,7 +990,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 		%From this formula it is clear that indeed the instantaneous correlation ρ is related to changes dF in for- ward rates. Instead, 
 		The \textcolor{red}{terminal correlation} is a quantity summarizing the degree of “dependence” between two different forward rates at a given  \textcolor{red}{terminal time-instant}. Typically, the $T_1$ terminal correlation between $F_i$ and $F_j$ is the correlation between $F_i(T_1)$ and $F_j(T_1)$.
 	\end{block}
-	Is this terminal correlation completely determined by the instantaneous correlations $\rho{ij}$ between $Z_i$ and $Z_j$ ?
+	Is this terminal correlation completely determined by the instantaneous correlations $\rho_{ij}$ between $Z_i$ and $Z_j$ ?
 	%\begin{block}{Definition}
 	%The terminal correlation of the LIBOR rates$L(t, T_{i-1}, T_i)$ and $L(t, T_{j-1}, T_j)$ is given by
 	%\begin{equation*}
@@ -1032,7 +1033,7 @@ dF_3(t) = \cfrac{\tau_3\sigma^2_{3,\beta(t)}F_3^2(t)}{1+\tau_3F_3(t)}dt + \sigma
 \begin{frame}{Terminal Correlation: an Example}
 \begin{itemize}
 \item Now from what we have said any \emph{caplet} price involving the rates $F_3, F_2$ would depend only on the average volatilities $v_2^2$ and $v_3^2$ \textcolor{red}{no matter how $\sigma_{k,t}$ are chosen} the Black formula gives the same result.
-\item Contrary from Eq.\ref{eq:terminal_correlation_ex} it is clear that there is a dependecy on the instantenuous volatility.
+\item Contrary from Eq.\ref{eq:terminal_correlation_ex} it is clear that there is a dependency on the instantaneous volatility.
 \item Consider the cases where $\tau=T_i - T_{i-1}=0.5$, $F_2(0)=F_3(0)=0.05$, $\rho_{2,3}=0.75$, $\sigma_{3,3}=0.1$ and
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
@@ -1075,7 +1076,7 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
 
 \begin{frame}{Instantaneous Correlation}
   \begin{itemize}    
-  \item<1-> Insantaneous correlation can be estimated from historical market data.
+  \item<1-> Instantaneous correlation can be estimated from historical market data.
   \begin{enumerate}
 	  \item first derive yield curves for some period of time in the past;
 	  \item then, forward curves may be calculated off the yield curves;
@@ -1141,7 +1142,7 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
   \end{itemize}
 \end{frame}
 
-\begin{frame}{LSM Calibration to Swaptions}
+\begin{frame}{LFM Calibration to Swaptions}
 \begin{itemize}
 \item In case we are adopting the LFM, we need to find the instantaneous-volatility and correlation parameters in the LFM dynamics that reflect the swaptions prices observed in the market.
 
@@ -1189,15 +1190,14 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
 \begin{frame}{Convexity Correction}
 \begin{itemize}
 \item 	In financial lingo, convexity is a broadly understood and often non-specific term for nonlinear behavior of the price of an instrument as a function of evolving markets.
-\item The concept of \emph{convexity adjustment} is required for all asset
-classes when there are payment delays or when the moments of payment do
-not correspond to the payment date of the numeraire. %Generally, if we have a maturity date $T$ but payment takes place at time $T + τ∗$ , convexity has to be taken into account. 
-\item 	From the perspective of financial modeling they arise as the results of valuation done under the \emph{wrong} martingale measure.
+\item The concept of \emph{convexity adjustment} is required for all asset classes when there are payment delays or when the payment dates of the contract do
+not correspond to those used in the numeraire defintion. %Generally, if we have a maturity date $T$ but payment takes place at time $T + τ∗$ , convexity has to be taken into account. 
+\item From the perspective of financial modeling they arise as the results of valuation done under the \emph{"wrong"} measure.
 \item The higher the uncertainty in the market (high volatility) the more pronounced the effect of the convexity will become.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{The Good, the Bad\ldots}
+\begin{frame}{The Good and the Bad}
 \begin{itemize}
 \item Let us consider a basic interest rate payoff function, which pays a payoff dependent on the Libor rate
 \begin{equation}
@@ -1205,7 +1205,7 @@ V(t_0) = N D(t_0)\expectt{Q}{t_0}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_i)}\ri
 	NP(t_0,T_i)\mathbb{E}^{T_i}_{t_0}[F(T_{i-1};T_{i-1},T_i)]
 \end{equation}
 and since $F(T_{i-1};T_{i-1}, T_i)$ is a martingale under the $T_i$-forward measure, we get $V(t_0)=NP(t_0,T_i)F(t_0;T_{i-1}, T_i)$.
-\item Suppose now that we consider the same contract, however, the payment will take place at some earlier time $T_{i-1} < T_i$. The current value of the contract is then
+\item Suppose now that we consider the same contract, however, the payments will take place at some earlier time $T_{i-1} < T_i$. The current value of the contract is then
 \begin{equation}
 	V(t_0) = N D(t_0)\expectt{Q}{t_0}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_{i-1})}\right]
 \end{equation}
@@ -1214,7 +1214,7 @@ and since $F(T_{i-1};T_{i-1}, T_i)$ is a martingale under the $T_i$-forward meas
 
 \begin{frame}{The Good and the Bad}
 \begin{itemize}
-\item When changing measures, to the $T_{i-1}$-forward measure, we get the following Radon-Nikodym derivative:
+\item When changing measure (to the $T_{i-1}$-forward measure) we get the following Radon-Nikodym derivative:
 \begin{equation}
 \cfrac{d\mathbb{Q}^T_{i-1}}{d\mathbb{Q}}=\cfrac{P(T_{i-1},T_{i-1})D(t_0)}{P(t_0,T_{i-1})D(T_{i-1})}
 \end{equation}
@@ -1238,7 +1238,7 @@ measure, it is however not a martingale under the $T_{i-1}$-forward measure, i.e
 \item The difference between these two expectations is commonly referred to as a \textbf{convexity}. 		
 \item By the change of measure technique, we can simplify the expressions above, to some extent. By changing to the $T_i$-forward measure, we find:
 \begin{equation}
-	\cfrac{d\mathbb{Q}^T_{i-1}}{d\mathbb{Q}}=\cfrac{P(T_{i-1},T_i)P(t_0,T_{i-1})}{P(t_0,T_i)P(T_{i-1},T_{i-1})}
+	\cfrac{d\mathbb{Q}_i}{d\mathbb{Q}_{i-1}}=\cfrac{P(T_{i-1},T_i)P(t_0,T_{i-1})}{P(t_0,T_i)P(T_{i-1},T_{i-1})}
 \end{equation}
 \end{itemize}
 \end{frame}
@@ -1246,18 +1246,18 @@ measure, it is however not a martingale under the $T_{i-1}$-forward measure, i.e
 \begin{frame}{Changing Measures}
 \begin{itemize}
 \item The value of the derivative is then equal to
-\begin{equation}
+\begin{equation*}
 \begin{aligned}
 V(t_0) &= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right] = \\
-&=N P(t_0,T_{i-1})\mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\cfrac{P(T_{i-1},T_i)P(t_0,T_{i-1})}{P(t_0,T_i)P(T_{i-1},T_{i-1})}\right]=\\
-&=N \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\cfrac{P(t_0,T_{i-1})}{P(T_{i-1}P(T_i)}\right]\\
+&=N P(t_0,T_{i-1})\mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\cfrac{P(t_0,T_i)P(T_{i-1},T_{i-1})}{P(T_{i-1},T_i)P(t_0,T_{i-1})}\right]=\\
+&=N \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}\right]\\
 \end{aligned}
-\end{equation}
+\end{equation*}
 which, by simply adding and subtracting $F$ can be rewritten as 
 \begin{equation}
 \begin{aligned}
-V(t_0) &= N \mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right] + N \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\left(\cfrac{P(t_0,T_{i-1})}{P(T_{i-1}, T_i)}-1\right)\right]\\
-&=N\left(F(t_0;T_{i-1},T_i) + \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\left(\cfrac{P(t_0,T_{i-1})}{P(T_{i-1}, T_i)}-1\right)\right]\right)
+V(t_0) &= N \mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right] + N \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\\
+&=N\left(F(t_0;T_{i-1},T_i) + \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\right)
 \end{aligned}
 \end{equation}
 \end{itemize}
@@ -1270,9 +1270,9 @@ V(t_0) &= N \mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right] + N \m
 P(t_0,T_i)\mathbb{E}^{T_i}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{P(T_{i-1},T_i)}\right]-F(t_0;T_{i-1},T_i)
 \end{equation}
 \item From the definition of Libor rate: $P(T_{i-1},T_i)=\cfrac{1}{1+\tau_i F(T_{i-1};T_{i-1},T_i)}$ hence
-\begin{equation}
+\begin{equation*}
 \mathbb{E}^{T_i}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{P(T_{i-1},T_i)}\right]=F(t_0;T_{i-1},T_i)+\tau_i\mathbb{E}^{T_i}_{t_0}[F^2(T_{i-1};T_{i-1},T_i)]
-\end{equation}
+\end{equation*}
 \end{itemize}
 \end{frame}
 
@@ -1291,14 +1291,14 @@ which has a drift term, so it is not a martingale.
 \begin{itemize}
 \item An \emph{in-arrears swap} is an IRS that resets and pays at the same dates $\{T_{\alpha+1},\ldots, T_\beta\}$ and with fixed-leg rate $K$. More precisely, the value of an payer IAS is
 \begin{equation}
-\textbf{IAS}=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i-K)\right]
+\textbf{IAS}=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i)-K)\right]
 \end{equation}
 \item To compute the expectation we can proceed as follows
 
 \begin{equation*}
 \begin{aligned}
 &\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D_i\tau_{i+1}(F_{i+1}(T_i)-K)\right] =\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D_i\left[\cfrac{1}{P(T_i,T_{i+1})}-(1+\tau_{i+1}K)\right]\right] = \\
-&=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}\left[\cfrac{D(0,T_i)}{P(T_i,T_{i+1})^2}-D(0,T_i)(1+\tau_{i+1}K)\right]\right] = \\
+&=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}\left[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}-D(0,T_i)(1+\tau_{i+1}K)\right]\right] = \\
 \end{aligned}
 \end{equation*}
 \end{itemize}
@@ -1307,19 +1307,19 @@ which has a drift term, so it is not a martingale.
 \begin{frame}{In-Arrears Swap}
 \begin{equation}
 \begin{aligned}
-&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[\cfrac{1}{P(T_i,T_{i+1}^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right] = \\
+&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[\cfrac{1}{P(T_i,T_{i+1})^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right] = \\
 &=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[(1+\tau_{i+1}F_{i+1}(T_i))^2\right]-P(0,T_i)(1+\tau_{i+1}K)\right]
 \end{aligned}
 \label{eq:exp_ias}
 \end{equation}
 where it has been used the following result
-\begin{equation}
+\begin{equation*}
 \begin{aligned}
-&\mathbb{E}_t\left[\cfrac{XD(t,S)}{P(T,S)} \right]=\mathbb{E}_t\left[\mathbb{E}_T\left[\cfrac{XD(t,T)D(T,S)}{P(T,S} \right]\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}\mathbb{E}_T[D(T,S)]\right]= \\ 
-& =\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S}P(T,S)\right]=\mathbb{E}_t[XD(t,T)],\quad (t<T<S)
+&\mathbb{E}_t\left[\cfrac{XD(t,S)}{P(T,S)} \right]=\mathbb{E}_t\left[\mathbb{E}_T\left[\cfrac{XD(t,T)D(T,S)}{P(T,S)} \right]\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}\mathbb{E}_T[D(T,S)]\right]= \\ 
+& =\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}P(T,S)\right]=\mathbb{E}_t[XD(t,T)],\quad (t<T<S)
 %\myendproof
 \end{aligned}
-\end{equation}
+\end{equation*}
 \end{frame}
 
 \begin{frame}{In-Arrears Swap}

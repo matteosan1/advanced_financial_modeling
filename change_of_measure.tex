@@ -260,7 +260,7 @@
     \begin{equation*}
       \begin{cases}
 	\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\right]= \expectt{N}{t}\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
-	\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\right]= \expectt{N}{t}\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
+	\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\right]= \expectt{N}{t}\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}\quad\text{(the RND is a martingale)}
       \end{cases}
     \end{equation*}
   \end{itemize}
@@ -390,8 +390,8 @@
       \begin{aligned}
 	\Pi_\chi(t,T) & = B_t\expect{B}\left[B^{-1}_T\chi|\mathcal{F}_t\right] \\
 	& = B_t\expect{B}\left[P(0,T)\zeta_T\chi|\mathcal{F}_t\right]\quad\text{(using } B_T^{-1} = \zeta_TP(0,T))\\
-	& = B_tP(0,T)\expect{B}\left[\zeta_T|\mathcal{F}_t\right]\expect{T}\left[\chi|\mathcal{F}_t\right]\quad\text{(by \cref{eq:conditioned_expectation})}\\
-	& = \cancel{B_tP(0,T)}\frac{P(t,T)}{\cancel{B_tP(0,T)}}\expect{T}\left[\chi|\mathcal{F}_t\right] \\
+	& = B_tP(0,T)\expect{B}\left[\zeta_T|\mathcal{F}_t\right]\expect{T}\left[\chi|\mathcal{F}_t\right]\text{(by \cref{eq:conditioned_expectation}, cond. expect.)}\\
+	& = B_tP(0,T)\zeta_t\expect{T}\left[\chi|\mathcal{F}_t\right] =  \cancel{B_tP(0,T)}\frac{P(t,T)}{\cancel{B_tP(0,T)}}\expect{T}\left[\chi|\mathcal{F}_t\right] \\
 	& = P(t,T)\expect{T}\left[\chi|\mathcal{F}_t\right] \\
       \end{aligned}
     \end{equation*}
@@ -456,7 +456,7 @@
 
   This is the price at time $t$ of an asset (difference of two bonds). Therefore by the change of numeraire theorem and by definition of forward measure
   \begin{equation*}
-    \frac{F(t;S,T)P(t,T)}{P(t,T)} = F(t,S,T)
+	F(t,S,T) = \frac{F(t;S,T)P(t,T)}{P(t,T)}
   \end{equation*}
   is a \textcolor{red}{martingale} under $\mathbb{Q}^T$-measure. \pause Hence
   \begin{equation*}
@@ -471,7 +471,7 @@
     f(t,T)=\expect{T}[r_t|\mathcal{F}_t]
   \end{equation}
 	\pause
-  Indeed from the definition of $\mathcal{Q}^B$
+  Indeed from the definition of $\mathbb{Q}^B$
   \begin{equation*}
     \frac{P(t,T)}{B_t}=\expect{B}\left[\frac{P(T,T)}{B_T}\bigg|\mathcal{F}_t\right]
   \end{equation*}
@@ -647,10 +647,10 @@
 \begin{frame}{Which Dynamics ?}
   \begin{itemize}
   \item<1-> We're left with one important question:
-    \textcolor{red}{what does the path of an asset price $S_t$ look like under a new measure $\mathbb{Q}$ ?} (need to know in order to really compute its expectation under $\mathbb{Q}$.)
+    \textcolor{red}{what does the path of an asset price $S_t$ look like under a new measure $\mathbb{Q}$ ?} (need to know in order to really compute its expectation under $\mathbb{Q}$)
   \item<2-> \emph{Girsanov's theorem} answers to this question since it tells us, when we change from $\mathbb{P}$ to some other measure $\mathbb{Q}$, how the dynamics of a process ($W_t$) changes under $\mathbb{Q}$.
   \item<3-> Will see that it evolves as the sum of a Brownian motion under $\mathbb{Q}$ and a drift related to the Radon-Nikodym derivative characterizing $\mathbb{Q}$.
-  \item<4-> We therefore want to choose the Radon-Nikodym derivative so that the drift of $W_t$ w.r.t. $\mathbb{Q}$ exactly cancels out the drift of $S_t$, leaving us with a pure diffusion process (martingale). 
+  \item<4-> In many cases we therefore want to choose the Radon-Nikodym derivative so that the drift of $W_t$ w.r.t. $\mathbb{Q}$ exactly cancels out the drift of $S_t$, leaving us with a pure diffusion process (martingale). 
   \end{itemize}
 \end{frame}
 
@@ -678,7 +678,7 @@
     \begin{equation}
       dW^*_t = -\gamma_s dt + dW_t
     \end{equation} 
-    is a Brownian motion under $\mathcal{P}^*$, and 
+    is a Brownian motion under $\mathbb{P}^*$, and 
     \begin{equation*}
       dX_t = f^*_t dt + \sigma_t dW^*_t
     \end{equation*}
@@ -921,7 +921,7 @@ Determine what happens to the stock SDE when moving to two different numeraires:
 \end{frame}
 
 \begin{frame}{Drift Changes (Proof)}
-  By the main theorem on numeraire change \cref{eq:radon_nikodym_der2}, and using the fact that $\zeta_t$ is a $\mathcal{Q}^U$-martingale, 
+  By the main theorem on numeraire change \cref{eq:radon_nikodym_der2}, and using the fact that $\zeta_t$ is a $\mathbb{Q}^U$-martingale, 
   \begin{equation}
     \zeta_t = \frac{d\mathbb{Q}^N}{d\mathbb{Q}^U} = \frac{U_0N_t}{N_0U_t}
     \label{eq:zeta_numeraire}
@@ -955,7 +955,7 @@ Determine what happens to the stock SDE when moving to two different numeraires:
 
 \begin{frame}{Intermezzo}
   \begin{itemize}
-  \item One of the classical formulas of differential calculus is th Leibniz rule $d(x y) = x(dy) + y(dx)$
+  \item One of the classical formulas of differential calculus is the Leibniz rule $d(x y) = x(dy) + y(dx)$
   \item For stochastic processes this becomes, applying It$\hat{o}$'s formula to the function $F(X,Y) = XY$
     \begin{equation*}
       dF(x_i)=\sum_{i=1}^n \frac{\partial F}{\partial x_i}dx_i
@@ -1045,12 +1045,11 @@ Now let $N_t$ and $U_t$ have dynamics under $\mathbb{Q}^U$ given by
     \begin{cases}
       \cfrac{dS_t}{S_t} = r_tdt + \sigma^S_t dW^B_t\quad\text{(asset)} \\
       \cfrac{dN_t}{N_t} = r_tdt + \sigma^N_t dW^B_t\quad\text{(numeraire)}
-      %\frac{d\mathcal{Q}^N}{d\mathcal{Q}^B} = \frac{N_TB_0}{B_TN_0} = \exp\left(\int_0^T\sigma_t^N dW^B_t - \frac{1}{2}\int_0^T(\sigma^N_t)^2 dt\right)
     \end{cases}
     \label{eq:S_N_dynamics}
   \end{equation}
   
-  by Girsanov Theorem (\cref{eq:girsanov_shock_extended}), under $\mathcal{Q}^N$, we get
+  by Girsanov Theorem (\cref{eq:girsanov_shock_extended}), under $\mathbb{Q}^N$, we get
   \begin{equation}
     dW^N_t = dW_t^B - \sigma_t^N dt
     \label{eq:girsanov_ex}
