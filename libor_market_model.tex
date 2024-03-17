@@ -45,11 +45,12 @@
   \begin{itemize}
   \item<1-> $t = 0$ is the current time and the set $\{T_0, T_1, \dots, T_n\}$ of expiry-maturity dates is the tenor structure. %with the corresponding year fractions $\tau_i$ associated with the expiry-maturity pair $(T_{i−1}, T_i)$, for all $i > 0$;
   \item<2-> The simply-compounded forward interest rate resetting at its expiry date $T_{i-1}$ and with maturity $T_i$ is denoted by $F_i(t) = F(t; T_{i-1}, T_i)$;
-  \item<3-> $\mathbb{Q}^i$ is the equivalent martingale measure (EMM) associated with the numeraire $P(\cdot, T_i)$, i.e. the $T_i$-forward measure;
-  \item<4-> $\bm{W}^i$ is a $n$-dimensional \textcolor{red}{correlated} Brownian motion under $\mathbb{Q}^i$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $d\bm{W}^i(t) d\bm{W}^i(t)' = \bm{\rho} dt$. (\emph{Note that the superscript in a random variable refers to the measure, subscript to the component})
+  \item<3-> $\mathbb{Q}^{T_i}$ is the equivalent martingale measure (EMM) associated with the numeraire $P(\cdot, T_i)$, i.e. the $T_i$-forward measure;
+  \item<4-> $\bm{W}^i$ is a $n$-dimensional \textcolor{red}{correlated} Brownian motion under $\mathbb{Q}^{T_i}$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $< d\bm{W}^i(t) d\bm{W}^i(t)> = \bm{\rho} dt$. 
+  (\emph{Note that the superscript in a random variable refers to the measure, subscript to the component})
   \end{itemize}
 \uncover<5->{
-  We have already seen that $F_i$ is a martingale under the corresponding $T_i$-forward measure, on the interval $[0, T_{i-1}]$, \textcolor{red}{hence each $F_i$ has a drift-less dynamics under $\mathbb{Q}^i$.}}
+  We have already seen that $F_i$ is a martingale under the corresponding $T_i$-forward measure, on the interval $[0, T_{i-1}]$, \textcolor{red}{hence each $F_i$ has a drift-less dynamics under $\mathbb{Q}^{T_i}$.}}
 \end{frame}
 
 \begin{frame}{Forward Rate Dynamics}
@@ -73,13 +74,13 @@
  \begin{itemize}
 	\item<1-> To find the solution of the SDE $dF_t = \sigma_tF_tdW_t$ we can start with a change of variable. Let be $X_t=\ln(F_t)$ so the SDE becomes
 	\begin{equation*}
-	d(\ln(F_t)) = \cfrac{dF_t}{F_t}=\sigma_tdW_t
+	dX_t = d(\ln(F_t)) = \cfrac{dF_t}{F_t}=\sigma_tdW_t
    \end{equation*}
   \item<2-> Applying Ito's formula to $X$ we get
 	\begin{equation*}
 		dX_t = \cfrac{\partial X_t}{\partial t}dt + \cfrac{\partial X}{\partial F}dF + \cfrac{1}{2}\cfrac{\partial^2 X}{\partial F^2}dF^2
    \end{equation*}
-	\item<3-> But from the definition of $X$: $\cfrac{\partial X}{\partial t}=0$, $\cfrac{\partial X}{\partial F}=\cfrac{1}{F}$ and $\cfrac{\partial^2 X}{\partial F^2}=-\cfrac{1}{F^2}$.
+	\item<3-> From the definition of $X$: $\cfrac{\partial X}{\partial t}=0$, $\cfrac{\partial X}{\partial F}=\cfrac{1}{F}$ and $\cfrac{\partial^2 X}{\partial F^2}=-\cfrac{1}{F^2}$.
 \end{itemize}
 \end{frame}
 
@@ -100,17 +101,18 @@
    \end{equation*}}
   \item<3-> The SDE can be solved by integrating both sides
 	\begin{equation*}
-	\begin{gathered}
-	\int_0^t d(\ln(F_t)) = \ln\Big(\cfrac{F_t}{F_0}\Big)= \int_0^t \sigma_t dW_t - \cfrac{1}{2}\int_0^t\sigma_t^2 dt  \\
-	F_t = F_0 \exp\Big(\int_0^t \sigma_t dW_t - \int_0^t\cfrac{1}{2}\sigma_t^2 dt\Big)  \\	
-	\end{gathered}
+	\int_0^t d(\ln(F_t)) = \ln\Big(\cfrac{F_t}{F_0}\Big)= \int_0^t \sigma_t dW_t - \cfrac{1}{2}\int_0^t\sigma_t^2 dt  
+	\end{equation*}
+  \item<4-> And finally exponentiating
+	\begin{equation*}
+		F_t = F_0 \exp\Big(\int_0^t \sigma_t dW_t - \int_0^t\cfrac{1}{2}\sigma_t^2 dt\Big)
 	\end{equation*}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Forward Rate Dynamics in LMM}
   \begin{block}{Proposition}
-    Under the assumptions of the Libor Market Model, the dynamics of each $F_k$, for $k = 1,\ldots, n$, under the forward measure $\mathbb{Q}^i$ with $i \in \{1,\ldots, n\}$, is:
+    Under the assumptions of the Libor Market Model, the dynamics of each $F_k$, for $k = 1,\ldots, n$, under the forward measure $\mathbb{Q}^{T_i}$ with $i \in \{1,\ldots, n\}$, is:
     \begin{equation}
       \begin{cases}
 	k < i: dF_k(t) = -\sigma_k(t)F_k(t)\sum_{j=k+1}^i\cfrac{\rho_{k,j}\tau_j\sigma_j(t)F_j(t)}{1+\tau_jF_j(t)}dt + \sigma_k(t)F_k(t)dW^i_k(t) \\ \vspace{0.1cm}
@@ -133,10 +135,10 @@
       \label{eq:forward_dynamics_in_lfm}
     \end{equation}
  where $\bm{\tilde{F}}(t)$ is the vector $(F_1(t),\ldots, F_n(t))$.
-  \item<3-> Let's apply the change of measure from $\mathbb{Q}^i$ to $\mathbb{Q}^k$, then impose that the $\mathbb{Q}^k$ resulting drift is null. 
-  \item<4-> The Radon-Nikodym derivative of $\mathbb{Q}^{i-1}$ w.r.t. $\mathbb{Q}^i$ at time $t$ is
+  \item<3-> Let's apply the change of measure from $\mathbb{Q}^{T_i}$ to $\mathbb{Q}^{T_k}$, then impose that the $\mathbb{Q}^{T_k}$ resulting drift is null. 
+  \item<4-> The Radon-Nikodym derivative of $\mathbb{Q}^{T_{i-1}}$ w.r.t. $\mathbb{Q}^{T_i}$ at time $t$ is
     \begin{equation*}
-      \frac{d\mathbb{Q}^{i-1}}{d\mathbb{Q}^i}\bigg|\mathcal{F}_t = \frac{P(t, T_{i-1})P(0, T_i)}{P(0, T_{i-1})P(t, T_i)} = \zeta^i_t
+      \frac{d\mathbb{Q}^{T_{i-1}}}{d\mathbb{Q}^{T_i}}\bigg|\mathcal{F}_t = \frac{P(t, T_{i-1})P(0, T_i)}{P(0, T_{i-1})P(t, T_i)} = \zeta^i_t
     \end{equation*}
   \end{itemize}
 \end{frame}
@@ -147,7 +149,7 @@
     \begin{equation*}
       \zeta^i_t = \frac{P(0, T_i)}{P(0, T_{i-1})}(1+F_i(t)\tau_i)
     \end{equation*}
-    therefore, assuming \cref{eq:forward_process_lmm}, the dynamics of $\zeta^i_t$ under $\mathbb{Q}^i$ is
+    therefore, assuming \cref{eq:forward_process_lmm}, the dynamics of $\zeta^i_t$ under $\mathbb{Q}^{T_i}$ is
     \begin{equation*}
       \begin{aligned}
 	d\zeta^i_t &= \frac{P(0, T_i)}{P(0, T_{i-1})}dF_i(t)\tau_i = \frac{P(0, T_i)}{P(0, T_{i-1})}\tau_i\sigma_i(t)F_i(t)dW^i_i(t) = \\ &= \frac{\tau_i\sigma_i(t)F_i(t)}{1+F_i(t)\tau_i}\zeta_t^idW^i_i(t)=\lambda \zeta_t^idW^i_i(t)
@@ -191,11 +193,11 @@
 \subsection{Log-normal Forward Model}
 \begin{frame}{Log-normal Forward Libor Model}
   \begin{block}{Proposition}
-    Consider a given volatility structure $\sigma_1,\ldots, \sigma_n$, where each $\sigma_i$ is bounded, and the terminal measure $\mathbb{Q}^n$ with associated $n$-dimensional correlated Brownian motions $W^n$. If we define the processes $F_1,\ldots, F_n$ by
+    Consider a given volatility structure $\sigma_1,\ldots, \sigma_n$, where each $\sigma_i$ is bounded, and the terminal measure $\mathbb{Q}^{T_n}$ with associated $n$-dimensional correlated Brownian motions $W^n$. If we define the processes $F_1,\ldots, F_n$ by
     \begin{equation}
       dF_i(t) = -\sigma_i(t)F_i(t)\sum_{j=i+1}^n \rho^{ij} \frac{\tau_j\sigma_j(t)F_j(t)}{1+F_j(t)\tau_j} dt + \sigma_i(t)F_i(t)dW^n_i(t)
     \end{equation}
-    for $i = 1,\ldots, n$, then the $\mathbb{Q}^i$-dynamics of $F_i$ is given by \cref{eq:forward_process_lmm}, i.e. there exists a Libor Model with the given volatility structure.
+    for $i = 1,\ldots, n$, then the $\mathbb{Q}^{T_i}$-dynamics of $F_i$ is given by \cref{eq:forward_process_lmm}, i.e. there exists a Libor Model with the given volatility structure.
   This model is often called \textcolor{red}{log-normal forward Libor model} from the log-normal distribution of each forward rate under the related forward measure.
   \end{block}
 \end{frame}
@@ -285,7 +287,7 @@
 	\begin{block}{Proposition}
 		The price of the $i$-th caplet implied by the Libor market model coincides with that given by the corresponding Black caplet formula:
 		\begin{equation}
-			\textbf{Caplet}^{LFM}(0, T_{i-1}, T_i, K, v_i)= \tau_i P(0, T_i) Bl(K, F(0; T_{i-1}, T_i), v_i)
+			\textbf{Caplet}^{\text{LFM}}(0, T_{i-1}, T_i, K, v_i)= \tau_i P(0, T_i) Bl(K, F(0; T_{i-1}, T_i), v_i)
 		\end{equation}
 		where
 		\begin{equation}
@@ -305,7 +307,7 @@
 	\begin{equation*}
 		\textbf{Cap}=\mathbb{E}^B\left[\sum_{i=\alpha+1}^\beta 	\tau_iD(0, T_i)(F(T_{i-1}; T_{i-1}, T_i) - K)^+\right]
 	\end{equation*}
-	\item<2-> Given the linearity of the expectation operator, we can apply the change of measure technique to move to $\mathbb{Q}^i$, i.e. the $T_i$-forward measure associated to bond price $P(\cdot,T_i)$
+	\item<2-> Given the linearity of the expectation operator, we can apply the change of measure technique to move to $\mathbb{Q}^{T_i}$, i.e. the $T_i$-forward measure associated to bond price $P(\cdot,T_i)$
 	\begin{equation*}
 		\textbf{Cap}= \sum_{i=\alpha+1}^\beta \tau_i P(0, T_i)\mathbb{E}^{T_i}[(F(T_{i-1}; T_{i-1}, T_i) - K)^+] = \sum_{i=\alpha+1}^\beta P(0, T_i)\textbf{Caplet}
 	\end{equation*}
@@ -324,11 +326,10 @@
 \end{frame}
 
 \begin{frame}{Black Formula Derivation}
-Take a geometric Brownian motion $dF(t; T_1, T_2) = \sigma_2(t) F(t; T_1, T_2)dW(t)$, where $\sigma_2$ is the instantaneous volatility, and $W$ a standard Brownian motion under the measure $\mathbb{Q}^2$.
-
-Let us solve this equation and compute the caplet price term $\mathbb{E}^{\mathbb{Q}^2}[F_2(T_1) - X]^+$.
-
-By Ito’s formula:
+\begin{itemize}
+\item Take a geometric Brownian motion $dF(t; T_1, T_2) = \sigma_2(t) F(t; T_1, T_2)dW(t)$, where $\sigma_2$ is the instantaneous volatility, and $W$ a standard Brownian motion under the measure $\mathbb{Q}^2$.
+\item Let us solve this equation and compute the caplet price term $\mathbb{E}^{\mathbb{Q}^2}[F_2(T_1) - X]^+$.
+\item By Ito’s formula:
 \begin{equation*}
 \begin{aligned}
 d\ln(F_2(t)) &= \ln^{'}(F_2)dF_2 + \cfrac{1}{2} \ln^{''}(F_2) dF_2 dF_2 =\\
@@ -337,90 +338,107 @@ d\ln(F_2(t)) &= \ln^{'}(F_2)dF_2 + \cfrac{1}{2} \ln^{''}(F_2) dF_2 dF_2 =\\
 &= \sigma_2 dW - \cfrac{1}{2}\cfrac{1}{(F_2)^2}\sigma^2_2 F^2_2 dWdW = \sigma_2(t) dW(t) - \cfrac{1}{2}\sigma^2_2 dt
 \end{aligned}
 \end{equation*}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Black Formula Derivation}
-Integrate both sides:
+\begin{itemize}
+\item Integrate both sides:
 \begin{equation*}
 \begin{gathered}
-\int_0^T d \ln(F_2(t)) = \int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt = \\
-\ln(F_2(T)) - \ln(F_2(0)) = \int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt \\
-F_2(t) = F_2(0)\exp\left(\int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt\right)
+\int_0^T d \ln(F_2(t)) = \int_0^T \sigma_2(t)dW(t) - \cfrac{1}{2}\int_0^T  \sigma^2_2(t)dt = \\
+\ln(F_2(T)) - \ln(F_2(0)) = \int_0^T \sigma_2(t)dW(t) - \cfrac{1}{2}\int_0^T \sigma^2_2(t)dt \\
 \end{gathered}
 \end{equation*}
-Compute the distribution of the random variable in the exponent.
-
-It is Gaussian, since it is a stochastic integral of a deterministic function times
-a Brownian motion.
+\begin{equation*}
+F_2(t) = F_2(0)\exp\left(\int_0^T \sigma_2(t)dW(t) - \cfrac{1}{2}\int_0^T  \sigma^2_2(t)dt\right) = F_2(0)e^{G(T)} 
+\end{equation*}
+\item<2-> What is the distribution of $G(t)$ ?
+\item<3-> It is \textbf{Gaussian}, since it is a stochastic integral of a deterministic function times a Brownian motion.
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Black Formula Derivation}
-Compute the expectation:
+\begin{itemize}
+\item Compute its expectation:
+\begin{equation*}
+\mathbb{E}[G] = \mathbb{E}\left[\int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt\right] = \cfrac{1}{2}\int_0^T \sigma^2_2(t)dt 
+\end{equation*}
+\item And its variance (remember that $\text{Var}[X]=\mathbb{E}[X^2]-(\mathbb{E}[X])^2)$):
 \begin{equation*}
 \begin{gathered}
-\mathbb{E}\left[\int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt\right] = 0 - \cfrac{1}{2}\int_0^T \sigma^2_2(t)dt \\
-%\ln(F_2(T)) - \ln(F_2(0)) = \int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt \\
-\text{Var}\left[\int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt\right] = \mathbb{E}\left[\left(\int_0^T \sigma_2(t)dW(t) \right)\right] - 0^2 = \int_0^T \sigma^2_2(t)dt
+\text{Var}[G] = \text{Var}\left[\int_0^T \sigma_2(t)dW(t) - \int_0^T  \cfrac{1}{2}\sigma^2_2(t)dt\right] = \text{Var}\left[\left(\int_0^T \sigma_2(t)dW(t) \right)\right] =\\
+= \mathbb{E}\left[\left(\int_0^T \sigma_2(t)dW(t)\right)^2\right] = \int_0^T \sigma^2_2(t)dt
 \end{gathered}
 \end{equation*}
-where we have used Ito’s isometry in the last step. We thus have
-\begin{equation*}
-I(T) := - \cfrac{1}{2}\int_0^T \sigma^2_2(t)dt + \int_0^T \sigma^2_2(t)dt \approx m + V\mathcal{N}(0,1)
-\end{equation*}
-Recall that we have $F_2(T) = F_2(0) \exp(I(T)) = F_2(0)e^{m+V \mathcal{N}(0,1)}$.
+where the \emph{Ito’s isometry} has been used in the last step. 
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Black Formula Derivation}
-Compute now the option price term
+\begin{itemize}
+\item We thus have that
 \begin{equation*}
-\mathbb{E}^{\mathbb{Q}^2}[(F_2(T_1) - X)^+] = [(F_2(0)e^{m+V \mathcal{N}(0,1)} - X)^+] =\int_{-\infty}^{+\infty}
-(F_2(0)e^{m+Vy}-X)^+p_{\mathcal{N}(0,1)}(y)dy
+G(T) = \underbrace{- \cfrac{1}{2}\int_0^T \sigma^2_2(t)dt}_{m} + \underbrace{\int_0^T \sigma_2(t)dW(t)}_{V\mathcal{N}(0,1)}  \approx m + V\mathcal{N}(0,1)
+\end{equation*}
+\item Recall that we have $F_2(T) = F_2(0) \exp(G(T)) = F_2(0)e^{m+V \mathcal{N}(0,1)}$.
+\item So the option price becomes
+\begin{equation*}
+\mathbb{E}^{\mathbb{Q}^2}[(F_2(T_1) - X)^+] = [(F_2(0)e^{m+V \mathcal{N}(0,1)} - X)^+]
 \end{equation*} 
+\end{itemize}
+\end{frame}
 
-Note that $F_2(0) \exp(m + Vy) - X > 0$ if and only if
+\begin{frame}{Black Formula Derivation}
+\begin{itemize}
+\item Note that $F_2(0)e^{(m + Vy)} - X > 0$ if and only if
 \begin{equation*}
-y > \cfrac{-\ln\frac{F_2(0)}{X}-m}{V} := \bar{y}
+y > \cfrac{-\ln\frac{F_2(0)}{X}-m}{V} = \bar{y}
 \end{equation*}
-so that
+\item The expectation becomes
 \begin{equation*}
 \begin{aligned}
-\mathbb{E}^{\mathbb{Q}^2}[(F_2(T_1) - X)^+] &=\int_{-\infty}^{+\infty}(F_2(0)\exp(m+Vy)-X)p_{\mathcal{N}(0,1)}(y)dy= \\
-&=\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy)-X)p_{\mathcal{N}(0,1)}(y)dy =\ldots
+\mathbb{E}^{\mathbb{Q}^2}[(F_2(T_1) - X)^+] &= \int_{-\infty}^{+\infty}
+(F_2(0)e^{m+Vy}-X)^+\mathcal{N}(0,1)(y)dy\\
+&=\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy)-X)\mathcal{N}(0,1)(y)dy =\ldots
 \end{aligned}
 \end{equation*}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Black Formula Derivation}
 \begin{equation*}
 \begin{aligned}
 \ldots &= 
-\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy))dy - \int_{\bar{y}}^{+\infty}X p_{\mathcal{N}(0,1)}(y)dy = \\
-&=\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy)) p_{\mathcal{N}(0,1)}(y)dy - \int_{\bar{y}}^{+\infty}X p_{\mathcal{N}(0,1)}(y)dy = \\
-&=F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}y^2+m+Vy} p_{\mathcal{N}(0,1)}(y)dy-X\int_{\bar{y}}^{+\infty}p_{\mathcal{N}(0,1)}(y)dy = \\
+\int_{\bar{y}}^{+\infty}(F_2(0)\exp(m+Vy))\mathcal{N}(0,1)(y)dy - \int_{\bar{y}}^{+\infty}X \mathcal{N}(0,1)(y)dy = \\
+&=F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}y^2+m+Vy}dy-X\int_{\bar{y}}^{+\infty}\mathcal{N}(0,1)(y)dy = \\
 &=F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}y^2+m+Vy}dy-X(1-\Phi(\bar{y})) = \\
-&= F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}(y-V)^2 +m-\frac{1}{2}V^2}dy-X(1-\Phi(\bar{y})) = \ldots\\
+&= F_2(0)\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}(y-V)^2 +m-\frac{1}{2}V^2}dy-X(1-\Phi(\bar{y})) = \\
+&=F_2(0)e^{m-\frac{1}{2}V^2}\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}(y-V)^2}dy-X(1-\Phi(\bar{y})) =\ldots\\
 \end{aligned}
 \end{equation*}
 \end{frame}
 
 \begin{frame}{Black Formula Derivation}
-	\begin{equation*}
-		\begin{aligned}
-			\ldots 
-&=F_2(0)e^{m-\frac{1}{2}V^2}\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}}^{+\infty}e^{-\frac{1}{2}(y-V)^2}dy-X(1-\Phi(\bar{y})) =\\
+\begin{itemize}
+\item With a last change of variable (from $y$ to $z$)
+\begin{equation*}
+\begin{aligned}
+\ldots 
 &=F_2(0)e^{m-\frac{1}{2}V^2}\cfrac{1}{\sqrt{2\pi}}\int_{\bar{y}-V}^{+\infty}e^{-\frac{1}{2}z^2}dz-X(1-\Phi(\bar{y})) = \\
 &= F_2(0)e^{m-\frac{1}{2}V^2}(1-\Phi(\bar{y}-V))-X(1-\Phi(\bar{y})) = \\
 &= F_2(0)e^{m-\frac{1}{2}V^2}\Phi(-\bar{y}+V)-X\Phi(-\bar{y}) = \boxed{F_2(0)\Phi(d_1)-X\Phi(d_2)}
-		\end{aligned}
-	\end{equation*}
-	with $d_{1,2}=\cfrac{\ln\frac{F_2(0)}{X}\pm\frac{1}{2}\int_0^{T_1}\sigma^2_2(t)dt}{\sqrt{\int_0^{T_1}\sigma_2^2(t)dt}}$.
-	
-	When including the initial discount factor $P(0, T_2)$ and the year fraction $\tau$ this is exactly the classic market Black’s formula for the $T_1 - T_2$ caplet.
+\end{aligned}
+\end{equation*}
+with $d_{1,2}=\cfrac{\ln\frac{F_2(0)}{X}\pm\frac{1}{2}\int_0^{T_1}\sigma^2_2(t)dt}{\sqrt{\int_0^{T_1}\sigma_2^2(t)dt}}$.
+\item When including the initial discount factor $P(0, T_2)$ and the year fraction $\tau$ this is exactly the classic market Black’s formula for the $T_1 - T_2$ caplet.
+\end{itemize}
 \end{frame}
 
 \begin{frame}{LFM Calibration to Cap/Floor}
 \begin{itemize}
-	\item<1-> Every model is useless if not \textbf{calibrated}. Which means to find the parameter set that allows the model to reproduce real world results (i.e. prices).
+	\item<1-> Every model is almost useless if not \textbf{calibrated}. 
+	\item Which means to find the parameter set that allows the model to reproduce real world results (i.e. prices).
 	\item<2-> Calibration of LFM to Cap/Floor is quite straightforward: you can derive the model $\sigma$s starting from the implied volatilities by the Black formula for cap prices.
 	\item<3-> The \textcolor{red}{joint dynamics of forward rates is not involved in the pricing of a cap}, its payoff is just a sum of caplet payoffs, i.e. marginal distributions of forward rates are enough to compute the expectation, correlation does not matter. 
 	\item<4-> Indeed, there are no expectations involving two or more forward rates at the same time, so that correlations are not relevant.
@@ -431,7 +449,7 @@ so that
 \begin{itemize}
 	\item From \cref{eq:caplet_black_vol} ($v_i^2 = \frac{1}{T_{i-1}}\int_0^{T_{i-1}}\sigma_i^2(t)dt
 	$) it is clear how it is impossible to uniquely determine the instantaneous volatility $\sigma_i(t)$ as there exist plenty of functions that would integrate to $v_i$.
-	\item It is usual to assume the $F_k$ has a \emph{piecewise-constant} volatility $\sigma_i(t)$ (constant in each maturity-expiry interval $i$).
+	\item It is common to assume the $F_k$ has a \emph{piecewise-constant} volatility $\sigma_i(t)$ (constant in each maturity-expiry interval $i$).
 	\item Nevertheless, to reduce the number of parameters of the model, further assumptions can be made (below some examples):
 \end{itemize}
 \begin{center}
@@ -983,7 +1001,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 \item The price of these contracts depends on the \emph{terminal correlation} between different forward rates.
 \item In the derivation of the market models it has been assumed that each forward rate $F_i$ was driven by a different Brownian motion $W_i$ and that each Brownian motion is instantenously 
 \begin{equation}
-< W_i W_j> = \rho_{ij} dt
+< dW_i dW_j> = \rho_{ij} dt
 \end{equation}
 \item We need to understand how this correlation translates into the terminal correlation between rates.
 \end{itemize}
