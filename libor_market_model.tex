@@ -924,7 +924,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 	\begin{enumerate}\addtocounter{enumi}{2}
 	\item This can be minimized by choosing the appropriate $\gamma$ $\left(\text{from }\frac{\partial \text{Var}(\Pi_c)}{\partial\gamma}=0\right)$
 	\begin{equation*}
-	\gamma^* = -\frac{Cov(\Pi, \Pi_{an})}{\text{Var}(\Pi_{an})} = -\frac{\text{Corr}(\Pi, \Pi_{an})\text{Std}(\Pi)}{\text{Std}(\Pi_{an})}, \quad \left(\text{Corr}_{XY}=\frac{\text{Cov}_{XY}}{\text{Std}_X \text{Std}_Y}\right)
+	\gamma^* = -\frac{\text{Cov}(\Pi, \Pi_{an})}{\text{Var}(\Pi_{an})} = -\frac{\text{Corr}(\Pi, \Pi_{an})\text{Std}(\Pi)}{\text{Std}(\Pi_{an})}, \quad \left(\text{Corr}_{XY}=\frac{\text{Cov}_{XY}}{\text{Std}_X \text{Std}_Y}\right)
 	\end{equation*}
   	and the minimum variance of $\Pi_c$ is computed as
     \begin{equation*}
@@ -997,13 +997,13 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 \section{Correlated Brownian Motions}
 \begin{frame}{Instantaneous and Terminal Correlation}
 \begin{itemize}
-\item Let's consider now payoffs whose value depends on more than one rate simultaneously (e.g. swaptions).
-\item The price of these contracts depends on the \emph{terminal correlation} between different forward rates.
-\item In the derivation of the market models it has been assumed that each forward rate $F_i$ was driven by a different Brownian motion $W_i$ and that each Brownian motion is instantenously 
+\item<1-> Let's consider now payoffs whose value depends on more than one rate simultaneously (e.g. swaptions).
+\item<1-> The price of these contracts depends on the \emph{terminal correlation} between different forward rates.
+\item<2-> In the derivation of the market models it has been assumed that each forward rate $F_i$ was driven by a different Brownian motion $W_i$ and that each Brownian motion is instantaneously correlated
 \begin{equation}
 < dW_i dW_j> = \rho_{ij} dt
 \end{equation}
-\item We need to understand how this correlation translates into the terminal correlation between rates.
+\item<3-> We need to understand how this correlation translates into the terminal correlation between rates.
 \end{itemize}
 \end{frame}
 
@@ -1030,7 +1030,7 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 		%From this formula it is clear that indeed the instantaneous correlation ρ is related to changes dF in for- ward rates. Instead, 
 		The \textcolor{red}{terminal correlation} is a quantity summarizing the degree of “dependence” between two different forward rates at a given  \textcolor{red}{terminal time-instant}. Typically, the $T_1$ terminal correlation between $F_i$ and $F_j$ is the correlation between $F_i(T_1)$ and $F_j(T_1)$.
 	\end{block}
-	Is this terminal correlation completely determined by the instantaneous correlations $\rho_{ij}$ between $W_i$ and $W_j$ ?
+	\uncover<2->{Is this terminal correlation completely determined by the instantaneous correlations $\rho_{ij}$ between $W_i$ and $W_j$ ?}
 	%\begin{block}{Definition}
 	%The terminal correlation of the LIBOR rates$L(t, T_{i-1}, T_i)$ and $L(t, T_{j-1}, T_j)$ is given by
 	%\begin{equation*}
@@ -1042,24 +1042,25 @@ and, in order to evaluate the swaption payoff we have to generate a number of re
 
 \begin{frame}{Terminal Correlation}
 \begin{itemize}
-\item In general the terminal correlation between different forward rates depends not only on the introduced instantaneous correlations, but also on the way the “total” (caplet volatility) is “distributed” in instantaneous volatility (on $\sigma_{k,\beta(t)}$).
-\item Keeping the same instantaneous correlations and decomposing $v_i$ in two different ways leads to different correlations between $F_i$. 
+\item<1-> In general the terminal correlation between different forward rates depends not only on the introduced instantaneous correlations, \emph{but also on the way the “total” (caplet volatility) is “distributed” in instantaneous volatility (on $\sigma_{k,\beta(t)}$)}.
+\item<1-> Keeping the same instantaneous correlations and decomposing $v_i$ in two different ways leads to different correlations between $F_i$. 
 %This elementary and fundamental feature of terminal correlation was noticed and pointed out in Rebonato (1998, 1999d).
-\item Also, while the instantaneous correlation does not depend on the particular probability measure, the terminal correlation does. 
-\item The Girsanov theorem establishes that the instantaneous covariance structure is the same for all the equivalent measures under which a process can be expressed, so that the particular measure under which we work makes no difference. This is not the case for terminal correlation. 
+\item<2-> Also, while the instantaneous correlation does not depend on the particular probability measure, \emph{the terminal correlation does.} 
+\item<3-> The Girsanov theorem establishes that the instantaneous covariance structure is the same for all the equivalent measures under which a process can be expressed, so that the particular measure under which we work makes no difference. 
+\item<4-> This is not the case for terminal correlation. 
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Terminal Correlation: an Example}
 \begin{itemize}
-\item Consider a payoff $\Pi = (\log(F_3(T_1))-\log(F_3(T_0)))(F_2(T_1))-(F_2(T_0)))$ where $T_0>0$, $T_1=2T_0$, taking the measure $\mathbb{Q}^2$ under which $F_2$ is a martingale
+\item<1-> Consider a payoff $\Pi = (\log(F_3(T_1))-\log(F_3(T_0)))(F_2(T_1)-F_2(T_0))$ where $T_0>0$, $T_1=2T_0$, taking the measure $\mathbb{Q}^2$ under which $F_2$ is a martingale
 \begin{equation*}
 \begin{gathered}
 dF_2(t) = \sigma_{2,\beta(t)}F_2(t)dW_2(t)\\
 dF_3(t) = \cfrac{\tau_3\sigma^2_{3,\beta(t)}F_3^2(t)}{1+\tau_3F_3(t)}dt + \sigma_{3,\beta(t)}F_3(t)dW_3(t)
 \end{gathered}
 \end{equation*}
-\item As an example consider the payoff expectation (which is terminal correlation dependent quantity)
+\item<2-> As an example consider the payoff expectation, which results to be a terminal correlation dependent quantity
 \begin{equation}
 \begin{aligned}
 \mathbb{E}^2[\Pi] & = F_2(0)\rho_{2,3}\int_0^{T_1}\sigma_{2,\beta(t)}\sigma_{3,\beta(t)}dt = \\
@@ -1072,9 +1073,9 @@ dF_3(t) = \cfrac{\tau_3\sigma^2_{3,\beta(t)}F_3^2(t)}{1+\tau_3F_3(t)}dt + \sigma
 
 \begin{frame}{Terminal Correlation: an Example}
 \begin{itemize}
-\item Now from what we have said any \emph{caplet} price involving the rates $F_3, F_2$ would depend only on the average volatilities $v_2^2$ and $v_3^2$ \textcolor{red}{no matter how $\sigma_{k,t}$ are chosen} the Black formula gives the same result.
-\item Contrary from Eq.\ref{eq:terminal_correlation_ex} it is clear that there is a dependency on the instantaneous volatilities.
-\item Consider the cases where $\tau=T_i - T_{i-1}=0.5$, $F_2(0)=F_3(0)=0.05$, $\rho_{2,3}=0.75$, $\sigma_{3,3}=0.1$ and
+\item<1-> Now from what we have said any \emph{caplet} price involving the rates $F_2$ and $F_3$ would depend only on the average volatilities $v_2^2$ and $v_3^2$: \textcolor{red}{no matter how $\sigma_{k,t}$ are chosen} the Black formula gives the same result.
+\item<2-> Contrary from \cref{eq:terminal_correlation_ex} it is clear that there is a dependency on the instantaneous volatilities.
+\item<3-> Consider the cases where $\tau=T_i - T_{i-1}=0.5$, $F_2(0)=F_3(0)=0.05$, $\rho_{2,3}=0.75$, $\sigma_{3,3}=0.1$ and
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -1083,7 +1084,7 @@ $\sigma_{2,1}$ & $\sigma_{3,1}$ & $\sigma_{2,2}$ & $\sigma_{3,2}$ \\ \hline
 0.1 & 0.1 & 0.5 & 0.5 \\ \hline
 \end{tabular}
 \end{center}
-\item In the first case the result is $1.875\cdot10^{-3}$ while in the latter $2.343\cdot10^{-4}$.
+\item<3-> In the first case the result is $1.875\cdot10^{-3}$ while in the latter $2.343\cdot10^{-4}$.
 \end{itemize}
 \end{frame}
 
@@ -1105,10 +1106,10 @@ $\sigma_{2,1}$ & $\sigma_{3,1}$ & $\sigma_{2,2}$ & $\sigma_{3,2}$ \\ \hline
 
 \begin{frame}{Correlated Brownian Motions}
 	\begin{itemize}
-	\item In short rate models, by modeling an "instant rate", there is only one source of randomness and all forward rates are perfectly correlated, $\rho_{ij}=1$.
-	\item This is a tight constraint on the dynamics of the forward rates.
-	\item When trying to improve these models, one of the objectives is to lower the correlation of the forward rates. Some authors refer to this objective as to \textcolor{red}{decorrelation}. 
-	\item In the LFM, this can be easily done by fine-tuning the corresponding parameters into the dynamics 
+	\item<1-> In short rate models, by modeling an "instant rate", there is only one source of randomness and all forward rates are perfectly correlated, $\rho_{ij}=1$.
+	\item<1-> This is a tight constraint on the dynamics of the forward rates.
+	\item<2-> When trying to improve these models, one of the objectives is to lower the correlation of the forward rates. Some authors refer to this objective as to \textcolor{red}{decorrelation}. 
+	\item<3-> In the LFM, this can be easily done by fine-tuning the corresponding parameters into the dynamics 
 	\begin{equation*}
 dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j}{1+\tau_jF_j}dt+\sigma_kF_k dW^\alpha_k
 	\end{equation*}
@@ -1185,7 +1186,7 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
 
 \begin{frame}{LFM Calibration to Swaptions}
 \begin{itemize}
-\item In case we are adopting the LFM, we need to find the instantaneous-volatility and correlation parameters in the LFM dynamics that reflect the swaptions prices observed in the market.
+\item<1-> In case we are adopting the LFM, we need to find the instantaneous-volatility and correlation parameters in the LFM dynamics that reflect the swaptions prices observed in the market.
 
 %Remark 6.17.1. (Possible misalignments in the swaption matrix).
 %Usually, one should not completely rely on the swaption matrix provided
@@ -1193,9 +1194,9 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
 %problem is that the matrix is not necessarily uniformly updated. The most
 %liquid swaptions are updated regularly, whereas some entries of the matrix
 %refer to older market situations. This “temporal misalignment” in the swaptions matrix can cause troubles, since, when we try a calibration, the model parameters might reflect this misalignment by assuming “weird” values (we will see in Chapter 7 examples leading to imaginary and complex forwardrate volatilities).
-\item The problem is incorporating as much information as possible from such a table into the LFM parameters. 
-\item The goal is to find the set of parameters $\bar{x}$ and $\bar{\theta}$ from volatility and correlation parametrizations such that to minimize the difference between the market prices and those computed from LFM.
-\item However, if the number of swaptions is large, it is necessary to consider richer parametric forms, since the problem is over-dimensioned, although in this case care must be taken for the resulting market structures to be regular enough.
+\item<2-> The problem is incorporating as much information as possible from such a table into the LFM parameters. 
+\item<3-> The goal is to find the set of parameters $\bar{x}$ and $\bar{\theta}$ from volatility and correlation parametrizations such that to minimize the difference between the market prices and those computed from LFM.
+\item<4-> However, if the number of swaptions is large, it is necessary to consider richer parametric forms, since the problem is over-dimensioned, although in this case care must be taken for the resulting market structures to be regular enough.
 \end{itemize}
 \end{frame}
 
@@ -1230,98 +1231,119 @@ dF_k(t) = \sigma_kF_k\sum_{j=\alpha+1}^k\frac{\boxed{\rho_{kj}}\tau_j\sigma_jF_j
 \section{Convexity}
 \begin{frame}{Convexity Correction}
 \begin{itemize}
-\item 	In financial lingo, convexity is a broadly understood and often non-specific term for nonlinear behavior of the price of an instrument as a function of evolving markets.
-\item The concept of \emph{convexity adjustment} is required for all asset classes when there are payment delays or when the payment dates of the contract do
+\item<1-> In financial lingo, convexity is a broadly understood and often non-specific term for nonlinear behavior of the price of an instrument as a function of evolving markets.
+\item<2-> The concept of \emph{convexity adjustment} is required for all asset classes when there are payment delays or when the payment dates of the contract do
 not correspond to those used in the numeraire defintion. %Generally, if we have a maturity date $T$ but payment takes place at time $T + τ∗$ , convexity has to be taken into account. 
-\item From the perspective of financial modeling they arise as the results of valuation done under the \emph{"wrong"} measure.
-\item The higher the uncertainty in the market (high volatility) the more pronounced the effect of the convexity will become.
+\item<3-> From the perspective of financial modeling they arise as the results of valuation done under the \emph{"wrong"} measure.
+\item<4-> The higher the uncertainty in the market (high volatility) the more pronounced the effect of the convexity will become.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{The Good and the Bad}
+\begin{frame}{The Good\ldots}
 \begin{itemize}
-\item Let us consider a basic interest rate payoff function, which pays a payoff dependent on the Libor rate
+\item<1-> Let us consider a basic interest rate payoff function, which pays a payoff dependent on the Libor rate
 \begin{equation*}
-V(t_0) = N D(t_0)\expectt{Q}{t_0}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_i)}\right]=
-	NP(t_0,T_i)\mathbb{E}^{T_i}_{t_0}[F(T_{i-1};T_{i-1},T_i)]
+V(t_0) = N D(t_0)\expect{Q}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_i)}\right]=
+	NP(t_0,T_i)\mathbb{E}^{T_i}[F(T_{i-1};T_{i-1},T_i)]
 \end{equation*}
-and since $F(T_{i-1};T_{i-1}, T_i)$ is a martingale under the $T_i$-forward measure, we get $V(t_0)=NP(t_0,T_i)F(t_0;T_{i-1}, T_i)$.
-\item Suppose now that we consider the same contract, however, the payments will take place at some earlier time $T_{i-1} < T_i$. The current value of the contract is then
+\item<2-> Since $F_{i}(T_{i-1}) = F(T_{i-1};T_{i-1}, T_i)$ is a martingale under the $T_i$-forward measure, we get
 \begin{equation*}
-	V(t_0) = N D(t_0)\expectt{Q}{t_0}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_{i-1})}\right]
+V(t_0)= NP(t_0,T_i)F_i(t_0)
 \end{equation*}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{The Good and the Bad}
+\begin{frame}{\ldots and the Bad}
 \begin{itemize}
-\item When changing measure (to the $T_{i-1}$-forward measure) we get the following Radon-Nikodym derivative:
+\item<1-> Imagine now a similar contract where, however, the payments will take place at some earlier time $T_{i-1} < T_i$. \item<2->Its current value is given by
 \begin{equation*}
-\cfrac{d\mathbb{Q}^T_{i-1}}{d\mathbb{Q}}=\cfrac{P(T_{i-1},T_{i-1})D(t_0)}{P(t_0,T_{i-1})D(T_{i-1})}
+V(t_0) = N D(t_0)\expect{Q}\left[\cfrac{F_i(T_{i-1})}{D(T_{i-1})}\right]
 \end{equation*}
-so that
+\item<3-> When changing measure (to the $T_{i-1}$-forward measure) we get the following Radon-Nikodym derivative:
 \begin{equation*}
-\begin{aligned}
-V(t_0) &= N D(t_0)\expectt{Q}{T_{i-1}}\left[\cfrac{P(T_{i-1},T_{i-1})D(T_{i-1})}{P(t_0,T_{i-1})D(t_0)}\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_{i-1})}\right] = \\
-&= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right]
-\end{aligned}
+\cfrac{d\mathbb{Q}^{T_{i-1}}}{d\mathbb{Q}}=\cfrac{P(T_{i-1},T_{i-1})D(t_0)}{P(t_0,T_{i-1})D(T_{i-1})}
+\end{equation*}
+\item<4->So that
+\begin{equation*}
+V(t_0) = N D(t_0)\expect{Q}\left[\cfrac{F_i(T_{i-1})}{D(T_{i-1})}\right] = N D(t_0)\mathbb{E}^{T_{i-1}}\left[\cfrac{P(t_0,T_{i-1})D(T_{i-1})}{P(T_{i-1},T_{i-1})D(t_0)}\cfrac{F_i(T_{i-1})}{D(T_{i-1})}\right] 
 \end{equation*}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{The Correction}
 \begin{itemize}
-\item Although the Libor rate is a martingale under the $T_i$-forward
+\item<1-> After few semplifications
+\begin{equation*}
+\begin{aligned}
+V(t_0) = N \cancel{D(t_0)}\mathbb{E}^{T_{i-1}}&\left[\cfrac{P(t_0,T_{i-1})\cancel{D(T_{i-1})}}{P(T_{i-1},T_{i-1})\cancel{D(t_0)}}\cfrac{F_i(T_{i-1})}{\cancel{D(T_{i-1})}}\right] = \\
+&= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}[F_i(T_{i-1})]
+\end{aligned}
+\end{equation*}
+\item<1-> Although the Libor rate is a martingale under the $T_i$-forward
 measure, it is however not a martingale under the $T_{i-1}$-forward measure, i.e.,
 \begin{equation*}
-	\mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right]\neq \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right]
+	\mathbb{E}^{T_{i-1}}\left[F_i(T_{i-1})\right]\neq \mathbb{E}^{T_i}\left[F_i(T_{i-1})\right] = F_i(t_0)
 \end{equation*}
-\item The difference between these two expectations is commonly referred to as a \textbf{convexity}. 		
-\item By the change of measure technique, we can simplify the expressions above, to some extent. By changing to the $T_i$-forward measure, we find:
-\begin{equation*}
-	\cfrac{d\mathbb{Q}_i}{d\mathbb{Q}_{i-1}}=\cfrac{P(T_{i-1},T_i)P(t_0,T_{i-1})}{P(t_0,T_i)P(T_{i-1},T_{i-1})}
-\end{equation*}
+\item<2-> The difference between these two expectations is commonly referred to as a \textbf{convexity}.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Changing Measures}
 \begin{itemize}
-\item The value of the derivative is then equal to
+\item<1-> By the change of measure technique, we can simplify the expressions above, to some extent. 
+\item<2-> Indeed moving to the $T_i$-forward measure, we find:
 \begin{equation*}
-\begin{aligned}
-V(t_0) &= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right] = \\
-&=N P(t_0,T_{i-1})\mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\cfrac{P(t_0,T_i)P(T_{i-1},T_{i-1})}{P(T_{i-1},T_i)P(t_0,T_{i-1})}\right]=\\
-&=N \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}\right]\\
-\end{aligned}
+\cfrac{d\mathbb{Q}^{T_i}}{d\mathbb{Q}^{T_{i-1}}}=\cfrac{P(T_{i-1},T_i)P(t_0,T_{i-1})}{P(t_0,T_i)P(T_{i-1},T_{i-1})}
 \end{equation*}
-which, by simply adding and subtracting $F$ can be rewritten as 
-\begin{equation*}
+\item<3-> The derivative value is then equal to
+\only<3-3>{\begin{equation*}
 \begin{aligned}
-V(t_0) &= N \mathbb{E}^{T_{i-1}}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\right] + N \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\\
-&=N\left(F(t_0;T_{i-1},T_i) + \mathbb{E}^{T_i}_{t_0}\left[F(T_{i-1};T_{i-1},T_i)\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\right)
+V(t_0) &= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}[F_i(T_{i-1})] = \\
+&=N P(t_0,T_{i-1})\mathbb{E}^{T_i}\left[F_i(T_{i-1})\cfrac{P(t_0,T_i)P(T_{i-1},T_{i-1})}{P(T_{i-1},T_i)P(t_0,T_{i-1})}\right]=\\
 \end{aligned}
-\end{equation*}
+\end{equation*}}
+\only<4-4>{\begin{equation*}
+\begin{aligned}
+V(t_0) &= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}[F_i(T_{i-1})] = \\
+&=N \cancel{P(t_0,T_{i-1})}\mathbb{E}^{T_i}\Bigg[F_i(T_{i-1})\cfrac{P(t_0,T_i)\overbrace{P(T_{i-1},T_{i-1})}^{=1}}{P(T_{i-1},T_i)\cancel{P(t_0,T_{i-1})}}\Bigg]=\\
+\end{aligned}
+\end{equation*}}
+\only<5->{\begin{equation*}
+\begin{aligned}
+V(t_0) &= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}[F_i(T_{i-1})] = \\
+&=N \mathbb{E}^{T_i}\left[F_i(T_{i-1})\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}\right]\\
+\end{aligned}
+\end{equation*}}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{The Correction}
 \begin{itemize}
-\item The convexity correction can finally be expressed as
-\begin{equation}
-P(t_0,T_i)\mathbb{E}^{T_i}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{P(T_{i-1},T_i)}\right]-F(t_0;T_{i-1},T_i)
-\end{equation}
-\item From the definition of Libor rate: $P(T_{i-1},T_i)=\cfrac{1}{1+\tau_i F(T_{i-1};T_{i-1},T_i)}$ hence
+\item<1-> By simply adding and subtracting $F_i(T_{i-1})$ can be rewritten as 
 \begin{equation*}
-\mathbb{E}^{T_i}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{P(T_{i-1},T_i)}\right]=F(t_0;T_{i-1},T_i)+\tau_i\mathbb{E}^{T_i}_{t_0}[F^2(T_{i-1};T_{i-1},T_i)]
+\begin{aligned}
+V(t_0) &= N \mathbb{E}^{T_i}[F_i(T_{i-1})] + N \mathbb{E}^{T_i}\left[F_i(T_{i-1})\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\\
+&=N\left(F_i(t_0) + \mathbb{E}^{T_i}\left[F_i(T_{i-1})\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\right)
+\end{aligned}
 \end{equation*}
+\item<2-> The convexity correction can finally be expressed as
+\begin{equation}
+\boxed{	
+P(t_0,T_i)\mathbb{E}^{T_i}\left[\cfrac{F_i(T_{i-1})}{P(T_{i-1},T_i)}\right]-F_i(t_0)}
+\end{equation}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Final Remark}
 \begin{itemize}
-\item Note that although $F(T_{i-1};T_{i-1},T_i)$ is a martingale under the $T_i$-forward measure, its square is not. Indeed applying \ito lemma to the dynamics $dF_i(t) = \sigma F_i(t)dW^i_i(t)$, give us
+\item<1-> From the definition of Libor rate: $P(T_{i-1},T_i)=\cfrac{1}{1+\tau_i F_i(T_{i-1})}$ hence
 \begin{equation*}
-dF_i^2=\cfrac{1}{2}\sigma^2F_i^2dt+2\sigma F_i^2dW_i
+\mathbb{E}^{T_i}\left[\cfrac{F_i(T_{i-1})}{P(T_{i-1},T_i)}\right]=F_i(t_0)+\tau_i\mathbb{E}^{T_i}[F_i^2(T_{i-1})]
+\end{equation*}
+\item<2-> Note that although $F_i(T_{i-1})$ is a martingale under the $T_i$-forward measure, \textbf{its square is not}.
+\item<3-> Indeed applying \ito~lemma to $F_i^2$ with the  dynamics $dF_i(t) = \sigma F_i(t)dW(t)$, give us
+\begin{equation*}
+dF_i^2=\sigma^2F_i^2dt+2\sigma F_i^2dW
 \end{equation*}
 which has a drift term, so it is not a martingale.
 \end{itemize}
@@ -1330,16 +1352,15 @@ which has a drift term, so it is not a martingale.
 \subsection{In Arrears Swap}
 \begin{frame}{In-Arrears Swap}
 \begin{itemize}
-\item An \emph{in-arrears swap} is an IRS that resets and pays at the same dates $\{T_{\alpha+1},\ldots, T_\beta\}$ and with fixed-leg rate $K$. More precisely, the value of an payer IAS is
+\item<1-> An \emph{in-arrears swap} is an IRS that resets and pays at the same dates $\{T_{\alpha+1},\ldots, T_\beta\}$ and with fixed-leg rate $K$. More precisely, the value of an payer IAS is
 \begin{equation}
-\textbf{IAS}=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i)-K)\right]
+\textbf{IAS}=\expect{Q}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i)-K)\right]
 \end{equation}
-\item To compute the expectation we can proceed as follows
-
+\item<2-> To compute the expectation we can proceed as follows
 \begin{equation*}
 \begin{aligned}
-\mathbb{E}\Bigg[\sum_{i=\alpha+1}^{\beta}D_i\tau_{i+1}&(F_{i+1}(T_i)-K)\Bigg] = \\ 
-&=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}D_i\left(\cfrac{1}{P(T_i,T_{i+1})}-(1+\tau_{i+1}K)\right)\right]=\ldots
+\expect{Q}\Bigg[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}&(F_{i+1}(T_i)-K)\Bigg] = \\ 
+&=\expect{Q}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\left(\cfrac{1}{P(T_i,T_{i+1})}-(1+\tau_{i+1}K)\right)\right]=\ldots
 \end{aligned}
 \end{equation*}
 \end{itemize}
@@ -1347,20 +1368,18 @@ which has a drift term, so it is not a martingale.
 
 \begin{frame}{In-Arrears Swap}
 \begin{itemize}
-\item To further simplify the expression it is convenient to use the following result from the tower propery of the expectation:
+\item<1-> To further simplify the expression it is convenient to use the following result from the \emph{tower property} of the expectation:
 \begin{equation*}
 \begin{aligned}
 &\mathbb{E}_t\left[\cfrac{XD(t,S)}{P(T,S)} \right]=\mathbb{E}_t\left[\mathbb{E}_T\left[\cfrac{XD(t,T)D(T,S)}{P(T,S)} \right]\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}\mathbb{E}_T[D(T,S)]\right]= \\ 
 & =\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}P(T,S)\right]=\mathbb{E}_t[XD(t,T)],\quad (t<T<S)
 \end{aligned}
 \end{equation*}
-
-\item Previous expression then becomes (with $T=T_i$ and $S=T_{i+1}$):
-
+\item<2-> The previous expression then becomes (with $T=T_i$ and $S=T_{i+1}$):
 \begin{equation*}
 \begin{aligned}
-\ldots=\mathbb{E}\Bigg[\sum_{i=\alpha+1}^{\beta}&\left(\cfrac{D(0,T_i)}{P(T_i,T_{i+1})}-D(0,T_i)(1+\tau_{i+1}K)\right)\Bigg] = \\
-&=\mathbb{E}\left[\sum_{i=\alpha+1}^{\beta}\left(\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}-D(0,T_i)(1+\tau_{i+1}K)\right)\right] = \ldots
+\ldots=\expect{Q}\Bigg[\sum_{i=\alpha+1}^{\beta}&\left(\cfrac{D(0,T_i)}{P(T_i,T_{i+1})}-D(0,T_i)(1+\tau_{i+1}K)\right)\Bigg] = \\
+&=\expect{Q}\left[\sum_{i=\alpha+1}^{\beta}\left(\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}-D(0,T_i)(1+\tau_{i+1}K)\right)\right] = \ldots
 \end{aligned}
 \end{equation*}
 \end{itemize}
@@ -1368,22 +1387,23 @@ which has a drift term, so it is not a martingale.
 
 \begin{frame}{In-Arrears Swap}
 \begin{itemize}
-\item From the linearity of the expectation operator (the second expectation follows from the ZCB definition):
+\item<1-> From the linearity of the expectation operator:
 \begin{equation*}
 \begin{aligned}
-\ldots &=\sum_{i=\alpha+1}^{\beta}\left(\mathbb{E}\left[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\right]-\mathbb{E}\left[D(0,T_i)(1+\tau_{i+1}K)\right]\right) = \\
-&=\sum_{i=\alpha+1}^{\beta}\left(\mathbb{E}\left[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right) = \ldots\\
+\ldots &=\sum_{i=\alpha+1}^{\beta}\left(\expect{Q}\left[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\right]-\expect{Q}\left[D(0,T_i)(1+\tau_{i+1}K)\right]\right) = \\
+&=\sum_{i=\alpha+1}^{\beta}\left(\expect{Q}\left[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right) = \ldots\\
 \end{aligned}
 \end{equation*}
-\item Before computing the remaining expectation let's make a change of measure from the risk-neutral to $P(\cdot, T_{i+1})$
-\only<1-1>{
+the second one follows from the ZCB definition.
+\item<2-> Before computing the remaining expectation let's make a change of measure from the risk-neutral to $P(\cdot, T_{i+1})$
+\only<2-2>{
 \begin{equation*}
 \ldots=\sum_{i=\alpha+1}^{\beta}\Bigg(\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\cfrac{D(T_{i+1},T_{i+1})P(0,T_{i+1})}{D(0,T_{i+1})P(T_{i+1},T_{i+1})}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
 %&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[\cfrac{1}{P(T_i,T_{i+1})^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right] = \\
 %&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[(1+\tau_{i+1}F_{i+1}(T_i))^2\right]-P(0,T_i)(1+\tau_{i+1}K)\right]
 %\end{aligned}
 \end{equation*}}
-\only<2->{
+\only<3->{
 \begin{equation*}
 \ldots=\sum_{i=\alpha+1}^{\beta}\Bigg(\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{\cancel{D(0,T_{i+1})}}{P(T_i,T_{i+1})^2}\cfrac{\overbrace{D(T_{i+1},T_{i+1})}^{=1}P(0,T_{i+1})}{\cancel{D(0,T_{i+1})}\underbrace{P(T_{i+1},T_{i+1})}_{=1}}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
 \end{equation*}}
@@ -1392,37 +1412,38 @@ which has a drift term, so it is not a martingale.
 
 \begin{frame}{In-Arrears Swap}
 \begin{itemize}
-\item Finally
+\item<1-> Finally
 \begin{equation}
-\textbf{IAS}=\sum_{i=\alpha+1}^{\beta}\Bigg(\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{P(0,T_{i+1})}{P(T_i,T_{i+1})^2}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
+\textbf{IAS}=\sum_{i=\alpha+1}^{\beta}\Bigg(P(0,T_{i+1})\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{1}{P(T_i,T_{i+1})^2}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
 \label{eq:exp_ias}
 \end{equation}
-\item After the last substitution $\frac{1}{P(T_i,T_{i+1})^2}=(1+\tau_{i+1}F_{i+1}(T_i))^2$, it is relatively easy to compute the expected value in Eq.~\ref{eq:exp_ias}, since under $\mathbb{Q}^{i+1}$, $F_{i+1}$ is a martingale
+\item<2-> After the last substitution $\frac{1}{P(T_i,T_{i+1})^2}=(1+\tau_{i+1}F_{i+1}(T_i))^2$, it is relatively easy to compute the expected value in Eq.~\ref{eq:exp_ias}, since under $\mathbb{Q}^{T_{i+1}}$, $F_{i+1}$ is a martingale
 \begin{equation*}
 dF_{i+1}(t) = \sigma_{i+1}(t)F_{i+1}(t)dW^{i+1}(t)
 \end{equation*}
-so that, 
+\uncover<3->{so that (using \ito~isometry), 
 \begin{equation*}
-\mathbb{E}^{i+1}[F_{i+1}^2(T_i)]=F_{i+1}^2(0)\exp\left(\int_0^{T_i}\sigma_{i+1}^2(t)dt\right) = F_{i+1}^2(0)\exp(v_{i+1}^2)
+\mathbb{E}^{T_{i+1}}[F_{i+1}^2(T_i)]=F_{i+1}^2(0)\exp\left(\int_0^{T_i}\sigma_{i+1}^2(t)dt\right) = F_{i+1}^2(0)\exp(v_{i+1}^2)
 \end{equation*}
-where the $v$ can be determined from cap market prices.
+where the $v$ can be determined from cap market prices.}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{In-Arrears Swap}
 \begin{itemize}
-\item The final expression is
+\item<1-> The final expression is
 \begin{equation}
-\begin{aligned}
-\textbf{IAS} = \sum_{i=\alpha+1}^{\beta}&[
+\begin{gathered}
+\textbf{IAS} = \sum_{i=\alpha+1}^{\beta}(P(0,T_{i+1})\mathbb{E}^{T_{i+1}}[(1+\tau_{i+1}F_{i+1}(T_i))^2]-P(0,T_i)(1+\tau_{i+1}K)) \\
+=\sum_{i=\alpha+1}^{\beta}[
 P(0,T_{i+1}) [1+2\tau_{i+1}F_{i+1}(0) + \tau_{i+1}^2 F_{i+1}^2(0)\exp(v_{i+1}^2)]\\
-&-(1+\tau_{i+1}K)P(0,T_i)] \\
-\end{aligned}
+-(1+\tau_{i+1}K)P(0,T_i)] \\
+\end{gathered}
 \label{eq:ias_price}
 \end{equation}
-\item  From~\cref{eq:ias_price} it is apparent how the valuation results in a vanilla swap-like part plus the convexity correction due to the arrears feature.
-\item Also, contrary to the plain-vanilla case, the In-Arrear Swap value depends on the volatility of forward rates through the caplet volatilities $v$. 
-\item Notice however that correlations between different rates are not involved in this product, as expected by the nature of the contract.
+\item<2-> From~\cref{eq:ias_price} it is apparent how the valuation results in a vanilla swap-like part plus the convexity correction due to the arrears feature.
+\item<3-> Also, contrary to the plain-vanilla case, the In-Arrear Swap value depends on the volatility of forward rates through the caplet volatilities $v$. 
+\item<4-> Notice however that correlations between different rates are not involved in this product, as expected by the nature of the contract.
 
 %Remark 13.1.1. If caplet prices are available in the market for each maturity
 %Ti and strike K, we can price an in-arrears swap consistently with %theobserved caplet smile by noting that we can write

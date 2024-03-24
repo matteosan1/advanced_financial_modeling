@@ -11,10 +11,10 @@
   \maketitle
 \end{frame}
 
-\begin{frame}{Martingale}
-\begin{block}{}
+\begin{frame}{}
+\begin{block}{Martingale}
 Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. \\
-Is this a martingale ?
+Is this a martingale ? (\textbf{hint:} $\frac{da^x}{dx}=a^x\ln a$)
 \end{block}
 \uncover<2->{
 With $g(t)=2^{W(t)}$, we find:
@@ -26,8 +26,8 @@ Due to the appearance of a $dt$-term, the process is not a martingale.
 }
 \end{frame}
 
-\begin{frame}{Martingale Game}
-\begin{block}{}
+\begin{frame}{}
+\begin{block}{Martingale Game}
 Suppose you play the following series of games: in game $i, i = 1, 2,\ldots$, you bet \$1 and roll a fair die. If the outcome is $\{1,2\}$ you win \$1, if it is $\{3,4\}$ nothing happens, and if the outcome is $\{5,6\}$ you lose \$1.\\
 Prove that the random process representing the gamer gain is a martingale.
 \end{block}
@@ -40,7 +40,7 @@ so no unbalance between losses or wins.
 }
 \end{frame}
 
-\begin{frame}{Martingale Game}
+\begin{frame}{}
 Now define another random variable $Z_n = \sum_{i=1}^{n} X_i$, i.e. the amount of money held at the $n$-th game.
 
 $Z_n$ is a martingale and $\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = Z_{n-1}$.
@@ -53,8 +53,8 @@ $Z_n$ is a martingale and $\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = Z_{n-1}$.
 \end{equation*}
 \end{frame}
 
-\begin{frame}{Bootstrap}
-\begin{block}{}
+\begin{frame}{}
+\begin{block}{Bootstrap}
 Consider different bonds with a face value of \$ 100, with the coupon rates as in Tab.\ref{tab:coupons}.
 
 \begin{table}[htb]
@@ -79,7 +79,7 @@ Considering the first bond we can deduce that
 }
 \end{frame}
 
-\begin{frame}{Bootstrap}
+\begin{frame}{}
 The second bond has an intermediate copoun (at 1y) before expiry so previous formula becomes
 
 \begin{equation*}
@@ -91,8 +91,8 @@ The second bond has an intermediate copoun (at 1y) before expiry so previous for
 Analogously for the third bond\ldots
 \end{frame}
 
-\begin{frame}{Forward Rate Agreement}
-\begin{block}{}
+\begin{frame}{}
+\begin{block}{Forward Rate Agreement}
 The following term structure of LIBOR is given 
 \begin{table}[htbp]
 \begin{center}
@@ -106,48 +106,49 @@ The following term structure of LIBOR is given
 \end{table}
 \begin{itemize}
 \item Find the rate on a new 6 × 9 FRA;
-\item Consider an FRA that was established previously at a rate of 5.2 percent with a notional amount of 30~M. The FRA expires in 180 days, and the underlying is 180-day LIBOR. Find the value of the FRA from the perspective of the party paying fixed and receiving floating as of the point in time at which this term structure applies.
+\item Consider a FRA that was established previously at a rate of 5.2\% with a notional amount of 30~M. The FRA expires in 180 days, and the underlying is 180-day LIBOR. Find its value from the perspective of the party paying fixed as of the point in time at which this term structure applies.
 \end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame}{Forward Rate Agreement}
+\begin{frame}{}
 \begin{itemize}
-\item The contract at inception has to be \emph{fair} so the requested rate is the break-even rate of the contract or the forward rate $F(t; T=180, S=270)$, hence
+\item<1-> The contract at inception has to be \emph{fair} so the requested rate is the break-even rate of the contract or the forward rate $F(t; T=180, S=270)$, hence
 \begin{equation*}
 K = \cfrac{6.3\cdot\frac{9}{12}-6.2\cdot0.5}{\frac{9}{12}-0.5} = 6.5\%
 \end{equation*}
-\item The old contract value (seen by the party paying fixed) is given by 
+\item<2-> The old contract value (seen by the party paying fixed) is given by 
 \begin{equation*}
 \textbf{FRA} = -N\cdot[P(t,S)\tau K - P(t,T) + P(t, S)]
 \end{equation*}
-where $t=T=0$, so $P(0,S)=e^{-0.062*0.5}= 0.9695$, $\tau=0.5$ and $P(t,T)=1$.
+where $t=T=0$, so $P(t,S)=\cfrac{1}{1-0.062*0.5}= 0.9699$, $\tau=0.5$ and $P(t,T)=1$.
 \begin{equation*}
-\textbf{FRA} = 237279
+\textbf{FRA} \approx 146500
 \end{equation*}
 a positive value was expected since $K<L$.
 \end{itemize}
 \end{frame}
 
-
 \begin{frame}{}
 \begin{block}{Forward Rate}
 The 1-year spot rate on US treasury bonds is 9\%, the 2-year spot rate is 9.5\% and the 3-year spot rate is 10\%. 
-\begin{itemize}
-\item Calculate the implied 1-year ahead, 1-year forward rate, $F(0;1,2)$. Explain why a 1-year forward rate of 9.6\% could not be explained by the market;
-\item calculate the forward rates  $F(0; 2, 3$ and $F(0; 1,3)$. Is there a link between $F(0;1,2),F(0;2,3)$ and $F(0;1,3)$ ?
-\end{itemize}
+%\begin{itemize}
+%\item 
+Calculate the implied 1-year ahead, 1-year forward rate, $F(0;1,2)$. Explain why a 1-year forward rate of 9.6\% could not be explained by the market;
+%\item calculate the forward rates  $F(0; 2, 3)$ and $F(0; 1,3)$. Is there a link between $F(0;1,2),F(0;2,3)$ and $F(0;1,3)$ ?
+%\end{itemize}
 \end{block}
 \uncover<2->{
-\begin{itemize}
-\item The forward rates are as follows:
+%\begin{itemize}
+%\item 
+The forward rates are as follows:
 \begin{equation*}
 \begin{aligned}
 F(0;1,2) &= \cfrac{0.095*2 - 0.09*1}{2-1} = 0.1, \quad F(0;2,3)= \cfrac{0.1*3 - 0.095*2}{3-2} = 0.11, \\ 
 F(0;1,3) &= \cfrac{0.1*3 - 0.09*1}{3-1} = 0.105
 \end{aligned}
 \end{equation*}
-\end{itemize}
+%\end{itemize}
 }
 \end{frame}
 
@@ -156,280 +157,300 @@ If you lend €100 at $t=1$ at 9.6\%, your cash flow is -€100 at $t=1$ and €
 You can do better by borrowing now for 1 year $€100/1.09=€91.74$ and lending the same amount for 2 years. Your net cash flow is then €0 at $t=0$, -€100 at $t=1$ (that is $€91.74\cdot 1.09$), and €110 at $t=2$ (that is $€91.74\cdot 1.095^2$). 
 
 Compared to the first option, you have thus a certain higher cash flow at $t=2$: €110 vs. €109.6.  There is no reason to accept the 9.6\% rate contract. 
-\begin{itemize}
-\item The link between the forward rate is as follows:
-\begin{equation*}
-\cfrac{(1+F(0;1,3))^2}{1+F(0;1,2)} = \cfrac{(1+r_3)^3}{(1+r^2)} \Rightarrow (1+F(0;1,3)^2 = (1+F(0;1,2))(1+F(0;2,3))
-\end{equation*}
-Hence, with any two of three forward rates, you can deduct the third one.
-\end{itemize}
+%\begin{itemize}
+%\item The link between the forward rate is as follows:
+%\begin{equation*}
+%\cfrac{(1+F(0;1,3))^2}{1+F(0;1,2)} = \cfrac{(1+r_3)^3}{(1+r^2)} \Rightarrow (1+F(0;1,3)^2 = (1+F(0;1,2))(1+F(0;2,3))
+%\end{equation*}
+%Hence, with any two of three forward rates, you can deduct the third one.
+%\end{itemize}
 \end{frame}
 
 
 \begin{frame}{}
 \begin{block}{Interest Rate Swap}
-A 100~M interest rate swap has a remaining life of 10 months. Under the terms of the swap; 6-month LIBOR is exchanged for 7\% p.a. (compounded semiannually). The average of the bid-offer rate being exchanged for 6-month LIBOR in swaps of all maturities is currently 5\% p.a. with continuous compounding. The 6-month LIBOR rate was 4.6\% p.a. 2 months ago. 
+A 100~M interest rate swap has a remaining life of 10 months. Under the terms of the swap; 6-month LIBOR is exchanged for 7\% p.a. (compounded semi-annually). The average of the bid-offer rate being exchanged for 6-month LIBOR in swaps of all maturities is currently 5\% p.a.. The 6-month LIBOR rate was 4.6\% p.a. 2 months ago. 
 \begin{itemize}
 \item What is the current value of the swap to the party paying floating ?
 \item What is its value to the party paying fixed ?
 \end{itemize}
 \end{block}
+\uncover<2->{
+In four months 3.5~M ($0.5\times 0.07\times 100$~M) will be received and 2.3~M ($0.5\times 0.046\times 100$~M) will be paid. (We ignore day count issues.) 
 
-In four months 6~M ($0.5\times 0.12\times 100$~M) will be received and 4.8~M ($0.5\times 0.096\times 100$~M) will be paid. (We ignore day count issues.) In 10 months 6~M will be received, and the LIBOR rate prevailing in four months-time will be paid. The value of the fixed-rate bond underlying the swap is
+In 10 months 6~M will be received, and the LIBOR rate prevailing in four months-time will be paid. The value of the fixed-rate bond underlying the swap is
 \begin{equation*}
-6 \exp(-0.1 \times 4/12) + 6 \exp(0.1\times  10/12) = 103.328\text{~M}
-\end{equation*}
+3.5 \cfrac{1}{1.025^{4/6}} + 103.5 \cfrac{1}{1.025^{10/6}} = 102.770\text{~M}
+\end{equation*}}
 \end{frame}
 
 \begin{frame}{}
 The value of the floating-rate bond underlying the swap is 
 \begin{equation*}
-(100 + 4:8) \exp(0.1\times  4/12) = 101364 \text{~M}
+(100 + 2.3) \cfrac{1}{1.025^{4/6}} = 100.629 \text{~M}
 \end{equation*}
-The value of the swap to the party paying floating is $103328-  101364 = 1964$~M. 
+The value of the swap to the party paying floating is $102.770-100.629 = 2.141$~M. 
 The value of the swap to the party paying fixed is the opposite. 
 
 \textbf{Alternative solution:}
-These results can also be derived by decomposing the swap into forward contracts. Consider the party paying floating. The first forward contract involves paying 4.8~M and receiving 6~M in four months. It has a value of $1.2e^{-0.1\cdot 4/12} = 1.161$~M.
-To value the second forward contract, we note that the forward interest rate is 10\% per annum with continuous compounding, or 10.254\% per annum with semiannual compounding. The value of the forward contract is
+These results can also be derived by decomposing the swap into forward contracts. Consider the party paying floating. The first forward contract involves paying 3.5~M and receiving 2.3~M in four months. It has a value of $1.2\cfrac{1}{1.025^{4/6}} = 1.180$~M.
+To value the second forward contract, we note that the forward interest rate is 5\% p.a.. The value of the forward contract is
 \begin{equation*}
-100\times  (0.12\times 0.5-0.10254\times 0.5)e^{-0.1\cdot 10/12} = 0.803 \text{~M}
+100\times (0.035-0.025)\cfrac{1}{1.025^{10/6}} = 0.960 \text{~M}
 \end{equation*}
 
-The total value of the forward contract is therefore $1.161 + 0.803 = 1.964$~M.
+The total value of the forward contract is therefore $1.181 + 0.960 = 2.141$~M.
 \end{frame}
 
+\begin{frame}{}
+\begin{block}{Interest Rate Swap}
+Assume that company A has agreed to pay a 6-month LIBOR and receive a fixed interest rate of 8\% p.a. (with interest payable every six months) from the face value of 100~M. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. The 6-month LIBOR is currently 10.2\%. Calculate the value of this swap for company A.
+\end{block}
+\uncover<2->{
+Since company A pays floating and receives fixed $V = V_{\text{fix}}-V_{\text{float}}$.
+The fixed leg value is
+\begin{equation*}
+\begin{gathered}
+V_{\text{fix}} = \sum_{i=1}^n \cfrac{K/2}{(1+r_i/2)^{t_i}} + \cfrac{N}{(1+r_n/2)^{t_n}} = \\
+= \cfrac{4}{(1+0.05)^{3/6}} + \cfrac{4}{(1+0.0525)^{9/6}} + \cfrac{104}{(1+0.055)^{15/6}} = 98.58\text{~M}
+\end{gathered}
+\end{equation*}
+}
+\end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{exercise}[subtitle=Interest Rate Swap]
-%Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100~M. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A.
-%\end{exercise}
-%\begin{solution}
-%In our case: $Q= 100$~M - the principal of the swap (in bond notation it is face value FV), LIBOR=0.102 - 6 months LIBOR, T=1.25 - the maturity of the bond as a fraction of the year (15 months is 1.25 of year), r3m=0.10 - 3 months interest rate, r9m=0.105 - 9 months interest rate, r15m=0.11 - 15 months interest rate, rfix=0.08 - fixed interest rate, 2 - number of payments in a year
+\begin{frame}
+The floating payment is based on LIBOR and the nearest (first) payment is 
+\begin{equation*}
+F = 0.102\cdot0.5\cdot 100 = 5.1~\text{M}
+\end{equation*}
+
+Hence:
+\begin{equation*}
+V_{\text{float}} = \cfrac{105.1}{(1+0.05)^{3/6}}= 102.57~\text{M}
+\end{equation*}
+
+And the final calculation
+\begin{equation*}
+V = 98.24-102.51=-3.99~\text{M}
+\end{equation*}
+which is the swap value for company A.
+\end{frame}
+
+\begin{frame}{}
+\begin{block}{Alternative Solution}
+Determine the value of the swap from the previous exercise in the way as described in the Relationship between interest rate swap and FRA part.
+\end{block}
+\uncover<2->{
+The cash flows that will be exchanged after three months can be calculated as: the interest rate of 8\% will be exchanged for a rate of 10.2\%. Let us call it FRA1:
+\begin{equation*}
+\text{FRA1} = \cfrac{0.5\cdot 100\cdot (0.08-0.102)}{(1+0.05)^{3/6}}=-1.07~\text{M}
+\end{equation*}
+Determination of flows after 9th and 15th month requires to calculate forward interest rate. 
+\begin{equation*}
+F_{3m,9m}=\cfrac{r_{9m}\cdot 0.75-r_{3m}\cdot0.25}{0.5} = 0.1075
+\end{equation*}
+}
+\end{frame}
+
+\begin{frame}{}
+The present value of the cash flow exchanged in 9 months is:
+\begin{equation*}
+\text{FRA2}=\cfrac{0.5\cdot100\cdot(0.08-0.1075)}{(1+0.0525)^{9/6}}=-1.27~\text{M}
+\end{equation*}
+
+To calculate the present value of the cash flow that will occur in 1 year and 3 months, we need to calculate forward interest rate for the half-year period for 9 months from now.
+\begin{equation*}
+F_{9m,15m} = \cfrac{r_{15m}\cdot1.25-r_{9m}0.75}{0.5}=0.1175
+\end{equation*}
+
+The present value of the cash flow exchanged in 15 months is:
+\begin{equation*}
+\text{FRA3}= \cfrac{0.5\cdot100\cdot(0.08-0.1175)}{(1+0.055)^{15/6}}=-1.64~\text{M}
+\end{equation*}
+
+The value of the swap is then 
+\begin{equation*}
+V = \text{FRA1}+\text{FRA2}+\text{FRA3} = -1.07-1.41-1.79=-3.99~\text{M}
+\end{equation*}
+\end{frame}
+
+%\begin{frame}
+%\begin{block}{DV01}
+%Consider a 2-year Interest Rate Swap on a notional of 1~M, with a fixed rate of 5\% and paying LIBOR rate annually. The term-structure of interest rates is flat at 5\%.
 %
-%Since the company A pays floating interest and receives fixed one
-%\begin{equation*}
-%V=V_{fix}-V_{fl} = \sum_{i=1}^n \cfrac{k}{e^{r_i t_i}} + \cfrac{Q}{e^{r_n t_n}} - \cfrac{k^*}{e^{r_1 t_1}}+\cfrac{Q}{e^{r_1 t_1}}
-%\end{equation*}
-%
-%The fixed leg value is
-%\begin{equation*}
-%V_{fix} = 4e^{-0.25\cdot 0.1} +  4e^{-0.75\cdot 0.105} +  104e^{-1.25\cdot 0.11} = 98.25\text{~M}
-%\end{equation*}
-%
-%The floating payment is based on LIBOR and the nearest (first) payment is 
-%\begin{equation*}
-%k^*=0.102\cdot0.5\cdot 100 = 5.1\text{~M}
-%\end{equation*}
-%Hence:
-%\begin{equation*}
-%V_{fl}=5.1e^{-0.25\cdot 0.1}+100\cdot e^{-0.25\cdot 0.1} = 102.51
-%\end{equation*}
-%
-%And the final calcualtion
-%\begin{equation*}
-%V = 98.24-102.51=-4.27\text{~M}
-%\end{equation*}
-%which is the swap value for company A.
-%\end{solution}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{exercise}[subtitle=Interest Rate Swap]
-%Determine the value of the swap from previous exercise in the way as described in the Relationship between interest rate swap and FRA part.
-%\end{exercise}
-%\begin{solution}
-%The cash flows that will be exchanged after three months can be calculated at the beginning. The interest rate of 8\% will be exchanged for a rate of 10.2\%. Let us call it FRA1:
-%\begin{equation*}
-%FRA_1 = 0.5\cdot 100\cdot (0.08-0.102)\cdot e^{-0.25\cdot 0.1}=-1.07
-%\end{equation*}
-%
-%Determination of flows after 9th and 15th month requires two more formulas.
-%
-%First we have to calculate forward interest rate for the half-year period for 3 months from now. This is required to calculate the cash flow after 9 months. We will use the following formula: $e^{r_{9m}\cdot0.75}=e^{r_{3m}\cdot0.25}e^{F'_{0.25, 0.5}\cdot 0.5}$. Solving the formula for $F'_{0.25, 0.5}$ we have:
-%\begin{equation*}
-%F'_{0.25, 0.5}=\cfrac{r_{9m}\cdot 0.75-r_{3m}\cdot0.25}{0.5}=0.10750
-%\end{equation*}
-%
-%The rate is continuously compounded therefore we should convert it into semi-annual compounding with the formula $R_m = m\cdot(e^{r_c/m}-1)$, where $r_c$ is continuously compounded and $r_m$ is discretely compounded. Note that $m$ in this formula is the number of payments within a year (not the number of months).
-%\begin{equation*}
-%F_{0.25, 0.5}=2\cdot(e^{F'_{0.25,0.5}/2}-1)=0.11044
-%\end{equation*}
-%The present value of the cash flow exchanged in 9 months is:
-%\begin{equation*}
-%FRA_2=0.5\cdot100\cdot(0.08-0.11044)\cdot e^{-0.75\cdot0.105}=-1.41
-%\end{equation*}
-%obtained from the FRA contract valuation.
-%
-%Then the procedure goes on similarly: to calculate the present value of the cash flow that will occur in 1 year and 3 months, we need to calculate forward interest rate for the half-year period for 9 months from now. We will use the following formula: $e^{r_{15m}\cdot 1.25}=e^{r_{9m}\cdot 0.75}e^{F'_{0.75, 0.5}\cdot 0.5}$. Solving the formula for $F'_{0.75, 0.5}$
-% we have:
-%\begin{equation*}
-%F'_{0.75, 0.5}=\cfrac{r_{15m}\cdot1.25-r_{9m}0.75}{0.5}=0.11750
-%\end{equation*}
-%
-%After converting the rate with continuous compounding to the interest rate with semi-annual compounding, we obtain:
-%\begin{equation*}
-%FRA_{0.75,0.5}=2\cdot(e^{F'_{0.75,0.52}}-1)=2\dot(e^0.117502-1)=0.12102
-%\end{equation*}
-%
-%The present value of the cash flow exchanged in 15 months is:
-%\begin{equation*}
-%FRA_3=0.5\cdot100\cdot(0.08-0.12102)\cdot e^{-1.25\cdot0.11}=-1.79
-%\end{equation*}
-%
-%The value of the swap is then 
-%\begin{equation*}
-%V=FRA_1+FRA_2+FRA_3 = -1.07-1.41-1.79=-4.27
-%\end{equation*}
-%\end{solution}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{exercise}[subtitle=DV01]
-%Consider a 2-year Interest Rate Swap on a notional of 1M, with a fixed rate of 5\% and paying Libor rate annually. The term-structure of interest rates is flat at 5\%.
 %Estimate the DV01 of the swap numerically.  
-%\end{exercise}
-%\begin{solution}
-%The DV01 can be approximated in two ways:
+%\end{block}
+%\uncover<2->{
+%$\textbf{IRS}=A(S-K)$. The DV01 can be approximated in two ways:
+%
 %\begin{itemize}
-%\item $DV01 = \frac{\Delta P(+\delta r)-\Delta P(-\delta r)}{2}$ with $\delta r = 1 bps$
+%\item $DV01 = \cfrac{\textbf{IRS}(+\delta r)- \textbf{IRS}(-\delta r)}{2}$ with $\delta r = 1$~bp
+%or
+%\item $DV01 = 100\Delta\textbf{IRS}(\frac{1}{100}\text{bp})$
+%\end{itemize}
+%
 %\begin{equation*}
 %DV01 = \cfrac{A(S+\delta r-K) - A(S-\delta r-K)}{2} = A\delta r = (e^{-0.05}+e^{-0.1})\cdot 0.0001 \approx 0.0002
 %\end{equation*}
-%\item $DV01 = 100\Delta P(\frac{1}{100}bps)$
-%\begin{equation*}
-%DV01 = 100\cfrac{A(S+ 10^{-6}-K) - A(S-K)}{2} = A 10^{-4} = (e^{-0.05}+e^{-0.1})\cdot10^{-4} \approx 0.0002
-%\end{equation*}
-%\end{itemize}
-%\end{solution}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{exercise}[subtitle=Moving Away from $\mathbb{P}$ Measure]
-%Assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
-%\begin{equation*}
-%dS_t = \mu S_t dt + \sigma S_t dW_t
-%\end{equation*}
-%
-%By definition the bank account dynamics is described by (for simplicity let's consider deterministic rates)
-%\begin{equation*}
-%dB_t = rB_tdt\implies B_t = e^{rt}
-%\end{equation*}
-%
-%Show what happens to the stock SDE when moving to two different numeraires:
-%\begin{itemize}
-%\item risk-neutral measure (bank account numeraire);
-%\item stock measure (stock numeraire).
-%\end{itemize}
-%\end{exercise}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{solution}
-%%\subsection{Risk-Neutral Measure Dynamics}
-%We have seen that under the bank account induced measure the process defined as an asset divided by the numeraire is a martingale
-%\begin{equation*}
-%\cfrac{S_t}{B_t} = \mathbb{E}^{B}\left[\frac{S_T}{B_T}\bigg|\mathcal{F}_t\right]
-%\end{equation*}
-%
-%So if we define $Z_t=\cfrac{S_t}{B_t}$, since $Z_t$ is a martingale (no-drift process) it's evolution could be described by
-%\begin{equation}
-%dZ_t = \sigma Z_t dW_t^B
-%\label{eq:z_martingale1}
-%\end{equation}
-%where $dW_t^B$ is a Brownian motion under the $\mathbb{Q}^B$ measure.
-%
-%Computing directly the $Z_t$ differential (by It$\hat{o}$'s rule at first order)
-%\begin{equation*}
-%\begin{aligned}
-%d\left(\frac{S_t}{B_t}\right) &= \frac{dS_t}{B_t} + S_t d\left(\frac{1}{B_t}\right) = \\ 
-%&=\frac{dS_t}{B_t} + S_t d\left(e^{-rt}\right) = \frac{dS_t}{B_t} - S_t re^{-rt}dt \\
-%&= \frac{dS_t}{B_t} - r\frac{S_t}{B_t}dt 
-%\end{aligned}
-%\end{equation*}
-%
-%Now substitute for $dS_t$
-%\begin{equation*}
-%d\left(\frac{S_t}{B_t}\right)= \frac{ \mu S_t dt + \sigma S_t dW_t}{B_t} - r\frac{S_t}{B_t}dt = \sigma\frac{S_t}{B_t}\left(\frac{\mu - r}{\sigma}dt + dW_t \right)
-%\end{equation*}	
-%
-%In terms of $Z_t$ it becomes
-%\begin{equation}
-%dZ_t = \sigma Z_t\left(\frac{\mu - r}{\sigma}dt + dW_t \right)
-%\label{eq:z_martingale2}
-%\end{equation}
-%
-%Both~\ref{eq:z_martingale2} and~\ref{eq:z_martingale1} represent the dynamics of $Z_t$ so they must be equal
-%\begin{equation*}
-%\cancel{\sigma Z_t}dW_t^B = \cancel{\sigma Z_t}\left(\frac{\mu - r}{\sigma}dt + dW_t\right)
-%\end{equation*}
-%Replacing the Brownian Motion into the real-world dynamics
-%\begin{equation*}
-%\begin{aligned}
-%dS_t &= \mu S_t dt + \sigma S_t \left(dW_t^B - \frac{\mu - r}{\sigma}dt\right) =\\
-%& = \cancel{\mu S_t dt} \cancel{-\mu S_t dt} + rS_t dt + \sigma S_t dW_t^B  = \boxed{rS_t dt + \sigma S_t dW_t^B}
-%\end{aligned}
-%\end{equation*}
-%So \textbf{under the risk-neutral measure the drift equals the risk-free rate}.
-%
-%%\subsection{Stock Numeraire Measure Dynamics}
-%Now let's see what happens under the stock numeraire.
-%Under the risk-neutral measure $\mathcal{Q}^B$
-%\begin{equation*}
-%\frac{S_0}{B_0} = \mathbb{E}^{B}\left[\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right] \implies
-%S_0 = \mathbb{E}^{B}\left[B_0\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right]
-%\end{equation*}
-%
-%By the Change of Numeraire Theorem under the measure $\mathbb{Q}^A$ induced by asset numeraire $A$
-%\begin{equation*}
-%S_0 = \mathbb{E}^{A}\left[A_0\frac{S_t}{A_t}\bigg|\mathcal{F}_0\right]
-%\end{equation*}
-%
-%Since both expressions represent a price of an asset they must be the same and we can equal the terms inside the expectations. Note that the expectations are computed according two different measures so we keep the factors $d\mathbb{Q}^X$. 
-%
-%\begin{equation*}
-%\frac{B_0}{B_t}d\mathbb{Q}^B = \frac{A_0}{A_t}d\mathbb{Q}^A\implies \frac{d\mathbb{Q}^A}{d\mathbb{Q}^B}=\frac{B_0A_t}{B_tA_0}
-%\end{equation*}
-%We have already derived the analytical GBM solution in the risk-neutral measure
-%\begin{equation*} 
-%A_t = A_0 \exp\left(rt-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
-%\end{equation*}
-%
-%So we can replace the numeraire definition into the Radon-Nikodym derivative
-%\begin{equation*}
-%\frac{d\mathbb{Q}^A}{d\mathbb{Q}^B}=\frac{\cancel{A_0}e^{\cancel{rt}-\frac{1}{2}\sigma^2 t + \sigma W^B_t}}{\cancel{e^{rt}}\cancel{A_0}}=\exp\left(-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
-%\end{equation*}
-%
-%From the Girsanov theorem, setting the function $\gamma_t = \sigma$, we can get the transformed diffusion process
-%\begin{equation*}
-%dW_t^A = dW_t^B - \sigma dt 
-%\end{equation*}
-%
-%Substituting back into the risk-neutral dynamics we get
-%\begin{equation*}
-%\begin{aligned}
-%dS_t &= r S_t dt + \sigma S_t dW_t^B = 
-%rS_t dt + \sigma S_t (dW_t^A + \sigma dt) \\
-%& = (r + \sigma^2)S_t dt + \sigma S_t dW^A_t
-%\end{aligned}
-%\end{equation*}
-%
-%%\subsection{Summarizing the Results}
-%To summarize all the results
-%
-%\begin{table}[htbp]
-%\begin{center}
-%\begin{tabular}{llr}
-%$(i)$&$dS_t = \textcolor{red}{\mu} S_t dt + \sigma S_t dW_t$ & Real-world measure \\
-%$(ii)$&$dS_t = \textcolor{red}{r}S_t dt + \sigma S_t dW_t^B$ & Risk-neutral measure \\
-%$(iii)$&$dS_t = \textcolor{red}{(r + \sigma^2)}S_t dt + \sigma S_t dW^A_t$ & Stock measure
-%\end{tabular}
-%\end{center}
-%\end{table}
-%In practical terms, this means that it possible to use equation $(ii)$, instead of equation $(i)$, to simulate future payoffs, and hence that it is possible to get rid of the big problem of the equity premium estimation. Equation $(ii)$ just needs estimates of the risk-free rate $r$ and of the volatility $\sigma$, which can be derived from real market quotes.
-%\end{solution}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%
-%
+%}
+%\end{frame}
 
+\begin{frame}{}
+\begin{block}{Change of Measure}
+Let $\phi_t \in [0, T]$ be a bounded process, and define the process $Z_t \in [0,T]$ as the unique solution to $dZ_t = -\phi_t Z_t dW_t$, starting from $Z_0 = 1$. For any $t \ge 0$, define $\mathbb{Q}$ as
+\begin{equation*}
+d\mathbb{Q} = Z_t d\mathbb{P}
+\end{equation*}
 
+Prove that
+\begin{equation*}
+\expect{P}[Z_T \log(Z_T)]=\expect{Q}\left[\cfrac{1}{2}\int_0^T\phi^2_s ds\right]
+\end{equation*}
+\end{block}
+\uncover<2->{	
+$Z$ is a $\mathbb{P}$-martingale, so that $\mathbb{Q}$ defines a genuine probability measure, and therefore
+\begin{equation*}
+\expect{P}[Z_T \log(Z_T)] = \expect{Q}[\log(Z_T)]
+\end{equation*}
+}
+\end{frame}
 
+\begin{frame}{}
+Now, applying \ito~'s formula, we can write
+\begin{equation*}
+Z_T = \exp\left(-\cfrac{1}{2}\int_0^T\phi^2_s ds -\int_0^T\phi_s dW_s\right)
+\end{equation*}
 
+From Girsanov’s theorem, the process $\tilde{W}$ defined as $\tilde{W_t} = W_t + \int_0^t \phi_s ds$ is a standard Brownian motion under $\mathbb{Q}$, and
+\begin{equation*}
+-\int_0^t\phi_s dW_s -\cfrac{1}{2}\int_0^t\phi^2_s ds = -
+\int_0^t\phi_s d\tilde{W_s} + \cfrac{1}{2}\int_0^t\phi^2_s ds
+\end{equation*}
+from which the result follows.
+\end{frame}
+
+\begin{frame}{}
+\begin{block}{Moving Away from $\mathbb{P}$ Measure}
+Assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
+\begin{equation*}
+dS_t = \mu S_t dt + \sigma S_t dW_t
+\end{equation*}
+
+By definition the bank account dynamics is described by (for simplicity let's consider deterministic rates)
+\begin{equation*}
+dB_t = rB_tdt\implies B_t = e^{rt}
+\end{equation*}
+
+Show what happens to the stock SDE when moving to two different numeraires:
+\begin{itemize}
+\item risk-neutral measure (bank account numeraire);
+\item stock measure (stock numeraire).
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{}
+A process defined as an asset divided by the numeraire is a martingale, hence
+\begin{equation*}
+Z_t = \cfrac{S_t}{B_t} = \mathbb{E}^{B}\left[\frac{S_T}{B_T}\bigg|\mathcal{F}_t\right]
+\end{equation*}
+
+So the evolution for $Z_t$ can be described by
+\begin{equation*}
+dZ_t = \sigma Z_t dW_t^B
+\end{equation*}
+where $dW_t^B$ is a Brownian motion under the $\mathbb{Q}^B$ measure.
+
+The $Z_t$ differential (by It$\hat{o}$'s rule at first order)
+\begin{equation*}
+\begin{aligned}
+d\left(\frac{S_t}{B_t}\right) &= \frac{dS_t}{B_t} + S_t d\left(\frac{1}{B_t}\right) =
+\frac{dS_t}{B_t} + S_t d\left(e^{-rt}\right) = \\
+&= \frac{dS_t}{B_t} - S_t re^{-rt}dt = \frac{dS_t}{B_t} - r\frac{S_t}{B_t}dt 
+\end{aligned}
+\end{equation*}
+\end{frame}
+
+\begin{frame}
+Now substitute for $dS_t$
+\begin{equation*}
+d\left(\frac{S_t}{B_t}\right)= \frac{ \mu S_t dt + \sigma S_t dW_t}{B_t} - r\frac{S_t}{B_t}dt = \sigma\frac{S_t}{B_t}\left(\frac{\mu - r}{\sigma}dt + dW_t \right)
+\end{equation*}	
+
+In terms of $Z_t$ it becomes
+\begin{equation*}
+dZ_t = \sigma Z_t\left(\frac{\mu - r}{\sigma}dt + dW_t \right)
+\end{equation*}
+
+Both previous Eqs. represent the dynamics of $Z_t$ so they must be equal
+\begin{equation*}
+\cancel{\sigma Z_t}dW_t^B = \cancel{\sigma Z_t}\left(\frac{\mu - r}{\sigma}dt + dW_t\right)
+\end{equation*}
+Replacing the Brownian Motion into the real-world dynamics
+\begin{equation*}
+\begin{aligned}
+dS_t &= \mu S_t dt + \sigma S_t \left(dW_t^B - \frac{\mu - r}{\sigma}dt\right) =\\
+& = \cancel{\mu S_t dt} \cancel{-\mu S_t dt} + rS_t dt + \sigma S_t dW_t^B  = \boxed{rS_t dt + \sigma S_t dW_t^B}
+\end{aligned}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{}
+Now let's see what happens under the stock numeraire.
+Under the risk-neutral measure $\mathcal{Q}^B$
+\begin{equation*}
+\frac{S_0}{B_0} = \mathbb{E}^{B}\left[\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right] \implies
+S_0 = \mathbb{E}^{B}\left[B_0\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right]
+\end{equation*}
+
+By the Change of Numeraire Theorem under the measure $\mathbb{Q}^U$ induced by asset numeraire $U$
+\begin{equation*}
+S_0 = \mathbb{E}^{U}\left[U_0\frac{S_t}{U_t}\bigg|\mathcal{F}_0\right]
+\end{equation*}
+
+Since both expressions represent a price of an asset they must be the same and we can equal the terms inside the expectations. Note that the expectations are computed according two different measures so we keep the factors $d\mathbb{Q}^X$. 
+
+\begin{equation*}
+\frac{B_0}{B_t}d\mathbb{Q}^B = \frac{U_0}{U_t}d\mathbb{Q}^U\implies \frac{d\mathbb{Q}^U}{d\mathbb{Q}^B}=\frac{B_0U_t}{B_tU_0}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{}
+We have already derived the analytical GBM solution in the risk-neutral measure
+\begin{equation*} 
+U_t = U_0 \exp\left(rt-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
+\end{equation*}
+
+So we can replace the numeraire definition into the Radon-Nikodym derivative
+\begin{equation*}
+\frac{d\mathbb{Q}^U}{d\mathbb{Q}^B}=\frac{\cancel{U_0}e^{\cancel{rt}-\frac{1}{2}\sigma^2 t + \sigma W^B_t}}{\cancel{e^{rt}}\cancel{U_0}}=\exp\left(-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
+\end{equation*}
+
+From the Girsanov theorem, setting the function $\gamma_t = \sigma$, we can get the transformed diffusion process
+\begin{equation*}
+dW_t^U = dW_t^B - \sigma dt 
+\end{equation*}
+
+Substituting back into the risk-neutral dynamics we get
+\begin{equation*}
+\begin{aligned}
+dS_t &= r S_t dt + \sigma S_t dW_t^B = 
+rS_t dt + \sigma S_t (dW_t^U + \sigma dt) \\
+& = \boxed{(r + \sigma^2)S_t dt + \sigma S_t dW^U_t}
+\end{aligned}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{}
+	\begin{block}{Stochastic Discount Factor}
+		What is the mathematical relation between a discount factor $P(t,T)$ and the short-rate $r(t)$ ? The entire derivation is not needed, but provide $P(t,T) = f(r(t))$ considering both the cases where $r(t)$ is a generic deterministic function of time and where $r(t)$ is a random variable (possibly described by a stochastic process).
+	\end{block}
+\end{frame}
+
+\begin{frame}{}
+	\begin{block}{Stochastic Discount Factor}
+		Specify under which measure is the forward rate $F(0,99,100)$ a martingale.
+	\end{block}
+\end{frame}
 
 \end{document}
