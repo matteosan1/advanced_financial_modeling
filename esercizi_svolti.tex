@@ -442,13 +442,118 @@ rS_t dt + \sigma S_t (dW_t^U + \sigma dt) \\
 \end{frame}
 
 \begin{frame}{}
-	\begin{block}{Stochastic Discount Factor}
-		What is the mathematical relation between a discount factor $P(t,T)$ and the short-rate $r(t)$ ? The entire derivation is not needed, but provide $P(t,T) = f(r(t))$ considering both the cases where $r(t)$ is a generic deterministic function of time and where $r(t)$ is a random variable (possibly described by a stochastic process).
-	\end{block}
+\begin{block}{Pricing Formula for Exotic Payoff}
+Develop a formula for the price of a derivative paying
+\begin{equation*}
+\max(S_T(S_T-K))
+\end{equation*}
+\end{block}
+\uncover<2->{
+The standard risk-neutral measure ($\mathbb{Q}$) uses the bank account, $B_t=e^{rt}$, as numeraire. 
+We define a new probability measure, $\mathbb{Q}^1\sim \mathbb{Q}$ which uses the stock price, $S_t$ as numeraire. 
+
+The new measure is defined via
+\begin{equation*}
+\cfrac{d\mathbb{Q}^1}{d\mathbb{Q}}=\cfrac{S_TB_0}{S_0B_T}=\cfrac{S_T}{S_0}e^{-rT}
+\end{equation*}
+}
 \end{frame}
 
 \begin{frame}{}
-	\begin{block}{Stochastic Discount Factor}
+The price of our option is then
+\begin{equation*}
+\begin{aligned}
+e^{-rT}&\expect{Q}[\max(S^2_T-KS_T,0)]=e^{-rT}\mathbb{E}^{\mathbb{Q}^1}\left[\cfrac{dQ}{dQ^1}\max(S^2_T-KS_T,0)\right]= \\
+&=S_0\mathbb{E}^{\mathbb{Q}^1}[\max(S_T-K,0)]= S_0(\mathbb{E}^{\mathbb{Q}^1}[S_T\bm{1}_{\{S_T\ge K\}}]-K\mathbb{E}^{\mathbb{Q}^1}[\bm{1}_{\{ST\ge K\}}])= \\
+&=S_0(\mathbb{Q}^1[S_T\bm{1}_{\{S_T\ge K\}}]-K\mathbb{Q}^1[\{S_T\ge K\}])
+\end{aligned}
+\end{equation*}
+To compute the first expectation, we (again) use a change of numeraire. Let $N^\alpha_{t,T}$ be the time-$t$  price of an asset paying $S^\alpha_T$ at time $T$. 
+Then,
+\begin{equation*}
+\cfrac{d\mathbb{Q}^\alpha}{d\mathbb{Q}}=\cfrac{N^\alpha_{T,T}B_0}{N^\alpha_{0,T}B_T}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{}
+Thus,
+\begin{equation*}
+\cfrac{d\mathbb{Q}^\alpha}{d\mathbb{Q}^1}=\cfrac{d\mathbb{Q}^\alpha d\mathbb{Q}}{d\mathbb{Q}d\mathbb{Q}^1}=\cfrac{N^\alpha_{T,T}B_0}{N^\alpha_{0,T}B_T}\cfrac{S_0B_T}{S_TB_0}=\cfrac{S^\alpha _TS_0}{N^\alpha_{0,T}S_T}
+\end{equation*}
+Using $\alpha=2$, we obtain
+\begin{equation*}
+\mathbb{E}^{\mathbb{Q}^1}\left[S_T\bm{1}_{\{S_T\ge K\}}\right]=\cfrac{N^2_{0,T}}{S_0}\mathbb{E}^{\mathbb{Q}^2}\left[\bm{1}_{\{S_T\ge K\}}\right]=\cfrac{N^2_{0,T}}{S_0}\mathbb{Q}^2[\{S_T\ge K\}]
+\end{equation*}
+The final option price thus reads as
+\begin{equation*}
+e^{-rT}\expect{Q}[\max(S^2_T-KS_T,0)]=N^2_{0,T}\mathbb{Q}^2[\{S_T\ge K\}]-KS_0\mathbb{Q}^1[\{S_T\ge K\}]
+\end{equation*}
+which resembles the Black-Scholes formula.
+\end{frame}
+
+\begin{frame}{}
+Let $S_T$ be a geometric Brownian motion under any arbitrary probability measure $\mathbb{P}$. Then,
+\begin{equation*}
+S_T=S_0\exp\left(\left(\mu-\frac{1}{2}\sigma^2\right)T+\sigma W_T\right)
+\end{equation*}
+where $\mu$ is the drift under the measure $\mathbb{P}$. Thus, using that $W_T\sim \mathcal{N}(0,T)$,
+\begin{equation*}
+\begin{gathered}
+\mathbb{P}[\{S_T\ge K\}]=\mathbb{P}[\{\ln(S_T)\ge \ln(K)\}]=\mathbb{P}\left[\left\{\left(\mu-\frac{1}{2}\sigma^2\right)T+\sigma  W_T\ge -\ln(S_0K)\right\}\right]= \\
+=\mathbb{P}\left[\left\{Z\ge\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right\}\right]=1-\Phi\left(\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right)=\\
+=\Phi\left(\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right)
+\end{gathered}
+\end{equation*}
+where $Z\sim \mathcal{N}(0,1)$. %I used the property Φ(x)=1−Φ(−x).
+\end{frame}
+
+\begin{frame}{}
+Depending on which measure we use for $\mathbb{P}$, we merely need to get the right drift. 
+
+From the Girsanov theorem we can determine both the diffusion and the drift part of the new dynamics.
+
+The dynamics of $N^\alpha_{t,T}$ is 
+\begin{equation*}
+\mathrm{d}N_{t,T}^\alpha=rN_{t,T}^\alpha\mathrm{d}t+\alpha\sigma N_{t,T}^\alpha\mathrm{d}W_t
+\end{equation*}
+so that in the sense of Girsanov's theorem, $\gamma_T=\alpha\sigma$. 
+
+The Radon-Nikodym derivative to move from the money market account to the stock numeraire is
+\begin{equation*}\cfrac{d\mathbb{Q}^\alpha}{d\mathbb{Q}}=\cfrac{S^\alpha_T}{S^\alpha_0 e^{rT}}=e^{-\frac{1}{2}\alpha^2\sigma^2T+\alpha\sigma W^Q_T}
+\end{equation*}
+and the Girsanov theorem tell us that
+\begin{equation*}
+dW^Q_t=\alpha\sigma dt+dW^{Q^\alpha}_t
+\end{equation*}
+\end{frame}
+
+\begin{frame}{}
+We are now able to express $dW^Q_t$ under the new measure $\mathbb{Q}^\alpha$. Thus,
+\begin{equation*}
+\begin{aligned}
+dS_t&=rS_tdt+\sigma S_t dW^Q_t=rS_tdt+\sigma S_t(\alpha\sigma dt+dW^{Q^\alpha}_t)=\\
+&=(r+\alpha\sigma^2)S_tdt+\sigma S_tdW^{Q^\alpha}_t
+\end{aligned}
+\end{equation*}
+
+The drift of the stock price under the standard risk-neutral measure is $r$ and under a stock measure, $\mathbb{Q}^\alpha$, this drift changes to $(r+\alpha\sigma^2)$.
+Thus,
+\begin{equation*}
+\mathbb{Q}^\alpha[\{S_T\ge K\}]=\Phi\left(\frac{\ln(S_0K)+\left(r+\left(\alpha-\frac{1}{2}\sigma^2\right)\right)T}{\sigma\sqrt{T}}\right).
+\end{equation*}
+
+We alsp recover the special cases $\mathbb{Q}^1[\{S_T\ge K\}]=\Phi(d_1)$ and $\mathbb{Q}[\{S_T\ge K\}]=\Phi(d_2)$.
+\end{frame}
+
+
+%\begin{frame}{}
+%	\begin{block}{Stochastic Discount Factor}
+%		What is the mathematical relation between a discount factor $P(t,T)$ and the short-rate $r(t)$ ? The entire derivation is not needed, but provide $P(t,T) = f(r(t))$ considering both the cases where $r(t)$ is a generic deterministic function of time and where $r(t)$ is a random variable (possibly described by a stochastic process).
+%	\end{block}
+%\end{frame}
+
+\begin{frame}{}
+	\begin{block}{Forward Measure}
 		Specify under which measure is the forward rate $F(0,99,100)$ a martingale.
 	\end{block}
 \end{frame}
