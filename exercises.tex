@@ -543,33 +543,33 @@ dX_t = 2dt + 6dW_t
 \begin{enumerate}[label=(\alph*),font=\itshape]
 \item The Girsanov transformation tells us that for a process X driven by Brownian motion $B$ under the original measure P and density process Z, the process defined as:
 
-%dY_t = X_t - ∫_0^t Z_s dB_s
-%
-%will be a Brownian motion under the new measure Q with Radon-Nikodym derivative:
-%
-%dQ/dP = exp(∫_0^t Z_s dB_s - 1/2 ∫_0^t Z_s^2 ds)
-%
-%Since Z_t is standard normal, we can simplify the calculations.
-%
-%Case 1: dX_t = 2dt + dB_t
-%
-%Here, Z_t = 1. Plugging into the equations:
-%
-%dY_t = X_t - ∫_0^t dB_s = X_t - B_t
-%
-%dQ/dP = exp(B_t - 1/2 t)
-%
-%Therefore, under the measure Q defined by this Radon-Nikodym derivative, Y_t = X_t - B_t becomes a Brownian motion starting from 0.
-%
-%Case 2: dX_t = 2dt + 6dB_t
-%
-%In this case, Z_t = 6. Following the same steps:
-%
-%dY_t = X_t - ∫_0^t 6 dB_s = X_t - 6B_t
-%
-%dQ/dP = exp(6B_t - 18t)
-%
-%Under the measure Q defined by this Radon-Nikodym derivative, Y_t = X_t - 6B_t becomes a Brownian motion starting from 0.
+dY_t = X_t - ∫_0^t Z_s dB_s
+
+will be a Brownian motion under the new measure Q with Radon-Nikodym derivative:
+
+dQ/dP = exp(∫_0^t Z_s dB_s - 1/2 ∫_0^t Z_s^2 ds)
+
+Since Z_t is standard normal, we can simplify the calculations.
+
+Case 1: dX_t = 2dt + dB_t
+
+Here, Z_t = 1. Plugging into the equations:
+
+dY_t = X_t - ∫_0^t dB_s = X_t - B_t
+
+dQ/dP = exp(B_t - 1/2 t)
+
+Therefore, under the measure Q defined by this Radon-Nikodym derivative, Y_t = X_t - B_t becomes a Brownian motion starting from 0.
+
+Case 2: dX_t = 2dt + 6dB_t
+
+In this case, Z_t = 6. Following the same steps:
+
+dY_t = X_t - ∫_0^t 6 dB_s = X_t - 6B_t
+
+dQ/dP = exp(6B_t - 18t)
+
+Under the measure Q defined by this Radon-Nikodym derivative, Y_t = X_t - 6B_t becomes a Brownian motion starting from 0.
 \end{enumerate}
 \end{solution}
 

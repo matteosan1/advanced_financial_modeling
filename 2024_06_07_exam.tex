@@ -1,0 +1,102 @@
+\documentclass[12pt,a4paper]{exam}
+
+\input{exam_header}
+
+\title{Advanced Financial Modeling Course 24/25\\ Exam}
+\author{Prof. Andrea Carapelli, Prof. Matteo Sani}
+\date{$7^{\mathrm{th}}$ June 2024}
+
+\printanswers
+%\noprintanswers
+\begin{document}
+\maketitle
+%\addpoints{exam}
+\begin{center}
+\fbox{\fbox{\parbox{5.5in}{\centering
+Answer the questions in the spaces provided. If you run out of room for an answer, continue on the page back.}}}
+\end{center}
+
+\begin{center}
+\vspace{5mm}
+\makebox[0.75\textwidth]{Student's name:\enspace\hrulefill}
+\end{center}
+
+\section*{Questions}
+\vspace{.5cm}
+\begin{questions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question Assume that \emph{Horizon Funds Co.} has agreed to pay a 6M EURIBOR and receive a fixed interest rate $K$ of 4.0\% p.a. (with interest payable every six months) from a face value $N$ of 100 M. The swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are 3.75\%, 3.63\%, 3.30\% (interest rates are continouosly compounded). The 6M EURIBOR $L$ is currently at 3.9\%.
+Calculate the value of this swap from \emph{Horizon Funds Co.}.
+\makeemptybox{10cm}
+\begin{solution}
+Since the company is receiving fixed the value of the contract, in a mono-curve framework, is:
+\begin{equation*}
+NPV = NPV_{\text{fixed}} - NPV_{\text{float}} = \sum_i Ke^{-rt_i} + N e^{-rT} - (L + N) e^{-r_1 t_1}
+\end{equation*}
+Hence
+\begin{equation*}
+NPV_{\text{fixed}} = \sum_i Ke^{-rt_i} + N e^{-rT} = 101.81 M
+\end{equation*}
+and
+\begin{equation*}
+NPV_{\text{float}} = (L + N) e^{-r_1 t_1} = 102.93 M
+\end{equation*}
+
+The contract $NPV$ for \emph{Horizon Funds Co.} results
+\begin{equation*}
+NPV = NPV_{\text{fixed}} - NPV_{\text{float}} = -1.12 M
+\end{equation*}
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\question Let $S$ be a martingale satisfying the stochastic differential equation $dS_t = \sigma S_t dW_t$, starting from $S_0 = 1$,
+where $\sigma$ is a strictly positive constant.
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item Check that $S_t$ is strictly positive almost surely for all $t \geq 0$.
+\item Compute explicitly $X_t := S_t^{-1}$.
+\item Let $\mathbb{Q}$ be a new probability measure defined via $d\mathbb{Q} := S_t d\mathbb{P}$. What is the law of $X_t$ under $\mathbb{Q}$ ? 
+\item Show finally the Put-Call symmetry (different from the Put-Call parity!!!!):
+\begin{equation*}
+\mathbb{E}^{\mathbb{P}}(S_T-K)^+ = K\mathbb{E}^{\mathbb{Q}}\left[(K^{-1}-X_T)^+\right]
+\end{equation*}
+\end{enumerate}
+\makeemptybox{8cm}
+
+\begin{solution}
+\begin{enumerate}[label=(\alph*),font=\itshape]
+\item It$\hat{o}$'s lemma implies that $S_t = \exp (-\frac{1}{2}\sigma^2 t + \sigma W_t)$ for any $t \geq 0$. Since the Brownian motion does not
+explode to infinity over any finite time horizon, the result follows.
+\item Using the previous representation, we immediately have
+\begin{equation*}
+X_t = S_t^{-1} = \exp\left(\frac{1}{2}\sigma^2 t - \sigma W_t\right)
+\end{equation*}
+It further satisfies the stochastic differential equation (by It$\hat{o}$’s lemma):
+\begin{equation*}
+dX_t = -\frac{dS_t}{S_t^2} + \frac{dS^2_t}{S_t^3} = -\sigma X_t dW_t + \sigma^2_t X_t dt
+\end{equation*}
+\item Since $S_t$ is a true strictly positive martingale, $\mathbb{Q}$ is a well-defined probability measure, equivalent to $\mathbb{P}$.
+With the Girsanov theorem a Brownian motion under $\mathbb{Q}$ can be determined, indeed:
+\begin{equation*}
+dW^{\mathbb{Q}} = -\gamma dt + dW^{\mathbb{P}}\quad\left(\text{with }\gamma = \frac{-f_t}{\sigma_t}=\sigma \right)
+\end{equation*}
+Hence replacing $dW^{\mathbb{P}}$ into the evolution for $dX$ we get the answer
+\begin{equation*}
+dX_t = -\sigma X_t(dW^{\mathbb{P}}_t - \sigma dt) = \sigma X_t dW_t^{\mathbb{Q}}  
+\end{equation*}
+Under $\mathbb{Q}$, the process $X$ is therefore a geometric Brownian motion. 
+\item Using the change of measure introduced previously, we can write, for all $K>0$,
+  \begin{equation*}
+    \begin{aligned}
+      \mathbb{E}^{\mathbb{P}}(S_T-K)^+ & = \mathbb{E}^{\mathbb{P}}\left[S_T\left(1-\frac{K}{S_T}\right)^+\right] = K \mathbb{E}^{\mathbb{Q}}\left[\left(\frac{1}{K}-\frac{1}{S_T}\right)^+\right] = \\
+      & = K\mathbb{E}^{\mathbb{Q}}\left[(K^{-1}-X_T)^+\right]
+    \end{aligned}
+\end{equation*}
+\end{enumerate}
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{questions}
+\end{document}

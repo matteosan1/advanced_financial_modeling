@@ -330,6 +330,37 @@ from which the result follows.
 \end{frame}
 
 \begin{frame}{}
+\begin{block}{Girsanov Theorem}
+Let $X_t$ be the unique solution to the following stochastic differential equation, under $\mathbb{P}$:
+\begin{equation*}
+dX_t = X_t(\mu_t dt + \sigma_t dW_t)
+\end{equation*}
+where $\mu$ and $\sigma$ are bounded and adapted processes, and $\sigma >0$ almost surely.
+\begin{enumerate}
+\item Show that $X_t\exp(-\int_0^t \mu_s ds)$ is a martingale.
+\item Find a probability $\mathbb{Q}$, equivalent to $\mathbb{P}$ under which $X$ is a martingale.
+\item Find a probability $\tilde{\mathbb{P}}$, equivalent to $\mathbb{P}$, under which the inverse process $X^{-1}$ is a martingale.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}{}
+\begin{enumerate}
+\item From \ito's formula we can write for any $t\geq 0$
+\begin{equation*}
+X_t = \exp\left\{\int_0^t\left(\mu_s - \frac{1}{2}\sigma_s^2\right)ds + \int_0^t\sigma_s dW_s\right\}
+\end{equation*}
+so that (1) follows immediately. 
+\item One can apply Girsanov theorem to introduce the probability measure $\mathbb{Q}$ via $d\mathbb{Q}=Z_t d\mathbb{P}$ with $dZ_t = -Z_t\mu_t \sigma_t^{-1}dW_t$, such that $d\tilde{W}_t = dW_t +\mu_t\sigma^{-1}_t dt$ is a standard Brownian motion under $\mathbb{Q}$.
+\item Finally, applying \ito's formula yields
+\begin{equation*}
+dX^{-1}_t = -X^{-1}_t \sigma_t  \left( dW_t - \frac{\sigma_t^2 - \mu_t}{\sigma_t}dt\right)
+\end{equation*}
+such that (3) follows again by a direct application of Girsanov theorem.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{}
 \begin{block}{Moving Away from $\mathbb{P}$ Measure}
 Assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
 \begin{equation*}
@@ -464,7 +495,7 @@ The price of our option is then
 \begin{equation*}
 \begin{aligned}
 e^{-rT}&\expect{Q}[\max(S^2_T-KS_T,0)]=e^{-rT}\mathbb{E}^{\mathbb{Q}^1}\left[\cfrac{dQ}{dQ^1}\max(S^2_T-KS_T,0)\right]= \\
-&=S_0\mathbb{E}^{\mathbb{Q}^1}[\max(S_T-K,0)]= S_0(\mathbb{E}^{\mathbb{Q}^1}[S_T\bm{1}_{\{S_T\ge K\}}]-K\mathbb{E}^{\mathbb{Q}^1}[\bm{1}_{\{ST\ge K\}}])= \\
+&=S_0\mathbb{E}^{\mathbb{Q}^1}[\max(S_T-K,0)]= S_0(\mathbb{E}^{\mathbb{Q}^1}[S_T\bm{1}_{\{S_T\ge K\}}]-K\mathbb{E}^{\mathbb{Q}^1}[\bm{1}_{\{S_T\ge K\}}])= \\
 &=S_0(\mathbb{Q}^1[S_T\bm{1}_{\{S_T\ge K\}}]-K\mathbb{Q}^1[\{S_T\ge K\}])
 \end{aligned}
 \end{equation*}
@@ -500,51 +531,77 @@ where $\mu$ is the drift under the measure $\mathbb{P}$. Thus, using that $W_T\s
 \begin{equation*}
 \begin{gathered}
 \mathbb{P}[\{S_T\ge K\}]=\mathbb{P}[\{\ln(S_T)\ge \ln(K)\}]=\mathbb{P}\left[\left\{\left(\mu-\frac{1}{2}\sigma^2\right)T+\sigma  W_T\ge -\ln(S_0K)\right\}\right]= \\
-=\mathbb{P}\left[\left\{Z\ge\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right\}\right]=1-\Phi\left(\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right)=\\
+=\mathbb{P}\left[\left\{\mathcal{N}(0,1)\ge\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right\}\right]=1-\Phi\left(\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right)=\\
 =\Phi\left(\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right)
 \end{gathered}
 \end{equation*}
-where $Z\sim \mathcal{N}(0,1)$. %I used the property Φ(x)=1−Φ(−x).
+where it has been used the property $\Phi(x)=1-\Phi(-x)$.
 \end{frame}
 
 \begin{frame}{}
 Depending on which measure we use for $\mathbb{P}$, we merely need to get the right drift. 
-
-From the Girsanov theorem we can determine both the diffusion and the drift part of the new dynamics.
-
-The dynamics of $N^\alpha_{t,T}$ is 
 \begin{equation*}
-\mathrm{d}N_{t,T}^\alpha=rN_{t,T}^\alpha\mathrm{d}t+\alpha\sigma N_{t,T}^\alpha\mathrm{d}W_t
+\begin{aligned}
+N^\alpha_{t,T} &= e^{-rt}\mathbb{E}\left[S_0^\alpha e^{(r-\frac{1}{2}\sigma^2)\alpha t+\alpha\sigma W_t}\right]= e^{-rt} S_0^\alpha e^{(r-\frac{1}{2}\sigma^2)\alpha t} \mathbb{E}\left[ e^{\alpha\sigma W_t}\right]=\\
+&=e^{-rt} S_0^\alpha e^{(r-\frac{1}{2}\sigma^2)\alpha t+\frac{1}{2}\alpha^2\sigma^2 t} = S_0^\alpha e^{(\alpha -1 )rt+(\alpha^2 - \alpha)\frac{\sigma^2}{2}t}
+\end{aligned}
 \end{equation*}
-so that in the sense of Girsanov's theorem, $\gamma_T=\alpha\sigma$. 
 
+The corresponding dynamics comes from the \ito's lemma
+\only<1-1>{
+\begin{equation*}
+dN^\alpha = \alpha N^\alpha r dt + \alpha N^\alpha \sigma dW + \frac{1}{2} (\alpha^2 - \alpha)\sigma^2 N^\alpha dt - (\alpha - 1) r N^\alpha dt - (\alpha^2 - \alpha)\frac{\sigma^2}{2}N^\alpha dt 
+\end{equation*}}
+\only<2->{
+\begin{equation*}
+\begin{aligned}
+dN^\alpha = \cancel{\alpha N^\alpha r dt} &+ \alpha N^\alpha \sigma dW + \cancel{\frac{1}{2} (\alpha^2 - \alpha)\sigma^2 N^\alpha dt} - (\cancel{\alpha} - 1) r N^\alpha dt \cancel{- (\alpha^2 - \alpha)\frac{\sigma^2}{2}N^\alpha dt} = \\ 
+&=rN^\alpha dt + \alpha\sigma N^\alpha dW
+\end{aligned}
+\end{equation*}
+
+So the solution for $N^\alpha$ becomes
+\begin{equation*}
+N^\alpha_t = N^\alpha_0 e^{(r-\frac{1}{2}\alpha^2\sigma^2)t+\alpha\sigma W_t}
+\end{equation*}
+}
+\end{frame}
+
+\begin{frame}{}
 The Radon-Nikodym derivative to move from the money market account to the stock numeraire is
-\begin{equation*}\cfrac{d\mathbb{Q}^\alpha}{d\mathbb{Q}}=\cfrac{S^\alpha_T}{S^\alpha_0 e^{rT}}=e^{-\frac{1}{2}\alpha^2\sigma^2T+\alpha\sigma W^Q_T}
+\begin{equation*}\cfrac{d\mathbb{Q}^\alpha}{d\mathbb{Q}}=\cfrac{N^\alpha_T}{N^\alpha_0 e^{rT}}=e^{-\frac{1}{2}\alpha^2\sigma^2T+\alpha\sigma W_T}
 \end{equation*}
-and the Girsanov theorem tell us that
+
+So in the sense of Girsanov's theorem, $\gamma=\alpha\sigma$
 \begin{equation*}
-dW^Q_t=\alpha\sigma dt+dW^{Q^\alpha}_t
+	\begin{gathered}
+		\frac{\mu^\alpha - r}{\sigma} = \gamma = \alpha\sigma\\
+		\mu^\alpha = r + \alpha\sigma^2
+	\end{gathered}
+\end{equation*} 
+
+We are now able to express $dW^Q_t$ under the new measure $\mathbb{Q}^\alpha$
+\begin{equation*}
+dW^{Q^\alpha}_t = dW^Q_t - \alpha\sigma
 \end{equation*}
 \end{frame}
 
 \begin{frame}{}
-We are now able to express $dW^Q_t$ under the new measure $\mathbb{Q}^\alpha$. Thus,
+So the dynamics of $S$ under the new measure is
 \begin{equation*}
-\begin{aligned}
-dS_t&=rS_tdt+\sigma S_t dW^Q_t=rS_tdt+\sigma S_t(\alpha\sigma dt+dW^{Q^\alpha}_t)=\\
-&=(r+\alpha\sigma^2)S_tdt+\sigma S_tdW^{Q^\alpha}_t
-\end{aligned}
+	\begin{aligned}
+		dS_t&=rS_tdt+\sigma S_t dW^Q_t=rS_tdt+\sigma S_t(\alpha\sigma dt+dW^{Q^\alpha}_t)=\\
+		&=(r+\alpha\sigma^2)S_tdt+\sigma S_tdW^{Q^\alpha}_t
+	\end{aligned}
 \end{equation*}
 
-The drift of the stock price under the standard risk-neutral measure is $r$ and under a stock measure, $\mathbb{Q}^\alpha$, this drift changes to $(r+\alpha\sigma^2)$.
-Thus,
+Replacing this drift into the expression for $\mathbb{Q}^\alpha[\{S_T\ge K\}]$ gives
 \begin{equation*}
-\mathbb{Q}^\alpha[\{S_T\ge K\}]=\Phi\left(\frac{\ln(S_0K)+\left(r+\left(\alpha-\frac{1}{2}\sigma^2\right)\right)T}{\sigma\sqrt{T}}\right).
+	\mathbb{Q}^\alpha[\{S_T\ge K\}]=\Phi\left(\frac{\ln(S_0K)+\left(r+\left(\alpha-\frac{1}{2}\sigma^2\right)\right)T}{\sigma\sqrt{T}}\right).
 \end{equation*}
 
-We alsp recover the special cases $\mathbb{Q}^1[\{S_T\ge K\}]=\Phi(d_1)$ and $\mathbb{Q}[\{S_T\ge K\}]=\Phi(d_2)$.
+We also recover the special cases $\mathbb{Q}^1[\{S_T\ge K\}]=\Phi(d_1)$ and $\mathbb{Q}[\{S_T\ge K\}]=\Phi(d_2)$.
 \end{frame}
-
 
 %\begin{frame}{}
 %	\begin{block}{Stochastic Discount Factor}
