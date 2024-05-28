@@ -921,8 +921,8 @@ where $\sigma$ is a strictly positive constant.
 \fillwithlines{3cm}
 
 \begin{solution}
-\begin{enumerate}[label=(\alph*),font=\itshape]
-\item \ito’s lemma implies that $S_t = \exp (-\frac{1}{2}\sigma^2_t - \sigma W_t)$ for any $t \geq 0$. Since the Brownian motion does not
+\begin{enumerate}[label=(\alpha*),font=\itshape]
+\item \ito’s lemma implies that $S_t = \exp (-\frac{1}{2}\sigma^2 t + \sigma W_t)$ for any $t \geq 0$. Since the Brownian motion does not
 explode to infinity over any finite time horizon, the result follows.
 \item Using the previous representation, we immediately have
 \begin{equation*}
@@ -930,7 +930,7 @@ X_t = S_t^{-1} = \exp\left(\frac{1}{2}\sigma^2 t - \sigma W_t\right)
 \end{equation*}
 It further satisfies the stochastic differential equation (by Itˆo’s lemma):
 \begin{equation*}
-dX_t = \frac{dS_t}{S_t^2} + \frac{d<S_t>}{S_t^3} = -\sigma X_t dW_t + \sigma_t dt
+dX_t = -\frac{dS_t}{S_t^2} + \frac{dS^2_t}{S_t^3} = -\sigma X_t dW_t + \sigma^2_t X_t dt
 \end{equation*}
 \item Since $S_t$ is a true strictly positive martingale, $\mathbb{Q}$ is a well-defined probability measure, equivalent to $\mathbb{P}$.
 Therefore the process $B_t$ defined by $B_t := W_t - \sigma t$ is a standard Brownian motion under $\mathbb{Q}$, and so is $W^{\mathbb{Q}} := -B$, and hence 
