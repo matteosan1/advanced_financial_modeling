@@ -1,0 +1,179 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{enumerate}
+\usepackage{hyperref}
+
+\title{Advanced Financial Modeling - Exam}
+\author{M. Sani, A. Carapelli}
+\date{07/06/2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Exercises}
+\subsection{Extended Short Rate Models}
+Define the HJM dynamics of $f(t,T)$ under the risk neutral measure $\mathbb{Q}$
+\begin{equation*}
+    df(t,T) = \left( \sigma_f(t,T) \int_t^T  \sigma_f(t,u) du \right) dt + \sigma_f(t,T)dW_t
+\end{equation*}
+Where $\sigma_f$ is the instantaneous forward volatility and $W$ is a Brownian motion. Recall the change of numeraire equality:
+\begin{equation*}
+    \frac{d \mathbb{Q}^T}{d \mathbb{Q}} = \frac{P(t,T)}{P(0,T)} \frac{B(0)}{B(t)}
+\end{equation*}
+\begin{itemize}
+    \item[a)] Show that  $f(t,T)$ is a martingale under the $ \mathbb{Q}^T$ forward measure, $dB_t$ is the process of the money market account (deterministic solution) and $dP_t$ is a log-Normal process for the zero coupon bond dynamics.
+    \item[b)]  What is the difference between forward measure $ \mathbb{Q}^T$ and terminal forward measure $ \mathbb{Q}^{T_f}$?
+    \item[c)] What is the advantage of "extending" short rate models? 
+\end{itemize}
+
+\subsection{xVA}
+\begin{enumerate}[a)]
+    \item Define briefly Counterparty Credit Risk and xVA. Show that, at valuation time $t_0$, with $\tau > t_0$ (no default happened yet), the price of a derivative under counterparty risk is:
+    $$ V_D(t) = V(t) - \mathbb{E}^Q \left[ 1_{\tau\leq T} \cdot \text{LGD}(\tau) \cdot D(t,\tau) \cdot \text{V}(\tau) \right] $$
+    % \item Suppose you want to estimate future exposure for a linear interest rate derivative (assume that the only risk factor is interest rate) using the Hull and White model.
+    % The integrated process reads:
+    % \begin{equation*}
+    %     r(t) = r(s)e^{-\kappa(t-s)} + \alpha (t) - \alpha(s) e^{-\kappa(t-s)} + \sigma \int_{s}^{t} e^{-\kappa(t-u)}dW(u),
+    % \end{equation*}
+    % where $\kappa$ and $\sigma$ are positive constants and:
+    % \begin{equation*}
+    %     \alpha (t) = f^M (0,t) + \frac{\sigma ^2}{2\kappa^2}(1- e^{-\kappa t})^2,
+    % \end{equation*}
+    % Compute conditional expectation under the risk neutral measure $\mathbb{E}^\mathbb{Q}[r(t) \vert r(s)]$ and  variance of the process ($r(t)$ conditional on $r(s)$ with $t>s$). Which is the statistical distribution of the process? 
+    \item Explain the workflow for CVA and DVA calculation using Monte Carlo simulation. 
+    
+    
+\end{enumerate}
+
+
+
+\newpage
+\section{Solutions}
+
+\subsection{Forward HJM Process}
+\begin{itemize}
+    \item[a)] The goal is to define another Brownian under the new probability and establish a connection with the previous. Recall the change of numeraire
+\begin{equation*}
+    \frac{d \mathbb{Q}^T}{d \mathbb{Q}} = \frac{P(t,T)}{P(0,T)} \frac{B(0)}{B(t)}
+\end{equation*}
+We know the dynamics of $B(t)$, then apply Ito to $ln P(t,T)$ to get the needed dynamics
+\begin{align*}
+    \frac{P(t,T)}{P(0,T)} &= e^{\int_0^t (r_u - \frac{1}{2}\sigma_P^2(u,T))du + \int_0^t \sigma_P(u,T)dW_u} \\
+    \frac{B(0)}{B(t)} &= e^{-\int_0^t r_u du}
+\end{align*}
+now substitute to get 
+\begin{equation}\label{eq:RN_derivative_HJM}
+     \frac{d \mathbb{Q}^T}{d \mathbb{Q}} = e^{- \frac{1}{2} \int_0^t \sigma_P^2(u,T)du + \int_0^t \sigma_P(u,T)dW_u}
+\end{equation}
+Recall that by the \textbf{Girsanov} theorem, if we have a Brownian motion $W_t$ under $\mathbb{Q}$, and we introduce a new process $y(t) = \int_0^t y_u du$ then $W^T = W_t - \int_0^t y_u du$ is a Brownian motion under $\mathbb{Q}^T$ defined via the R-N derivative
+\begin{equation}\label{eq:RN_derivative}
+    \frac{d \mathbb{Q}^T}{d \mathbb{Q}} = e^{-\frac{1}{2} \int_0^t y_u^2 du + \int_0^t y_u dW_u}
+\end{equation}
+in differential form
+\begin{equation*}
+    dW_t^T = dW_t - y_t dt
+\end{equation*}
+If we compare the RN derivative [\ref{eq:RN_derivative}] with the equation [\ref{eq:RN_derivative_HJM}] we see that we established a connection as  $y_u = \sigma_P(u,T)$ and we can write the new Brownian as
+\begin{equation*}
+    dW_t^T = dW_t - \sigma_P(t,T)dt = dW_t + \int_t^T \sigma_f(t,u)du dt
+\end{equation*}
+now we can replace the Brownian in the Risk Neutral HJM and get the dynamics under the new Forward probability measure
+\begin{equation*}
+        df(t,T) = \left( \sigma_f(t,T) \int_t^T  \sigma_f(t,u) du \right) dt + \sigma_f(t,T) \left( dW_t^T - \int_t^T \sigma_f(t,u)du dt \right)
+\end{equation*}
+the drift term simplifies as $f(t,T)$ is a martingale under the $ \mathbb{Q}^T$ forward measure
+\begin{equation*}\label{eq:FWD_HJM}
+        df(t,T) =  \sigma_f(t,T) dW_t^T 
+\end{equation*}
+
+    \item[b)]  Typically, you can use the \textbf{longest maturity $P(t,T_f)$} where $T_f > T$ where $T_f$ is the numeraire of the \textbf{Terminal forward measure}. From the Girsanov theorem we get
+\begin{equation*}
+    dW_t^{T_f} = dW_t - \sigma_P^2(t,T_f)dt = dW_t + \int_t^{T_f} \sigma_f(t,u)du dt
+\end{equation*}
+if we substitute in the Risk Neutral equation [\ref{eq:RN_HJM}] as we did before we get
+\begin{equation*}\label{eq:TERM_HJM}
+    df(t,T) = - \left( \sigma_f(t,T) \int_T^{T_f}  \sigma_f(t,u) du \right) dt + \sigma_f(t,T)dW^T_t
+\end{equation*}
+we can see now the difference between probability measures:
+\begin{itemize}
+    \item $\mathbb{Q} \to $ the drift integral will be defined with the remaining maturity;
+    \item $\mathbb{Q}^T \to $ drift will be zero;
+    \item $\mathbb{Q}^{T_f} \to $ the drift integral will be defined between $T$ (maturity of the modelled forward) and $T_f$ (maturity of the terminal numeraire)
+\end{itemize}
+No matter which is the probability measure, volatility drives the dynamics of $f(t,T)$.
+ \item[c)] Extended models provide perfect fit to the term structure in $t_0$ (curve is an input of the model) and better fit to volatility structures with respect to standard affine models.
+\end{itemize}
+%%%%%%%%%%%%%%%
+
+\subsection{xVA Simulation}
+\begin{itemize}
+    \item[a)] If the default of a counterparty happens after the final payment of derivative $T$, the value at time $t$ is simply $$1_{\tau > T}V(t,T)$$.
+ If the default occurs before the maturity time $\tau < T$:
+\begin{enumerate}
+    \item We receive/pay all the payments until the default time: $1_{\tau \leq T}V(t, \tau)$;
+    \item Depending on the counterparty, we may be able to recover some of the future payments, assuming the recovery fraction to be $R$ the value yields: $1_{\tau \leq T}R \max(V(\tau;T), 0)$;
+    \item On the other hand, if we owe the money to the counterparty that has defaulted we cannot keep the money but we need to pay it completely back: $1_{\tau \leq T} \min(V(\tau;T), 0)$.
+\end{enumerate}
+Thus, when including all the components, a price of a \textit{risky} derivative is given by:
+\begin{align*}
+V_D(t_0, T) = \mathbb{E}^Q& \big[ 1_{\tau > T}V(t_0,T) +
+1_{\tau \leq T}V(t_0, \tau) \\
+&+ D(t_0, \tau) \, 1_{\tau \leq T}R \max(V(\tau,T), 0) \\
+&+ D(t_0, \tau) \, 1_{\tau \leq T} \min(V(\tau, T), 0) \,|\, \mathcal{F}_t \big]
+\end{align*}
+Since \( x = \max(x, 0) + \min(x, 0) \), the simplified equation reads:
+\begin{align*}
+V_D(t_0, T) = \mathbb{E}^Q& \big[ 1_{\tau > T}V(t_0,T) +
+1_{\tau \leq T}V(t_0, \tau) \\
+&+ D(t_0, \tau) \, 1_{\tau \leq T} V(\tau;T)\\
+&+ D(t_0, \tau) \, 1_{\tau \leq T}(R-1) \max(V(\tau;T), 0) \,|\, \mathcal{F}_t \big]
+\end{align*}
+
+We immediately note that the first three terms in the expression above yield:
+\begin{align*}
+    &\mathbb{E}^Q \big[ 1_{\tau > T}V(t_0,T) +
+1_{\tau \leq T}V(t_0, \tau) + D(t_0, \tau)1_{\tau \leq T} V(\tau,T) \big] \\
+    &= \mathbb{E}^Q \big[ 1_{\tau > T}V(t_0,T) +
+1_{\tau \leq T}V(t_0, T) \big] \\
+    &= V(t_0).
+\end{align*}
+The value of the risky derivative $V_D(t)$ is:
+\begin{align*}
+    V_D(t_0) &=  V(t_0) + \mathbb{E}^Q \left[1_{ \tau \leq T} \, (\text{R}(\tau) -1) D(t, \tau) \,  V(\tau)^+ \,|\, \mathcal{F}_t \right] \\
+    &= V(t_0) - \mathbb{E}^Q \left[1_{ \tau \leq T} \, \text{LGD}(\tau) D(t, \tau) \,  V(\tau)^+ \,|\, \mathcal{F}_t \right]  \\
+    &= V(t_0) - \text{uCVA}(t_0).
+\end{align*}
+
+\item[b)] \begin{itemize}
+    \item part1, definition of the contract and risk factor involved for pricing
+    \item part2, simulation of the risk factors necessary for p1, as we need future paths. Need to define model, time grid discretization.
+    \item part3, price the derivative across all paths and timesteps
+    \item  part4, compute exposures profiles.
+    \item part5, bootstrap credit and funding curve.
+    \item part6, aggregate exposures and compute xVA.
+\end{itemize}
+
+%     \item[b)] Starting from the uCVA equation:
+%         \begin{align*}
+%             \text{uCVA}(t) = 1_{\tau > t} \lim_{n \to \infty} \sum_{i=1}^n \mathbb{E}^Q \left[  \left( e^{-\int_{t}^{t_{i-1}} \lambda(s)  ds} - e^{-\int_{t}^{t_i} \lambda(s) ds} \right)  \text{LGD}(t_{i-1}) \cdot D(t, t_{i-1}) \cdot \text{PV}^+(t_{i-1}) \right]. 
+%     \end{align*}
+%     Assuming : 
+%     \begin{itemize}
+%         \item finite number of timesteps N,
+%         \item constant loss given default,
+%         \item independence between default rates and interest rates,
+%         \item  deterministic hazard rates in $t_0$.
+%     \end{itemize} 
+%     \begin{align*}
+%         \text{uCVA}_{sw}(t_0) &=  \text{LGD} \sum_{i=1}^N   
+%         \left( e^{-\int_{t}^{t_{i-1}} \lambda(s)  ds} - e^{-\int_{t}^{t_i} \lambda(s) ds} \right)
+%         \mathbb{E}^Q \left[   D(t, t_{i-1})  \text{PV}^+(t_{i-1}) \right] 
+%     \end{align*}
+%     with $ \mathbb{E}^Q \left[   D(t, t_{i-1})  \text{PV}^+(t_{i-1}) \right] $ being the swaption part.
+% \end{itemize}
+
+\end{document}

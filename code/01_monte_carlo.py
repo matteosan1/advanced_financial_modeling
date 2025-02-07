@@ -1,5 +1,11 @@
+
+# CENTRAL-LIMIT-THEOREM
+######################################
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+from scipy.stats import norm
 
 np.random.seed(1)
 N = 1000
@@ -16,166 +22,198 @@ for j, f in enumerate(nflips):
 plt.legend()
 plt.show()
 
-#####################################################
-
-from scipy.stats import norm
-
 for j in range(len(nflips)):
   fit_result = norm.fit(results[:, j])
   print (f"n. of flips {nflips[j]}: avg. {fit_result[0]:.3f} +- {fit_result[1]:.3f}")
 
-##########################################
-
-np.random.seed(10)
-def random_walk_1d(startpoint, nsteps, p):
-  X = np.zeros(shape=(nsteps,))
-  X[0] = startpoint
-  games = np.random.random(size=nsteps-1)
-  X[1:] = np.where(games>p, 1, -1)
-  return np.cumsum(X)
-
-X = random_walk_1d(0, 100, 0.5)
-
-plt.plot(X)
-plt.show()
-
-##########################################
-
-# It should be implemented an exit strategy against infinite loop
-# The gambler cannot play for an infinite amount of time
-
-def random_walk_with_stop(startpoint, p, N):
-  X = [startpoint]
-  while True:
-    game = np.random.random()
-    if game < p:
-      X.append(X[-1] + 1)
-    else:
-      X.append(X[-1] - 1)
-    if X[-1] <= 0:
-      return 0
-    elif X[-1] >= N:
-      return 1
-
-simulations = 10000
-outcomes = []
-for _ in range(simulations):
-  outcomes.append(random_walk_with_stop(100, 0.5, 120))
-
-print (f"Probability to hit upper limit: {sum(outcomes)/simulations}")
-
-#############################################
-
-def random_walk_with_stop_for_steps(startpoint, p, N):
-  games = 0
-  X = [startpoint]
-  while True:
-    game = np.random.random()
-    games += 1
-    if game < p:
-      X.append(X[-1] + 1)
-    else:
-      X.append(X[-1] - 1)
-    if X[-1] <= 0 or X[-1] >= N:
-      return games
-
-simulations = 10000
-games = []
-for _ in range(simulations):
-  games.append(random_walk_with_stop_for_steps(100, 0.5, 120))
-
-print (np.mean(games))
-
+###########################################
+#
+#np.random.seed(10)
+#def random_walk_1d(startpoint, nsteps, p):
+#  X = np.zeros(shape=(nsteps,))
+#  X[0] = startpoint
+#  games = np.random.random(size=nsteps-1)
+#  X[1:] = np.where(games>p, 1, -1)
+#  return np.cumsum(X)
+#
+#X = random_walk_1d(0, 100, 0.5)
+#
+#plt.plot(X)
+#plt.show()
+#
+###########################################
+#
+## It should be implemented an exit strategy against infinite loop
+## The gambler cannot play for an infinite amount of time
+#
+#def random_walk_with_stop(startpoint, p, N):
+#  X = [startpoint]
+#  while True:
+#    game = np.random.random()
+#    if game < p:
+#      X.append(X[-1] + 1)
+#    else:
+#      X.append(X[-1] - 1)
+#    if X[-1] <= 0:
+#      return 0
+#    elif X[-1] >= N:
+#      return 1
+#
+#simulations = 10000
+#outcomes = []
+#for _ in range(simulations):
+#  outcomes.append(random_walk_with_stop(100, 0.5, 120))
+#
+#print (f"Probability to hit upper limit: {sum(outcomes)/simulations}")
+#
 ##############################################
-
-K0 = 10
-simulations = 100000
-games = 500
-
-np.random.seed(1)
-K = np.zeros(shape=(simulations, games))
-for s in range(simulations):
-  #np.random.seed(s)
-  K[s, :] = np.random.randint(1, 7, size=games)
-  K[s, :] = np.where(K[s, :]<3, -1, K[s, :])
-  K[s, :] = np.where(K[s, :]>4, 1, K[s, :])
-  K[s, :] = np.where((K[s, :]<5)&(K[s, :]>2), 0, K[s, :])
-  K[s, :] = np.cumsum(K[s, :])
-
-for s in range(10):
-  p = plt.plot(K0 + K[s, :])
-
-mean = np.mean(K[:, -1])
-std = 1.96*np.std(K[:, -1])/np.sqrt(simulations)
-plt.text(20, 42, f"Expected gain: {mean:.2f} +- {std:.2f}", fontsize=20)
-plt.grid(True)
-plt.xlim(0, games)
-plt.xlabel("games", fontsize=14)
-plt.show()
-
+#
+#def random_walk_with_stop_for_steps(startpoint, p, N):
+#  games = 0
+#  X = [startpoint]
+#  while True:
+#    game = np.random.random()
+#    games += 1
+#    if game < p:
+#      X.append(X[-1] + 1)
+#    else:
+#      X.append(X[-1] - 1)
+#    if X[-1] <= 0 or X[-1] >= N:
+#      return games
+#
+#simulations = 10000
+#games = []
+#for _ in range(simulations):
+#  games.append(random_walk_with_stop_for_steps(100, 0.5, 120))
+#
+#print (np.mean(games))
+#
+###############################################
+#
+#K0 = 10
+#simulations = 100000
+#games = 500
+#
+#np.random.seed(1)
+#K = np.zeros(shape=(simulations, games))
+#for s in range(simulations):
+#  #np.random.seed(s)
+#  K[s, :] = np.random.randint(1, 7, size=games)
+#  K[s, :] = np.where(K[s, :]<3, -1, K[s, :])
+#  K[s, :] = np.where(K[s, :]>4, 1, K[s, :])
+#  K[s, :] = np.where((K[s, :]<5)&(K[s, :]>2), 0, K[s, :])
+#  K[s, :] = np.cumsum(K[s, :])
+#
+#for s in range(10):
+#  p = plt.plot(K0 + K[s, :])
+#
+#mean = np.mean(K[:, -1])
+#std = 1.96*np.std(K[:, -1])/np.sqrt(simulations)
+#plt.text(20, 42, f"Expected gain: {mean:.2f} +- {std:.2f}", fontsize=20)
+#plt.grid(True)
+#plt.xlim(0, games)
+#plt.xlabel("games", fontsize=14)
+#plt.show()
+#
+###########################################
+#
+#plt.rcParams['figure.figsize'] = (8, 8)
+#
+#n = 100000
+#
+#x = np.zeros(n)
+#y = np.zeros(n)
+#
+#for i in range(1, n):
+#    val = np.random.randint(1, 5)
+#    if val == 1:
+#        x[i] = x[i-1] + 1
+#        y[i] = y[i-1]
+#    elif val == 2:
+#        x[i] = x[i-1] - 1
+#        y[i] = y[i-1]
+#    elif val == 3:
+#        x[i] = x[i-1]
+#        y[i] = y[i-1] + 1
+#    else:
+#        x[i] = x[i-1]
+#        y[i] = y[i-1] - 1
+#
+#plt.title("Random Walk ($n = " + str(n) + "$ steps)")
+#plt.plot(x, y)
+#plt.show()
+#
 ##########################################
 
-plt.rcParams['figure.figsize'] = (8, 8)
+import tensorquant as tq
+import tensorflow as tf
+import matplotlib.pyplot as plt
 
-n = 100000
 
-x = np.zeros(n)
-y = np.zeros(n)
+# ARITHMETIC BROWNIAN MOTION
 
-for i in range(1, n):
-    val = np.random.randint(1, 5)
-    if val == 1:
-        x[i] = x[i-1] + 1
-        y[i] = y[i-1]
-    elif val == 2:
-        x[i] = x[i-1] - 1
-        y[i] = y[i-1]
-    elif val == 3:
-        x[i] = x[i-1]
-        y[i] = y[i-1] + 1
-    else:
-        x[i] = x[i-1]
-        y[i] = y[i-1] - 1
+bm = tq.ArithmeticBrownianMotion(mu=0, sigma=1, x0=100)
 
-plt.title("Random Walk ($n = " + str(n) + "$ steps)")
-plt.plot(x, y)
+n_path = 200000
+timesteps = 100
+z = tf.random.normal((n_path, timesteps), seed=12, dtype=tf.dtypes.float64)
+t = tf.Variable(10, dtype=tf.float64)
+s_t = bm.evolve(t, z)
+
+i = 1000
+plt.plot(tf.transpose(s_t[:i,:]))
 plt.show()
 
-#########################################
 
-from finmarkets import BM
+#'ABC', 'ArithmeticBrownianMotion', 'BlackConstantVolatility', 'BlackScholesPricer', 'BusinessDayConvention', 'Calendar', 'CompoundingType', 'Coupon', 'Currency', 'CurveBootstrap', 'DataFrame', 'DateGrid', 'DayCounter', 'DayCounterConvention', 'Deposit', 'DepositGenerator', 'DepositPricer', 'EASTER_JULIAN', 'EASTER_ORTHODOX', 'EASTER_WESTERN', 'Enum', 'ExerciseType', 'FixedCoupon', 'FixedCouponDiscounting', 'FixedLegDiscounting', 'FixedRateLeg', 'FloatingCoupon', 'FloatingCouponDiscounting', 'FloatingLegDiscounting', 'FloatingRateLeg', 'Fra', 'FraGenerator', 'FraPricer', 'Frequency', 'GaussianPathGenerator', 'GeometricBrownianMotion', 'HullWhiteProcess', 'HullWhiteShortRateGenerator', 'IborIndex', 'Index', 'InflationIndex', 'InterestRate', 'LinearInterp', 'Normal', 'ObjectiveFunction', 'Ois', 'OisCouponDiscounting', 'OisGenerator', 'OisLegDiscounting', 'OisPricer', 'Option', 'OptionType', 'OrnsteinUhlenbeckProcess', 'OvernightIndex', 'PayoffType', 'Position', 'Pricer', 'PricerAssignment', 'Product', 'ProductGenerator', 'RateCurve', 'ScheduleGenerator', 'Settings', 'StochasticProcess', 'Swap', 'SwapExposureGenerator', 'SwapGenerator', 'SwapPricer', 'SwapType', 'TARGET', 'Tensor', 'TimeUnit', 'Union', 'VanillaOption', 'Variable', 'VolatilitySurface', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__', 'abstractmethod', 'analytics', 'black', 'blackscholes_calc', 'bootstrapping', 'brownian', 'cashflow', 'constant', 'coupon', 'curverateindex', 'date', 'datetime', 'daycounter', 'decode_term', 'deposit', 'dtypes', 'easter', 'eq_eur_vol_map', 'exp', 'extract_value', 'factory', 'fill', 'fixedcoupon', 'fixedflow', 'float64', 'floatingcoupon', 'floatingflow', 'flows', 'forward', 'fradiscounting', 'gaussiankernel', 'grid', 'helpers', 'hullwhite', 'index', 'inflationindex', 'instruments', 'interestrate', 'interpolation', 'ir_eur_crv_map', 'ir_usd_crv_map', 'ircurve', 'log', 'market_map', 'markethandles', 'math', 'models', 'monthrange', 'newton', 'numerical_jacobian', 'numericalhandles', 'numpy', 'ois', 'option', 'ornsteinuhlenbeck', 'pandas', 'pd', 'pricer', 'pricers', 'product', 'random', 'rateexposure', 're', 'reduce_mean', 'relativedelta', 'schedule', 'sqrt', 'stack', 'stochasticprocess', 'swap', 'swapdiscounting', 'targetcalendar', 'tensorflow', 'tf', 'timedelta', 'timehandles', 'tqcalendar', 'utils', 'volatilitysurface', 'zeros'
 
-np.random.seed(10)
-y = BM(0, 1, 0, 3, 365, 2)
+# GEOMETRIC BROWNIAN MOTION
 
-plt.rcParams['figure.figsize'] = (9, 6)
-plt.plot(y[:, 0], label="realization 1", color='xkcd:blue')
-plt.plot(y[:, 1], label="realization 2", color='xkcd:red')
-plt.grid(True)
-plt.xlabel("time")
-plt.xlim(0, 365)
-plt.legend()
+gbm = tq.GeometricBrownianMotion(mu=0.03, sigma=0.2, x0=100)
+
+n_path = 200000
+timesteps = 100
+z = tf.random.normal((n_path, timesteps), seed=12, dtype=tf.dtypes.float64)
+t = tf.Variable(10, dtype=tf.float64)
+s_t = gbm.evolve(t, z)
+
+i = 1000
+plt.plot(tf.transpose(s_t[:i,:]))
 plt.show()
 
-#########################################
-
-from finmarkets import GBM
-
-np.random.seed(1)
-
-S = GBM(0.005, 0.05, 100, 120, 120, 1)
-Sdet = GBM(0.005, 0.0, 100, 120, 120, 1)
-
-plt.plot(S, label='Stochastic Path')
-plt.plot(Sdet, linestyle='--', color='red', label='Deterministic Path')
-plt.grid(True)
-plt.xlabel('Time')
-plt.ylabel('Stock Price')
-plt.legend(fontsize='16')
-plt.show()
-
+#from finmarkets import BM
+#
+#np.random.seed(10)
+#y = BM(0, 1, 0, 3, 365, 2)
+#
+#plt.rcParams['figure.figsize'] = (9, 6)
+#plt.plot(y[:, 0], label="realization 1", color='xkcd:blue')
+#plt.plot(y[:, 1], label="realization 2", color='xkcd:red')
+#plt.grid(True)
+#plt.xlabel("time")
+#plt.xlim(0, 365)
+#plt.legend()
+#plt.show()
+#
 ##########################################
 #
+#from finmarkets import GBM
+#
+#np.random.seed(1)
+#
+#S = GBM(0.005, 0.05, 100, 120, 120, 1)
+#Sdet = GBM(0.005, 0.0, 100, 120, 120, 1)
+#
+#plt.plot(S, label='Stochastic Path')
+#plt.plot(Sdet, linestyle='--', color='red', label='Deterministic Path')
+#plt.grid(True)
+#plt.xlabel('Time')
+#plt.ylabel('Stock Price')
+#plt.legend(fontsize='16')
+#plt.show()
+
+##########################################
+
 #path = np.DataSource("https://github.com/matteosan1/advanced_financial_modeling/raw/master/input_files")
 #S = np.load(path.open("stock_2023.npy", "rb"))
 #

@@ -88,8 +88,8 @@
 }
 \footlinecolor{} % Default: no footline
 
-\pgfdeclareimage[width=0.07\paperwidth]{logo}{Logo_Unisi_2012_transp}%assets/logo_RGB}
-\pgfdeclareimage[width=0.07\paperwidth]{whitelogo}{Logo_Unisi_2012_inver}%assets/logo_RGB_negative}
+\pgfdeclareimage[width=0.07\paperwidth]{logo}{images/Logo_Unisi_2012_transp}%assets/logo_RGB}
+\pgfdeclareimage[width=0.07\paperwidth]{whitelogo}{images/Logo_Unisi_2012_inver}%assets/logo_RGB_negative}
 \newcommand{\atlogo}{logo}
 
 \newcommand{\themecolor}[1]{
@@ -154,7 +154,7 @@
 
 % Define frame title and subtitle layout
 \setbeamertemplate{frametitle}{%
-\vspace*{-3.65ex}
+\vspace*{-2.65ex}
 \begin{beamercolorbox}[leftskip=2cm]{frametitle}%
 \usebeamerfont{frametitle}\insertframetitle\\
 \usebeamerfont{framesubtitle}\insertframesubtitle
@@ -166,8 +166,8 @@
 \def\atcourseLabel{}
 \newcommand{\course}[1]{\def\atcourseLabel{#1}}
 
-\pgfdeclareimage[width=0.15\linewidth]{mybackground}{mps}
-\pgfdeclareimage[width=0.90\linewidth]{abstract}{test3}
+\pgfdeclareimage[width=0.15\linewidth]{mybackground}{images/mps}
+\pgfdeclareimage[width=0.90\linewidth]{abstract}{images/abstract_title}
 % Define the title page
 \setbeamertemplate{title page}{%
 \vskip0pt plus 1filll%
@@ -254,7 +254,7 @@
 %\usepackage{emerald}
 
 \newenvironment{homework}{
-	\setbeamertemplate{background}{\includegraphics[width=\paperwidth,height=\paperheight]{addons/blackboard}}
+	\setbeamertemplate{background}{\includegraphics[width=\paperwidth,height=\paperheight]{images/blackboard}}
 	\setbeamertemplate{itemize item}{\color{white}\textbullet}
 	\setbeamertemplate{itemize subitem}{\color{white}\footnotesize\ensuremath{\odot}}
 	\setbeamertemplate{itemize subsubitem}{\color{white}\ensuremath{\circ}}
@@ -269,5 +269,42 @@
     \setbeamerfont{normal text}{size=\normal, series=\ECFAugie}
 }{\par}
 
-%\newenvironment{ppl}{\fontsize{14}{15.5}\fontseries{b}\fontshape{ui}\fontfamily{ppl}\selectfont}{\par}
+\usepackage{tcolorbox}
+\tcbuselibrary{minted,breakable,xparse,skins}
 
+\definecolor{bg}{gray}{0.95}
+\DeclareTCBListing{mintedbox}{O{}m!O{}}{%
+  breakable=true,
+  listing engine=minted,
+  listing only,
+  minted language=#2,
+  minted style=default,
+  minted options={%
+    linenos,
+    gobble=0,
+    breaklines=true,
+    breakafter=,,
+    fontsize=\tiny,
+    numbersep=8pt,
+    #1},
+  boxsep=0pt,
+  left skip=0pt,
+  right skip=0pt,
+  left=25pt,
+  right=0pt,
+  top=3pt,
+  bottom=3pt,
+  arc=5pt,
+  leftrule=0pt,
+  rightrule=0pt,
+  bottomrule=2pt,
+  toprule=2pt,
+  colback=bg,
+  colframe=orange!70,
+  enhanced,
+  overlay={%
+    \begin{tcbclipinterior}
+    \fill[orange!20!white] (frame.south west) rectangle ([xshift=20pt]frame.north west);
+    \end{tcbclipinterior}},
+  #3,
+}
