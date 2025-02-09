@@ -20,56 +20,21 @@
 %\end{frame}
 %}
 
-\section{Random Variables}
 \begin{frame}{Random Variables}
 	\begin{block}{Definition}
 	A variable whose value is a number determined by the outcome of a random experiment is called a \textcolor{red}{random variable}.
-	\end{block}
-	\vspace{0.5 cm}
-        
-	\pause
-	Random variables are very different from usual \emph{algebraic variables}:
-\begin{equation*}
-	x^2 - 3 = 0 \implies x = \pm \sqrt{3}
-\end{equation*}	
-	$x$ stays the same no matter how many times I solve this equation.
-\end{frame}
-
-\begin{frame}{Random Variables}
-	A random variable instead is kind of a mapping between 
+	
+	It is a mapping between 
 	\begin{equation*}
 		X(\omega):\Omega\rightarrow \mathbb{R}\quad \forall\omega\in\Omega
 	\end{equation*}
 	such that $X(\omega)$ represents the occurrence probability of the "outcome" $\omega$. $\Omega$ is called \textcolor{red}{sample space} and is the set of all possible future states (or outcomes) of the random process.
-	\pause
-	\vspace{0.5cm}
+	\end{block}
         
-	Hence the random variable $X$ will take values distributed according to the probability distribution of the random process, e.g. if $X$ represents the outcomes of rolling a \emph{fair} die $\Omega = [1,2,3,4,5,6]$ and each value has equal probability of 1/6.
+	If $X$ represents the outcomes of rolling a \emph{fair} die $\Omega = [1,2,3,4,5,6]$ and each value has equal probability of 1/6.
 	\vspace{0.5cm}
         
 	\textcolor{red}{A random variable is always associated to a probability distribution.}
-%	There are two kinds of random variable:
-%	\begin{itemize}
-	%		\item Discrete Random Variable
-	%		\item Continuous Random Variable
-	%	\end{itemize}
-\end{frame}
-
-\subsection{Properties and Characteristics of Random Variables}
-\begin{frame}{Discrete and Continuous Random Variables}
-	\begin{block}{Definition} 
-		If a random variable takes only a countable number (finite) of values, it is called \textcolor{red}{discrete}.
-	\end{block}
-	
-	\small{
-		\textbf{Example:} when 3 coins are tossed, the number of heads obtained is the random variable, which assumes the values $\Omega=\{0,1,2,3\}$ ($\Omega$ ia a countable set).}
-	\newline
-	\pause
-	\begin{block}{Definition} 
-		A random variable $X$ which can take any value between a certain interval is called \textcolor{red}{continuous}.
-	\end{block}
-	
-	\small{\textbf{Example:} the height of students in a particular class lies between 160 and 190~cm $(X = \{x|160 \leq x \leq 190\})$.}
 \end{frame}
 
 \begin{frame}{Probability Distribution}
@@ -86,26 +51,10 @@
 			$F(x_i) = P(X<x_i) = \sum_{x<x_i} P(x)$ & $F(x) = P(X<a) = \int_{-\infty}^{a} f(x) dx$ \\ \hline
 		\end{tabular}
 	\end{table}
-	\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=20px]{python_logo}};
-	\node[align = center, yshift=1.45cm, below=of image] {\tiny{\href{shorturl.at/JR059}{shorturl.at/JR059}}};
-\end{tikzpicture}
 \end{frame}
 
 \begin{frame}{Characterizing a Random Variable}
-	If we know the distribution of a random variable, we pretty much know all is needed about it. 
-	\newline
-	\begin{columns}
-		\column{0.45\linewidth}
-		\includegraphics[height=3cm]{continouos_random_variable}
-		\pause
-		\column{0.45\linewidth} 
-		\includegraphics[height=3 cm]{real_data}
-	\end{columns}
-	\vspace{0.5cm}
-        
-	But with \textit{real data}, we don't know the full distribution. Fortunately we can characterize it by a couple of numbers (\emph{statistics}).
-	\pause
+	We can characterize it by a couple of numbers (\emph{statistics}).
 	\small{
 		\begin{center}
 			\textcolor{red}{mean:} $\boxed{\mu = \mathbb{E}[X] = \int_{-\infty}^{\infty} xf(x)dx}$\quad
@@ -113,6 +62,19 @@
 			$\boxed{\sigma^2 = \mathbb{E}[(X-\mu)^2] =\int_{-\infty}^{\infty} (x-\mu)^2f(x)dx}$
 	\end{center}
 }
+	\renewcommand{\arraystretch}{1.4}
+{\tiny {\tiny }}{
+	\begin{table}[bt]
+		\begin{tabular}{|c|c|} \hline
+			Scalar multiplication & $\mathbb{E}[aX] = a\mathbb{E}[X]$ \\ \hline
+			Sums & $\mathbb{E}[X_1+\ldots +X_K] =  \mathbb{E}[X_1] +\ldots + \mathbb{E}[X_n]$ \\ \hline
+			Linear combinations & $\mathbb{E}[a_1X_1+\ldots +a_KX_K] =  a_1\mathbb{E}[X_1] +\ldots + a_K\mathbb{E}[X_K]$ \\ \hline
+			Expected value of a constant & $\mathbb{E}[a] = a$ \\ \hline
+			Products (independent variables) & $\mathbb{E}[XY] = \mathbb{E}[X] \mathbb{E}[Y]$ \\ \hline
+		\end{tabular}
+	\end{table}
+}
+Essentially all the expectation properties come from integration properties,
 \end{frame}
 
 \subsection{Expectation and Its Properties}
