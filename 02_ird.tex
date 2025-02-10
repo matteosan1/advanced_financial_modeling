@@ -239,7 +239,7 @@
 		\end{equation*}
 		which in turn, at time $t$, equals to
 		\begin{equation*}
-			A = P(t,T) 1 = P(t,T)
+			A = P(t,T)\cdot 1 = P(t,T)
 		\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -263,14 +263,14 @@
 \begin{frame}{Intermezzo}
 \begin{block}{Expectation Tower Property}
 Consider a filtered probability space: $(\Omega, \mathcal{F}_{t\geq 0}, \mathbb{P})$.
-For any $0\leq s \leq t$ and stochastic process $\{X_t\}_{t\geq 0}$, we have the following Tower property:
+For any $0\leq s \leq t$ and stochastic process $\{X_t\}_{t\geq 0}$, we have the following \emph{tower property}:
 \begin{equation}	
 \mathbb{E}[\mathbb{E}[X|\mathcal{F}_t]|\mathcal{F}_s]=\mathbb{E}[X|\mathcal{F}_s]
 \end{equation}
 \end{block}
 %The LHS represents \emph{the best prediction at time $s$ of what the best prediction at time $t$ of $X$ would be}. 
 
-The tower property says we can estimate $\mathbb{E}[X|\mathcal{F}_s]$ by averaging over our model's predictions for different $X$ values, weighting these predictions by how likely each $X$ is given $\mathcal{F}_s$.
+%The tower property says we can estimate $\mathbb{E}[X|\mathcal{F}_s]$ by averaging over our model's predictions for different $X$ values, weighting these predictions by how likely each $X$ is given $\mathcal{F}_s$.
 
 In real-world scenarios, it's often the case that you have a model that works well with complete information ($\mathcal{F}_t$), but you only have partial information ($\mathcal{F}_s$). The tower property provides a way to bridge this gap. It allows you to use your model even when you don't have all the input data, by averaging over the missing data in a way that is consistent with the data you do have.
 \end{frame}
@@ -391,7 +391,7 @@ In real-world scenarios, it's often the case that you have a model that works we
 \end{frame}
 
 \begin{frame}{Forward Rate}
-	Comparing to \cref{eq:fra_as_expectation} it is just like we had replaced the IBOR rate $L(T,S)$ with the forward rate $F(t;T,S)$ in the payoff and then taken the present value of the (\emph{deterministic}) quantity.
+	Comparing \cref{eq:fram_payoff_withF} to \cref{eq:fra_as_expectation} it is just like we had replaced the IBOR rate $L(T,S)$ with the forward rate $F(t;T,S)$ in the payoff and then taken the present value of the (\emph{now deterministic}) quantity.
 	\begin{equation*}
 		\begin{aligned}
 			\textbf{FRA} &= \mathbb{E}_t[N\tau D(t,S)(K-\overbrace{\textcolor{blue}{F(t; T, S)}}^{\text{replaces } L(T, S)})] = \\
@@ -430,11 +430,25 @@ In real-world scenarios, it's often the case that you have a model that works we
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{FRA: Numerical Example}
+\begin{frame}[fragile]{FRA: Numerical Example FIXME}
 A company enters into a FRA to receive 4\% on \$100M for a 3-month period starting in 3 years. Imagine that LIBOR is 4.5\% in 3 years.
 
+\begin{mintedbox}{python}[break at=.8\textheight]
+import numpy as np
+import matplotlib.pyplot as plt
 
+num_trials = 10000
 
+sums = []
+for _ in range(num_trials):
+    rolls = np.random.randint(1, 7, size=2)
+    total_sum = np.sum(rolls)
+    sums.append(total_sum)
+
+plt.figure(figsize=(10, 6))
+plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7, 
+         color='skyblue', edgecolor='black', label='Simulated Sums')
+\end{mintedbox}
 \end{frame}
 
 \begin{homework}
@@ -461,15 +475,15 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 	\begin{itemize}
 		\item An \textcolor{red}{Interest Rate Swap} (IRS) is a contract that exchanges payments between two differently indexed \emph{legs}, starting from a future time. At every pre-specified instant $T_i$, the \emph{fixed leg} pays the amount ($N$ is the contract nominal)
 		\begin{equation*}
-			N\tau(T_{i-1}, T_i)K
+			C_{\text{fixed}} = N\tau(T_{i-1}, T_i)K
 		\end{equation*}
 		while the \emph{variable leg} pays the amount
 		\begin{equation*}
-			N\tau(T_{i-1}, T_i)L(T_{i-1}, T_i)
+			C_{\text{floating}} = N\tau(T_{i-1}, T_i)L(T_{i-1}, T_i)
 		\end{equation*}
 		where for simplicity we are assuming the same payment dates for the two legs.
 		\item<2-> When the fixed leg is paid, the IRS is termed \textcolor{red}{Payer IRS}. If the opposite holds, we have a \textcolor{red}{Receiver IRS}.
-		\item<3-> The discounted payoff of a Payer IRS can be expressed as:
+		\item<3-> The discounted payoff of a \emph{Payer IRS} can be expressed as:
 		\begin{equation}
 			N\sum_{i=\alpha+1}^{\beta} D(t,T_i) \underbrace{\tau_i}_{\tau(T_{i-1},T_i)}
 			\left[L(T_{i-1},T_i)-K\right]
@@ -480,14 +494,14 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 
 \begin{frame}{Interest Rate Swap}
 \begin{center}
-	\includegraphics[width=0.9\linewidth]{Interest-Rate-Swap-diagram}
+	\includegraphics[width=0.9\linewidth]{images/Interest-Rate-Swap-diagram}
 \end{center}
 \end{frame}
 
 \begin{frame}{IRS and FRA}
 	\begin{itemize}
 		\item The swap payoff in \cref{eq:payoff_payer_irs} can be re-interpreted as a portfolio of FRAs.
-		\item Indeed consider a Receiver IRS and express its payoff as a sum of FRAs using \cref{eq:fram_payoff_withF}
+		\item Indeed consider a \emph{Receiver IRS} and express its payoff as a sum of FRAs using \cref{eq:fram_payoff_withF}
 		\begin{equation*}
 			\begin{aligned}
 				\textbf{RFS}&(t,T,\tau,N,K) = N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
@@ -502,13 +516,12 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 \begin{frame}{IRS and FRA}
 	\begin{itemize}
 		\item The swap payoff in \cref{eq:payoff_payer_irs} can be re-interpreted as a portfolio of FRAs.
-		\item Indeed consider a Receiver IRS and express its payoff as a sum of FRAs using \cref{eq:fram_payoff_withF}
+		\item Indeed consider a \emph{Receiver IRS} and express its payoff as a sum of FRAs using \cref{eq:fram_payoff_withF}
 		\begin{equation}
 			\begin{aligned}
-				\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,S)\tau_i(K - L(T_{i-1},T_i))]=\\
-				&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))\\
-				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-N\sum_{i=\alpha+1}^{\beta}(P(t,T_{i-1})-P(t,T_i)) \\
-				&=\boxed{N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)}\quad\quad\quad\qedsymbol
+				\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,S)\tau_i(K - L(T_{i-1},T_i))]= \ldots =\\
+				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N[(P_\alpha -\cancel{P_{\alpha+1}}) + (\cancel{P_{\alpha+1}} - \cancel{P_{\alpha+2}}) + \ldots + (\cancel{P_{\beta-1}} - P_{\beta})] =\\
+                &=\boxed{N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)}\quad\quad\quad\qedsymbol
 			\end{aligned}
 		\label{eq:swap_as_sum_fra}
 		\end{equation}
@@ -520,12 +533,8 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 		\item<1-> Even if a swap at inception has a null NPV, not all the FRAs in a swap with zero value have zero value (\emph{except for the degenerate case of flat yield curve}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
 		\item<2-> In a \emph{Payer Swap} with an increasing yield curve the first FRAs will have negative value, the last positive. Still their NPV's sum is zero.
 		\item<3-> If the market doesn't move so much the swap rate payer will have to pay a net interest differential in the first part of the contract life, and to receive net interest in the second.
-		\item<4-> So the rate payer will have to fund the payments for the first part of the contract and to invest at his best the receipt during the second part. (This is a very hot topic nowadays; this feature is sometimes referred to as the funding profile of the contract).
+		\item<4-> So the rate payer will have to fund the payments for the first part of the contract and to invest at his best the receipt during the second part. (this feature is sometimes referred to as the \emph{funding profile of the contract}).
 	\end{itemize}
-	\uncover<4->{
-		\begin{tikzpicture}[remember picture,overlay]
-		\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-	\end{tikzpicture}}
 \end{frame}
 
 \begin{homework}
@@ -546,7 +555,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 
 \subsection{Swap Rate}
 \begin{frame}{Swap Rate as Break-Even Rate}
-	As we have done with the FRA break-even rate we can define:
+	Similarly to FRA break-even rate\ldots
 	\begin{block}{Definition}
 	The fixed rate $K$ which makes the above expression null is called \textcolor{red}{forward swap rate}:
 	\begin{equation}
@@ -583,14 +592,15 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 	\begin{columns}
 		\column{0.35\linewidth}
 		\begin{center}
-			\includegraphics[width=1.1\linewidth]{swap_curve}
+			\includegraphics[width=1.1\linewidth]{images/swap_curve}
 		\end{center}
 		\column{0.65\linewidth}
 		\small{
 		\item An upward-sloping \emph{(normal)} curve indicates longer-term interest rates are higher than short-term rates (expectations of economic growth and inflation). 
 		\item A downward-sloping \emph{(inverted)} curve suggests short-term rates are higher than long-term rates (potential economic downturns or market uncertainties). 
-		\item A flat curve indicates that short and long-term rates are relatively similar, indicating a neutral market sentiment.}
+		%\item A flat curve indicates that short and long-term rates are relatively similar, indicating a neutral market sentiment.}
 	\end{columns}
+\item Swap rates are often used as benchmarks for pricing other financial instruments, such as corporate bonds and loans.
 \end{itemize} 
 \end{frame}
 
@@ -599,16 +609,19 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 \item Several factors can impact swap curve movements (changes in interest rates, market sentiment, economic indicators, and central bank policies).
 \item One way to intepret it is to make a comparison with the yield curve.
 \item Since the swap curve reflects exchanged rates over various time horizons, it offers a more accurate representation of market expectations and risk perceptions, as it is based on actual transactions.
-%\item When interest rates are expected to rise, the swap curve tends to steepen as longer-term rates increase at a faster pace than shorter-term rates. Conversely, during periods of economic uncertainty, the swap curve may flatten as investors seek the safety of shorter-term instruments.
+
+\item It essentially shows how much more (or less) it costs to pay a fixed rate in a swap compared to lending to the government.
+\item The shape of the swap spread curve can provide insights into market expectations about future interest rates and economic conditions.
+\item Swap spreads reflect the perceived credit risk of banks relative to the government. Wider spreads may indicate concerns about bank health. 
 \end{itemize}
 \begin{center}
-	\includegraphics[width=0.4\linewidth]{swap_spread}
+	\includegraphics[width=0.4\linewidth]{images/swap_spread}
 \end{center}
 \end{frame}
 
 \begin{frame}{Trading and Hedging Strategies}
 \begin{itemize}
-\item Suppose there is an unexpected increase in inflation expectations due to rising commodity prices. This change would likely cause the swap curve to shift upward, reflecting the higher expected future interest rates. 
+\item Suppose that there is an unexpected increase in inflation expectations due to rising commodity prices. This change would likely cause the swap curve to shift upward, reflecting the higher expected future interest rates. 
 \item Market participants who anticipate this shift may adjust their swap positions accordingly, either by entering into longer-term swaps or adjusting the mix of fixed and floating rates in their portfolios.
 \item When evaluating the swap curve, market participants should compare the benefits and drawbacks of floating and fixed rates. 
 \item Floating rates (such as those linked to LIBOR or EURIBOR), can provide flexibility and potentially lower costs, as they reflect the prevailing market conditions. 
@@ -630,20 +643,17 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 		\item With a Swap you can have a clear picture of the market. For example if you own the $5y$, you make money if rates go higher, loose money if they go lower.
 		\item With two Swaps instead you can bet on the \textcolor{red}{slope} of the interest rate curve.
 		\item If you bet on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
-		\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
+		%\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
 	\end{itemize}
 \end{frame}
 
 %1. Diversification: One of the most fundamental strategies for managing swap curve risks is diversification. By spreading investments across different points on the swap curve, investors can reduce their exposure to specific interest rate changes. For example, if an investor holds a portfolio of plain vanilla swaps with varying maturities, they are less vulnerable to sudden shifts in the swap curve at a particular point in time. Diversification allows for a balanced risk exposure and can help protect against adverse market conditions.
-%
-%2. Hedging: Hedging is another strategy commonly used to manage swap curve risks. By entering into offsetting positions, investors can protect themselves from potential losses due to changes in the swap curve. For instance, if an investor holds a long position in a plain vanilla swap, they can hedge their risk by taking a short position in another swap with similar characteristics but at a different point on the swap curve. This way, any adverse movement in the swap curve would be offset by gains in the hedging position.
-%
-%3. Dynamic Positioning: Instead of maintaining a static portfolio of plain vanilla swaps, some investors opt for dynamic positioning. This strategy involves actively adjusting the positions in response to changes in the swap curve. By closely monitoring the swap curve and making timely adjustments, investors can take advantage of favorable movements and minimize the impact of adverse shifts. For example, if the swap curve steepens, an investor may choose to increase their exposure to longer-dated swaps to capture higher yields.
-%
-%4. duration matching: Duration matching is a strategy that aims to minimize interest rate risk by aligning the duration of a plain vanilla swap with the investor's investment horizon. Duration represents the weighted average time to receive or pay cash flows from a swap. By matching the duration of the swap with the investment horizon, investors can reduce the impact of changes in the swap curve on their portfolio's value. This strategy is particularly useful for risk-averse investors who prioritize stability and predictability.
-%
-%5. Utilizing Options: Options can also be utilized to manage swap curve risks effectively. By purchasing interest rate options, investors can protect themselves against adverse movements in the swap curve while still benefiting from favorable changes. For instance, an investor can buy a put option on a plain vanilla swap, which gives them the right to sell the swap at a specified price if the swap curve moves unfavorably. This provides downside protection while allowing for potential upside gains.
 
+%2. Hedging: Hedging is another strategy commonly used to manage swap curve risks. By entering into offsetting positions, investors can protect themselves from potential losses due to changes in the swap curve. For instance, if an investor holds a long position in a plain vanilla swap, they can hedge their risk by taking a short position in another swap with similar characteristics but at a different point on the swap curve. This way, any adverse movement in the swap curve would be offset by gains in the hedging position.
+
+%3. Dynamic Positioning: Instead of maintaining a static portfolio of plain vanilla swaps, some investors opt for dynamic positioning. This strategy involves actively adjusting the positions in response to changes in the swap curve. By closely monitoring the swap curve and making timely adjustments, investors can take advantage of favorable movements and minimize the impact of adverse shifts. For example, if the swap curve steepens, an investor may choose to increase their exposure to longer-dated swaps to capture higher yields.
+
+%4. duration matching: Duration matching is a strategy that aims to minimize interest rate risk by aligning the duration of a plain vanilla swap with the investor's investment horizon. Duration represents the weighted average time to receive or pay cash flows from a swap. By matching the duration of the swap with the investment horizon, investors can reduce the impact of changes in the swap curve on their portfolio's value. This strategy is particularly useful for risk-averse investors who prioritize stability and predictability.
 
 \subsection{Swap and Bond Switching}
 \begin{frame}{Swap and Bond Switching}
@@ -655,7 +665,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 		\item<2-> A swap can be considered as an exchange between two kinds of bond with the same notional reimbursed at maturity. In fact:
 		\begin{itemize}
 		 \item<3->\emph{the fixed leg} of the swap can be viewed as a \textcolor{red}{fixed coupon stream};
-		 \item<4-> while the \emph{variable} can be considered a \textcolor{red}{floating rate note coupon stream}. 
+		 \item<3-> while the \emph{variable} can be considered a \textcolor{red}{floating rate note coupon stream}. 
 		\end{itemize}
 %		\item When $T_\alpha = t$, i.e. we take the particular case of spot trading (PFS becomes...PS). We thus get
 %		\begin{equation*}
@@ -714,7 +724,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 		\begin{equation*}
 			\mathcal{T}_{\text{payments}} = \{T_{\alpha+1},\ldots,T_\beta\}
 		\end{equation*}
-		coupons calculated at the LIBOR rate fixed in the previous period
+		coupons calculated at the EURIBOR rate fixed in the previous period
 		\begin{equation*}
 			\mathcal{T}_{\text{fixings}} = \{T_{\alpha},\ldots,T_{\beta - 1}\}
 		\end{equation*}
@@ -769,13 +779,13 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 
 \subsection{Fixed vs Variables}
 \begin{frame}{Concepts behind the Formulas}
-	Suppose that a generic bank, \emph{MyFavouriteBank}, has the same credit risk of the corresponding average inter-bank entity. So, \textcolor{red}{the spread over the LIBOR rate is 0}. Suppose now the bank needs financing and it plans to issue coupon bonds. It has two alternatives:
+	Suppose that a generic bank, \emph{MyFavouriteBank}, has the same credit risk of the corresponding average inter-bank entity. So, \textcolor{red}{the spread over the EURIBOR rate is 0}. Suppose now the bank needs financing and it plans to issue coupon bonds. It has two alternatives:
 	\begin{enumerate}
 		\item<1-> borrow $N$ and pay floating interests at the rates
 		\begin{equation*}
 			L(T_{i-1},T_i);
 		\end{equation*}
-		\item<2-> borrow $N$ and pay fixed interests given by the coupon
+		\item<1-> borrow $N$ and pay fixed interests given by the coupon
 		\begin{equation*}
 			K = S_{\alpha,\beta}.
 		\end{equation*}
@@ -796,7 +806,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 			\item the bank gains in the higher rates it charges on new loans at the same time.
 		\end{itemize}
 		\item<3-> This is the most basic example of \emph{asset liability matching}.
-		\item<4-> The same more or less holds for a rate decrease.%, but with some caveats.
+		\item<3-> The same more or less holds for a rate decrease.%, but with some caveats.
 	\end{itemize}
 \end{frame}
 
@@ -882,7 +892,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 	\item In both cases what matters are the first and the last payment dates; hence if they are the same for the two legs (regardless the reset frequency and the index tenor), the basis should be zero.
 	\column{0.4\linewidth}
 		\begin{center}
-		\includegraphics[width=1.1\linewidth]{Basis-Swap-spreads-Euribor-3M-Vs-Euribor-6M-Euribor-6M-Vs-Euribor-12M-and-Eonia-Vs}
+		\includegraphics[width=1.1\linewidth]{images/Basis-Swap-spreads-Euribor-3M-Vs-Euribor-6M-Euribor-6M-Vs-Euribor-12M-and-Eonia-Vs}
 		\end{center}
 	\end{columns}
 	\end{itemize}
@@ -892,7 +902,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 \section{Credit Risk and Asset Swap}
 \begin{frame}{Adding Credit Risk}
 	\begin{itemize}
-		\item When we make the real world enter the picture, a typical bank will pay a spread over LIBOR representing the \textcolor{red}{credit risk} (and other stuff, but leave this extra aside here). 
+		\item When we make the real world enter the picture, a typical bank will pay a spread over EURIBOR representing the \textcolor{red}{credit risk} (and other stuff, but leave this extra aside here). 
 		%\item For the swap to be worth 0 at inception the fixed rate must be higher as well. 
 		\item<2-> Hence a bank, which \emph{has credit risk},  will have to pay
 		\begin{enumerate}
@@ -900,7 +910,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 			\item a spread over the variable rate if it opts for a floating rate bond.
 		\end{enumerate}
 		\item<3-> Often, in the first case, it will swap the liability, i.e. the bank is liable towards the bond holders, to hedge the pure rate risk. 
-		\item<4-> This lead us to the next topic, the Asset Swap (and the asset swap spread).
+		\item<4-> This lead us to the next topic, the Asset Swap contract.
 	\end{itemize}
 \end{frame}
 
@@ -916,7 +926,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 
 \begin{frame}{Valuation of the Asset Swap}
 	\begin{center}
-		\includegraphics[width=0.7\linewidth]{asset_swap}
+		\includegraphics[width=0.7\linewidth]{images/asset_swap}
 	\end{center}
 \end{frame}
 
@@ -930,7 +940,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 			\item \textcolor{red}{if the bond trades above par} the difference $\Delta$ is paid to the AS buyer by the seller;
 			\item conversely \textcolor{red}{if the bond trades below par} the difference $\Delta$ is paid to the AS seller by the buyer.
 		\end{itemize}
-		\item<4-> A swap is then started between the two counter-parties such that the AS seller receives a fixed leg equal to the coupon stream of the bond and the AS buyer receives the floating leg given by LIBOR rate plus a \textcolor{red}{spread ($s$)} (again for simplicity the floating payment dates are the same as the fixed leg ones).
+		\item<4-> A swap is then started between the two counter-parties such that the AS seller receives a fixed leg equal to the coupon stream of the bond and the AS buyer receives the floating leg given by EURIBOR rate plus a \textcolor{red}{spread ($s$)} (again for simplicity the floating payment dates are the same as the fixed leg ones).
 	\end{itemize}
 \end{frame}
 
@@ -1006,7 +1016,7 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 	\item A CDS is a credit insurance contract where the protection buyer pays \emph{spread} ($s_{CDS}$) and in case of a credit event, the protection seller must pay the contingency payment so that the buyer receives no losses from the default.
 	\end{itemize}
 \begin{center}
-\includegraphics[width=0.7\linewidth]{credit-default-swaps}
+\includegraphics[width=0.7\linewidth]{images/credit-default-swaps}
 \end{center}
 \end{frame}
 
@@ -1019,34 +1029,30 @@ A company enters into a FRA to receive 4\% on \$100M for a 3-month period starti
 		\item if $s_{AS} - s_{CDS} < 0$ can do the opposite.
 	\end{itemize}
 	\end{itemize}
-\begin{tikzpicture}[remember picture,overlay]
-\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
 \end{frame}
 
 \begin{homework}
 \begin{frame}{\textcolor{white}{Homework}}
 \begin{itemize}
-\item[white] Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increase, all the rest being equal? What does it mean in term of credit quality expectation by the market for the bond's issuer?
+\item[white] Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increases, all the rest being equal ? What does it mean in term of credit quality expectation by the market for the bond's issuer ?
 \item[white]  Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
-Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond? 
-For this exercise assume the all Annuity Factors have a value of 10.0 for simplicity.
-\item[white] Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond?
+Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond ? 
+For this exercise assume that all annuity factors have a value of 10.0 for simplicity.
+\item[white] Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond ?
 \end{itemize}
 \end{frame}
 \end{homework}
 
-
 \section{Risk Measures}
 \begin{frame}{Estimating Risk}
 \begin{itemize}
-\item After pricing a trader/investor computes \textbf{swap risk} for hedging.
-\item Main risk is \emph{interest rate risk}; check the sensitivity of our portfolio (how its value moves with the rates).
-\item There are several metrics to assess the risk and different ways to measure their actual value:
+\item The assignment of the correct price to a derivative is not the whole story.
+\item Usually it is important to assess the \emph{interest rate risk} of a portfolio; in other words check how its value moves with the rates (its \emph{sensitivity}).
+\item There are several metrics to estimate the risk and different ways to measure its actual value:
 \begin{itemize}
-	\item \textbf{analytical}: involves deriving a closed-form expression which can be complex (and not always possible);
-	\item \textbf{numerical}: one bumps the yield curve calibration instruments and reprice the swap. The change in price gives the risk;
-	\item \textbf{curve Jacobians}: when yield curves have been calibrated, the solver slope 'Jacobian' can be kept and used to give the change in swap price for a change in forwards/discount factors;
+	\item \textbf{analytical}: involves deriving a closed-form expression which can be complex (and not always feasible);
+	\item \textbf{numerical}: one bumps the yield curve calibration instruments and reprice the derivative. The change in price gives the risk;
+	\item \textbf{curve Jacobians}: when yield curves have been calibrated, the solver slope 'Jacobian' can be kept and used to give the change in derivative price for a change in forwards/discount factors;
 	\item \textbf{algorithmic differentiation}: can be used to compute risk "automatically" at the same time as computing the price. It produces accurate and fast risk estimates.
 \end{itemize}
 \end{itemize}
@@ -1137,7 +1143,7 @@ For this exercise assume the all Annuity Factors have a value of 10.0 for simpli
 \begin{frame}{Market Rate Sensitivity}
 \begin{itemize}
 	\item<1-> Forecast and discount curves used in pricing formulas are those \emph{implied} by the market quotes of interest rate instruments (i.e. futures, OIS, etc\ldots). They are usually determined through a technique called \textbf{bootstrap}.
-	\item<2-> Another popular, though more complicated, method to assess the risk is to shock each input instrument used in the bootstrapping by 1~bp one by one, rebuild the curves, and then reprice the instrument of interest to obtain its curve sensitivity. 
+	\item<2-> Another popular, though more complicated, method to assess the risk is to shock each input instrument used in the bootstrapping by 1~bp one by one, rebuild the curves, and then re-price the instrument of interest to obtain its curve sensitivity. 
 	\item<3-> This is called \textcolor{red}{Market Rate Sensitivity} and its value is given by the sum of each Swap $NPV$ variations.
 	\item<4-> This of course is not quite a "parallel" shift of any curve (e.g. a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
 \end{itemize}
