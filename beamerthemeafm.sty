@@ -308,3 +308,81 @@
     \end{tcbclipinterior}},
   #3,
 }
+
+\usepackage{xcolor}
+\definecolor{ipython-frame}{RGB}{207, 207, 207}
+\definecolor{ipython-bg}{RGB}{247, 247, 247}
+\definecolor{ipython-red}{RGB}{186, 33, 33}
+\definecolor{ipython-green}{RGB}{0, 128, 0}
+\definecolor{ipython-cyan}{RGB}{64, 128, 128}
+\definecolor{ipython-purple}{RGB}{170, 34, 255}
+
+\usepackage{listings}
+\usepackage{cprotect}
+\lstdefinelanguage{iPython} {
+	morekeywords={access,and,del,except,exec,in,is,lambda,not,or,raise},
+	morekeywords=[2]{for,print,abs,all,any,basestring,bin,bool,bytearray,callable,chr,classmethod,cmp,compile,complex,delattr,dict,dir,divmod,enumerate,eval,execfile,file,filter,float,format,frozenset,getattr,globals,hasattr,hash,help,hex,id,input,int,isinstance,issubclass,iter,len,list,locals,long,map,max,memoryview,min,next,object,oct,open,ord,pow,property,range,reduce,reload,repr,reversed,round,set,setattr,slice,sorted,staticmethod,str,sum,super,tuple,type,unichr,unicode,vars,xrange,zip,apply,buffer,coerce,intern,elif,else,if,continue,break,while,class,def,return,try,except,import,finally,try,except,from,global,pass, True, False},
+	sensitive=true,
+	morecomment=[l]\#,
+	morestring=[b]',
+	morestring=[b]",
+	moredelim=**[is][\color{black}]{@@}{@@},
+	identifierstyle=\color{black}\tiny\ttfamily,
+    commentstyle=\color{ipython-cyan}\tiny\itshape\ttfamily,
+	stringstyle=\color{ipython-red}\tiny\ttfamily,
+	keepspaces=true,
+	showspaces=false,
+    showstringspaces=false,
+	rulecolor=\color{ipython-frame},
+	frame=single,
+	frameround={t}{t}{t}{t},
+	framexleftmargin=0mm,
+	numbers=none,
+	numberstyle=\color{black},
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=[2]\color{ipython-green}\bfseries\tiny\ttfamily, 
+	keywordstyle=\color{ipython-purple}\bfseries\tiny\ttfamily,
+	mathescape=true,
+	escapeinside={*@}{@*},
+    basicstyle=\tiny,
+}
+
+\lstdefinelanguage{iOutput} {
+	sensitive=true,
+	identifierstyle=\color{black}\tiny\ttfamily,
+	stringstyle=\color{ipython-red}\tiny\ttfamily,
+	keepspaces=true,
+	showspaces=false,
+	showstringspaces=false,
+	rulecolor=\color{ipython-frame},
+	%frame=single,
+	%frameround={t}{t}{t}{t},
+	%backgroundcolor=\color{ipython-bg},
+	basicstyle=\tiny\ttfamily,
+	mathescape=true,
+	escapeinside={*@}{@*}
+}
+
+\newcommand{\pythoncode}[2]{
+\lstinputlisting[language=iPython,numbers=none,backgroundcolor=\color{ipython-bg},linewidth=#2]{#1}
+}
+
+\newcommand{\outputcode}[2]{
+\lstinputlisting[language=iOutput,numbers=none,backgroundcolor=\color{ipython-bg},linewidth=#2]{#1}
+}
+
+\newcommand\codebox[2] { %[0.8\linewidth] {
+    \begin{center}
+        \begin{minipage}{#1}
+            \pythoncode{#2}{#1}
+        \end{minipage}
+    \end{center}
+}
+
+\newcommand\outputbox[2] { %[0.8\linewidth] {
+    \begin{center}
+        \begin{minipage}{#1}
+            \outputcode{#2}{#1}
+        \end{minipage}
+    \end{center}
+}

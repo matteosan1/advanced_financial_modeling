@@ -21,9 +21,9 @@
 			\label{eq:risk_neutral_pricing}
 		\end{equation}
   ideally we would like to define a probability measure $\mathbb{Q}^X$ under which the discounted derivative process is a martingale and such that the expectation of the payoff is analytically tractable (i.e. easy to compute).
-  \item<2-> The question that arises is: how can we determine such measure $\mathbb{Q}^X$ ?
-  \item<3-> The answer is through \textcolor{red}{change of numeraire}.
-  \item<4-> A \textcolor{red}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as a unit of reference when pricing an asset $S_t$
+  \item<1-> The question that arises is: how can we determine such measure $\mathbb{Q}^X$ ?
+  \item<2-> The answer is through \textcolor{red}{change of numeraire}.
+  \item<3-> A \textcolor{red}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as a unit of reference when pricing an asset $S_t$
     \begin{equation*}
       \tilde{S_t}:=\frac{S_t}{N_t}, \quad t \ge 0
     \end{equation*}
@@ -173,11 +173,69 @@
       P(A|B)=\frac{P(B|A)P(A)}{P(B)}
     \end{equation*}
   \end{itemize}
-\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=6.cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
-
 \end{frame}
+
+\begin{frame}[fragile]{Radon-Nikodym Derivative Example}
+  \begin{itemize}
+      \item Imagine two probability densities $\mathbb{P} = \mathcal{N}(\mu_1, \sigma_1)$ and $\mathbb{Q} = \mathcal{N}(\mu_2, \sigma_2)$.
+      \item Let's numerically compute the Radon-Nikodym derivative the moves you from the $\mathbb{P}$ to the $\mathbb{Q}$ world.
+  \end{itemize}
+
+\codebox{code/radon_nikodym_ex}
+\end{frame}
+
+\begin{frame}[fragile]{Radon-Nikodym Derivative Example}
+\begin{center}
+    \includegraphics[width=0.9\linewidth]{images/radon_nikodym_plot}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Radon-Nikodym Derivative Example}
+\begin{itemize}
+    \item Consider Consider the Radon-Nikodym derivative
+\begin{equation*}
+\cfrac{d\mathbb{Q}}{d\mathbb{P}}=\zeta;\quad Q(A) = \int_A \zeta dP
+\end{equation*}
+    \item What is $\mathbb{E}[\zeta]$ ? Intuitively, we have that
+\begin{equation*}
+\mathbb{E}[\zeta]=\mathbb{E}\left[\frac{dQ}{dP}\right]=\int \frac{dQ}{dP} dP
+\end{equation*}
+so the $dP$ "cancel out" and we get
+\begin{equation*}
+\mathbb{E}[\zeta]=\int dQ = 1
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Radon-Nikodym Derivative Example}
+\begin{columns}
+\column{0.5\linewidth}
+    Let's verify our calculation with a Monte Carlo simulation:
+    \begin{equation*}
+        \begin{gathered}
+        <f(x)> = \frac{1}{b-a}  \int_{a}^{b} f(x) \,dx\\
+        \int_{a}^{b} f(x) \,dx = (b-a) <f(x)>\\
+        \int_{a}^{b} f(x) \,dx \approx (b-a) \frac{1}{N} \sum_{i=1}^{N} f(x_i)
+        \end{gathered}
+    \end{equation*}
+\column{0.5\linewidth}
+\codebox{1\linewidth}{code/radon_nikodym_expectation}
+\outputbox{1\linewidth}{code/radon_nikodym_expectation}
+\end{columns}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 %\begin{frame}{Conditional Expectation}
 %	\begin{itemize}
