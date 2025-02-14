@@ -433,22 +433,22 @@ In real-world scenarios, it's often the case that you have a model that works we
 \begin{frame}[fragile]{FRA: Numerical Example FIXME}
 A company enters into a FRA to receive 4\% on \$100M for a 3-month period starting in 3 years. Imagine that LIBOR is 4.5\% in 3 years.
 
-\begin{mintedbox}{python}[break at=.8\textheight]
-import numpy as np
-import matplotlib.pyplot as plt
-
-num_trials = 10000
-
-sums = []
-for _ in range(num_trials):
-    rolls = np.random.randint(1, 7, size=2)
-    total_sum = np.sum(rolls)
-    sums.append(total_sum)
-
-plt.figure(figsize=(10, 6))
-plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7, 
-         color='skyblue', edgecolor='black', label='Simulated Sums')
-\end{mintedbox}
+%\begin{mintedbox}{python}[break at=.8\textheight]
+%import numpy as np
+%import matplotlib.pyplot as plt
+%
+%num_trials = 10000
+%
+%sums = []
+%for _ in range(num_trials):
+%    rolls = np.random.randint(1, 7, size=2)
+%    total_sum = np.sum(rolls)
+%    sums.append(total_sum)
+%
+%plt.figure(figsize=(10, 6))
+%plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7, 
+%         color='skyblue', edgecolor='black', label='Simulated Sums')
+%\end{mintedbox}
 \end{frame}
 
 \begin{homework}
@@ -572,7 +572,7 @@ plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7,
 		\begin{equation*}
 			\textbf{PFS} = P(t,T_\alpha)-P(t,T_\beta)-\sum_{i=\alpha+1}^{\beta}\tau_iKP(t,T_i)
 		\end{equation*}
-		\item<2-> By multiplying and dividing by (the so called \textcolor{red}{annuity}) $A = \sum_{i=\alpha+1}^{\beta}\tau_iP(t, T_i)$
+		\item<2-> By multiplying and dividing by (the so called \textcolor{red}{annuity}) $A = \sum_{i=\alpha+1}^{\beta}\tau_i P(t, T_i)$
 		we get
 		\begin{equation}
 			\begin{gathered}
@@ -597,10 +597,10 @@ plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7,
 		\column{0.65\linewidth}
 		\small{
 		\item An upward-sloping \emph{(normal)} curve indicates longer-term interest rates are higher than short-term rates (expectations of economic growth and inflation). 
-		\item A downward-sloping \emph{(inverted)} curve suggests short-term rates are higher than long-term rates (potential economic downturns or market uncertainties). 
+		\item A downward-sloping \emph{(inverted)} curve suggests short-term rates are higher than long-term rates (potential economic downturns or market uncertainties).}
 		%\item A flat curve indicates that short and long-term rates are relatively similar, indicating a neutral market sentiment.}
 	\end{columns}
-\item Swap rates are often used as benchmarks for pricing other financial instruments, such as corporate bonds and loans.
+	\item Swap rates are often used as benchmarks for pricing other financial instruments, such as corporate bonds and loans.
 \end{itemize} 
 \end{frame}
 
@@ -667,13 +667,6 @@ plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7,
 		 \item<3->\emph{the fixed leg} of the swap can be viewed as a \textcolor{red}{fixed coupon stream};
 		 \item<3-> while the \emph{variable} can be considered a \textcolor{red}{floating rate note coupon stream}. 
 		\end{itemize}
-%		\item When $T_\alpha = t$, i.e. we take the particular case of spot trading (PFS becomes...PS). We thus get
-%		\begin{equation*}
-%			\begin{aligned}
-%				\text{PS}(t,T_\beta) &=N-\underbrace{NP(t,T_\beta)}_{\text{notional exch.}}-\underbrace{KN\sum_{i=\alpha+1}^{\beta} \tau_iP(t,T_i)}_{\text{coupons exch.}} \\
-%				&=N-\textbf{CBP}(t,T_\beta,K,N)
-%			\end{aligned}
-%		\end{equation*}
 	\end{itemize}
 \end{frame}
 
@@ -772,9 +765,6 @@ plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7,
 	\item The \textbf{FRN} is a debt security in which coupon payments adjust according to changes in interest rates. The coupons are closely tied to current short-term spot rates, such that their prices are always at or near par value (no arbitrage). 
 	%\item Provide an example of Italian government floating rate note. Did they trade at par in recent times ? Provide an explanation.
 	\end{itemize}
-	\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.7cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
 \end{frame}
 
 \subsection{Fixed vs Variables}
@@ -845,7 +835,7 @@ plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7,
 	\item For instance a typical Basis Swap is one in which a floating leg indexed to EURIBOR-6M is exchanged against one indexed to EURIBOR-3M.
 	\end{itemize}
 	\begin{center}
-		\includegraphics[width=0.6\linewidth]{tenor_basis_swap}
+		\includegraphics[width=0.6\linewidth]{images/tenor_basis_swap}
 	\end{center}
 \end{frame}
 
@@ -855,9 +845,10 @@ plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7,
 	\item A Tenor Basis Swap can be priced according to the following expression
 	\begin{equation}
 	\boxed{
-	\begin{aligned}\textbf{TBS}(t) = \sum_{i=1}^n \tau_i^{L} F^{L}&(t;T_{i-1},T_i)P(t,T_i) - \\
-	&- \sum_{j=1}^m \tau_j^{S} (F^{S}(t;T_{j-1},T_j)+s)P(t,T_j)
-	\end{aligned}
+		\begin{aligned}
+			\textbf{TBS}(t) = \sum_{i=1}^n \tau_i^{L} F^{L}&(t;T_{i-1},T_i)P(t,T_i) - \\
+			&- \sum_{j=1}^m \tau_j^{S} (F^{S}(t;T_{j-1},T_j)+s)P(t,T_j)
+		\end{aligned}
 	}
 	\end{equation}
 	where $L$ (long index) denotes the index with the longer tenor and $S$ (short index) the other with the shorter tenor.}
@@ -1152,11 +1143,8 @@ For this exercise assume that all annuity factors have a value of 10.0 for simpl
 \begin{frame}{Market Rate Sensitivity}
 In a plain vanilla Swap is very close but not equal to DV01. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
 \begin{center}
-\includegraphics[width=0.5\linewidth]{dv01}
+\includegraphics[width=0.5\linewidth]{images/dv01}
 \end{center}
-\begin{tikzpicture}[remember picture,overlay]
-\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
 \end{frame}
 
 %\begin{frame}{Convexity}
@@ -1367,9 +1355,6 @@ Estimate the DV01 of the swap numerically.
 	%	Cpl(t,T,S,\tau,K,v_T,\alpha)=P(t,S)Bl(K-\alpha,F(t,T,S)-\alpha,v_T)
 	%\end{equation}
 \end{itemize}
-\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
 \end{frame}
 
 %\begin{frame}{The Volatility Hump}
@@ -1479,7 +1464,7 @@ Estimate the DV01 of the swap numerically.
 				\item \textbf{swap-rate below $K$}: it will not be exercised and \textbf{A} will continue to have floating-rate funding.
 			\end{itemize}
 			\column{0.45\linewidth}
-			\includegraphics[width=1.\linewidth]{swaption_example}
+			\includegraphics[width=1.\linewidth]{images/swaption_example}
 		\end{columns}
 	\end{itemize}
 \end{frame}
@@ -1535,13 +1520,13 @@ List the pros and cons about each one and declare your favourite.
 
 \begin{frame}{Swaption Volatility Calibration}
   \begin{center}
-    \includegraphics[width=1.\linewidth]{atm_vol}
+    \includegraphics[width=1.\linewidth]{images/atm_vol}
   \end{center}
 \end{frame}
 
 \begin{frame}{Swaption Volatility Calibration}
   \begin{center}
-    \includegraphics[width=1.\linewidth]{skews}
+    \includegraphics[width=1.\linewidth]{images/skews}
   \end{center}
 \end{frame}
 
@@ -1554,15 +1539,15 @@ List the pros and cons about each one and declare your favourite.
 
 \begin{frame}{Swaption Volatility Calibration}
     \begin{center}
-      \includegraphics[width=0.65\linewidth]{10y_10y}
+      \includegraphics[width=0.65\linewidth]{images/10y_10y}
     \end{center}
 \end{frame}
 
 \begin{frame}{Swaption Volatility Calibration}
     \begin{center}
-      \includegraphics[width=0.3\linewidth]{alpha}
-      \includegraphics[width=0.3\linewidth]{rho}
-      \includegraphics[width=0.3\linewidth]{nu}
+      \includegraphics[width=0.3\linewidth]{images/alpha}
+      \includegraphics[width=0.3\linewidth]{images/rho}
+      \includegraphics[width=0.3\linewidth]{images/nu}
     \end{center}
 \end{frame}
 
@@ -1623,11 +1608,7 @@ List the pros and cons about each one and declare your favourite.
 	}
 	\column{0.35\linewidth}
 	\uncover<1->{
-	\includegraphics[width=1\linewidth]{jamshidian_trick}}
-\uncover<5->{	
-\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=1.5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}}
+	\includegraphics[width=1\linewidth]{images/jamshidian_trick}}
 \end{columns}
 \end{itemize}
 \end{frame}
@@ -1717,9 +1698,6 @@ whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$
 		\boxed{\textbf{RSw}(t,T,N) = N\sum_{k=1}^n c_k \textbf{ZBC}(t,T_k,K_k)}
 	\end{equation}
 \end{itemize}	
-\begin{tikzpicture}[remember picture,overlay]
-\node[xshift=6.0cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
 \end{frame}
 
 
@@ -1799,9 +1777,6 @@ whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$
 	%\item Swaptions are non-linear products and may require to model the correlation between forward LIBOR rates.
 	\item<3-> Given the complexity of Bermudan swaption valuation (which belongs to the latter class), there is no closed form solution. Therefore, we need to select an interest rate term structure model and a numeric solution to price this contract numerically.		
 	\item<4-> Typically tree techniques or the Longstaff-Schwartz method are used.
-	\begin{tikzpicture}[remember picture,overlay]
-		\node[xshift=5.8cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-	\end{tikzpicture}
 \end{itemize}
 \end{frame}
 
@@ -1902,11 +1877,6 @@ whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$
 		%In this scenario, not only does the bondholder lose the remaining interest payments but it would be unlikely they will be able to match the original 6\% coupon. 
 		\item<2-> As a result, a callable bond may not be appropriate for investors seeking stable income and predictable returns.
 	\end{itemize}
-\uncover<3->{
-\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5.8cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
-}
 \end{frame}
 		
 %\begin{frame}{Risk Analysis of Callable Bonds}
@@ -1990,7 +1960,7 @@ whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$
 			\column{0.45\linewidth}
 		An investor would want to invest in a reverse floater if the benchmark rate is high and she believes the rate will decrease in the future at a faster pace than the forwards indicate.
 			\column{0.4\linewidth}
-				\includegraphics[width=0.8\linewidth]{reverse_floater_payoff}
+				\includegraphics[width=0.8\linewidth]{images/reverse_floater_payoff}
 		\end{columns}
 	\begin{itemize}
 	\item<2-> One can also buy a reverse floater if the rates are low now and believes they stay low, even though the forward contracts are implying an increase. If rates do not change, by holding the reverse floater outperform floating rate notes on the same index.
