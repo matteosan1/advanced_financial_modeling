@@ -37,9 +37,9 @@
   \item In any case, once we choose a numerarie e.g. 1 USD, we determine the value of all the other assets:
     \begin{columns}
     	\column{0.5\linewidth}
-      \includegraphics[width=0.9\linewidth]{usd_eur}
+      \includegraphics[width=0.9\linewidth]{images/usd_eur}
     	\column{0.5\linewidth}
-      \includegraphics[width=0.9\linewidth]{usd_chy}
+      \includegraphics[width=0.9\linewidth]{images/usd_chy}
     \end{columns}
   \end{itemize}
 \end{frame}
@@ -173,10 +173,6 @@
       P(A|B)=\frac{P(B|A)P(A)}{P(B)}
     \end{equation*}
   \end{itemize}
-\begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=6.cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
-
 \end{frame}
 
 %\begin{frame}{Conditional Expectation}
@@ -206,7 +202,7 @@
     \begin{equation*}
       \frac{S_t}{N_t} = \expect{N}\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
     \end{equation*}
-    Let $U$ be another arbitrary numeraire. Then there exists a measure $\mathbb{Q}^U$, also equivalent to $\mathbb{P}$, such that the price of any traded asset $S_t$, normalized to $U$, is a martingale under $\mathbb{Q}^U$
+    Let $U$ be another arbitrary numeraire. Then \textbf{there exists a measure $\mathbb{Q}^U$, also equivalent to $\mathbb{P}$, such that the price of any traded asset $S_t$, normalized to $U$, is a martingale under $\mathbb{Q}^U$}
     \begin{equation*}
       \frac{S_t}{U_t} = \expect{U}\left[\frac{S_T}{U_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
     \end{equation*}
@@ -220,7 +216,7 @@
 
 \begin{frame}{Change of Numeraire (Proof part 2)}
 	\begin{itemize}
-		\item Let's prove first this second part.
+		\item Let's prove first the second part.
   		\item By definition of $\mathbb{Q}^N$, for any asset price $S_t$ holds
 	  \begin{equation*}
 	    \begin{cases} 
@@ -237,7 +233,7 @@
 
 \begin{frame}{Change of Numeraire (Proof part 2)}
 	\begin{itemize}
-	\item By definition of Radon-Nikodym derivative and from the result of in previous slide, it holds
+	\item By definition of Radon-Nikodym derivative and from the result of the previous slide, it holds
   \begin{equation*}
   	\begin{cases}
     \expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] =\expectt{U}{t}\left[\cfrac{S_T}{N_T} \cfrac{d\mathbb{Q}^N}{d\mathbb{Q}^U}\right] \\
@@ -534,6 +530,118 @@
 \end{frame}
 \end{homework}
 
+
+The Expectations Hypothesis (EH) is a theory in finance that attempts to explain the relationship between short-term and long-term interest rates, as well as the shape of the yield curve.  It essentially posits that long-term interest rates are determined by current and expected future short-term interest rates.  Here's a breakdown:   
+
+Core Idea:
+
+The EH states that the forward rate (the interest rate agreed upon today for a future transaction) is an unbiased predictor of the future spot rate (the actual interest rate at that future time).  In simpler terms, if you want to know what the market expects short-term interest rates to be in the future, just look at the current forward rates.   
+
+Implications:
+
+Yield Curve Shape: The shape of the yield curve (a graph showing interest rates at different maturities) is determined by market expectations of future short-term interest rates.
+
+Upward Sloping Yield Curve (Normal): Indicates that the market expects short-term interest rates to rise in the future.   
+Downward Sloping Yield Curve (Inverted): Suggests that the market anticipates short-term interest rates to decline.   
+Flat Yield Curve: Implies that the market expects short-term interest rates to remain relatively stable.
+Investment Decisions: The EH suggests that investors should be indifferent between investing in a long-term bond or a series of short-term bonds, as long as they have the same expected return.  This is because the long-term rate is just the average of the expected future short-term rates.
+
+Formal Expression (Simplified):
+
+The basic idea can be expressed as:
+
+Forward Rate (for period n) = Expected Future Spot Rate (for period n)
+
+Or, more generally:
+
+(1 + Long-term Rate)^n = (1 + Short-term Rate 1) * (1 + Expected Short-term Rate 2) * ... * (1 + Expected Short-term Rate n)
+
+Criticisms and Limitations:
+
+The Expectations Hypothesis is rarely considered a complete explanation of the yield curve.  It has several significant limitations:
+
+Risk Premium: The EH ignores the concept of a risk premium. Investors typically demand a premium (extra return) for holding long-term bonds because they are exposed to greater interest rate risk. The Liquidity Preference Theory and the Market Segmentation Theory incorporate risk premiums.   
+Other Factors: The EH focuses solely on expectations of future short-term rates. Other factors, such as supply and demand for bonds, inflation expectations, and economic growth prospects, also influence long-term rates and the shape of the yield curve.   
+Empirical Evidence: Empirical studies have shown that the EH does not consistently hold up in real-world markets. While expectations play a role, they are not the only, or even the most important, determinant of long-term rates.
+Related Theories:
+
+Liquidity Preference Theory: Extends the EH by incorporating a liquidity premium. Investors prefer short-term, more liquid bonds and require a premium to hold less liquid long-term bonds.
+Market Segmentation Theory: Suggests that the yield curve is shaped by the supply and demand for bonds of different maturities, driven by the specific needs and preferences of different investor groups (e.g., banks, insurance companies, pension funds).
+In Summary:
+
+The Expectations Hypothesis provides a basic framework for understanding the relationship between short-term and long-term interest rates. While it highlights the importance of expectations, it is an oversimplification of reality.  Other factors, especially risk premiums and supply/demand dynamics, play a crucial role in determining the shape of the yield curve.  Therefore, while the EH is a useful starting point, it should be used in conjunction with other theories to gain a more complete understanding of interest rate behavior.   
+
+
+Sources and related content
+Expectations hypothesis - Wikipedia
+
+en.wikipedia.org
+
+The Forward Rate as a Predictor of the Future Spot Rate—A Stochastic Coefficient Approach
+
+www.researchgate.net
+
+Bonds 102: Understanding the Yield Curve - PIMCO
+
+www.pimco.com
+
+What does an inverted yield curve signal about the economy? | U.S. Bank
+
+www.usbank.com
+
+Term premia: models and some stylised facts - Bank for International Settlements
+
+www.bis.org
+
+
+
+
+
+
+
+If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
+
+
+
+Why the Yield Curve Can Be Flat, Upward Sloping, or Downward Sloping Under the Pure Expectations Hypothesis
+
+The pure expectations hypothesis (PEH) suggests that the shape of the yield curve is solely determined by market expectations of future short-term interest rates. Here's how different expectations lead to different yield curve shapes:
+
+Flat Yield Curve: A flat yield curve implies that the market expects short-term interest rates to remain relatively constant in the future. If investors anticipate that short-term rates will neither rise nor fall significantly, long-term rates (which are essentially averages of expected future short-term rates) will be similar to current short-term rates, resulting in a flat curve.
+
+Upward Sloping Yield Curve: An upward sloping yield curve (also known as a "normal" yield curve) indicates that the market expects short-term interest rates to rise in the future. As long-term rates reflect the average of expected future short-term rates, they will be higher than current short-term rates if future rates are anticipated to increase.   
+
+Downward Sloping Yield Curve: A downward sloping yield curve (also known as an "inverted" yield curve) suggests that the market expects short-term interest rates to decline in the future. In this case, long-term rates will be lower than current short-term rates because they incorporate the expectation of falling future short-term rates.   
+
+How a "Tight" Monetary Policy Affects the Yield Curve
+
+When a government implements a credible "tight" monetary policy by raising short-term interest rates, it can have a significant impact on the yield curve. Here's how:
+
+Initial Impact: The immediate effect of raising short-term rates is to push the very front end of the yield curve upward. This is because the policy directly targets short-term rates.
+
+Expectations of Future Rates: The key question is how this policy action affects market expectations of future short-term rates. If the market believes that the central bank's commitment to tight monetary policy is credible and that the rate hikes are likely to be sustained for some time to combat inflation, then expectations of future short-term rates may also rise. This would lead to an upward shift in the entire yield curve.
+
+Potential for Inversion: However, if the market believes that the rate hikes will eventually lead to an economic slowdown or recession, expectations of future short-term rates may actually decline. In this scenario, the yield curve could become flat or even inverted. This is because long-term rates would reflect the expectation of lower future short-term rates, even though current short-term rates are high due to the policy action.
+
+Credibility is Key
+
+The credibility of the government's monetary policy is crucial in determining how the yield curve responds. If the market trusts that the central bank will stick to its tight policy, the yield curve is more likely to shift upward. However, if the market doubts the central bank's resolve or believes that the policy will be short-lived, the yield curve may flatten or invert.
+
+Other Factors
+
+It's important to remember that the yield curve is influenced by various factors beyond just expectations of future short-term rates. These include:   
+
+Inflation expectations: If the tight monetary policy is successful in curbing inflation, this could lower long-term rates.
+Economic growth prospects: If the market believes the rate hikes will lead to a recession, this could put downward pressure on long-term rates.
+Supply and demand for bonds: The relative supply and demand for bonds of different maturities can also affect the yield curve.   
+In summary:
+
+The yield curve's shape reflects market expectations of future short-term interest rates.
+
+A credible tight monetary policy can initially raise short-term rates and potentially lead to an upward shift in the yield curve if the market believes the policy will be sustained. However, if the market anticipates an economic slowdown, the yield curve may flatten or invert. The credibility of the policy and other economic factors play a significant role in determining the ultimate impact on the yield curve.   
+
+
+
 %The Relationship between Forward Rate over Second Year
 %and Spot Rate Expected over Second Year
 %Given a forecast of bond B’s price, an investor can choose one of two strategies at date 0:
@@ -733,9 +841,6 @@
     and that $\tilde{W}$ is a Brownian motion on $\mathbb{P}^*$.
   \item<2-> In practice, don't need to determine the new measure $\mathbb{P}^*$.
   \item<3-> It is enough to know it exists, such that we can work with the resulting SDE of the process of interest under the new measure.	
-  \begin{tikzpicture}[remember picture,overlay]
-	\node[xshift=5cm,yshift=-3.9cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
-\end{tikzpicture}
   \end{itemize}
 \end{frame}
 
