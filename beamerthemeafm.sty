@@ -24,7 +24,8 @@
 \usetikzlibrary{calc,positioning}
 
 \RequirePackage{geometry}
-\geometry{paperwidth=16cm,paperheight=9cm}
+%\geometry{paperwidth=25.4cm,paperheight=14.2875cm}
+\geometry{paperwidth=16.93cm,paperheight=9.525cm}
 
 %\RequirePackage{caladea,carlito}
 %\renewcommand{\familydefault}{\sfdefault}
@@ -159,7 +160,7 @@
 \usebeamerfont{frametitle}\insertframetitle\\
 \usebeamerfont{framesubtitle}\insertframesubtitle
 \end{beamercolorbox}
-\vspace{0.25cm}
+%\vspace{0.05cm}
 %\hrule
 }
 
@@ -167,12 +168,12 @@
 \newcommand{\course}[1]{\def\atcourseLabel{#1}}
 
 \pgfdeclareimage[width=0.15\linewidth]{mybackground}{images/mps}
-\pgfdeclareimage[width=0.90\linewidth]{abstract}{images/abstract_title}
+\pgfdeclareimage[width=1.\linewidth]{abstract}{images/abstract_title}
 % Define the title page
 \setbeamertemplate{title page}{%
 \vskip0pt plus 1filll%
 % Reposition the box in an inelegant way - but it works!
-\hspace{-12mm}
+\hspace{-10mm}
 \vspace{20mm}
 \begin{beamercolorbox}[wd=0.72\textwidth,sep=10pt,leftskip=8mm]{title}%
 {\usebeamerfont{title}\inserttitle}
@@ -347,42 +348,15 @@
     basicstyle=\tiny,
 }
 
-\lstdefinelanguage{iOutput} {
-	sensitive=true,
-	identifierstyle=\color{black}\tiny\ttfamily,
-	stringstyle=\color{ipython-red}\tiny\ttfamily,
-	keepspaces=true,
-	showspaces=false,
-	showstringspaces=false,
-	rulecolor=\color{ipython-frame},
-	%frame=single,
-	%frameround={t}{t}{t}{t},
-	%backgroundcolor=\color{ipython-bg},
-	basicstyle=\tiny\ttfamily,
-	mathescape=true,
-	escapeinside={*@}{@*}
-}
 
 \newcommand{\pythoncode}[2]{
 \lstinputlisting[language=iPython,numbers=none,backgroundcolor=\color{ipython-bg},linewidth=#2]{#1}
 }
 
-\newcommand{\outputcode}[2]{
-\lstinputlisting[language=iOutput,numbers=none,backgroundcolor=\color{ipython-bg},linewidth=#2]{#1}
-}
+\lstnewenvironment{ioutput}[1][1\linewidth]{\lstset{language=bash,basicstyle=\tiny\color{white}, backgroundcolor=\color{black}, numbers=none,framexleftmargin=1mm, linewidth=#1}}{}
 
-\newcommand\codebox[2] { %[0.8\linewidth] {
-    \begin{center}
-        \begin{minipage}{#1}
-            \pythoncode{#2}{#1}
-        \end{minipage}
-    \end{center}
-}
+\lstnewenvironment{ipython}[1][]{\lstset{language=iPython,numbers=none,#1}}{}
 
-\newcommand\outputbox[2] { %[0.8\linewidth] {
-    \begin{center}
-        \begin{minipage}{#1}
-            \outputcode{#2}{#1}
-        \end{minipage}
-    \end{center}
-}
+\newenvironment{codebox}
+{\begin{center}\begin{minipage}{\linewidth}}
+{\end{minipage}\end{center}}
