@@ -11,7 +11,6 @@
 \end{frame}
 
 \section{Change of Measure}
-
 \subsection{Numeraires}
 \begin{frame}{Numeraires}
   \begin{itemize}
@@ -180,9 +179,9 @@
       \item Imagine two probability densities $\mathbb{P} = \mathcal{N}(\mu_1, \sigma_1)$ and $\mathbb{Q} = \mathcal{N}(\mu_2, \sigma_2)$.
       \item Let's numerically compute the Radon-Nikodym derivative the moves you from the $\mathbb{P}$ to the $\mathbb{Q}$ world.
   \end{itemize}
-
-\begin{codebox}
-\begin{ipython}[linewidth=0.6\linewidth]
+\begin{columns}
+\column{0.5\linewidth}
+\begin{ipython}[linewidth=0.9\linewidth]
 import numpy as np
 
 from scipy.stats import norm
@@ -195,7 +194,11 @@ sigma1, sigma2 = 0.2, 0.2
 P = norm(mu1, sigma1)
 Q = norm(mu2, sigma2)	
 \end{ipython}
-\end{codebox}
+\column{0.5\linewidth}
+\begin{center}
+    \includegraphics[width=1\linewidth]{images/radon_nikodym_plot}
+\end{center}
+\end{columns}
 \end{frame}
 
 \begin{frame}[fragile]{Radon-Nikodym Derivative Example}

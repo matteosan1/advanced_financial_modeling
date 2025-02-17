@@ -265,7 +265,7 @@ Stochastic processes are described by \emph{stochastic differential equations} (
 \begin{frame}[fragile]{Monte Carlo in Practice}
 \begin{columns}
 	\column{0.5\linewidth}
-\begin{mintedbox}{python}[break at=.8\textheight]
+\begin{ipython}
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -276,13 +276,11 @@ for _ in range(num_trials):
     rolls = np.random.randint(1, 7, size=2)
     total_sum = np.sum(rolls)
     sums.append(total_sum)
-
-plt.figure(figsize=(10, 6))
-plt.hist(sums, bins=np.arange(2, 14) - 0.5, density=True, alpha=0.7, 
-         color='skyblue', edgecolor='black', label='Simulated Sums')
-\end{mintedbox}
+\end{ipython}
     \column{0.5\linewidth}
+    \begin{center}
     \includegraphics[width=0.8\linewidth]{images/sum_two_dice}
+    \end{center}
 \end{columns}
 \end{frame}
 
@@ -434,17 +432,22 @@ W^1_0+\sum\limits_{i=1}^{m} dW^1_i & W^2_0+\sum\limits_{i=1}^{m} dW^2_i & \cdots
 \begin{frame}[fragile]{Brownian Motion Example}
 \begin{columns}
 	\column{0.55\linewidth}
-\begin{mintedbox}{python}[break at=.9\textheight]
+\begin{ipython}
 import numpy as np
 
-N = 10; m = 100; W0 = 0
+N = 10
+m = 100
+W0 = 0
+
 W = np.zeros(shape=(m, N))
 W[0, :] = W0
 W[1:, :] = np.random.normal(size=(m-1, N))*np.sqrt(1/m)
 W = np.cumsum(W, axis=0)
-\end{mintedbox}
+\end{ipython}
     \column{0.4\linewidth}
+\begin{center}    
     \includegraphics[width=1.\linewidth]{images/bm_realizations}
+\end{center}
 \end{columns}
 \begin{block}{Important}
 Those are just 10 \emph{possible} realizations of a  BM: as a stochastic process it is impossible to know how it will develop in the future. A statistical analysis of a stochastic process necessarily involves to average ($\mathbb{E}$) among the possible paths.
@@ -477,7 +480,7 @@ Those are just 10 \emph{possible} realizations of a  BM: as a stochastic process
 
 \begin{columns}
 	\column{0.55\linewidth}
-\begin{mintedbox}{python}[break at=.9\textheight]
+\begin{ipython}
 import tensorquant as tq
 import tensorflow as tf
 
@@ -485,12 +488,15 @@ gbm = tq.GeometricBrownianMotion(mu=0.005, sigma=0.05, x0=100)
 
 n_path = 10
 timesteps = 240
-Z = tf.random.normal((n_path, timesteps), seed=12, dtype=tf.dtypes.float64)
+Z = tf.random.normal((n_path, timesteps), seed=12, 
+                     dtype=tf.dtypes.float64)
 t = tf.Variable(8, dtype=tf.float64)
-S_t = gbm.evolve(t, Z)
-\end{mintedbox}
+S_t = gbm.evolve(t, Z)    
+\end{ipython}
     \column{0.4\linewidth}
+\begin{center}    
     \includegraphics[width=1.1\linewidth]{images/gbm_realizations}
+\end{center}
 \end{columns}
 %If you want to try this code remember to install \texttt{tensorquant} with the command \texttt{pip install tensorquant}.
 \end{frame}
