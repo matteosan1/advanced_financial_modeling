@@ -343,7 +343,6 @@
 	numberstyle=\color{black}\bfseries\tiny\ttfamily,
 	basicstyle=\footnotesize\ttfamily,
 	keywordstyle=[2]\color{ipython-green}\bfseries\tiny\ttfamily, 
-	%keywordstyle=\color{ipython-purple}\bfseries\tiny\ttfamily,
 	mathescape=true,
 	escapeinside={*@}{@*},
     basicstyle=\tiny,
@@ -353,7 +352,7 @@
 \lstinputlisting[language=iPython,numbers=none,backgroundcolor=\color{ipython-bg},linewidth=#2]{#1}
 }
 
-\lstnewenvironment{ioutput}[1][1\linewidth]{\lstset{language=bash,basicstyle=\color{white}\bfseries\tiny\ttfamily, backgroundcolor=\color{black}, numbers=none,framexleftmargin=1mm, linewidth=#1}}{}
+\lstnewenvironment{ioutput}[1][1\linewidth]{\lstset{language=bash,basicstyle=\color{white}\bfseries\tiny\ttfamily, backgroundcolor=\color{black}, rulecolor=\color{black}, numbers=none, framextopmargin=0, framexbottommargin=0, framexleftmargin=1mm, linewidth=#1}}{}
 
 \lstnewenvironment{ipython}[1][]{\lstset{language=iPython,numbers=none,#1}}{}
 
