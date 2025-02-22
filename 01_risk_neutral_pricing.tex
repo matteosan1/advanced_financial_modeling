@@ -70,7 +70,7 @@ Essentially all the expectation properties come from integration properties,
 
 \begin{frame}{Stochastic Differential Equation}
 \begin{block}{Definition}
-A collection of random variables that is indexed by some mathematical set (usually time) is called a \textcolor{red}{stochastic processes}.
+A collection of random variables that is indexed by some mathematical set (usually time) is called a \textcolor{red}{stochastic process}.
 \end{block}
 Stochastic processes are described by \emph{stochastic differential equations} (SDE):	
 	\begin{equation}
@@ -331,7 +331,7 @@ The \textbf{Central Limit Theorem} states: \emph{the sampling distribution of th
 \begin{itemize}
     \item This shows that no matter what our population distribution curve is, the sample means will always follow Gaussian Distribution.
     \item Sample sizes equal to or greater than 30 are considered sufficient for the theorem to hold but that might not be always necessary. In our example, we can observe that we get a Gaussian Distribution with a sample size of 10 or 20 too.
-    \item Statistical analysis of the data of the entire population are practically impossible in almost all cases. Sample data of any population can be used to draw conclusions about the overall population using CTL as we know that sample means are always normally distributed!!!!
+    \item Statistical analysis of the data of the entire population are practically impossible in almost all cases. Sample data of any population can be used to draw conclusions about the overall population using CLT as we know that sample means are always normally distributed!!!!
 \end{itemize}
 \end{frame}
 
@@ -373,14 +373,14 @@ For the BM example, I would like to show how usually this problems are tackled i
 \begin{itemize}
     \item \texttt{Python} is not that great when dealing with complex calculation; the trick that is usually used in these cases is to move to \emph{linear algebra} using dedicated libraries which are highly optimized for such calculations (e.g. \texttt{numpy}).
     \item The goal here is to simulate $N$ \emph{realizations} of a Brownian motion (BM) process with $m$ \textit{time steps} and initial value 0. 
-    \item Instead of performing each single calculation for each time step and each realization, we are going to use matrices and perform bunch of operations at once.
+    \item Instead of performing every single calculation for each time step and each realization, we are going to use matrices and perform bunch of operations at once.
     \item Let's start with a $(N\times m)$ matrix $[W_0]$
     $$
     [W_0] =
     \begin{bmatrix}
     W^1_0 & W^2_0 & \cdots & W^N_0 \\
     0 & 0 & \cdots & 0 \\
-     &  & \vdots &   \\
+    \vdots & \vdots & \vdots & \vdots \\
     0 & 0 & \cdots & 0 \\
     \end{bmatrix}
     $$
@@ -395,7 +395,7 @@ For the BM example, I would like to show how usually this problems are tackled i
     \begin{bmatrix}
     0 & 0 & \cdots & 0 \\
     dW^1_1 & dW^2_1 & \cdots & dW^N_1 \\
-     &  & \vdots &   \\
+    \vdots & \vdots & \vdots & \vdots \\
     dW^1_{m} & dW^2_{m} & \cdots & dW^N_{m} \\
     \end{bmatrix}
     $$  
@@ -404,7 +404,7 @@ For the BM example, I would like to show how usually this problems are tackled i
     \begin{bmatrix}
     W^1_0 & W^2_0 & \cdots & W^N_0 \\
     dW^1_1 & dW^2_1 & \cdots & dW^N_1 \\
-     &  & \vdots &   \\
+    \vdots & \vdots & \vdots & \vdots \\
     dW^1_{m} & dW^2_{m} & \cdots & dW^N_{m} \\
     \end{bmatrix}
     $$  
@@ -449,9 +449,15 @@ W = np.cumsum(W, axis=0)
     \includegraphics[width=1.\linewidth]{images/bm_realizations}
 \end{center}
 \end{columns}
-\begin{block}{Important}
-Those are just 10 \emph{possible} realizations of a  BM: as a stochastic process it is impossible to know how it will develop in the future. A statistical analysis of a stochastic process necessarily involves to average ($\mathbb{E}$) among the possible paths.
-\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Brownian Motion Example}
+	\begin{center}    
+		\includegraphics[width=0.5\linewidth]{images/bm_realizations_density}
+	\end{center}
+	\begin{block}{Important}
+		Those are just 10 \emph{possible} realizations of a  BM: as a stochastic process it is impossible to know how it will develop in the future. A statistical analysis of a stochastic process necessarily involves to average ($\mathbb{E}$) among the possible paths.
+	\end{block}
 \end{frame}
 
 \begin{frame}{Geometric Brownian Motion Example}
@@ -499,6 +505,12 @@ S_t = gbm.evolve(t, Z)
 \end{center}
 \end{columns}
 %If you want to try this code remember to install \texttt{tensorquant} with the command \texttt{pip install tensorquant}.
+\end{frame}
+
+\begin{frame}[fragile]{Brownian Motion Example}
+	\begin{center}    
+		\includegraphics[width=0.7\linewidth]{images/gbm_realizations_density}
+	\end{center}
 \end{frame}
 
 \begin{homework}

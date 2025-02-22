@@ -321,7 +321,7 @@ In real-world scenarios, it's often the case that you have a model that works we
 
 \begin{frame}{FRA Detailed Proof}
 	\begin{itemize}
-		\item<1-> Then using the definition of IBOR rate $L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}$
+		\item<1-> Then using the definition of EURIBOR rate $L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}$
 		\begin{equation*}
 			\begin{aligned}
 			\textbf{FRA} &= \tau KP(t,S) - \mathbb{E}_t\left[\cancel{\tau}D(t,T)\left(\cfrac{1-P(T,S)}{\cancel{\tau} P(T,S)}\right)P(T,S)\right] = \\
@@ -629,6 +629,7 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 	\end{itemize}
 \end{frame}
 
+
 \begin{frame}{Swap Curve}
 \begin{itemize}
 	\item The \emph{swap curve} is a graphical representation of the relationship between the fixed interest rate and the maturity of IRS (typically ranging from 1 to 30 years).
@@ -652,55 +653,102 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 \begin{itemize}
 \item Several factors can impact swap curve movements (changes in interest rates, market sentiment, economic indicators, and central bank policies).
 \item One way to interpret it is to make a comparison with the yield curve.
+\item A swap spread is the difference between the swap rate and the yield on a government security with the same maturity. 
+\item Swap spreads provide insight into credit risk and liquidity conditions, reflecting the market's perception of risk. 
+\item Factors affecting swap spreads include the perceived creditworthiness of counterparties, market liquidity, and supply and demand dynamics in the bond and swap markets. 
 \item Since the swap curve reflects exchanged rates over various time horizons, it offers a more accurate representation of market expectations and risk perceptions, as it is based on actual transactions.
-\begin{columns}
-\column{0.65\linewidth}
-\item It essentially shows how much more (or less) it costs to pay a fixed rate in a swap compared to lending to the government.
-\item The shape of the swap spread curve can provide insights into market expectations about future interest rates and economic conditions.
-\item Swap spreads reflect the perceived credit risk of banks relative to the government. Wider spreads may indicate concerns about bank health. 
-\column{0.35\linewidth}
-\begin{center}
-	\includegraphics[width=1.\linewidth]{images/swap_spread}
-\end{center}
-\end{columns}
+%\begin{columns}
+%\column{0.65\linewidth}
+%\item It essentially shows how much more (or less) it costs to pay a fixed rate in a swap compared to lending to the government.
+%\item The shape of the swap spread curve can provide insights into market expectations about future interest rates and economic conditions.
+%\item Swap spreads reflect the perceived credit risk of banks relative to the government. Wider spreads may indicate concerns about bank health. 
+%\column{0.35\linewidth}
+%\end{columns}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Trading and Hedging Strategies}
-\begin{itemize}
-\item Suppose that there is an unexpected increase in inflation expectations due to rising commodity prices. This change would likely cause the swap curve to shift upward, reflecting the higher expected future interest rates. 
-\item Market participants who anticipate this shift may adjust their swap positions accordingly, either by entering into longer-term swaps or adjusting the mix of fixed and floating rates in their portfolios.
-\item When evaluating the swap curve, market participants should compare the benefits and drawbacks of floating and fixed rates. 
-\item Floating rates (such as those linked to LIBOR or EURIBOR), can provide flexibility and potentially lower costs, as they reflect the prevailing market conditions. 
-\item On the other hand, fixed rates offer certainty and protection against potential interest rate hikes. 
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Trading and Hedging Strategies}
-\begin{itemize}
-\item Market participants need to carefully assess their risk appetite and market expectations to determine the most suitable rate structure for their swap transactions.
-\item From the perspective of a fixed-rate receiver, the swap curve determines the level of fixed interest payments they will receive over the life of the swap. 
-\item If the swap curve is upward sloping, the receiver would demand a higher fixed rate to compensate for the expected rise in interest rates. 
-\item Conversely, if the swap curve is downward sloping, it suggests that market expectations for future interest rates are declining, and a fixed-rate receiver would be willing to accept a lower fixed rate.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Trading and Hedging Strategies}
+\begin{frame}{Swap Spread}
+\begin{enumerate}
+	\item Since a government bond is often used as a benchmark and its rate is considered risk-free, the swap spread is determined by the perceived risk of the parties engaging in the swap. For this reason, swap spreads can be used to assess the parties' creditworthiness.
 	\begin{itemize}
-		\item With a Swap you can have a clear picture of the market. For example if you own the $5y$, you make money if rates go higher, loose money if they go lower.
-		\item With two Swaps instead you can bet on the \textcolor{red}{slope} of the interest rate curve.
-		\item If you bet on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
-		%\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
+		\item In swaps, the parties receiving the fixed rate flows in swaps increase their risk of rising rates. However, if rates fall, there is the risk that the original owner of the fixed rate flows will renege on the promise to pay that fixed rate. To compensate for this, the receiver of the fixed rate requires a fee on top of the fixed rate flows.
+		\item In essence, swap spreads reflect the market's collective sentiment regarding risk management, cost of protection, and the ability to trade financial instruments.
+	\end{itemize}
+	\item The more people want to swap out of their risk exposure, the more they must be willing to pay others to accept that risk. Therefore, larger swap spreads indicate a higher overall level of risk aversion in the marketplace. When there is an increase in the desire to reduce risk, spreads widen significantly.
+	\item Spread raising can also signal a vast reduction in liquidity, as was the case during the financial crisis of 2008.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Can Swap Spreads Predict A Recession?}
+	\begin{itemize}
+		\item A widening swap spread indicates increasing credit risk associated with swaps on government bonds. It can also suggest higher demand for swaps or reduced demand for government bonds. 
+		\item A significant widening of swap spreads could signal increased uncertainty or perceived credit risk in the market, which can be seen preceding economic downturns.
+		\item However, one should deal with them cautiously to predict macroeconomic changes since they can be affected by technical factors irrelevant to broader economic conditions.
 	\end{itemize}
 \end{frame}
 
-%1. Diversification: One of the most fundamental strategies for managing swap curve risks is diversification. By spreading investments across different points on the swap curve, investors can reduce their exposure to specific interest rate changes. For example, if an investor holds a portfolio of plain vanilla swaps with varying maturities, they are less vulnerable to sudden shifts in the swap curve at a particular point in time. Diversification allows for a balanced risk exposure and can help protect against adverse market conditions.
+\begin{frame}{Negative Swap Spreads}
+	\begin{itemize}
+	\item \emph{Supply and Demand Imbalances}: during periods of economic uncertainty or financial stress, investors may shelter with the safety and liquidity of Gov. bonds (\textbf{high demand}). Conversely, demand for swaps might be relatively lower, particularly if investors are less inclined to take on credit risk (\textbf{low demand}).
+	\item \emph{Credit Risk Differences}: during extreme "flight to quality" events, the perceived credit risk of even highly rated financial institutions can increase, causing swap rates to decline relative to Treasury yields.
+	\begin{columns}
+		\column{0.5\linewidth}
+		\begin{center}
+		\includegraphics[width=0.7\linewidth]{images/swap_spread}
+		\end{center}
+		\tiny{\emph{"Analysts at Deutsche Bank say the recent swap spread tightening reflects tighter macro prudential regulation, higher capital requirements\ldots"}}	
+	\column{0.5\linewidth}
+	\item \emph{Regulatory and Market Structure Changes}: changes in financial regulations or market structures can also impact swap spreads. For example, increased capital requirements for banks might affect their participation in the swap market.  
+	\end{columns}
+	\end{itemize}
+\end{frame}
 
-%2. Hedging: Hedging is another strategy commonly used to manage swap curve risks. By entering into offsetting positions, investors can protect themselves from potential losses due to changes in the swap curve. For instance, if an investor holds a long position in a plain vanilla swap, they can hedge their risk by taking a short position in another swap with similar characteristics but at a different point on the swap curve. This way, any adverse movement in the swap curve would be offset by gains in the hedging position.
+%\begin{frame}{Trading Strategies}
+%\begin{itemize}
+%\item Suppose that there is an unexpected increase in inflation expectations due to rising commodity prices. This change would likely cause the swap curve to shift upward, reflecting the higher expected future interest rates. 
+%\item Market participants who anticipate this shift may adjust their swap positions accordingly
+%%, either by entering into longer-term swaps or 
+%adjusting the mix of fixed and floating rates in their portfolios.
+%\item When evaluating the swap curve, market participants should compare the benefits and drawbacks of floating and fixed rates. 
+%\item Floating rates can provide flexibility and potentially lower costs, as they reflect the prevailing market conditions. 
+%\item On the other hand, fixed rates offer certainty and protection against potential interest rate hikes. 
+%\item With a single swap investors can "play" with rates changes.
+%\item With two swaps instead they can bet on the \textcolor{red}{slope} of the curve.
+%\item If believe on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
+%\end{itemize}
+%\end{frame}
 
-%3. Dynamic Positioning: Instead of maintaining a static portfolio of plain vanilla swaps, some investors opt for dynamic positioning. This strategy involves actively adjusting the positions in response to changes in the swap curve. By closely monitoring the swap curve and making timely adjustments, investors can take advantage of favorable movements and minimize the impact of adverse shifts. For example, if the swap curve steepens, an investor may choose to increase their exposure to longer-dated swaps to capture higher yields.
+%\begin{frame}{Trading and Hedging Strategies}
+%\begin{itemize}
+%\item Market participants need to carefully assess their risk appetite and market expectations to determine the most suitable rate structure for their swap transactions.
+%\item From the perspective of a fixed-rate receiver, the swap curve determines the level of fixed interest payments they will receive over the life of the swap. 
+%\item If the swap curve is upward sloping, the receiver would demand a higher fixed rate to compensate for the expected rise in interest rates. 
+%\item Conversely, if the swap curve is downward sloping, it suggests that market expectations for future interest rates are declining, and a fixed-rate receiver would be willing to accept a lower fixed rate.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Trading and Hedging Strategies}
+%	\begin{itemize}
+%		\item With a Swap you can have a clear picture of the market. For example if you own the $5y$, you make money if rates go higher, loose money if they go lower.
+%		\item With two Swaps instead you can bet on the \textcolor{red}{slope} of the interest rate curve.
+%		\item If you bet on steepening of the $30y-10y$ slope, you pay the $10y-30y$; if you bet on flattening on the same portion of the yield curve you receive the $10y-30y$.		
+%		%\item With Swaps you can bet on the \emph{bund basis}: this quantity is linked to the evolution of credit and liquidity in the inter-bank and Government bond markets.
+%	\end{itemize}
+%\end{frame}
 
-%4. duration matching: Duration matching is a strategy that aims to minimize interest rate risk by aligning the duration of a plain vanilla swap with the investor's investment horizon. Duration represents the weighted average time to receive or pay cash flows from a swap. By matching the duration of the swap with the investment horizon, investors can reduce the impact of changes in the swap curve on their portfolio's value. This strategy is particularly useful for risk-averse investors who prioritize stability and predictability.
+\begin{frame}{Trading Strategies}
+\begin{itemize}
+\item \emph{Diversification}: by spreading investments across different points on the swap curve, investors can reduce their exposure to specific interest rate changes. For example, if an investor holds a portfolio of plain vanilla swaps with varying maturities, they are less vulnerable to sudden shifts in the swap curve at a particular point in time.
+\item \emph{Hedging}: by entering into offsetting positions, investors can protect themselves from potential losses due to changes in the swap curve. For instance, if an investor holds a long position in a plain vanilla swap, they can hedge their risk by taking a short position in another swap with similar characteristics but at a different point on the swap curve. This way, any adverse movement in the swap curve would be offset by gains in the hedging position.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Trading Strategies}
+	\begin{itemize}
+\item \emph{Dynamic Positioning}: Instead of maintaining a static portfolio of plain vanilla swaps, this strategy involves actively adjusting the positions in response to changes in the swap curve. By closely monitoring the swap curve and making timely adjustments, investors can take advantage of favorable movements and minimize the impact of adverse shifts. For example, if the swap curve steepens, an investor may choose to increase their exposure to longer-dated swaps to capture higher yields.
+\item \emph{Duration matching}: aims to minimize interest rate risk by aligning the duration of a plain vanilla swap with the investor's investment horizon. Duration represents the weighted average time to receive or pay cash flows from a swap. By matching the duration of the swap with the investment horizon, investors can reduce the impact of changes in the swap curve on their portfolio's value. This strategy is particularly useful for risk-averse investors who prioritize stability and predictability.
+\end{itemize}
+\end{frame}
 
 \subsection{Swap and Bond Switching}
 \begin{frame}{Swap and Bond Switching}
@@ -1606,7 +1654,7 @@ Estimate the DV01 of the swap numerically.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Shifted Brownian Motion}
+\begin{frame}[fragile]{Shifted Geometric Brownian Motion}
 \begin{columns}
     \column{0.55\linewidth}
     \begin{ipython}
@@ -1643,6 +1691,12 @@ paths = GBMShifted(0.0, sigma, shift, L0, T, tsteps, N)
 \includegraphics[width=0.9\linewidth]{images/shifted_gbm}
 \end{center}
 \end{columns}
+\end{frame}
+
+\begin{frame}{Shifted Geometric Brownian Motion}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{images/shifted_gbm_density}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Shifted Log-normal}
