@@ -363,9 +363,7 @@ W(t) = W(t_0) + \sum_{t_0}^{t} \sqrt{\Delta t}Z
 \end{equation}
 
 \begin{block}{\texttt{Python} Digression}
-For the rest of the course we are going to show \texttt{python} examples using a framework we have developed, mostly hiding the underlying technical details.
-
-For the BM example, I would like to show how usually this problems are tackled in \texttt{python} analysing, once and for all, the code.
+For the rest of the course we are going to show \texttt{python} examples. In the first part I'm going to concentrate on the \textbf{implementation} while later the focus will be mostly on the \textbf{results} and you will use a dedicated framework we have developed, mostly hiding the underlying technical details.
 \end{block}
 \end{frame}
 
@@ -449,15 +447,18 @@ W = np.cumsum(W, axis=0)
     \includegraphics[width=1.\linewidth]{images/bm_realizations}
 \end{center}
 \end{columns}
+\begin{block}{Important}
+Those are just 10 \emph{possible} realizations of a BM: as a stochastic process it is impossible to know how it will develop in the future.
+\end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Brownian Motion Example}
 	\begin{center}    
 		\includegraphics[width=0.5\linewidth]{images/bm_realizations_density}
 	\end{center}
-	\begin{block}{Important}
-		Those are just 10 \emph{possible} realizations of a  BM: as a stochastic process it is impossible to know how it will develop in the future. A statistical analysis of a stochastic process necessarily involves to average ($\mathbb{E}$) among the possible paths.
-	\end{block}
+\begin{block}{Important}
+A statistical analysis of such processes necessarily involves an average ($\mathbb{E}$) among the possible paths.
+\end{block}
 \end{frame}
 
 \begin{frame}{Geometric Brownian Motion Example}
