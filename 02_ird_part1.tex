@@ -2,7 +2,7 @@
 \usetheme{afm}
 
 \title{Interest Rate Derivatives}
-\subtitle{Main Ineterst Rate Contracts Theory}
+\subtitle{Main Interest Rate Contracts Theory}
 \course{Advanced Financial Modelling}
 \author{\href{mailto:matteo.sani@unisi.it}{Matteo Sani}}
 
@@ -44,12 +44,11 @@
 
 \begin{frame}{Money Market Account}
 	\begin{itemize}
-		\item<0-> The \emph{short rate} $r_t$ can be modeled either by a deterministic or a stochastic process.
-		\item<1-> \textbf{Deterministic case}: from the definition of money market account, if I have $A$ units of currency at time 0, it follows that 
+		\item<0-> From the definition of money market account, if I have $A$ units of currency at time 0, it follows that 
 		\begin{equation*}
 			V(0) = A\cdot B(0) \implies V(t) = A\cdot B(t)
 		\end{equation*}
-		\item<2-> If we want to have at time $T$ exactly 1 unit of currency
+		\item<1-> If we want to have at time $T$ exactly 1 unit of currency
 		\begin{equation*}
 			AB(T) = 1 \implies A = \frac{1}{B(T)} \implies AB(t) = \frac{B(t)}{B(T)} 
 		\end{equation*}
@@ -68,16 +67,17 @@
 		\begin{block}{Definition}
 			The \textcolor{red}{(stochastic) discount factor} $D(t, T)$ is the amount at time $t$ that is \emph{equivalent} to one unit of currency payable at time $T$ and is given by
 			\begin{equation}
-				D(t, T) = \frac{B(t)}{B(T)} = e^{-\int_t^T r_s ds}
+				D(t, T) = \frac{B(t)}{B(T)} = e^{-\int_t^T r_s ds}\quad\left(D(T,T)=\cfrac{B(T)}{B(T)}=1\right)
 			\end{equation}
 	\end{block}}
 	\begin{itemize}
 		\item<2-> Can you guess what is the unit of measurement of a discount factor ?	
-		\item<3-> In many pricing application (e.g. Black-Scholes formula) $r$ is assumed to be a \textcolor{red}{deterministic} function of time, and so are $B(t)$ and $D(t,T)$:
+		\item<3-> The \emph{short rate} $r_t$ can be modelled either by a deterministic or a stochastic process.
+		\item<4-> In many pricing application (e.g. Black-Scholes formula) $r$ is assumed to be a \textcolor{red}{deterministic} function of time, and so are $B(t)$ and $D(t,T)$:
 		\begin{itemize}
-			\item<3-> this is motivated by the small influence interest rate variations have on equity prices.
+			\item<4-> this is motivated by the small influence interest rate variations have on equity prices.
 		\end{itemize}
-		\item<4-> When dealing with interest rate products, $r$ becomes the main actor, so the deterministic assumption must be dropped.
+		\item<5-> When dealing with interest rate products, $r$ becomes the main actor, so the deterministic assumption must be dropped.
 	\end{itemize}	
 \end{frame}
 
@@ -155,9 +155,9 @@
 	\begin{itemize}
 		\item Simply-compounded \textcolor{red}{spot interest rate}
 		\begin{equation}
-			L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}		
+			L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)} = \frac{1}{\tau(t,T)}\left(\frac{1}{P(t,T)} - 1\right) 
 		\end{equation}
-		represents the interest rate applicable to a single payment at a future date, calculated using simple interest
+		represents the interest rate applicable to a single payment at a future date, calculated using simple interest.
 		\item The \textcolor{red}{yield curve} at time $t$ is the graph of:
 		\begin{equation*}
 			T\rightarrowtail L(t, T)
@@ -193,7 +193,7 @@
 
 \begin{frame}{FRA Time Table}
 	\begin{itemize}
-		\item Consider a $1\times 3$ FRA (1-month into 3-month): the 1 in the $1\times 3$ refers to 1 month' time when settlement (fixing) takes place, and the 3 to the expiry date of the FRA from deal date.
+		\item Consider a $1\times 4$ FRA (1-month into 4-month): the 1 in the $1\times 4$ refers to 1 month' time when settlement (fixing) takes place, and the 4 to the expiry date of the FRA from deal date.
 		%, i.e. the rate quoted for the FRA is a 1-month rate at the time of settlement
 	\begin{center}
 		\includegraphics[width=0.8\linewidth]{images/fra_timeline}
@@ -656,7 +656,7 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 \item A swap spread is the difference between the swap rate and the yield on a government security with the same maturity. 
 \item Swap spreads provide insight into credit risk and liquidity conditions, reflecting the market's perception of risk. 
 \item Factors affecting swap spreads include the perceived creditworthiness of counterparties, market liquidity, and supply and demand dynamics in the bond and swap markets. 
-\item Since the swap curve reflects exchanged rates over various time horizons, it offers a more accurate representation of market expectations and risk perceptions, as it is based on actual transactions.
+%\item Since the swap curve reflects exchanged rates over various time horizons, it offers a more accurate representation of market expectations and risk perceptions, as it is based on actual transactions.
 %\begin{columns}
 %\column{0.65\linewidth}
 %\item It essentially shows how much more (or less) it costs to pay a fixed rate in a swap compared to lending to the government.
@@ -679,18 +679,18 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{Can Swap Spreads Predict A Recession?}
-	\begin{itemize}
-		\item A widening swap spread indicates increasing credit risk associated with swaps on government bonds. It can also suggest higher demand for swaps or reduced demand for government bonds. 
-		\item A significant widening of swap spreads could signal increased uncertainty or perceived credit risk in the market, which can be seen preceding economic downturns.
-		\item However, one should deal with them cautiously to predict macroeconomic changes since they can be affected by technical factors irrelevant to broader economic conditions.
-	\end{itemize}
-\end{frame}
+%\begin{frame}{Can Swap Spreads Predict A Recession?}
+%	\begin{itemize}
+%		\item A widening swap spread indicates increasing credit risk associated with swaps on government bonds. It can also suggest higher demand for swaps or reduced demand for government bonds. 
+%		\item A significant widening of swap spreads could signal increased uncertainty or perceived credit risk in the market, which can be seen preceding economic downturns.
+%		\item However, one should deal with them cautiously to predict macroeconomic changes since they can be affected by technical factors irrelevant to broader economic conditions.
+%	\end{itemize}
+%\end{frame}
 
 \begin{frame}{Negative Swap Spreads}
 	\begin{itemize}
 	\item \emph{Supply and Demand Imbalances}: during periods of economic uncertainty or financial stress, investors may shelter with the safety and liquidity of Gov. bonds (\textbf{high demand}). Conversely, demand for swaps might be relatively lower, particularly if investors are less inclined to take on credit risk (\textbf{low demand}).
-	\item \emph{Credit Risk Differences}: during extreme "flight to quality" events, the perceived credit risk of even highly rated financial institutions can increase, causing swap rates to decline relative to Treasury yields.
+	\item During extreme "flight to quality" events, the perceived credit risk of even highly rated financial institutions can increase, causing swap rates to decline relative to Treasury yields.
 	\begin{columns}
 		\column{0.5\linewidth}
 		\begin{center}
