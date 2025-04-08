@@ -157,7 +157,10 @@
 		\begin{equation}
 			L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)} = \frac{1}{\tau(t,T)}\left(\frac{1}{P(t,T)} - 1\right) 
 		\end{equation}
-		represents the interest rate applicable to a single payment at a future date, calculated using simple interest.
+		represents the interest rate applicable to a single payment at a future date, calculated using simple interest
+        \begin{equation*}
+            P(t,T)(1+L(t,T)\tau(t,T))=1
+        \end{equation*}
 		\item The \textcolor{red}{yield curve} at time $t$ is the graph of:
 		\begin{equation*}
 			T\rightarrowtail L(t, T)
@@ -268,11 +271,16 @@ For any $0\leq s \leq t$ and stochastic process $\{X_t\}_{t\geq 0}$, we have the
 \mathbb{E}[\mathbb{E}[X|\mathcal{F}_t]|\mathcal{F}_s]=\mathbb{E}[X|\mathcal{F}_s]
 \end{equation}
 \end{block}
-%The LHS represents \emph{the best prediction at time $s$ of what the best prediction at time $t$ of $X$ would be}. 
+\begin{itemize}
+\item For example, consider $X_t$ represents the candidate X's vote counts at a time $t$ and the filtrations represent the information available.
+\item The RHS tells what is the expectation of the vote count with say 4 hours in (i.e. $s=4$), while $\mathcal{F}_t$ is the information available on the voting 12 hours in.
+\item The LHS represents \emph{the best prediction at time $s$ of what the best prediction at time $t$ of $X$ would be}. 
+\item At time $s$, if you are predicting that you will expect whatever the count is going to be at time $t>s$ (i.e., in another 8 hours time), then you are already predicting it at time $s$.
+\end{itemize}
 
 %The tower property says we can estimate $\mathbb{E}[X|\mathcal{F}_s]$ by averaging over our model's predictions for different $X$ values, weighting these predictions by how likely each $X$ is given $\mathcal{F}_s$.
 
-In real-world scenarios, it's often the case that you have a model that works well with complete information ($\mathcal{F}_t$), but you only have partial information ($\mathcal{F}_s$). The tower property provides a way to bridge this gap. It allows you to use your model even when you don't have all the input data, by averaging over the missing data in a way that is consistent with the data you do have.
+%In real-world scenarios, it's often the case that you have a model that works well with complete information ($\mathcal{F}_t$), but you only have partial information ($\mathcal{F}_s$). The tower property provides a way to bridge this gap. It allows you to use your model even when you don't have all the input data, by averaging over the missing data in a way that is consistent with the data you do have.
 \end{frame}
 
 \subsection{FRA Detailed Proof}
@@ -321,7 +329,7 @@ In real-world scenarios, it's often the case that you have a model that works we
 
 \begin{frame}{FRA Detailed Proof}
 	\begin{itemize}
-		\item<1-> Then using the definition of EURIBOR rate $L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}$
+		\item<1-> Then using the definition of EURIBOR rate $L(T,S)=\frac{(1-P(T,S))}{\tau(T,S)P(T,S)}$
 		\begin{equation*}
 			\begin{aligned}
 			\textbf{FRA} &= \tau KP(t,S) - \mathbb{E}_t\left[\cancel{\tau}D(t,T)\left(\cfrac{1-P(T,S)}{\cancel{\tau} P(T,S)}\right)P(T,S)\right] = \\
@@ -556,16 +564,15 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 def makePFS(rates):
-  vals = []
-  today = date.today()
-  dfs = [1/(1+rates[i])**i for i in range(1, len(rates))]
-  dc = DiscountCurve(today,
-                     [today+relativedelta(years=i) for i in range(1, len(rates))],
-                     dfs)
-  dummy_irs = InterestRateSwap(1, today, "5y", 0.137, "1y", side=SwapSide.Payer)
-  swap_rate = dummy_irs.swap_rate(dc)
-  irs = InterestRateSwap(1, today, "5y", swap_rate, "1y", side=SwapSide.Payer)
-  val, vals = irs.npv_with_FRA(dc)
+    vals = []
+    today = date.today()
+    dfs = [1] + [1/(1+rates[i])**i for i in range(1, len(rates))]
+    pillars = [today] + [today+relativedelta(years=i) for i in range(1, len(rates))]
+    dc = DiscountCurve(pillars, dfs)
+    dummy_irs = InterestRateSwap(1, today, "5y", 0.1, "1y", side=1)
+    swap_rate = dummy_irs.swap_rate(dc)
+    irs = InterestRateSwap(1, today, "5y", swap_rate, "1y", side=1)
+    val, vals = irs.npv_with_FRA(dc)
 
 makePFS([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])
 makePFS([0.05] * 7)
@@ -669,10 +676,10 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 
 \begin{frame}{Swap Spread}
 \begin{enumerate}
-	\item Since a government bond is often used as a benchmark and its rate is considered risk-free, the swap spread is determined by the perceived risk of the parties engaging in the swap. For this reason, swap spreads can be used to assess the parties' creditworthiness.
+	\item Government bonds are used as a benchmark (their rates are considered risk-free), the swap spread is determined by the perceived risk of the parties engaging in the swap. For this reason, swap spreads can be used to assess the parties' creditworthiness.
 	\begin{itemize}
-		\item In swaps, the parties receiving the fixed rate flows in swaps increase their risk of rising rates. However, if rates fall, there is the risk that the original owner of the fixed rate flows will renege on the promise to pay that fixed rate. To compensate for this, the receiver of the fixed rate requires a fee on top of the fixed rate flows.
-		\item In essence, swap spreads reflect the market's collective sentiment regarding risk management, cost of protection, and the ability to trade financial instruments.
+		\item In swaps, the parties receiving the fixed rate flows in swaps increase their risk of rising rates. If rates fall, there is the risk that the original owner of the fixed rate flows will renege on the promise to pay that fixed rate. To compensate for this, the receiver of the fixed rate requires a fee on top of the fixed rate flows.
+%		\item In essence, swap spreads reflect the market's collective sentiment regarding risk management, cost of protection, and the ability to trade financial instruments.
 	\end{itemize}
 	\item The more people want to swap out of their risk exposure, the more they must be willing to pay others to accept that risk. Therefore, larger swap spreads indicate a higher overall level of risk aversion in the marketplace. When there is an increase in the desire to reduce risk, spreads widen significantly.
 	\item Spread raising can also signal a vast reduction in liquidity, as was the case during the financial crisis of 2008.
@@ -690,11 +697,11 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 \begin{frame}{Negative Swap Spreads}
 	\begin{itemize}
 	\item \emph{Supply and Demand Imbalances}: during periods of economic uncertainty or financial stress, investors may shelter with the safety and liquidity of Gov. bonds (\textbf{high demand}). Conversely, demand for swaps might be relatively lower, particularly if investors are less inclined to take on credit risk (\textbf{low demand}).
-	\item During extreme "flight to quality" events, the perceived credit risk of even highly rated financial institutions can increase, causing swap rates to decline relative to Treasury yields.
+	%\item During extreme "flight to quality" events, the perceived credit risk of even highly rated financial institutions can increase, causing swap rates to decline relative to Treasury yields.
 	\begin{columns}
 		\column{0.5\linewidth}
 		\begin{center}
-		\includegraphics[width=0.7\linewidth]{images/swap_spread}
+		\includegraphics[width=0.9\linewidth]{images/swap_spread}
 		\end{center}
 		\tiny{\emph{"Analysts at Deutsche Bank say the recent swap spread tightening reflects tighter macro prudential regulation, higher capital requirements\ldots"}}	
 	\column{0.5\linewidth}
@@ -760,7 +767,7 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 		\item<2-> A swap can be considered as an exchange between two kinds of bond with the same notional reimbursed at maturity. In fact:
 		\begin{itemize}
 		 \item<3->\emph{the fixed leg} of the swap can be viewed as a \textcolor{red}{fixed coupon stream};
-		 \item<3-> while the \emph{variable} can be considered a \textcolor{red}{floating rate note coupon stream}. 
+		 \item<3-> the \emph{variable leg} can be considered a \textcolor{red}{floating rate note coupon stream}. 
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -889,7 +896,7 @@ where $f(t_1,t_2)$ denotes the forward rate between $t_1$ and $t_2$.
 \end{equation*}
 \begin{itemize}
 \item The price of FRN has a range from \emph{par to par} + full coupon. It is par right before the reset date and is C right after the reset date (and is linear when pricing date is between two reset dates).
-\item Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. 
+%\item Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. 
 \begin{equation*}
 \textbf{FRN} = D_{0,1}C_{reset} + \sum_{i=1}^nD_{0,i+1}F_{i,i+1} + D_{0,n}
 \end{equation*}
@@ -897,35 +904,35 @@ where $f(t_1,t_2)$ denotes the forward rate between $t_1$ and $t_2$.
 \end{frame}
 
 \begin{frame}[fragile]{Floating Rate Note Example}
-\begin{columns}
-\column{0.5\linewidth}
-\begin{ipython}
-import pandas as pd, numpy as np
+%\begin{columns}
+%\column{0.5\linewidth}
+%\begin{ipython}
+%import pandas as pd, numpy as np
 
-from datetime import date
-from dateutil.relativedelta import relativedelta
+%from datetime import date
+%from dateutil.relativedelta import relativedelta
 
-frn = FloatingRateNote(date.today(), "3Y", "3m")
-pillars = [date.today()+relativedelta(months=dt_from_str(f"{t}M")) 
-           for t in rates['T']]
-rates = rates['r'].values
-prices = []
+%frn = FloatingRateNote(date.today(), "3Y", "3m")
+%pillars = [date.today()+relativedelta(months=dt_from_str(f"{t}M")) 
+%           for t in rates['T']]
+%rates = rates['r'].values
+%prices = []
 
-d = date.today()
-for i in range(0, 367*2):
-  next_pillars = [p for p in pillars if p >= d]
-  dts = [(p-d).days/360 for p in next_pillars]
-  dfs = [np.exp(-dt*rates[i]) for i, dt in enumerate(dts)]
-  dc = DiscountCurve(d, next_pillars, dfs)
+%d = date.today()
+%for i in range(0, 367*2):
+%  next_pillars = [p for p in pillars if p >= d]
+%  dts = [(p-d).days/360 for p in next_pillars]
+%  dfs = [np.exp(-dt*rates[i]) for i, dt in enumerate(dts)]
+%  dc = DiscountCurve(d, next_pillars, dfs)
 
-  prices.append(frn.price(d, dc))
-  d = date.today()+relativedelta(days=i)
-\end{ipython}
-\column{0.5\linewidth}
+%  prices.append(frn.price(d, dc))
+%  d = date.today()+relativedelta(days=i)
+%\end{ipython}
+%\column{0.5\linewidth}
 \begin{center}
-    \includegraphics[width=0.9\linewidth]{images/frn_sawtooth}
+    \includegraphics[width=0.75\linewidth]{images/frn_sawtooth}
 \end{center}
-\end{columns}
+%\end{columns}
 \end{frame}
 
 \subsection{Fixed vs Variables}
@@ -1070,7 +1077,7 @@ for i in range(0, 367*2):
 	\begin{itemize}
 		\item<1-> An \textcolor{red}{Asset Swap} (AS) can be defined as a \emph{synthetic floating-rate note}.
 		\item In fact, the Asset Swap transforms a fixed rate into a floating one, \textcolor{red}{leaving the credit risk profile unchanged}.
-		\item<1-> There are several kinds of Asset Swap contract, in the following we are going to consider \textcolor{red}{Par Asset Swaps}. 
+		\item<1-> There are several kinds of Asset Swap contracts, in the following we are going to consider \textcolor{red}{Par Asset Swaps}. 
 		\item<2-> The package is made of a position in a bond and another in a swap.
 		\item<3-> In case of \textbf{default} of the bond issuer, the Asset Swap buyer \textbf{must pay the fixed leg and the principal in the swap} but \textcolor{red}{does not receive the coupon} of the defaulted bond. 
 	\end{itemize}
@@ -1244,531 +1251,4 @@ For this exercise assume that all annuity factors have a value of 10.0 for simpl
 \end{itemize}
 \end{frame}
 \end{homework}
-
-\section{Risk Measures}
-\begin{frame}{Sensitivity}
-\begin{itemize}
-\item The assignment of the correct price to a derivative is not the whole story.
-\item \emph{Sensitivity} measures how much the value of a financial instrument changes in response to a change in an underlying factor.  
-\item Understanding sensitivity helps investors to:
-\begin{itemize}
-    \item \emph{Assess Risk:} identify potential vulnerabilities and understand how different market movements can impact portfolio value;
-    \item \emph{Manage Portfolios:} make informed decisions about asset allocation and hedging strategies to optimize risk-return profiles;
-    \item \emph{Compare Investments:} evaluate the relative risk and potential reward of different investments based on their sensitivities.
-\end{itemize}
-\item The sensitivity concept closely resamble the mathematical definition of \emph{derivative}, so in the very end estimating the sensitivity is as simple as computing a ratio of variations.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Sensitivity}
-There are several metrics to estimate the risk and different ways to measure its actual value:
-\begin{itemize}
-\item \textbf{Duration:} measures a bond's sensitivity to changes in interest rates (higher duration greater price change for a given interest rate shift)
-\begin{equation*}
-D(y)\equiv -\cfrac{1}{P}\cdot \cfrac{\partial P}{\partial y}=-\cfrac {\partial \ln(P)}{\partial y}\quad\text{ definition as derivative}
-\end{equation*}
-Its interpreation as sensitivity of a bond's market price to interest rate (i.e. yield) movements comes from
-\begin{equation*}
-D\approx -\cfrac {1}{P}\cfrac{\Delta P}{\Delta y}\rightarrow \Delta P\approx -P\cdot D\cdot \Delta y
-\end{equation*}
-Thus duration is approximately equal to the percentage change in price for a given finite change in yield.
-\item \textbf{Beta:} measures a stock's sensitivity to changes in the overall market ($\beta > 1$ indicates higher volatility than market).
-\item \textbf{Delta:} measures an option's sensitivity to changes in the price of the underlying asset.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Sensitivity Calculation}
-Sensitivities can be computed with different techniques:
-\begin{itemize}
-	\item \textbf{analytical}: involves deriving a closed-form expression which can be complex (and not always feasible);
-	\item \textbf{numerical}: one bumps the yield curve calibration instruments and reprice the derivative. The change in price gives the risk;
-	\item \textbf{curve Jacobians}: when yield curves have been calibrated, the solver slope 'Jacobian' can be kept and used to give the change in derivative price for a change in forwards/discount factors;
-	\item \textbf{algorithmic differentiation}: can be used to compute risk "automatically" at the same time as computing the price. It produces accurate and fast risk estimates.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Sensitivity in IRD World}
-\begin{itemize}
-\item<1-> The concept of risk on interest rate derivatives measures precisely the risk associated with the shift of the interest rate curve. 
-\item<2-> However there are a number of complications...
-\item<2-> Interest rate derivatives depend on a variety of instruments, used in the determination of the interest rate curve, rather than a single asset.
-\item<3-> Because there are many ways of shifting the interest rate curve, many different deltas can be computed. 
-\end{itemize}
-\end{frame}
-
-\begin{frame}{PV01}
-\begin{itemize}
-    \item<1-> \textcolor{red}{PV01} refers to present value of 1 basis point and it's the discounted value of the cashflows for a rate of 0.01\% for all periods of a particular instrument, (i.e. the NPV of the fixed leg with a rate of 0.01\%).
-	\begin{equation}
-	   \textbf{PV01} = 0.01\% \frac{\partial \textbf{PFS}}{\partial K} = 0.01\% \sum_{i=\alpha+1}^\beta\tau_iP(t,T_i)
-	\end{equation}
-	\item<2-> This is a useful measure for dealers calculating the exact P\&L generated by applying a spread (or margin) to a fixed rate away from the mid-market rate.
-   \item<3-> Besides giving you the information on how a currency amount would affect the fixed rate (incorporate a fee for example), the PV01 is not useful as a risk measure. 
-\end{itemize}
-\end{frame}
-
-\begin{frame}{DV01}
-\begin{itemize}
-	\item<1-> \textcolor{red}{DV01} refers to dollar (actually currency amount) value of 1 basis point and it's the change in value of the NPV of the instrument with a change of 1 basis point in the curve(s). The average of the change for -1bp and +1bp to be more precise. 
-	\item<2-> You can consider what happens to the NPV if every rate $r_i$ is changed in parallel by the same amount
-	\begin{equation*}
-	\textbf{DV01} = \sum_j \frac{\partial \textbf{PFS}}{\partial r_j} = -\sum_{j}\tau_jP_j+\sum_{j}\left(K\sum_{i=\alpha+1}^\beta\tau_i\frac{\partial P_i}{\partial r_j} - \sum_{k=\alpha+1}^\beta L_k\tau_k\frac{\partial P_k}{\partial r_j}\right)
-	\end{equation*}
-	\item<3-> In the multi-curve framework DV01 would be calculated for the forecast curve, and for the discounting curve, resulting in two actual DV01 measurements.
-    \item<4-> When the swap is at fair value (NPV = 0), PV01 and DV01 are very very close although not exactly the same, otherwise they will be different.
-    %\item<5-> For given set of market data, changing the swap rate will not change the PV01 but will change the DV01.
-    \item<5-> A trader care mostly about DV01 (as a number or, better yet, divided into buckets) because wants to know how the P\&L changes if the curves change by 1bps.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{DV01 Numerical Calculation}
-\begin{itemize}
-	\item<1-> Assume the P\&L on a Swap could be approximated with a linear term plus its convexity
-	\begin{equation*}
-	\Delta \textbf{PFS}(\delta r)\approx \frac{\partial \textbf{PFS} }{\partial r}\delta r + \frac{1}{2}\frac{\partial^2 \textbf{PFS}}{\partial r^2}\delta r^2
-	\end{equation*}
-	\item<2-> Then bumping $\delta r$ by $\pm 1$~bp and dividing by 2 eliminates the convexity element and very accurately approximates the DV01
-	\begin{equation*}
-	\textbf{DV01} = \frac{\Delta \textbf{PFS}(+1~bp)-\Delta \textbf{PFS}(-1~bp)}{2}=\frac{\partial \textbf{PFS} }{\partial r}
-	\end{equation*}
-	\item<3-> Another common method of calculation is to use a single bumped curve by, say, $\frac{1}{100}$th of a bp, and scale the result by 100 (less accurate, since the convexity is marginalised and not eliminated)
-	\begin{equation*}
-	100\Delta \textbf{PFS}\left(\frac{1}{100}~bp\right)=\frac{\partial \textbf{PFS}}{\partial r}+\frac{1}{200}\frac{\partial^2\textbf{PFS}}{\partial r^2}
-	\end{equation*}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Market Rate Sensitivity}
-\begin{itemize}
-	\item<1-> Forecast and discount curves used in pricing formulas are those \emph{implied} by the market quotes of interest rate instruments (i.e. futures, OIS, etc\ldots). They are usually determined through a technique called \textbf{bootstrap}.
-	\item<2-> Another popular, though more complicated, method to assess the risk is to shock each input instrument used in the bootstrapping by 1~bp one by one, rebuild the curves, and then re-price the instrument of interest to obtain its curve sensitivity. 
-	\item<3-> This is called \textcolor{red}{Market Rate Sensitivity} and its value is given by the sum of each Swap $NPV$ variations.
-	\item<4-> This of course is not quite a "parallel" shift of any curve (e.g. a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Market Rate Sensitivity}
-In a plain vanilla Swap is very close but not equal to DV01. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
-\begin{center}
-\includegraphics[width=0.5\linewidth]{images/dv01}
-\end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Algorithmic Differentiation}
-Consider the following function
-\begin{equation*}
-\begin{cases}
-\text{Function: } f(x_0, x_1) = 2x_0^2 + 3x_1\\
-\text{Solution: } \frac{df}{dx_0} = 4x_0, \text{ and } \frac{df}{dx_1}=3
-\end{cases}
-\end{equation*}
-\begin{columns}
-\column{0.4\linewidth}
-Let's try to compute its derivative by explicitly defining the $f'$ and using the adjoint technique, when $x_0=2$ and $x_1=3$,
-
-\begin{equation*}
-\frac{df}{dx_0} = 8, \text{ and } \frac{df}{dx_1}=3
-\end{equation*}
-\column{0.6\linewidth}
-\begin{ipython}
-import numpy as np, tensorflow as tf
-
-def f(x):
-  return 2*x[0]**2+3*x[1]
-
-def df_tangent(x):
-  return 4*x[0], 3
-
-def df_adjoint(x):
-  x = tf.Variable(x, dtype='float', name='x')
-  with tf.GradientTape() as tape:
-    f = 2*x[0]**2+3*x[1]
-  return tape.gradient(f, x)
-
-x = (2, 3)
-print (df_tangent(x), df_adjoint(x))
-\end{ipython}
-\begin{ioutput}
-
-(8, 3) tf.Tensor([8. 3.], shape=(2,), dtype=float32)
-\end{ioutput}
-\end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Algorithmic Differentiation Example}
-Compute DV01 for a 5-years receiver IRS with a 1M notional, exchanging a fixed rate of 5\% with a flat 1\% EURIBOR rate with annual payments.
-
-The explicit derivative is
-\begin{equation*}
-\begin{gathered}
-\cfrac{\partial PV_{float}}{\partial F} = \cfrac{\partial}{\partial F}\sum_i N\tau F_i e^{-rt_i} = \sum_i N\tau e^{-rt_i} \\
-\cfrac{\partial PV_{fix}}{\partial r} = \cfrac{\partial}{\partial r}\sum_i N\tau K e^{-rt_i} = -\sum_i N\tau K t_i e^{-rt_i}        
-\end{gathered}
-\end{equation*}
-\end{frame}
-
-\begin{frame}[fragile]{Algorithmic Differentiation Example}
-\begin{columns}
-\column{0.5\linewidth}
-\begin{ipython}
-import numpy as np
-import tensorflow as tf
-
-class Swap:
-  def __init__(self, notional, fixed_rate, tau, terms, rates):
-    self.N = notional; self.K = fixed_rate
-    self.tau = tau; self.t = terms
-    self.r = tf.Variable(rates, name="rates", dtype=tf.float64)
-
-  def swap_price(self, dr=0.0001):
-    fixed_pv = tf.Variable(0.0, dtype=tf.float64)
-    float_pv = tf.Variable(0.0, dtype=tf.float64)
-
-    with tf.GradientTape(persistent=True) as tape:
-      for i in range(1, len(self.t)):
-        fixed_pv = fixed_pv + self.K*self.tau
-                   *tf.math.exp(-self.r[i]*self.t[i])
-      for j in range(1, len(self.terms)):
-        F = (self.r[j]*self.t[j]-self.r[j-1]*self.t[j-1])
-        float_pv = float_pv + F*tf.math.exp(-self.r[j]*self.t[j])
-    
-    fixed_pv_dot = np.sum(dr*tape.gradient(fixed_pv, self.r))
-    float_pv_dot = np.sum(dr*tape.gradient(float_pv, self.r))
-
-    swap_pv = self.N*(fixed_pv - float_pv)
-    swap_pv_dot = self.N*(fixed_pv_dot - float_pv_dot)
-
-    return swap_pv, swap_pv_dot
-\end{ipython}
-\column{0.5\linewidth}
-\begin{ipython}
-N = 1e6
-fixed_rate  = 0.015
-tau         = 1.0
-terms       = np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0])
-rates       = np.array([0.01, 0.012, 0.013, 0.014, 0.016, 0.017])
-
-swap = Swap(N, fixed_rate, tau, terms, rates)
-price, dv01 = swap.swap_price()
-
-print (f"Swap price: {price:,.2f}")
-print (f"DV01: {dv01:,.2f}")
-\end{ipython}
-\begin{ioutput}
-
-Swap price: -9,097.43
-DV01: -472.60
-\end{ioutput}
-\end{columns}
-\end{frame}
-
-%https://quant.stackexchange.com/questions/49582/interest-rate-swap-pv01-vs-dv01
-%https://quant.stackexchange.com/questions/70346/fixed-vs-float-swap-interest-rate-risk/70426#70426
-%https://math.nyu.edu/~avellane/DerivativeSecurities7.pdf
-
-%1) Why does an interest rate swap have no duration, but it does have a DV01?
-
-%Every spread product has duration and DV01 since all are sensitive to underlying moves in rates. To calc duration on a swap it's your notional/DV01 * 10k. As your swap reaches maturity the duration and DV01 factors down. Longer duration swaps, say 10Y vs 2Y, will inherently have more duration. Ex. a 10Y swap will have a duration slightly less than 10 depending on how much time to maturity left on the position.  
-%
-%For 2 and 3, do not think of each leg of the swap having DV01. Rather, the entire swap itself (both legs) is one position with DV01 depending on if you are paying/receiving fixed vs float.
-%
-%2) What does it mean for the fixed leg of an interest rate swap to have positive DV01?
-%
-%If you pay fixed and receive float, the entire swap has a positive DV01. Rates sell off (go higher), and you receive positive PnL on the position = positive DV01.
-
-
-%%\begin{frame}{Trading and Hedging Swaps}
-%%	For example, the yield spread is 0.6524\%. An investor believes that this yield spread will narrow as inter-bank credit improves relative to German Sovereign credit. By entering into a position which profits from a rise in the lower (German	Sovereign) yields and / or a fall in the higher (inter-bank) yields, the investor is able to express his view on relative credit pricing.
-%%	AGGIUNGERE UN PO' DI SPIEGAZIONE
-%%\end{frame}
-
-\begin{homework}
-\begin{frame}{\textcolor{white}{Homework}}
-\begin{itemize}
-\item[white] Consider a 2-year Interest Rate Swap on a notional of 1M, with a fixed rate of 5\% and paying Libor rate annually. The term-structure of interest rates is flat at 5\%.
-Estimate the DV01 of the swap numerically.  
-\end{itemize}
-\end{frame}
-\end{homework}
-
-\section{Cap and Floor}
-\begin{frame}{Caps and Floors}
-	\begin{itemize}
-		\item<1-> A \textcolor{red}{Cap} is a Payer IRS in which the payment is done only if the payoff is positive. Its value is the expectation of 
-		\begin{equation}
-			\sum_{i=\alpha+1}^{\beta}D(t,T_i)N\tau_i\max\left[L(T_{i-1},T_i)-K,0\right]
-			\label{eq:cap}
-		\end{equation} 
-		\item<2-> The cap allows investors which have a debt at a variable rate to buy insurance against high rates in the future.
-		\item<3-> A \textcolor{red}{Floor} is the same kind of object but analogous to a Receiver IRS:
-		\begin{equation}
-			\sum_{i=\alpha+1}^{\beta}D(t,T_i)N\tau_i\max\left[K-L(T_{i-1},T_i),0\right]
-			\label{eq:floor}
-		\end{equation} 
-	\end{itemize}
-\end{frame}
-
-\subsection{Caplets}
-\begin{frame}{Caplet and Floorlet}
-	\begin{itemize}
-		\item<1-> Considering each element of the sum in \cref{eq:cap} or \cref{eq:floor} we see that Cap/Floor can be split into forward starting options over a floating rate, called \textcolor{red}{Caplet/Floorlet}.
-		\item<2-> A Caplet/Floorlet payoff is defined as
-		\begin{equation*}
-			D(t,T_i)N\tau_i\max\left[L(T_{i-1},T_i)-K,0\right]
-		\end{equation*} 
-		and its value is given by
-		\begin{equation}
-			\textbf{Cpl}(t,T_{i-1},T_i,\tau,N,K)=\expect{Q}\left[e^{-\int_t^{T_i}r_s ds}N\tau(L(T_{i-1},T_i)-K)^+ | \mathcal{F}_t\right]
-		\end{equation}
-		\item<3-> This can also be written
-		\begin{equation*}
-			\textbf{Cpl}=N\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\tau P(T_{i-1},T_i)(L(T_{i-1},T_i)-K)^+ | \mathcal{F}_t\right]
-		\end{equation*}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Caplets as ZCB Options}
-	\begin{itemize}
-		\item<1-> Using the LIBOR rate definition we get
-		\begin{equation*}
-			\begin{aligned}
-				\textbf{Cpl} &=N\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}P(T_{i-1},T_i)\left(\frac{1}{P(T_{i-1},T_i)}-1-K\tau\right)^+ \Big\rvert \mathcal{F}_t\right] \\
-				& = N\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(1-(1+K\tau)P(T_{i-1},T_i)\right)^+ | \mathcal{F}_t\right]
-			\end{aligned}
-		\end{equation*}
-		\item<2-> Multiplying by $\frac{1}{1+K\tau}$ we finally get
-		\begin{equation}
-			\boxed{\textbf{Cpl}=N(1+K\tau)\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(\frac{1}{1+K\tau}-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]}
-		\end{equation}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Caplets as ZCB Options}
-	\begin{block}{Intepretation}
-		\begin{enumerate}
-		\item Caplets can be seen as \textcolor{red}{put options} on ZCBs
-\begin{equation*}
-\textbf{Cpl}=N'\expect{Q}\left[D(t,T_{i-1})\left(K'-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]
-\end{equation*}
-		\item Similarly floorlets are \textcolor{red}{call options} on ZCBs
-\begin{equation}
-\textbf{Flr}=N'\expect{Q}\left[D(t, T_{i-1})\left(P(T_{i-1},T_i)-K'\right)^+ \Big\rvert \mathcal{F}_t\right]
-\end{equation}
-		\end{enumerate}
-	\end{block}
-\end{frame}
-
-\section{The Black Model}
-\begin{frame}{The Black Model - Overview}
-	\begin{itemize}
-		\item The \textcolor{red}{Black Model} extends the Black-Scholes formula to \emph{caplets} and \emph{swaptions}. % and \emph{bond options}. %It uses the forward coordinates, not the spot ones; this last is not a minor issue indeed.
-		\item The main difference with respect to the Black-Scholes set up is that \textcolor{red}{forward rates $F(t;T_{i-1},T_i)$ (or swap rates $S_{\alpha\beta}(t)$) are log-normally distributed}, rather than the spot price of the underlying. 
-		\item It should be stated that Black’s formulas did not originally correspond to prices that arise from the application of martingale pricing theory to some particular model. 
-		\item The advent of the \emph{market models} will provide a belated justification for these formulas but we shall see that the justifications are mutually inconsistent. 
-		\item Indeed, it may be shown that if forward rates have deterministic volatilities then it is not possible for swap rates to also have deterministic volatilities. Therefore Black’s formulas for caplets and swaptions cannot both hold within the same model. 
-	\end{itemize}
-\end{frame}
-
-%\begin{frame}{The Black Model: Overview}
-%	\begin{itemize}
-	%		\item It should be recognized that the Black model is being actually used in different ways. In particular the caps uses the forward short-term LIBOR rate as the underlying state variable, whereas the swaptions uses longer-term forward swap rates. Beause forward swap rates are nearly linera in individual forward rates , the lognormality assumption implicit in the Black model cannot hold simultaneously for both, since a linear combination of lognormal variables is not lognormal.
-	%	\end{itemize}
-%\end{frame}
-
-%\begin{frame}{The Black Model: Overview}
-%	\begin{itemize}
-%	\item It should be stated that Black’s formulae for caps and swaptions did not originally correspond to prices that arisefrom the application of martingale pricing theory to some particular model. 
-%	\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
-%		\item 
-%		\item ...but for the moment we cannot consider it as a model ! Just a bunch of formulas.
-%		
-%
-%
-%When we model swap rates directly as in (30) we say that we have a swap market model. Thiscontrasts with the LIBOR market models of Section 4.Remark 5 The advantage of Black’s swaption formula is that it is elegant and exact, whereas the BGM formula is cumbersome and only an approximation. However, the BGM approximation is consistent with Black’s formulae for caplets and caps whereas Black’s swaption formula is not. 
-%That said, within the LIBOR market framework with deterministic volatilities, it can be argued thatforward swap rates are approximately log-normally distributed.
-%
-%
-%	\end{itemize}
-%\end{frame}
-
-\begin{frame}{Pricing Caps with the Black-76 Formula}
-	\begin{block}{Definition}
-	\begin{equation}
-		\begin{aligned}
-		\textbf{Cap}_{Bl}(0, \tau,N,K,\sigma_{\alpha,\beta}) &= N\sum_{i=\alpha+1}^{\beta}\textbf{Cpl}_{Bl}(T_i, \tau,K,\sigma_{\alpha,\beta}) = \\ &=N\sum_{i=\alpha+1}^{\beta}\tau P(0,T_i) \textbf{Bl}(K,F(0;T_{i-1},T_i),v_i)
-		\end{aligned}
-		\label{eq:cap_black}
-	\end{equation}
-	where
-	\begin{equation*}
-		\begin{gathered}
-			\boxed{\textbf{Bl}(K,F_i,v_i)=F\Phi(d_1(K,F_i,v_i)) - K\Phi(d_2(K,F_i,v_i))} \\
-			d_{1,2} = \frac{\log{\cfrac{F_i}{K}} \pm \cfrac{v_i^2}{2}}{2} \\[0.2cm]
-			v_i = \sigma_{\alpha,\beta}\sqrt{T_{i-1}}
-		\end{gathered}
-	\end{equation*}
-	\end{block}
-\end{frame}
-
-\begin{frame}{Problems with the Black Model}
-\begin{itemize}
-	\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
-	\item In the Black model \textcolor{red}{negative rates are not allowed}.
-	\begin{equation*}
-		d_{1,2} = \frac{\boxed{\log{\frac{F}{K}}} \pm \cfrac{v^2}{2}}{2} 
-	\end{equation*}
-	but in the last years in the inter-bank market it was not so unusual to find prices for -1\% strike floors.
-	\item Moreover in the Black model the empirical evidence of the "smile" (volatility vs $K$) is not accounted for, i.e. $\sigma$ is a constant. Two caps identical but for the strike need a different volatility to recover two different market prices if one uses Black formula.
-	%\item And this is clear if one looks at the distribution and at the process of $F(t, T, S)$; the volatility does not depend on the strike of the option. It is a characteristic of the forward rate.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{The Practitioner Solutions}
-\begin{itemize}
-	\item \textbf{"Smile" issue}: the model is used with \textcolor{red}{different input volatilities for different strikes}. In practice it is a mapping of implied volatilities into prices and vice versa.
-	\item \textbf{Non-positive rates}: could have switched to a different dynamics, like ABM, where negative values are "normal". But there are large differences in the tails between normal and log-normal distributions.
-	So Black model has been \textcolor{red}{shifted}. The technique was already known but in the last years has become crucial to shift the lower bound of prices admitted by the model.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Shifted Log-normal Model for Caplets}
-\begin{itemize}
-	\item It can be shown that Black formula provides valid solutions if strike and forward rate are \textcolor{red}{shifted}. For a $(T,S)$ caplet with strike $K$ we get
-	\begin{equation}
-		\textbf{Cpl}_{Bl}(t,T,S,\tau,K,v_T,\alpha) = P(t,S) Bl(K+\alpha,F(t;T,S)+\alpha,v_T)
-	\end{equation}
-	where $d_1$ and $d_2$ read as before and instead $v_i$ is now given by
-	\begin{equation*}
-		v_i = \sigma^{\text{shifted}}\sqrt{T_{i-1}}
-	\end{equation*}
-	\item The market quotes of $\sigma^{\text{shifted}}$ refer to shifts $\alpha$ of the order of [2\%,3\%].
-	%\item What is the relationship between $\sigma^{\text{shifted}}$ and $v_T$ ?
-	%\item Rewrite the Black-76 SDE for the $(T, S)$ caplet as follows
-	%\begin{equation}
-	%	dF(t,T,S)=\sigma^{\text{shifted}}(F(t,T,S)-\alpha)dW^{\mathcal{Q}_S}(t)
-	%\end{equation}
-	%\item It is easy to see that the price for a $(T,S)$ caplet with strike $K$ is given by
-	%\begin{equation}
-	%	Cpl(t,T,S,\tau,K,v_T,\alpha)=P(t,S)Bl(K-\alpha,F(t,T,S)-\alpha,v_T)
-	%\end{equation}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Shifted Geometric Brownian Motion}
-\begin{columns}
-    \column{0.55\linewidth}
-    \begin{ipython}
-import numpy as np
-
-def GBM(mu, sigma, X0, T, steps, N):
-    X = np.zeros(shape=(steps, N))
-    dt = T/steps
-    X[0, :] = X0
-    eps = np.random.normal(size=(steps-1, N))
-    X[1:, :] = np.exp((mu-0.5*sigma**2)*dt+sigma*np.sqrt(dt)*eps)
-    return np.cumprod(X, axis=0)
-
-def GBMShifted(mu, sigma, shift, X0, T, steps, N):
-    X0_shifted = X0 + shift
-    if (X0_shifted < 0.0):
-        raise ValueError('Shift is too small !')
-
-    X_shifted = GBM(mu, sigma, X0_shifted, T, steps, N)
-    return X_shifted - shift
-    \end{ipython}
-\column{0.4\linewidth}
-\begin{ipython}
-N = 10000
-tsteps = 500
-T = 3.0
-sigma = 0.2
-L0 = -0.05
-shift = 0.1
-
-paths = GBMShifted(0.0, sigma, shift, L0, T, tsteps, N)    
-\end{ipython}
-\begin{center}
-\includegraphics[width=0.9\linewidth]{images/shifted_gbm}
-\end{center}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Shifted Geometric Brownian Motion}
-	\begin{center}
-		\includegraphics[width=0.7\linewidth]{images/shifted_gbm_density}
-	\end{center}
-\end{frame}
-
-\begin{frame}{Shifted Log-normal}
-\begin{itemize}
-\item The density for the log-normal is:
-\begin{equation}
-\cfrac{1}{(x-\delta)\sigma\sqrt{2\pi}}e^{-\frac{1}{2\sigma^2}(\ln(x-\delta)-\mu)^2},\quad x>\delta, \mu\in\mathbb{R},\sigma >0
-\end{equation}
-\item In a \emph{Normal} distribution, $\mu$ plays the role of location-parameter, so "shifting" it is a trivial task.
-\begin{columns}
-\column{0.6\linewidth}
-\item In the log-normal instead $\mu$ is not a shift parameter, but a \emph{scale} parameter. It stretches and compresses rather than shifts ($\sigma$ is a shape parameter, controlling how skewed/heavy tailed the distribution is).
-\item Shifting the normal and then exponentiating to a log-normal is different from shifting the log-normal (the issue boils down to the fact that addition and exponentiation are not commutative).
-\column{0.4\linewidth}
-\begin{center}
-    \includegraphics[width=0.95\linewidth]{images/shifted_lognormal}
-\end{center}
-\end{columns}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Shifted Black Formula}
-Compare the result for Cap Black formula to the Monte Carlo simulation both with a shift $\Delta$.
-\begin{columns}
-\column{0.5\linewidth}
-\begin{ipython}
-import numpy as np
-
-def BS_shifted(St, K, shift, r, sigma, ttm):
-    K_shifted = K + shift
-    St_shifted = St + shift
-    return BS(St_shifted, K_shifted, r, sigma, ttm)
-
-T = 3.0
-sigma = 0.2
-L0 = -0.05
-shift = 0.1
-r = 0
-
-K = np.linspace(-shift, np.abs(L0)*3, 25)
-optPriceMCV = np.zeros([len(K), 1])
-for idx in range(len(K)):
-  optPriceMCV[idx] = np.mean(np.maximum(paths[-1, :] - K[idx], 0.0))
-
-optPriceExact = BS_shifted(L0, K, shift, r, sigma, T)
-\end{ipython}
-\column{0.5\linewidth}
-\begin{center}
-\includegraphics[width=0.65\linewidth]{images/shifted_call_BS_vs_MC}\\
-\includegraphics[width=0.65\linewidth]{images/shifted_call}
-\end{center}
-\end{columns}
-\end{frame}
-
-
-%\begin{frame}{The Volatility Hump}
-%\begin{itemize}
-%	\item Empirical studies have pointed out two very important facts:
-%	\begin{itemize}
-%		\item the first one is that interest rates volatility can depend on the level of the interest rates themselves;
-%		\item moreover the volatility function is increasing in the short end of the curve, and decreasing in the long end, with an \textcolor{red}{humped} type movement.
-%	\end{itemize}  
-%	\begin{columns}
-%		\column{0.45\linewidth}
-%		\item Uncertainty is bigger in the intermediate region and lower in the front of the maturity spectrum. For long maturities volatility tends to decay.
-%		\item When the hump does not appear it is regarded as \emph{stressed market}.
-%		%\item There is a financial explanation for this feature.
-%		\column{0.45\linewidth}
-%		\includegraphics[width=1.1\linewidth]{cap_vola}
-%	\end{columns}
-%\end{itemize}
-%\end{frame}
 \end{document}
-
-
