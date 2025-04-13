@@ -27,29 +27,29 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Sensitivity}
-There are several metrics to estimate the risk and different ways to measure its actual value:
-\begin{itemize}
-\item \textbf{Duration:} measures a bond's sensitivity to changes in interest rates (higher duration greater price change for a given interest rate shift)
-\begin{equation*}
-D(y)\equiv -\cfrac{1}{P}\cdot \cfrac{\partial P}{\partial y}=-\cfrac {\partial \ln(P)}{\partial y}\quad\text{ definition as derivative}
-\end{equation*}
-Its interpreation as sensitivity of a bond's market price to interest rate (i.e. yield) movements comes from
-\begin{equation*}
-D\approx -\cfrac {1}{P}\cfrac{\Delta P}{\Delta y}\rightarrow \Delta P\approx -P\cdot D\cdot \Delta y
-\end{equation*}
-Thus duration is approximately equal to the percentage change in price for a given finite change in yield.
-\item \textbf{Beta:} measures a stock's sensitivity to changes in the overall market ($\beta > 1$ indicates higher volatility than market).
-\item \textbf{Delta:} measures an option's sensitivity to changes in the price of the underlying asset.
-\end{itemize}
-\end{frame}
+%\begin{frame}{Sensitivity}
+%There are several metrics to estimate the risk and different ways to measure its actual value:
+%\begin{itemize}
+%\item \textbf{Duration:} measures a bond's sensitivity to changes in interest rates (higher duration greater price change for a given interest rate shift)
+%\begin{equation*}
+%D(y)\equiv -\cfrac{1}{P}\cdot \cfrac{\partial P}{\partial y}=-\cfrac {\partial \ln(P)}{\partial y}\quad\text{ definition as derivative}
+%\end{equation*}
+%Its interpreation as sensitivity of a bond's market price to interest rate (i.e. yield) movements comes from
+%\begin{equation*}
+%D\approx -\cfrac {1}{P}\cfrac{\Delta P}{\Delta y}\rightarrow \Delta P\approx -P\cdot D\cdot \Delta y
+%\end{equation*}
+%Thus duration is approximately equal to the percentage change in price for a given finite change in yield.
+%\item \textbf{Beta:} measures a stock's sensitivity to changes in the overall market ($\beta > 1$ indicates higher volatility than market).
+%\item \textbf{Delta:} measures an option's sensitivity to changes in the price of the underlying asset.
+%\end{itemize}
+%\end{frame}
 
 \begin{frame}{Sensitivity Calculation}
 Sensitivities can be computed with different techniques:
 \begin{itemize}
 	\item \textbf{analytical}: involves deriving a closed-form expression which can be complex (and not always feasible);
 	\item \textbf{numerical}: one bumps the yield curve calibration instruments and reprice the derivative. The change in price gives the risk;
-	\item \textbf{curve Jacobians}: when yield curves have been calibrated, the solver slope 'Jacobian' can be kept and used to give the change in derivative price for a change in forwards/discount factors;
+%	\item \textbf{curve Jacobians}: when yield curves have been calibrated, the solver slope 'Jacobian' can be kept and used to give the change in derivative price for a change in forwards/discount factors;
 	\item \textbf{algorithmic differentiation}: can be used to compute risk "automatically" at the same time as computing the price. It produces accurate and fast risk estimates.
 \end{itemize}
 \end{frame}
@@ -114,12 +114,12 @@ Sensitivities can be computed with different techniques:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Market Rate Sensitivity}
-In a plain vanilla Swap is very close but not equal to DV01. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
-\begin{center}
-\includegraphics[width=0.5\linewidth]{images/dv01}
-\end{center}
-\end{frame}
+%\begin{frame}{Market Rate Sensitivity}
+%In a plain vanilla Swap is very close but not equal to DV01. The mark to market value of the Swap is \textcolor{red}{not linear} (as in a future contract), but rather it is a \textcolor{red}{convex} function of the rates (just like a bond is a convex function of the yield).
+%\begin{center}
+%\includegraphics[width=0.5\linewidth]{images/dv01}
+%\end{center}
+%\end{frame}
 
 \begin{frame}[fragile]{Algorithmic Differentiation}
 Consider the following function
@@ -168,8 +168,8 @@ Compute DV01 for a 5-years receiver IRS with a 1M notional, exchanging a fixed r
 The explicit derivative is
 \begin{equation*}
 \begin{gathered}
-\cfrac{\partial PV_{float}}{\partial F} = \cfrac{\partial}{\partial F}\sum_i N\tau F_i e^{-rt_i} = \sum_i N\tau e^{-rt_i} \\
-\cfrac{\partial PV_{fix}}{\partial r} = \cfrac{\partial}{\partial r}\sum_i N\tau K e^{-rt_i} = -\sum_i N\tau K t_i e^{-rt_i}        
+\cfrac{\partial PV_{float}}{\partial r_i} = \cfrac{\partial}{\partial r_i}\sum_j N\tau F_j e^{-r_j t_j} = \sum_j N\tau \cfrac{\partial F_j}{\partial r_i} e^{-r_j t_j} - F_i t_i e^{-r_i t_i} \\
+\cfrac{\partial PV_{fix}}{\partial r_i} = \cfrac{\partial}{\partial r_i}\sum_i N\tau K e^{-r_i t_i} = - N\tau K t_i e^{-rt_i}        
 \end{gathered}
 \end{equation*}
 \end{frame}
@@ -303,7 +303,7 @@ Estimate the DV01 of the swap numerically.
 				& = N\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(1-(1+K\tau)P(T_{i-1},T_i)\right)^+ | \mathcal{F}_t\right]
 			\end{aligned}
 		\end{equation*}
-		\item<2-> Multiplying by $\frac{1}{1+K\tau}$ we finally get
+		\item<2-> Collecting by $1+K\tau$ we finally get
 		\begin{equation}
 			\boxed{\textbf{Cpl}=N(1+K\tau)\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(\frac{1}{1+K\tau}-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]}
 		\end{equation}
@@ -324,218 +324,6 @@ Estimate the DV01 of the swap numerically.
 		\end{enumerate}
 	\end{block}
 \end{frame}
-
-\section{The Black Model}
-\begin{frame}{The Black Model - Overview}
-	\begin{itemize}
-		\item The \textcolor{red}{Black Model} extends the Black-Scholes formula to \emph{caplets} and \emph{swaptions}. % and \emph{bond options}. %It uses the forward coordinates, not the spot ones; this last is not a minor issue indeed.
-		\item The main difference with respect to the Black-Scholes set up is that \textcolor{red}{forward rates $F(t;T_{i-1},T_i)$ (or swap rates $S_{\alpha\beta}(t)$) are log-normally distributed}, rather than the spot price of the underlying. 
-		\item It should be stated that Black’s formulas did not originally correspond to prices that arise from the application of martingale pricing theory to some particular model. 
-		\item The advent of the \emph{market models} will provide a belated justification for these formulas but we shall see that the justifications are mutually inconsistent. 
-		\item Indeed, it may be shown that if forward rates have deterministic volatilities then it is not possible for swap rates to also have deterministic volatilities. Therefore Black’s formulas for caplets and swaptions cannot both hold within the same model. 
-	\end{itemize}
-\end{frame}
-
-%\begin{frame}{The Black Model: Overview}
-%	\begin{itemize}
-	%		\item It should be recognized that the Black model is being actually used in different ways. In particular the caps uses the forward short-term LIBOR rate as the underlying state variable, whereas the swaptions uses longer-term forward swap rates. Beause forward swap rates are nearly linera in individual forward rates , the lognormality assumption implicit in the Black model cannot hold simultaneously for both, since a linear combination of lognormal variables is not lognormal.
-	%	\end{itemize}
-%\end{frame}
-
-%\begin{frame}{The Black Model: Overview}
-%	\begin{itemize}
-%	\item It should be stated that Black’s formulae for caps and swaptions did not originally correspond to prices that arisefrom the application of martingale pricing theory to some particular model. 
-%	\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
-%		\item 
-%		\item ...but for the moment we cannot consider it as a model ! Just a bunch of formulas.
-%		
-%
-%
-%When we model swap rates directly as in (30) we say that we have a swap market model. Thiscontrasts with the LIBOR market models of Section 4.Remark 5 The advantage of Black’s swaption formula is that it is elegant and exact, whereas the BGM formula is cumbersome and only an approximation. However, the BGM approximation is consistent with Black’s formulae for caplets and caps whereas Black’s swaption formula is not. 
-%That said, within the LIBOR market framework with deterministic volatilities, it can be argued thatforward swap rates are approximately log-normally distributed.
-%
-%
-%	\end{itemize}
-%\end{frame}
-
-\begin{frame}{Pricing Caps with the Black-76 Formula}
-	\begin{block}{Definition}
-	\begin{equation}
-		\begin{aligned}
-		\textbf{Cap}_{Bl}(0, \tau,N,K,\sigma_{\alpha,\beta}) &= N\sum_{i=\alpha+1}^{\beta}\textbf{Cpl}_{Bl}(T_i, \tau,K,\sigma_{\alpha,\beta}) = \\ &=N\sum_{i=\alpha+1}^{\beta}\tau P(0,T_i) \textbf{Bl}(K,F(0;T_{i-1},T_i),v_i)
-		\end{aligned}
-		\label{eq:cap_black}
-	\end{equation}
-	where
-	\begin{equation*}
-		\begin{gathered}
-			\boxed{\textbf{Bl}(K,F_i,v_i)=F\Phi(d_1(K,F_i,v_i)) - K\Phi(d_2(K,F_i,v_i))} \\
-			d_{1,2} = \frac{\log{\cfrac{F_i}{K}} \pm \cfrac{v_i^2}{2}}{2} \\[0.2cm]
-			v_i = \sigma_{\alpha,\beta}\sqrt{T_{i-1}}
-		\end{gathered}
-	\end{equation*}
-	\end{block}
-\end{frame}
-
-\begin{frame}{Problems with the Black Model}
-\begin{itemize}
-	\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
-	\item In the Black model \textcolor{red}{negative rates are not allowed}.
-	\begin{equation*}
-		d_{1,2} = \frac{\boxed{\log{\frac{F}{K}}} \pm \cfrac{v^2}{2}}{2} 
-	\end{equation*}
-	but in the last years in the inter-bank market it was not so unusual to find prices for -1\% strike floors.
-	\item Moreover in the Black model the empirical evidence of the "smile" (volatility vs $K$) is not accounted for, i.e. $\sigma$ is a constant. Two caps identical but for the strike need a different volatility to recover two different market prices if one uses Black formula.
-	%\item And this is clear if one looks at the distribution and at the process of $F(t, T, S)$; the volatility does not depend on the strike of the option. It is a characteristic of the forward rate.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{The Practitioner Solutions}
-\begin{itemize}
-	\item \textbf{"Smile" issue}: the model is used with \textcolor{red}{different input volatilities for different strikes}. In practice it is a mapping of implied volatilities into prices and vice versa.
-	\item \textbf{Non-positive rates}: could have switched to a different dynamics, like ABM, where negative values are "normal". But there are large differences in the tails between normal and log-normal distributions.
-	So Black model has been \textcolor{red}{shifted}. The technique was already known but in the last years has become crucial to shift the lower bound of prices admitted by the model.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Shifted Log-normal Model for Caplets}
-\begin{itemize}
-	\item It can be shown that Black formula provides valid solutions if strike and forward rate are \textcolor{red}{shifted}. For a $(T,S)$ caplet with strike $K$ we get
-	\begin{equation}
-		\textbf{Cpl}_{Bl}(t,T,S,\tau,K,v_T,\alpha) = P(t,S) Bl(K+\alpha,F(t;T,S)+\alpha,v_T)
-	\end{equation}
-	where $d_1$ and $d_2$ read as before and instead $v_i$ is now given by
-	\begin{equation*}
-		v_i = \sigma^{\text{shifted}}\sqrt{T_{i-1}}
-	\end{equation*}
-	\item The market quotes of $\sigma^{\text{shifted}}$ refer to shifts $\alpha$ of the order of [2\%,3\%].
-	%\item What is the relationship between $\sigma^{\text{shifted}}$ and $v_T$ ?
-	%\item Rewrite the Black-76 SDE for the $(T, S)$ caplet as follows
-	%\begin{equation}
-	%	dF(t,T,S)=\sigma^{\text{shifted}}(F(t,T,S)-\alpha)dW^{\mathcal{Q}_S}(t)
-	%\end{equation}
-	%\item It is easy to see that the price for a $(T,S)$ caplet with strike $K$ is given by
-	%\begin{equation}
-	%	Cpl(t,T,S,\tau,K,v_T,\alpha)=P(t,S)Bl(K-\alpha,F(t,T,S)-\alpha,v_T)
-	%\end{equation}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Shifted Geometric Brownian Motion}
-\begin{columns}
-    \column{0.55\linewidth}
-    \begin{ipython}
-import numpy as np
-
-def GBM(mu, sigma, X0, T, steps, N):
-    X = np.zeros(shape=(steps, N))
-    dt = T/steps
-    X[0, :] = X0
-    eps = np.random.normal(size=(steps-1, N))
-    X[1:, :] = np.exp((mu-0.5*sigma**2)*dt+sigma*np.sqrt(dt)*eps)
-    return np.cumprod(X, axis=0)
-
-def GBMShifted(mu, sigma, shift, X0, T, steps, N):
-    X0_shifted = X0 + shift
-    if (X0_shifted < 0.0):
-        raise ValueError('Shift is too small !')
-
-    X_shifted = GBM(mu, sigma, X0_shifted, T, steps, N)
-    return X_shifted - shift
-    \end{ipython}
-\column{0.4\linewidth}
-\begin{ipython}
-N = 10000
-tsteps = 500
-T = 3.0
-sigma = 0.2
-L0 = -0.05
-shift = 0.1
-
-paths = GBMShifted(0.0, sigma, shift, L0, T, tsteps, N)    
-\end{ipython}
-\begin{center}
-\includegraphics[width=0.9\linewidth]{images/shifted_gbm}
-\end{center}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Shifted Geometric Brownian Motion}
-	\begin{center}
-		\includegraphics[width=0.7\linewidth]{images/shifted_gbm_density}
-	\end{center}
-\end{frame}
-
-\begin{frame}{Shifted Log-normal}
-\begin{itemize}
-\item The density for the log-normal is:
-\begin{equation}
-\cfrac{1}{(x-\delta)\sigma\sqrt{2\pi}}e^{-\frac{1}{2\sigma^2}(\ln(x-\delta)-\mu)^2},\quad x>\delta, \mu\in\mathbb{R},\sigma >0
-\end{equation}
-\item In a \emph{Normal} distribution, $\mu$ plays the role of location-parameter, so "shifting" it is a trivial task.
-\begin{columns}
-\column{0.6\linewidth}
-\item In the log-normal instead $\mu$ is not a shift parameter, but a \emph{scale} parameter. It stretches and compresses rather than shifts ($\sigma$ is a shape parameter, controlling how skewed/heavy tailed the distribution is).
-\item Shifting the normal and then exponentiating to a log-normal is different from shifting the log-normal (the issue boils down to the fact that addition and exponentiation are not commutative).
-\column{0.4\linewidth}
-\begin{center}
-    \includegraphics[width=0.95\linewidth]{images/shifted_lognormal}
-\end{center}
-\end{columns}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Shifted Black Formula}
-Compare the result for Cap Black formula to the Monte Carlo simulation both with a shift $\Delta$.
-\begin{columns}
-\column{0.5\linewidth}
-\begin{ipython}
-import numpy as np
-
-def BS_shifted(St, K, shift, r, sigma, ttm):
-    K_shifted = K + shift
-    St_shifted = St + shift
-    return BS(St_shifted, K_shifted, r, sigma, ttm)
-
-T = 3.0
-sigma = 0.2
-L0 = -0.05
-shift = 0.1
-r = 0
-
-K = np.linspace(-shift, np.abs(L0)*3, 25)
-optPriceMCV = np.zeros([len(K), 1])
-for idx in range(len(K)):
-  optPriceMCV[idx] = np.mean(np.maximum(paths[-1, :] - K[idx], 0.0))
-
-optPriceExact = BS_shifted(L0, K, shift, r, sigma, T)
-\end{ipython}
-\column{0.5\linewidth}
-\begin{center}
-\includegraphics[width=0.65\linewidth]{images/shifted_call_BS_vs_MC}\\
-\includegraphics[width=0.65\linewidth]{images/shifted_call}
-\end{center}
-\end{columns}
-\end{frame}
-
-
-%\begin{frame}{The Volatility Hump}
-%\begin{itemize}
-%	\item Empirical studies have pointed out two very important facts:
-%	\begin{itemize}
-%		\item the first one is that interest rates volatility can depend on the level of the interest rates themselves;
-%		\item moreover the volatility function is increasing in the short end of the curve, and decreasing in the long end, with an \textcolor{red}{humped} type movement.
-%	\end{itemize}  
-%	\begin{columns}
-%		\column{0.45\linewidth}
-%		\item Uncertainty is bigger in the intermediate region and lower in the front of the maturity spectrum. For long maturities volatility tends to decay.
-%		\item When the hump does not appear it is regarded as \emph{stressed market}.
-%		%\item There is a financial explanation for this feature.
-%		\column{0.45\linewidth}
-%		\includegraphics[width=1.1\linewidth]{cap_vola}
-%	\end{columns}
-%\end{itemize}
-%\end{frame}
 
 \section{Swaptions}
 \begin{frame}{Swaptions Overview}
@@ -561,7 +349,7 @@ optPriceExact = BS_shifted(L0, K, shift, r, sigma, T)
 
 \begin{frame}{Swaption Payoff}
 \begin{itemize}
-	\item<1-> The discounted payoff of a payer Swaption (with maturity $T_\alpha$) is given, recalling the value of a payer IRS (\cref{eq:swap_as_sum_fra}) by
+	\item<1-> The discounted payoff of a payer Swaption (with maturity $T_\alpha$) is given, recalling the value of a payer IRS by % (\cref{eq:swap_as_sum_fra}) by
 	\begin{equation}
 		\textbf{PSw}=D(t,T_\alpha)\left(\sum_{i=\alpha+1}^\beta P(T_\alpha,T_i)\tau_i (F(T_\alpha;T_{i-1},T_i) - K)\right)^+
 		\label{eq:swaption_payoff_std}
@@ -576,13 +364,13 @@ optPriceExact = BS_shifted(L0, K, shift, r, sigma, T)
 
 \begin{frame}{Swaption Payoff}
 \begin{itemize}
-	\item<1-> Recall that we have expressed the swap payoff also as (\cref{eq:swap_payoff_with_swap_rate})
+	\item<1-> Recall that we have expressed the swap payoff also as %(\cref{eq:swap_payoff_with_swap_rate})
 	\begin{equation*}
 	\textbf{PFS}=\sum_{i=\alpha+1}^\beta \tau_i P(t,T_i)(S_{\alpha,\beta}-K) = A(S_{\alpha,\beta}-K)
 	\end{equation*}
 	\item<2-> If we look at the swaption payoff through this expression modeling as stochastic variable directly $S_{\alpha,\beta}(t)$, instead of each forward rate $F(t;T_{i-1},T_i)$, we can write the swaption price as the expectation of
 	\begin{equation}
-		\boxed{\textbf{PSw}=\expect{Q}\left[D(t,T_\alpha)A\max(S_{\alpha,\beta}(T_\alpha)-K, 0)\right]}
+		\boxed{\textbf{PSw}=\expect{Q}\left[D(t,T_\alpha)A (S_{\alpha,\beta}(T_\alpha)-K)^+\right]}
 	\end{equation}
 	which looks like easier and more intuitive than previous \cref{eq:swaption_payoff_std}.
 \end{itemize}
@@ -645,127 +433,363 @@ List the pros and cons about each one and declare your favourite.
 \end{frame}
 \end{homework}
 
-\begin{frame}{Black Formula for Swaptions}
-\begin{itemize}
-	\item The most common way to price European Swaption is through the Black formula.
-	\item Replacing the forward rate $F(0;t_{i-1},t_i)$ with the swap rate $S_{\alpha,\beta}(0)$ and plugging in the quoted swaption volatility you get Black's formula for swaptions
-	\begin{equation}
-		\boxed{\begin{aligned}
-			\textbf{PSw}_{Bl}(0,T,&N,K,S_{\alpha,\beta})=\\
-			&N\left[S_{\alpha,\beta}(0)\Phi(d_1)-K\Phi(d_2)\right]\sum_{i=\alpha+1}^\beta P(0,T_i)\tau_i
-		\end{aligned}}
-	\end{equation}
-	where
-	\begin{equation*}
-		\begin{gathered}
-		d_{1,2} = \cfrac{\log{\frac{S_{\alpha,\beta}}{K}} \pm \frac{v^2}{2}}{2}\\[0.2cm] 
-		v = \sigma_{\alpha,\beta}\sqrt{T_\alpha}
-		\end{gathered}
-	\end{equation*}
-\end{itemize}
-\end{frame}
 
-\begin{frame}{Swaptions Volatility Calibration}
-\begin{itemize}
-	\item Swaption volatilities are quoted for different maturities and tenors (length of the underlying swap).
-	\item Both for ATM and away from ATM on both sides ("swaption smile").
-	\item So swaptions have an additional dimension with respect to caps: the quotes are parametrized according to 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{The Black Model}
+\begin{frame}{The Black Model - Overview}
 	\begin{itemize}
-		\item maturites;
-		\item tenors;
-		\item strikes.
+		\item The \textcolor{red}{Black Model} extends the Black-Scholes formula to \emph{caplets} and \emph{swaptions}. % and \emph{bond options}. %It uses the forward coordinates, not the spot ones; this last is not a minor issue indeed.
+		\item The main difference with respect to the Black-Scholes set up is that \textcolor{red}{forward rates $F(t;T_{i-1},T_i)$ (or swap rates $S_{\alpha\beta}(t)$) are log-normally distributed}, rather than the spot price of the underlying. 
+		\item It should be stated that Black’s formulas did not originally correspond to prices that arise from the application of martingale pricing theory to some particular model. 
+		\item The advent of the \emph{market models} will provide a belated justification for these formulas but we shall see that the justifications are mutually inconsistent. 
+		\item Indeed, it may be shown that if forward rates have deterministic volatilities then it is not possible for swap rates to also have deterministic volatilities. Therefore Black’s formulas for caplets and swaptions cannot both hold within the same model. 
 	\end{itemize}
-	%\item They have also a different \emph{delta} effect on your book.
-	%		\item Volatility trade between caps ans swaption: WEDGE
-\end{itemize}
 \end{frame}
 
-\begin{frame}{Swaption Volatility Calibration}
-  \begin{center}
-    \includegraphics[width=1.\linewidth]{images/atm_vol}
-  \end{center}
+%\begin{frame}{The Black Model: Overview}
+%	\begin{itemize}
+	%		\item It should be recognized that the Black model is being actually used in different ways. In particular the caps uses the forward short-term LIBOR rate as the underlying state variable, whereas the swaptions uses longer-term forward swap rates. Beause forward swap rates are nearly linera in individual forward rates , the lognormality assumption implicit in the Black model cannot hold simultaneously for both, since a linear combination of lognormal variables is not lognormal.
+	%	\end{itemize}
+%\end{frame}
+
+%\begin{frame}{The Black Model: Overview}
+%	\begin{itemize}
+	%	\item It should be stated that Black’s formulae for caps and swaptions did not originally correspond to prices that arisefrom the application of martingale pricing theory to some particular model. 
+	%	\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
+	%		\item 
+	%		\item ...but for the moment we cannot consider it as a model ! Just a bunch of formulas.
+	%		
+	%
+	%
+	%When we model swap rates directly as in (30) we say that we have a swap market model. Thiscontrasts with the LIBOR market models of Section 4.Remark 5 The advantage of Black’s swaption formula is that it is elegant and exact, whereas the BGM formula is cumbersome and only an approximation. However, the BGM approximation is consistent with Black’s formulae for caplets and caps whereas Black’s swaption formula is not. 
+	%That said, within the LIBOR market framework with deterministic volatilities, it can be argued thatforward swap rates are approximately log-normally distributed.
+	%
+	%
+	%	\end{itemize}
+%\end{frame}
+
+\begin{frame}{Pricing Caps with the Black-76 Formula}
+	\begin{block}{Definition}
+		\begin{equation}
+			\begin{aligned}
+				\textbf{Cap}_{Bl}(0, \tau,N,K,\sigma_{\alpha,\beta}) &= N\sum_{i=\alpha+1}^{\beta}\textbf{Cpl}_{Bl}(T_i, \tau,K,\sigma_{\alpha,\beta}) = \\ &=N\sum_{i=\alpha+1}^{\beta}\tau P(0,T_i) \textbf{Bl}(K,F(0;T_{i-1},T_i),v_i)
+			\end{aligned}
+			\label{eq:cap_black}
+		\end{equation}
+		where
+		\begin{equation*}
+			\begin{gathered}
+				\boxed{\textbf{Bl}(K,F_i,v_i)=F\Phi(d_1(K,F_i,v_i)) - K\Phi(d_2(K,F_i,v_i))} \\
+				d_{1,2} = \frac{\log{\cfrac{F_i}{K}} \pm \cfrac{v_i^2}{2}}{2} \\[0.2cm]
+				v_i = \sigma_{\alpha,\beta}\sqrt{T_{i-1}}
+			\end{gathered}
+		\end{equation*}
+	\end{block}
 \end{frame}
 
-\begin{frame}{Swaption Volatility Calibration}
-  \begin{center}
-    \includegraphics[width=1.\linewidth]{images/skews}
-  \end{center}
-\end{frame}
-
-\begin{frame}{Swaption Volatility Calibration}
-  After we have constructed the volatility matrix we can fit the ``smile'' at each (expiry, tenor) pair.
-
-  This is done assuming the volatilities evolves according to the SABR model. An approximated solution has been given by \emph{Hagan et al.}
-  \begin{eqnarray} \sigma _{B}(K,f) &=&\frac{\textcolor{red}{\alpha} \left\{ 1+\left[ \frac{\left( 1-\textcolor{red}{\beta} \right) ^{2}}{24}\frac{\textcolor{red}{\alpha} ^{2}}{(fK)^{1-\textcolor{red}{\beta}}}+\frac{1}{4}\frac{\textcolor{red}{\rho \beta \nu\alpha}}{(fK)^{(1-\textcolor{red}{\beta})/2}}+\frac{2-3\textcolor{red}{\rho} ^{2}}{24}\textcolor{red}{\nu}^{2}\right] T\right\} }{(fK)^{(1-\textcolor{red}{\beta})/2}\left[ 1+\frac{(1-\textcolor{red}{\beta})^{2}}{24}\ln ^{2} \frac{f}{K}+\frac{(1-\textcolor{red}{\beta})^{4}}{1920}\ln^{4}\frac{f}{K}\right] } \times \frac{z}{\chi (z)} \notag \\ z &=&\frac{\textcolor{red}{\nu}}{\textcolor{red}{\alpha}}(fK)^{(1-\textcolor{red}{\beta})/2}\ln \frac{f}{K} \notag \\ \chi (z) &=&\ln \left[ \frac{\sqrt{1-2\rho z+z^{2}}+z-\textcolor{red}{\rho}}{1-\textcolor{red}{\rho}}\right] . \notag \end{eqnarray}
-\end{frame}
-
-\begin{frame}{Swaption Volatility Calibration}
-    \begin{center}
-      \includegraphics[width=0.65\linewidth]{images/10y_10y}
-    \end{center}
-\end{frame}
-
-\begin{frame}{Swaption Volatility Calibration}
-    \begin{center}
-      \includegraphics[width=0.3\linewidth]{images/alpha}
-      \includegraphics[width=0.3\linewidth]{images/rho}
-      \includegraphics[width=0.3\linewidth]{images/nu}
-    \end{center}
+\begin{frame}{Black Formula for Swaptions}
+	\begin{itemize}
+		\item The most common way to price European Swaption is through the Black formula.
+		\item Replacing the forward rate $F(0;t_{i-1},t_i)$ with the swap rate $S_{\alpha,\beta}(0)$ and plugging in the quoted swaption volatility you get Black's formula for swaptions
+		\begin{equation}
+			\boxed{\begin{aligned}
+					\textbf{PSw}_{Bl}(0,T,&N,K,S_{\alpha,\beta})=\\
+					&N\left[S_{\alpha,\beta}(0)\Phi(d_1)-K\Phi(d_2)\right]\sum_{i=\alpha+1}^\beta P(0,T_i)\tau_i
+			\end{aligned}}
+		\end{equation}
+		where
+		\begin{equation*}
+			\begin{gathered}
+				d_{1,2} = \cfrac{\log{\frac{S_{\alpha,\beta}}{K}} \pm \frac{v^2}{2}}{2}\\[0.2cm] 
+				v = \sigma_{\alpha,\beta}\sqrt{T_\alpha}
+			\end{gathered}
+		\end{equation*}
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Newton-Raphson Method}
-\begin{itemize}
-    \item The roots of the function (or zeros) are the $x_i$ solutions of $f(x) = 0$.
-    \item \emph{Newton's method} is a root-finding algorithm which produces successively better approximations of the roots.
-    \item Start with an initial guess $x_0$, approximate the function by its tangent line $g(x)$, and compute the $x$-intercept of this line
-    \begin{gather*}
-g(x) = f(x_0) + f'(x_0)(x-x_0) \implies  f'(x_0)(x_0-x_1)=f(x_0)\\
-	x_1=x_0-\frac {f(x_0)}{f'(x_0)}
-\end{gather*}
-    %\item This $x$-intercept will typically be a better approximation to the original function's root than the first guess, and the method can be iterated.
-    \item If the tangent line to the curve $f(x)$ at $x = x_0$ intercepts the $x$-axis at $x_{1}$ then
-\begin{equation*}
-\begin{cases}
-f(x_1) < \text{tol}=10^{-8} \Rightarrow \text{ zero found !}\\
-g(x_1) = f(x_0) + f^{'}(x_0)(x_1-x_0) = 0 \Rightarrow \text{ solve for
-}x_1\text{ and iterate...}
-\end{cases}
-\end{equation*}
-\item The method will usually converge, provided this initial guess is close enough to the unknown zero, and that $f'(x_0) \neq 0$.
-\end{itemize}
+	\begin{itemize}
+		\item The roots of the function (or zeros) are the $x_i$ solutions of $f(x) = 0$.
+		\item \emph{Newton's method} is a root-finding algorithm which produces successively better approximations of the roots.
+		\item Start with an initial guess $x_0$, approximate the function by its tangent line $g(x)$, and compute the $x$-intercept of this line
+		\begin{gather*}
+			g(x) = f(x_0) + f'(x_0)(x-x_0) \implies  f'(x_0)(x_0-x_1)=f(x_0)\\
+			x_1=x_0-\frac {f(x_0)}{f'(x_0)}
+		\end{gather*}
+		%\item This $x$-intercept will typically be a better approximation to the original function's root than the first guess, and the method can be iterated.
+		\item If the tangent line to the curve $f(x)$ at $x = x_0$ intercepts the $x$-axis at $x_{1}$ then
+		\begin{equation*}
+			\begin{cases}
+				f(x_1) < \text{tol}=10^{-8} \Rightarrow \text{ zero found !}\\
+				g(x_1) = f(x_0) + f^{'}(x_0)(x_1-x_0) = 0 \Rightarrow \text{ solve for
+				}x_1\text{ and iterate...}
+			\end{cases}
+		\end{equation*}
+		\item The method will usually converge, provided this initial guess is close enough to the unknown zero, and that $f'(x_0) \neq 0$.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Newton-Raphson Application}
-Using the Newton-Raphson method determine the implied volatility of a \textbf{call} option.
+	Using the Newton-Raphson method determine the implied volatility of a \textbf{call} option.
+	\begin{columns}
+		\column{0.55\linewidth}
+		\begin{ipython}
+			from scipy.optimize import newton
+			
+			vols = []
+			prices = []
+			
+			def implied_vol(sigma, S0, K, r, T, market_price):
+			bs_price = BS(S0, K, r, sigma, T)
+			vols.append(sigma)
+			prices.append(bs_price)
+			return bs_price - market_price
+			
+			S0, K, T, r = 30, 28, 0.25, 0.025
+			market_price = 4.311
+			imp_sigma = newton(implied_vol, 0.1, args=(S0, K, r, T, market_price))
+			print (f"Implied Volatility: {imp_sigma:.4f}")    
+		\end{ipython}
+		\begin{ioutput}
+			
+			Implied Volatility: 0.5400
+		\end{ioutput}
+		\column{0.45\linewidth}
+		\begin{center}
+			\includegraphics[width=0.85\linewidth]{images/call_newton}
+		\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Problems with the Black Model}
+	\begin{itemize}
+		\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
+		\item In the Black model \textcolor{red}{negative rates are not allowed}.
+		\begin{equation*}
+			d_{1,2} = \frac{\boxed{\log{\frac{F}{K}}} \pm \cfrac{v^2}{2}}{2} 
+		\end{equation*}
+		but in the last years in the inter-bank market it was not so unusual to find prices for -1\% strike floors.
+		\item Moreover in the Black model the empirical evidence of the "smile" (volatility vs $K$) is not accounted for, i.e. $\sigma$ is a constant. Two caps identical but for the strike need a different volatility to recover two different market prices if one uses Black formula.
+		%\item And this is clear if one looks at the distribution and at the process of $F(t, T, S)$; the volatility does not depend on the strike of the option. It is a characteristic of the forward rate.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{The Practitioner Solutions}
+	\begin{itemize}
+		\item \textbf{"Smile" issue}: the model is used with \textcolor{red}{different input volatilities for different strikes}. In practice it is a mapping of implied volatilities into prices and vice versa.
+		\item \textbf{Non-positive rates}: could have switched to a different dynamics, like ABM, where negative values are "normal". But there are large differences in the tails between normal and log-normal distributions.
+		So Black model has been \textcolor{red}{shifted}. The technique was already known but in the last years has become crucial to shift the lower bound of prices admitted by the model.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Shifted Log-normal Model for Caplets}
+	\begin{itemize}
+		\item It can be shown that Black formula provides valid solutions if strike and forward rate are \textcolor{red}{shifted}. For a $(T,S)$ caplet with strike $K$ we get
+		\begin{equation}
+			\textbf{Cpl}_{Bl}(t,T,S,\tau,K,v_T,\alpha) = P(t,S) Bl(K+\alpha,F(t;T,S)+\alpha,v_T)
+		\end{equation}
+		where $d_1$ and $d_2$ read as before and instead $v_i$ is now given by
+		\begin{equation*}
+			v_i = \sigma^{\text{shifted}}\sqrt{T_{i-1}}
+		\end{equation*}
+		\item The market quotes of $\sigma^{\text{shifted}}$ refer to shifts $\alpha$ of the order of [2\%,3\%].
+		%\item What is the relationship between $\sigma^{\text{shifted}}$ and $v_T$ ?
+		%\item Rewrite the Black-76 SDE for the $(T, S)$ caplet as follows
+		%\begin{equation}
+		%	dF(t,T,S)=\sigma^{\text{shifted}}(F(t,T,S)-\alpha)dW^{\mathcal{Q}_S}(t)
+		%\end{equation}
+		%\item It is easy to see that the price for a $(T,S)$ caplet with strike $K$ is given by
+		%\begin{equation}
+		%	Cpl(t,T,S,\tau,K,v_T,\alpha)=P(t,S)Bl(K-\alpha,F(t,T,S)-\alpha,v_T)
+		%\end{equation}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Shifted Geometric Brownian Motion}
 \begin{columns}
-\column{0.55\linewidth}
+	\column{0.55\linewidth}
 \begin{ipython}
-from scipy.optimize import newton
+import numpy as np
 
-vols = []
-prices = []
+def GBM(mu, sigma, X0, T, steps, N):
+    X = np.zeros(shape=(steps, N))
+    dt = T/steps
+    X[0, :] = X0
+    eps = np.random.normal(size=(steps-1, N))
+    X[1:, :] = np.exp((mu-0.5*sigma**2)*dt+sigma*np.sqrt(dt)*eps)
+    return np.cumprod(X, axis=0)
 
-def implied_vol(sigma, S0, K, r, T, market_price):
-  bs_price = BS(S0, K, r, sigma, T)
-  vols.append(sigma)
-  prices.append(bs_price)
-  return bs_price - market_price
+def GBMShifted(mu, sigma, shift, X0, T, steps, N):
+    X0_shifted = X0 + shift
+    if (X0_shifted < 0.0):
+        raise ValueError('Shift is too small !')
 
-S0, K, T, r = 30, 28, 0.25, 0.025
-market_price = 4.311
-imp_sigma = newton(implied_vol, 0.1, args=(S0, K, r, T, market_price))
-print (f"Implied Volatility: {imp_sigma:.4f}")    
+    X_shifted = GBM(mu, sigma, X0_shifted, T, steps, N)
+    return X_shifted - shift
 \end{ipython}
-\begin{ioutput}
+\column{0.4\linewidth}
+\begin{ipython}
+N = 10000
+tsteps = 500
+T = 3.0
+sigma = 0.2
+L0 = -0.05
+shift = 0.1
 
-Implied Volatility: 0.5400
-\end{ioutput}
-\column{0.45\linewidth}
+paths = GBMShifted(0.0, sigma, shift, L0, T, tsteps, N)    
+\end{ipython}
 \begin{center}
-    \includegraphics[width=0.85\linewidth]{images/call_newton}
+	\includegraphics[width=0.9\linewidth]{images/shifted_gbm}
+\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Shifted Geometric Brownian Motion}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{images/shifted_gbm_density}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Shifted Log-normal}
+	\begin{itemize}
+		\item The density for the log-normal is:
+		\begin{equation}
+			\cfrac{1}{(x-\delta)\sigma\sqrt{2\pi}}e^{-\frac{1}{2\sigma^2}(\ln(x-\delta)-\mu)^2},\quad x>\delta, \mu\in\mathbb{R},\sigma >0
+		\end{equation}
+		\item In a \emph{Normal} distribution, $\mu$ plays the role of location-parameter, so "shifting" it is a trivial task.
+		\begin{columns}
+			\column{0.6\linewidth}
+			\item In the log-normal instead $\mu$ is not a shift parameter, but a \emph{scale} parameter. It stretches and compresses rather than shifts ($\sigma$ is a shape parameter, controlling how skewed/heavy tailed the distribution is).
+			\item Shifting the normal and then exponentiating to a log-normal is different from shifting the log-normal (the issue boils down to the fact that addition and exponentiation are not commutative).
+			\column{0.4\linewidth}
+			\begin{center}
+				\includegraphics[width=0.95\linewidth]{images/shifted_lognormal}
+			\end{center}
+		\end{columns}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Shifted Black Formula}
+	Compare the result for Cap Black formula to the Monte Carlo simulation both with a shift $\Delta$.
+	\begin{columns}
+		\column{0.5\linewidth}
+		\begin{ipython}
+import numpy as np
+			
+def BS_shifted(St, K, shift, r, sigma, ttm):
+    K_shifted = K + shift
+    St_shifted = St + shift
+    return BS(St_shifted, K_shifted, r, sigma, ttm)
+			
+T = 3.0
+sigma = 0.2
+L0 = -0.05
+shift = 0.1
+r = 0
+			
+K = np.linspace(-shift, np.abs(L0)*3, 25)
+optPriceMCV = np.zeros([len(K), 1])
+for idx in range(len(K)):
+    optPriceMCV[idx] = np.mean(np.maximum(paths[-1, :] - \
+                               K[idx], 0.0))
+			
+optPriceExact = BS_shifted(L0, K, shift, r, sigma, T)
+\end{ipython}
+\column{0.5\linewidth}
+\begin{center}
+	\includegraphics[width=0.65\linewidth]{images/shifted_call_BS_vs_MC}\\
+	\includegraphics[width=0.65\linewidth]{images/shifted_call}
 \end{center}
 \end{columns}
 \end{frame}
+
+
+%\begin{frame}{The Volatility Hump}
+%\begin{itemize}
+%	\item Empirical studies have pointed out two very important facts:
+%	\begin{itemize}
+	%		\item the first one is that interest rates volatility can depend on the level of the interest rates themselves;
+	%		\item moreover the volatility function is increasing in the short end of the curve, and decreasing in the long end, with an \textcolor{red}{humped} type movement.
+	%	\end{itemize}  
+%	\begin{columns}
+	%		\column{0.45\linewidth}
+	%		\item Uncertainty is bigger in the intermediate region and lower in the front of the maturity spectrum. For long maturities volatility tends to decay.
+	%		\item When the hump does not appear it is regarded as \emph{stressed market}.
+	%		%\item There is a financial explanation for this feature.
+	%		\column{0.45\linewidth}
+	%		\includegraphics[width=1.1\linewidth]{cap_vola}
+	%	\end{columns}
+%\end{itemize}
+%\end{frame}
+
+%\begin{frame}{Swaptions Volatility Calibration}
+%\begin{itemize}
+%	\item Swaption volatilities are quoted for different maturities and tenors (length of the underlying swap).
+%	\item Both for ATM and away from ATM on both sides ("swaption smile").
+%	\item So swaptions have an additional dimension with respect to caps: the quotes are parametrized according to 
+%	\begin{itemize}
+%		\item maturites;
+%		\item tenors;
+%		\item strikes.
+%	\end{itemize}
+%	%\item They have also a different \emph{delta} effect on your book.
+%	%		\item Volatility trade between caps ans swaption: WEDGE
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Swaption Volatility Calibration}
+%  \begin{center}
+%    \includegraphics[width=1.\linewidth]{images/atm_vol}
+%  \end{center}
+%\end{frame}
+%
+%\begin{frame}{Swaption Volatility Calibration}
+%  \begin{center}
+%    \includegraphics[width=1.\linewidth]{images/skews}
+%  \end{center}
+%\end{frame}
+%
+%\begin{frame}{Swaption Volatility Calibration}
+%  After we have constructed the volatility matrix we can fit the ``smile'' at each (expiry, tenor) pair.
+%
+%  This is done assuming the volatilities evolves according to the SABR model. An approximated solution has been given by \emph{Hagan et al.}
+%  \begin{eqnarray} \sigma _{B}(K,f) &=&\frac{\textcolor{red}{\alpha} \left\{ 1+\left[ \frac{\left( 1-\textcolor{red}{\beta} \right) ^{2}}{24}\frac{\textcolor{red}{\alpha} ^{2}}{(fK)^{1-\textcolor{red}{\beta}}}+\frac{1}{4}\frac{\textcolor{red}{\rho \beta \nu\alpha}}{(fK)^{(1-\textcolor{red}{\beta})/2}}+\frac{2-3\textcolor{red}{\rho} ^{2}}{24}\textcolor{red}{\nu}^{2}\right] T\right\} }{(fK)^{(1-\textcolor{red}{\beta})/2}\left[ 1+\frac{(1-\textcolor{red}{\beta})^{2}}{24}\ln ^{2} \frac{f}{K}+\frac{(1-\textcolor{red}{\beta})^{4}}{1920}\ln^{4}\frac{f}{K}\right] } \times \frac{z}{\chi (z)} \notag \\ z &=&\frac{\textcolor{red}{\nu}}{\textcolor{red}{\alpha}}(fK)^{(1-\textcolor{red}{\beta})/2}\ln \frac{f}{K} \notag \\ \chi (z) &=&\ln \left[ \frac{\sqrt{1-2\rho z+z^{2}}+z-\textcolor{red}{\rho}}{1-\textcolor{red}{\rho}}\right] . \notag \end{eqnarray}
+%\end{frame}
+%
+%\begin{frame}{Swaption Volatility Calibration}
+%    \begin{center}
+%      \includegraphics[width=0.65\linewidth]{images/10y_10y}
+%    \end{center}
+%\end{frame}
+%
+%\begin{frame}{Swaption Volatility Calibration}
+%    \begin{center}
+%      \includegraphics[width=0.3\linewidth]{images/alpha}
+%      \includegraphics[width=0.3\linewidth]{images/rho}
+%      \includegraphics[width=0.3\linewidth]{images/nu}
+%    \end{center}
+%\end{frame}
+
 
 %\begin{frame}{Differences between Caps and Swaptions}
 %\begin{itemize}
@@ -780,7 +804,6 @@ Implied Volatility: 0.5400
 %	%Can you provide an example ?
 %\end{itemize}
 %\end{frame}
-
 
 \subsection{Bond Options}
 \begin{frame}{An Option to Exchange Fixed with Float}
@@ -1354,99 +1377,99 @@ We know the value of the callable bond $P(r,t_n)$ since it is equal to the value
 %\end{itemize}
 %\end{frame}
 
-\begin{frame}{Few Useful Math Tricks}
-\renewcommand{\arraystretch}{1.4}
-\begin{table}[bt]
-	\begin{tabular}{|c|c|} \hline
-		rule 1 & $\max(J,K) = K + \max(J-K, 0)$\\ \hline		
-		rule 2 & $\max(J-K,0) = J-K + \max(K-J, 0)$\\ \hline		
-		rule 3 & $\max(\alpha J,K) = \alpha \max(J,\frac{K}{\alpha})$\\ \hline		
-		rule 4 & $\max(\alpha J,K) = K + \alpha\max(J-\frac{K}{\alpha}, 0)$\\ \hline		
-		rule 5 & $\max(J,0) = -\min(-J,0)$\\ \hline		
-		rule 6 & $\begin{aligned}&\min(\max(J-K_{\max}, 0), K_{\min}) =\\ &\max[J-K_{\max},0]-\max[J-K_{\max}-K_{\min},0]\end{aligned}$\\ \hline		
-	\end{tabular}
-\end{table}
-\end{frame}
-
-%A position in options (a situation/ relationship expressed originally as vega) in which any increase in the implied volatility of the underlying asset will generate a profit, even without a move in the underlying asset.
-
-\subsection{Reverse Floater}
-\begin{frame}{Reverse Floater Bond}
-\begin{itemize}
-	\item<1-> Denote with $F(T)$ the short-term rate observed in $T$. We can write the \textcolor{red}{Reverse Floater} coupon in general form as
-	\begin{equation*}
-		\textbf{RF}=\max[0, K-\alpha F(T)] = \underbrace{K-\alpha F(T) + \max[\alpha F(T)-K,0]}_{rule 2}
-	\end{equation*}
-	\item<2-> Previous equation gives the payoff as the sum of a fixed leg of an IRS and a Cap with strike $K$
-\begin{equation}
-	\boxed{\textbf{RF} = \underbrace{K - \alpha F(T)}_{\text{IRS fixed leg}} + \underbrace{\max[\alpha F(T)-K,0]}_{\text{Cap}}}
-\end{equation}
-
-%	\item Which, adding and subtracting $K$ (\emph{rule 1}), and by \emph{rule 5} can be rewritten as
-%	\begin{equation*}
-%		\begin{aligned}
-%		\textbf{RF}&=\max[0, K-\alpha F(T)]=\max[-K,-\alpha F(T)] + K = \\
-%		&= K - \min[K,\alpha F(T)]
-%		\end{aligned}
-%	\end{equation*}
-%	\item Finally \emph{rule 5}, then \emph{rule 1} twice (once with $K$ and another with $\alpha F(T)$) after having added and subtracted $\alpha F(T)$
-%	\begin{equation}
-%		\begin{aligned}
-%			\textbf{RF} &= K - \min[K,\alpha F(T)] = \overbrace{K + \max[-K, -\alpha F(T)]}^{rule 1}\\
-%			&=\underbrace{\max[0, K-\alpha F(T)]}_{rule 5} = \underbrace{K - \alpha F(T) + \max[\alpha F(T)-K,0]}_{rule 2}
-%		\end{aligned}
-%	\label{eq:reverse_floater_payoff}
-%	\end{equation}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Reverse Floater Bond}
-		\begin{columns}
-			\column{0.45\linewidth}
-		An investor would want to invest in a reverse floater if the benchmark rate is high and she believes the rate will decrease in the future at a faster pace than the forwards indicate.
-			\column{0.4\linewidth}
-				\includegraphics[width=0.8\linewidth]{images/reverse_floater_payoff}
-		\end{columns}
-	\begin{itemize}
-	\item<2-> One can also buy a reverse floater if the rates are low now and believes they stay low, even though the forward contracts are implying an increase. If rates do not change, by holding the reverse floater outperform floating rate notes on the same index.
-	\item<3-> Third if an investor has invested in bonds, and if interest rate falls, she will receive lower returns than expected. In this scenario, inverse floaters in the portfolio provide higher returns.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Reverse Floater Bond}
-	\begin{itemize}
-%		\item As with all leveraged investments, inverse floaters introduce significant interest rate risk. 
-		\item Other typical investors are \textbf{long vega}: if $K$ is close to the forward rates, vega is much higher (do you know why ?).
-		\item Such a position means you have a \emph{positive vega exposure}, i.e. take profit from an increase in volatility: 
-		a long call/put option can be used. 
-		\item A \emph{short vega} position instead means you have a negative vega exposure (profit from a decrease in volatility). \item A short call/put option can be used to create a short vega position. 
-		\item High volatility can result in drastic market swings. It typically has a negative correlation to the market, i.e. spiked volatility can be result into downward market velocity.
-	\end{itemize}
-\end{frame}
-
+%\begin{frame}{Few Useful Math Tricks}
+%\renewcommand{\arraystretch}{1.4}
+%\begin{table}[bt]
+%	\begin{tabular}{|c|c|} \hline
+%		rule 1 & $\max(J,K) = K + \max(J-K, 0)$\\ \hline		
+%		rule 2 & $\max(J-K,0) = J-K + \max(K-J, 0)$\\ \hline		
+%		rule 3 & $\max(\alpha J,K) = \alpha \max(J,\frac{K}{\alpha})$\\ \hline		
+%		rule 4 & $\max(\alpha J,K) = K + \alpha\max(J-\frac{K}{\alpha}, 0)$\\ \hline		
+%		rule 5 & $\max(J,0) = -\min(-J,0)$\\ \hline		
+%		rule 6 & $\begin{aligned}&\min(\max(J-K_{\max}, 0), K_{\min}) =\\ &\max[J-K_{\max},0]-\max[J-K_{\max}-K_{\min},0]\end{aligned}$\\ \hline		
+%	\end{tabular}
+%\end{table}
+%\end{frame}
+%
+%%A position in options (a situation/ relationship expressed originally as vega) in which any increase in the implied volatility of the underlying asset will generate a profit, even without a move in the underlying asset.
+%
+%\subsection{Reverse Floater}
 %\begin{frame}{Reverse Floater Bond}
 %\begin{itemize}
-%	\item 
-%1. Long Vega positions: A long vega position means that you have a positive vega exposure. It is a strategy to profit from an increase in implied volatility. A long call option or a long put option can be used to create a long vega position. 
-%%
-%2. Short Vega positions: A short vega position means that you have a negative vega exposure. It is a strategy to profit from a decrease in implied volatility. A short call option or a short put option can be used to create a short vega position. 
+%	\item<1-> Denote with $F(T)$ the short-term rate observed in $T$. We can write the \textcolor{red}{Reverse Floater} coupon in general form as
+%	\begin{equation*}
+%		\textbf{RF}=\max[0, K-\alpha F(T)] = \underbrace{K-\alpha F(T) + \max[\alpha F(T)-K,0]}_{rule 2}
+%	\end{equation*}
+%	\item<2-> Previous equation gives the payoff as the sum of a fixed leg of an IRS and a Cap with strike $K$
+%\begin{equation}
+%	\boxed{\textbf{RF} = \underbrace{K - \alpha F(T)}_{\text{IRS fixed leg}} + \underbrace{\max[\alpha F(T)-K,0]}_{\text{Cap}}}
+%\end{equation}
 %
-%	\item Example: when buying an option, the purchaser wants the premium to increase and when selling an option, the seller wants the premium to decrease. Should implied volatility increase, there will be an increase in the option's premium. Inversely, if there is a decrease in implied volatility, there will be a decrease in the option's premium. 
-%	\item Vega changes when there are larger price swings (higher implied volatility) which can be equated to higher uncertainty. Lower implied volatility can be connected to lower uncertainty, which equates to less dramatic swings of the underlying security.
+%%	\item Which, adding and subtracting $K$ (\emph{rule 1}), and by \emph{rule 5} can be rewritten as
+%%	\begin{equation*}
+%%		\begin{aligned}
+%%		\textbf{RF}&=\max[0, K-\alpha F(T)]=\max[-K,-\alpha F(T)] + K = \\
+%%		&= K - \min[K,\alpha F(T)]
+%%		\end{aligned}
+%%	\end{equation*}
+%%	\item Finally \emph{rule 5}, then \emph{rule 1} twice (once with $K$ and another with $\alpha F(T)$) after having added and subtracted $\alpha F(T)$
+%%	\begin{equation}
+%%		\begin{aligned}
+%%			\textbf{RF} &= K - \min[K,\alpha F(T)] = \overbrace{K + \max[-K, -\alpha F(T)]}^{rule 1}\\
+%%			&=\underbrace{\max[0, K-\alpha F(T)]}_{rule 5} = \underbrace{K - \alpha F(T) + \max[\alpha F(T)-K,0]}_{rule 2}
+%%		\end{aligned}
+%%	\label{eq:reverse_floater_payoff}
+%%	\end{equation}
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Reverse Floater Bond}
+%		\begin{columns}
+%			\column{0.45\linewidth}
+%		An investor would want to invest in a reverse floater if the benchmark rate is high and she believes the rate will decrease in the future at a faster pace than the forwards indicate.
+%			\column{0.4\linewidth}
+%				\includegraphics[width=0.8\linewidth]{images/reverse_floater_payoff}
+%		\end{columns}
+%	\begin{itemize}
+%	\item<2-> One can also buy a reverse floater if the rates are low now and believes they stay low, even though the forward contracts are implying an increase. If rates do not change, by holding the reverse floater outperform floating rate notes on the same index.
+%	\item<3-> Third if an investor has invested in bonds, and if interest rate falls, she will receive lower returns than expected. In this scenario, inverse floaters in the portfolio provide higher returns.
 %	\end{itemize}
 %\end{frame}
-
-\begin{homework}
-\begin{frame}{\textcolor{white}{Homework}}
-\begin{itemize}
-\item[white] Calculate the analytical expressions for:
-\begin{itemize}
-	\item[white] Delta Sensitivity, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
-	\item[white] Vega, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
-\end{itemize}
-\end{itemize}
-\end{frame}
-\end{homework}
+%
+%\begin{frame}{Reverse Floater Bond}
+%	\begin{itemize}
+%%		\item As with all leveraged investments, inverse floaters introduce significant interest rate risk. 
+%		\item Other typical investors are \textbf{long vega}: if $K$ is close to the forward rates, vega is much higher (do you know why ?).
+%		\item Such a position means you have a \emph{positive vega exposure}, i.e. take profit from an increase in volatility: 
+%		a long call/put option can be used. 
+%		\item A \emph{short vega} position instead means you have a negative vega exposure (profit from a decrease in volatility). \item A short call/put option can be used to create a short vega position. 
+%		\item High volatility can result in drastic market swings. It typically has a negative correlation to the market, i.e. spiked volatility can be result into downward market velocity.
+%	\end{itemize}
+%\end{frame}
+%
+%%\begin{frame}{Reverse Floater Bond}
+%%\begin{itemize}
+%%	\item 
+%%1. Long Vega positions: A long vega position means that you have a positive vega exposure. It is a strategy to profit from an increase in implied volatility. A long call option or a long put option can be used to create a long vega position. 
+%%%
+%%2. Short Vega positions: A short vega position means that you have a negative vega exposure. It is a strategy to profit from a decrease in implied volatility. A short call option or a short put option can be used to create a short vega position. 
+%%
+%%	\item Example: when buying an option, the purchaser wants the premium to increase and when selling an option, the seller wants the premium to decrease. Should implied volatility increase, there will be an increase in the option's premium. Inversely, if there is a decrease in implied volatility, there will be a decrease in the option's premium. 
+%%	\item Vega changes when there are larger price swings (higher implied volatility) which can be equated to higher uncertainty. Lower implied volatility can be connected to lower uncertainty, which equates to less dramatic swings of the underlying security.
+%%	\end{itemize}
+%%\end{frame}
+%
+%\begin{homework}
+%\begin{frame}{\textcolor{white}{Homework}}
+%\begin{itemize}
+%\item[white] Calculate the analytical expressions for:
+%\begin{itemize}
+%	\item[white] Delta Sensitivity, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
+%	\item[white] Vega, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
+%\end{itemize}
+%\end{itemize}
+%\end{frame}
+%\end{homework}
 
 \end{document}
 
