@@ -11,6 +11,83 @@
   \maketitle
 \end{frame}
 
+\section{Numerical Algorithms}
+\subsection{Root Finding Methods}
+\begin{frame}[fragile]{Newton-Raphson Method}
+	\begin{itemize}
+		\item The roots of the function (or zeros) are the $x_i$ solutions of $f(x) = 0$.
+		\item \emph{Newton's method} is a root-finding algorithm which produces successively better approximations of the roots.
+		\item Start with an initial guess $x_0$, approximate the function by its tangent line $g(x)$, and compute the $x$-intercept of this line
+		\begin{gather*}
+			g(x) = f(x_0) + f'(x_0)(x-x_0) \implies  f'(x_0)(x_0-x_1)=f(x_0)\\
+			x_1=x_0-\frac {f(x_0)}{f'(x_0)}
+		\end{gather*}
+		%\item This $x$-intercept will typically be a better approximation to the original function's root than the first guess, and the method can be iterated.
+		\item If the tangent line to the curve $f(x)$ at $x = x_0$ intercepts the $x$-axis at $x_{1}$ then
+		\begin{equation*}
+			\begin{cases}
+				f(x_1) < \text{tol}=10^{-8} \Rightarrow \text{ zero found !}\\
+				g(x_1) = f(x_0) + f^{'}(x_0)(x_1-x_0) = 0 \Rightarrow \text{ solve for
+				}x_1\text{ and iterate...}
+			\end{cases}
+		\end{equation*}
+		\item The method will usually converge, provided this initial guess is close enough to the unknown zero, and that $f'(x_0) \neq 0$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Newton-Raphson Method}
+\begin{center}
+    \includegraphics[width=0.6\linewidth]{images/newton_raphson}
+\end{center}
+\end{frame}
+
+\subsection{Bootstrap}
+\begin{frame}{Bootstrapping the Interest Rate Curve}
+\begin{itemize}
+\item A \emph{yield curve} shows the relationship between interest rates and the time to maturity of the debt.
+\item Market instruments like swaps have different maturities and coupon structures.
+\item \textbf{Bootstrapping} is a technique to derive the zero-coupon yield curve from these market prices.
+\item Swap rates reflect market expectations of future interest rates, making them crucial for yield curve construction.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Bootstrapping Methodology}
+\begin{itemize}
+\item Gather market data for interest rate swaps with various maturities. Each swap provides a fixed rate (swap rate) and a set of cash flows
+\begin{equation*}
+\textbf{RFS} = N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))
+\end{equation*}
+\item Start with the shortest maturity instrument (e.g. 1M swap with 1 month tenor)
+\begin{equation*}
+\textbf{RFS}_{1M} = N\tau_{01} (K-F_{01})
+\end{equation*}
+Since at inception its value is $\textbf{RFS}_{1M} = 0$, using Newton-Raphson calculate the corresponding zero-coupon rate for this maturity
+\begin{equation*}
+\textbf{RFS}_{1M} = N\tau_{01} (K-F_{01}(\textcolor{green}{r_0}, \textcolor{red}{r_1})) = 0
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Bootstrapping Methodology}
+\begin{itemize}
+\item Move to the next maturity
+\begin{equation*}
+\textbf{RFS}_{2M} = N\tau_{01} (K-F_{01}) + N\tau_{12} (K-F_{12})
+\end{equation*}
+\item Use the known zero-coupon rates from the shorter maturities to determine the zero-coupon rate for this maturity such that the present value of all cash flows equals the swap's par value
+\begin{equation*}
+\textbf{RFS}_{2M} = N\tau_{01} (K-F_{01}(\textcolor{green}{r_0}, \textcolor{green}{r_1})) + N\tau_{12} (K-F_{12}(\textcolor{green}{r_1}, \textcolor{red}{r_2})) = 0
+\end{equation*}
+\item Repeat the process, step-by-step, for each successive maturity, using previously calculated zero-coupon rates.
+\item This process "bootstraps" the yield curve, building it from the short end to the long end.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Bootstrapping from Interest Rate Swaps: An Example}
+\begin{center}
+    \includegraphics[width=0.6\linewidth]{images/forward_rate_curve}
+\end{center}
+\end{frame}
 
 \section{Risk Measures}
 \begin{frame}{Sensitivity}
@@ -107,7 +184,7 @@ Sensitivities can be computed with different techniques:
 
 \begin{frame}{Market Rate Sensitivity}
 \begin{itemize}
-	\item<1-> Forecast and discount curves used in pricing formulas are those \emph{implied} by the market quotes of interest rate instruments (i.e. futures, OIS, etc\ldots). They are usually determined through a technique called \textbf{bootstrap}.
+	\item<1-> Forecast and discount curves used in pricing formulas are those \emph{implied} by the market quotes of interest rate instruments (i.e. futures, OIS, etc\ldots). They are usually determined through the \textbf{bootstrap} technique.
 	\item<2-> Another popular, though more complicated, method to assess the risk is to shock each input instrument used in the bootstrapping by 1~bp one by one, rebuild the curves, and then re-price the instrument of interest to obtain its curve sensitivity. 
 	\item<3-> This is called \textcolor{red}{Market Rate Sensitivity} and its value is given by the sum of each Swap $NPV$ variations.
 	\item<4-> This of course is not quite a "parallel" shift of any curve (e.g. a 1~bp change in futures rate won't correspond to a 1~bp change in the others).
@@ -303,7 +380,7 @@ Estimate the DV01 of the swap numerically.
 				& = N\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(1-(1+K\tau)P(T_{i-1},T_i)\right)^+ | \mathcal{F}_t\right]
 			\end{aligned}
 		\end{equation*}
-		\item<2-> Collecting by $1+K\tau$ we finally get
+		\item<2-> Collecting ($1+K\tau$) we finally get
 		\begin{equation}
 			\boxed{\textbf{Cpl}=N(1+K\tau)\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(\frac{1}{1+K\tau}-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]}
 		\end{equation}
@@ -339,10 +416,10 @@ Estimate the DV01 of the swap numerically.
 	\begin{itemize}
 	\item<1-> Usually, the swaption maturity coincides with the first reset date of the underlying IRS (the Interest Rate Swap length is called the \textcolor{red}{tenor} of the swaption).	
 	\item<2-> If you are on the buyer side (you are long payer swaption) which is your view on rates ? Why ?
-	\item<3-> Are there any risks associated with a Swaption?
+	\item<2-> Are there any risks associated with a Swaption?
 	\begin{itemize}
-		\item<4-> The primary risk with a Swaption occurs after you have exercised your right and proceeded with the Swap. Should interest rate movements be different to your expectations, the Swap may have the opposite effect to what you were trying to achieve with the transaction. 
-		\item<5-> If interest rates do not rise above the strike on the exercise date, you have not obtained any benefit from the premium paid for the purchase of the Swaption. The premium is the cost of obtaining protection against a rise in interest rates.
+		\item<3-> The primary risk with a Swaption occurs after you have exercised your right and proceeded with the Swap. Should interest rate movements be different to your expectations, the Swap may have the opposite effect to what you were trying to achieve with the transaction. 
+		\item<3-> If interest rates do not rise above the strike on the exercise date, you have not obtained any benefit from the premium paid for the purchase of the Swaption. The premium is the cost of obtaining protection against a rise in interest rates.
 	\end{itemize}
 \end{itemize}
 \end{frame}
@@ -433,28 +510,6 @@ List the pros and cons about each one and declare your favourite.
 \end{frame}
 \end{homework}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \section{The Black Model}
 \begin{frame}{The Black Model - Overview}
 	\begin{itemize}
@@ -527,58 +582,36 @@ List the pros and cons about each one and declare your favourite.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Newton-Raphson Method}
-	\begin{itemize}
-		\item The roots of the function (or zeros) are the $x_i$ solutions of $f(x) = 0$.
-		\item \emph{Newton's method} is a root-finding algorithm which produces successively better approximations of the roots.
-		\item Start with an initial guess $x_0$, approximate the function by its tangent line $g(x)$, and compute the $x$-intercept of this line
-		\begin{gather*}
-			g(x) = f(x_0) + f'(x_0)(x-x_0) \implies  f'(x_0)(x_0-x_1)=f(x_0)\\
-			x_1=x_0-\frac {f(x_0)}{f'(x_0)}
-		\end{gather*}
-		%\item This $x$-intercept will typically be a better approximation to the original function's root than the first guess, and the method can be iterated.
-		\item If the tangent line to the curve $f(x)$ at $x = x_0$ intercepts the $x$-axis at $x_{1}$ then
-		\begin{equation*}
-			\begin{cases}
-				f(x_1) < \text{tol}=10^{-8} \Rightarrow \text{ zero found !}\\
-				g(x_1) = f(x_0) + f^{'}(x_0)(x_1-x_0) = 0 \Rightarrow \text{ solve for
-				}x_1\text{ and iterate...}
-			\end{cases}
-		\end{equation*}
-		\item The method will usually converge, provided this initial guess is close enough to the unknown zero, and that $f'(x_0) \neq 0$.
-	\end{itemize}
-\end{frame}
-
 \begin{frame}[fragile]{Newton-Raphson Application}
 	Using the Newton-Raphson method determine the implied volatility of a \textbf{call} option.
 	\begin{columns}
 		\column{0.55\linewidth}
 		\begin{ipython}
-			from scipy.optimize import newton
+from scipy.optimize import newton
 			
-			vols = []
-			prices = []
+vols = []
+prices = []
 			
-			def implied_vol(sigma, S0, K, r, T, market_price):
-			bs_price = BS(S0, K, r, sigma, T)
-			vols.append(sigma)
-			prices.append(bs_price)
-			return bs_price - market_price
+def implied_vol(sigma, S0, K, r, T, market_price):
+    bs_price = BS(S0, K, r, sigma, T)
+    vols.append(sigma)
+    prices.append(bs_price)
+    return bs_price - market_price
 			
-			S0, K, T, r = 30, 28, 0.25, 0.025
-			market_price = 4.311
-			imp_sigma = newton(implied_vol, 0.1, args=(S0, K, r, T, market_price))
-			print (f"Implied Volatility: {imp_sigma:.4f}")    
-		\end{ipython}
-		\begin{ioutput}
+S0, K, T, r = 30, 28, 0.25, 0.025
+market_price = 4.311
+imp_sigma = newton(implied_vol, 0.1, args=(S0, K, r, T, market_price))
+print (f"Implied Volatility: {imp_sigma:.4f}")    
+\end{ipython}
+\begin{ioutput}
 			
-			Implied Volatility: 0.5400
-		\end{ioutput}
-		\column{0.45\linewidth}
-		\begin{center}
-			\includegraphics[width=0.85\linewidth]{images/call_newton}
-		\end{center}
-	\end{columns}
+Implied Volatility: 0.5400
+\end{ioutput}
+\column{0.45\linewidth}
+\begin{center}
+    \includegraphics[width=0.85\linewidth]{images/call_newton}
+\end{center}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Problems with the Black Model}
@@ -805,14 +838,14 @@ optPriceExact = BS_shifted(L0, K, shift, r, sigma, T)
 %\end{itemize}
 %\end{frame}
 
-\subsection{Bond Options}
+\section{Bond Options}
 \begin{frame}{An Option to Exchange Fixed with Float}
 \begin{itemize}
 	\item<1-> We have seen that a Swap can be viewed as an exchange of bonds (fixed for float).
-	\item<2-> Hence a Swaption can be regarded as an \textcolor{red}{option to exchange fixed for floating} bonds (or vice versa).
-	\item<3-> In case it would be possible to get a simple expression for a \textcolor{red}{Coupon Bond Option} we could use to price Swaptions.
-	\item <4-> It would be even simpler if we could express a Coupon Bond Option as a portfolio of Zero Coupon Bond Options.
-	\item<5-> Luckily we can do that thanks to a recipe known as \textcolor{red}{Jamshidian's decomposition}.
+	\item<1-> Hence a Swaption can be regarded as an \textcolor{red}{option to exchange fixed for floating} bonds (or vice versa).
+	\item<2-> In case it would be possible to get a simple expression for a \textcolor{red}{Coupon Bond Option} we could use to price Swaptions.
+	\item <2-> It would be even simpler if we could express a Coupon Bond Option as a portfolio of Zero Coupon Bond Options.
+	\item<3-> Luckily we can do that thanks to a recipe known as \textcolor{red}{Jamshidian's decomposition}.
 \end{itemize}
 \end{frame}
 
