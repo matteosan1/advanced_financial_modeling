@@ -32,7 +32,7 @@
 \begin{frame}{Numeraires}
   \begin{itemize}
   \item We may compute asset values w.r.t. USD, EUR or JPY.
-  \item Others might prefer use commodities: 1~oz of gold could be a numeraire.
+  \item Others might prefer commodities: 1~oz of gold could be a numeraire.
   \item In any case, once we choose a numerarie e.g. 1 USD, we determine the value of all the other assets:
     \begin{columns}
     	\column{0.5\linewidth}
@@ -45,9 +45,9 @@
 
 \begin{frame}{Numeraires}
   \begin{itemize}
-  \item Of course, in practice there are reasons to prefer gold to other commodities e.g. corn, live cattle, or one currency with respect to another (i.e. political reasons)\ldots
+  \item Of course, in practice there are reasons to prefer gold to other commodities e.g. corn, live cattle, or one currency with respect to another (e.g. political reasons)\ldots
   \item But intuitively there should be no theoretical reason (at least at the scale of investors) to prefer to measure value in gold rather than USD (there used to be also the "gold standard")
-  \item Basically we want to exploit this fact in our financial models.
+  \item \textbf{Basically we want to exploit this fact in our financial models.}
   \end{itemize}
 \end{frame}
 
@@ -57,7 +57,7 @@
     \begin{itemize}
     \item the exchange rate of the Italian Lira to the Euro was locked at EUR 1 = ITL 1936.27 on 31 December 1998.
     \end{itemize}
-  \item<2-> When the numeraire is a \textcolor{red}{stochastic process}, and we want to move to it, the pricing of a claim has to be changed in order to take into account the new risks (the intrinsic randomness of the new numeraire).
+  \item<2-> When the numeraire is a \textcolor{red}{stochastic process}, and we want to move to it, the pricing of a claim has to be changed in order to take into account the new risk (the intrinsic randomness of the new numeraire).
   \item<3-> In particular a change of numeraire implies also a change in the underlying measure (probability distribution). Indeed, starting with the bank account numeraire
     \begin{equation*}
       \begin{cases}
@@ -106,20 +106,19 @@
 \subsection{Radon-Nikodym Derivative}
 \begin{frame}{Radon-Nikodym Derivative}
   \begin{itemize}
-  \item Now we need to understand how to pass from a numeraire to another, and hence by a measure to another, in an arbitrage free setting.
-  \item Notice that until now we have implicitly assumed the bank account $B$ as our numeraire.
-  \item Before formalize how this passage can be done it is worth stating the following:
+  \item Now we need to understand how to pass from a numeraire to another, and hence by a measure to another, in an arbitrage free setting (notice that until now we have implicitly assumed the bank account $B$ as our numeraire).
+  \item Before formalizing how this can be done it is worth stating the following:
   	\begin{itemize}
-	  \item Formally we can indicate with
+	  \item given two probability measures ($\mu$ and $\nu$) formally we can indicate with
 	  \begin{equation*}
 	  	\begin{gathered}
 	  	\mathbb{N}_\mu := \{A\in \Omega \mid \mu(A)=0\}\\
   	  	\mathbb{N}_\nu := \{A\in \Omega \mid \nu(A)=0\}
   	  \end{gathered}
     \end{equation*}
-  	the $\mu$-null sets and the $\nu$-null sets, respectively. 
-  	The two measures are called equivalent if and only $\mathbb {N}_\mu= \mathbb{N}_\nu$.
-	\item In other words two probability measures are said to be equivalent when they agree on which events have measure zero.
+  	the $\mu$-null sets and the $\nu$-null sets, respectively.
+  	The two measures are called equivalent if and only if $\mathbb {N}_\mu= \mathbb{N}_\nu$;
+	\item In other words two probability measures are said to be equivalent when they agree on which events are "available".
   \end{itemize}
   \end{itemize}
 \end{frame}
@@ -144,7 +143,7 @@
     \begin{equation*}
       \expect{P}=\int F(x)p(x)dx
     \end{equation*}
-  \item Suppose there exists a function $q(x)$, which satisfies the mathematical conditions required to be a density function. Then we can write
+  \item Suppose there exists a function $q(x)$, which satisfies the mathematical conditions required to be a density function, then we can write
     \begin{equation*}
       \expect{P}=\int F(x)p(x)\frac{q(x)}{q(x)}dx
     \end{equation*}
@@ -167,17 +166,17 @@
       \expect{*}[X|\mathcal{F}_t] = \frac{\mathbb{E}\left[X\cfrac{d\mathbb{Q}^*}{d\mathbb{Q}}\bigg|\mathcal{F}_t\right]}{\mathbb{E}[\zeta_t|\mathcal{F}_t]}
       \label{eq:conditioned_expectation}
     \end{equation}
-    which is an "equivalent" formulation of the famous \emph{Bayes theorem}
-    \begin{equation*}
-      P(A|B)=\frac{P(B|A)P(A)}{P(B)}
-    \end{equation*}
+    %which is an "equivalent" formulation of the famous \emph{Bayes theorem}
+    %\begin{equation*}
+    %  P(A|B)=\frac{P(B|A)P(A)}{P(B)}
+    %\end{equation*}
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Radon-Nikodym Derivative Example}
   \begin{itemize}
       \item Imagine two probability densities $\mathbb{P} = \mathcal{N}(\mu_1, \sigma_1)$ and $\mathbb{Q} = \mathcal{N}(\mu_2, \sigma_2)$.
-      \item Let's numerically compute the Radon-Nikodym derivative the moves you from the $\mathbb{P}$ to the $\mathbb{Q}$ world.
+      \item Let's numerically compute the Radon-Nikodym derivative that moves you from the $\mathbb{P}$ to the $\mathbb{Q}$ world.
   \end{itemize}
 \begin{columns}
 \column{0.5\linewidth}
@@ -190,7 +189,7 @@ def radon_nikodym(x, P, Q):
     return Q.pdf(x)/P.pdf(x)
 
 mu1, mu2 = 0.05, 0.1
-sigma1, sigma2 = 0.2, 0.2
+sigma1, sigma2 = 0.2, 0.4
 P = norm(mu1, sigma1)
 Q = norm(mu2, sigma2)	
 \end{ipython}
@@ -279,11 +278,11 @@ print (integration_mc(radon_nikodym, (P, Q,),
 \subsection{Change of Numeraire}
 \begin{frame}{Change of Numeraire}
   \begin{block}{Theorem}
-    Assume exists a numeraire $N_t$ and the associated measure $\mathbb{Q}^N$, equivalent to $\mathbb{P}$, such that the price of any traded asset $S_t$ relative to $N$ is a martingale under $\mathbb{Q}^N$
+    Assume exists a numeraire $N_t$ and the associated measure $\mathbb{Q}^N$, equivalent to $\mathbb{P}$, such that the price of every traded asset $S_t$ relative to $N$ is a martingale under $\mathbb{Q}^N$
     \begin{equation*}
       \frac{S_t}{N_t} = \expect{N}\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
     \end{equation*}
-    Let $U$ be another arbitrary numeraire. Then \textbf{there exists a measure $\mathbb{Q}^U$, also equivalent to $\mathbb{P}$, such that the price of any traded asset $S_t$, normalized to $U$, is a martingale under $\mathbb{Q}^U$}
+    Let $U$ be another arbitrary numeraire. Then \textbf{there exists a measure $\mathbb{Q}^U$, also equivalent to $\mathbb{P}$, such that the price of every traded asset $S_t$, normalized to $U$, is a martingale under $\mathbb{Q}^U$}
     \begin{equation*}
       \frac{S_t}{U_t} = \expect{U}\left[\frac{S_T}{U_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
     \end{equation*}
@@ -303,7 +302,7 @@ print (integration_mc(radon_nikodym, (P, Q,),
 \begin{frame}{Change of Numeraire (Proof part 2)}
 	\begin{itemize}
 		\item Let's prove first the second part.
-  		\item By definition of $\mathbb{Q}^N$, for any asset price $S_t$ holds
+  		\item By definition of $\mathbb{Q}^N$, for every asset price $S_t$ holds
 	  \begin{equation*}
 	    \begin{cases} 
 	      \expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] = \cfrac{S_0}{N_0} \\
@@ -353,13 +352,6 @@ print (integration_mc(radon_nikodym, (P, Q,),
 		\item Now we can prove the first part of the change of numeraire theorem. The conditional expectation formula~\cref{eq:conditioned_expectation} gives
 		\begin{equation*}
 			\expect{U}\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\bigg|\mathcal{F}_t\right]} = \cfrac{\cfrac{\cancel{N_0} S_t}{\cancel{U_0} \cancel{N_t}}}{\cfrac{\cancel{N_0} U_t}{\cancel{U_0} \cancel{N_t}}} = \cfrac{S_t}{U_t}
-		\end{equation*}
-		\item But 
-		\begin{equation*}
-			\begin{cases}
-				\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\right]= \expectt{N}{t}\left[\cfrac{\cancel{U_T} N_0}{N_T U_0}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_0 S_t}{U_0 N_t} \\
-				\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\right]= \expectt{N}{t}\left[\cfrac{U_T N_0}{N_T U_0}\right] = \cfrac{N_0 U_t}{U_0 N_t}
-			\end{cases}
 		\end{equation*}
 	\end{itemize}
 \myendproof
@@ -472,13 +464,12 @@ print (integration_mc(radon_nikodym, (P, Q,),
       \begin{aligned}
 	\Pi_\chi(t,T) & = B_t\expect{B}\left[B^{-1}_T\chi|\mathcal{F}_t\right] \\
 	& = B_t\expect{B}\left[P(0,T)\zeta_T\chi|\mathcal{F}_t\right]\quad\text{(using } B_T^{-1} = \zeta_TP(0,T))\\
-	& = B_tP(0,T)\expect{B}\left[\zeta_T|\mathcal{F}_t\right]\expect{T}\left[\chi|\mathcal{F}_t\right]\text{(by \cref{eq:conditioned_expectation}, cond. expect.)}\\
+	& = B_tP(0,T)\expect{B}\left[\zeta_T|\mathcal{F}_t\right]\expect{T}\left[\chi|\mathcal{F}_t\right]\quad\text{(by \cref{eq:conditioned_expectation}, cond. expect.)}\\
 	& = B_tP(0,T)\zeta_t\expect{T}\left[\chi|\mathcal{F}_t\right] =  \cancel{B_tP(0,T)}\frac{P(t,T)}{\cancel{B_tP(0,T)}}\expect{T}\left[\chi|\mathcal{F}_t\right] \\
 	& = P(t,T)\expect{T}\left[\chi|\mathcal{F}_t\right] \\
       \end{aligned}
     \end{equation*}
-    which achieves the desired separation (although under a new measure).
-  \item<2-> Clearly this kind of transformation is useful when $\chi$ has known dynamics under the forward measure.
+  \item<2-> It achieves the desired separation although under a new measure. Clearly this kind of transformations are useful when $\chi$ has known dynamics under the new measure.
   \end{itemize}
 \end{frame}
 
@@ -983,13 +974,12 @@ Using its definition above it is possible to verify the Girsanov theorem, in par
 \item the original and the transformed process have the same evolution ($\sigma$ is unchanged in the transformation);
 \item $\mathbb{E}^{\mathbb{Q}}[Y] = 0$ so the new process is drift-less.
 \end{enumerate}  
-
-Define the $RN$ process according to the Girsanov theorem and compute $\mathbb{E}$ and standard deviation for the process $Y$ in the original measure and in the new one (using the Radon-Ninkodym derivative).
 \end{frame}
 
 \begin{frame}[fragile]{A Trivial Example}
 \begin{columns}
 \column{0.5\linewidth}
+Define the $RN$ process according to the Girsanov theorem and compute $\mathbb{E}$ and standard deviation for the process $Y$ in the original measure and in the new one (using the Radon-Ninkodym derivative).
 \begin{ipython}	
 RN = np.ones_like(epsilon)
 gamma = -mu/sigma

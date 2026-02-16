@@ -1,0 +1,1547 @@
+\documentclass{beamer}
+\usetheme{afm}
+
+\title{Arbitrage-Free Pricing Theory}
+\subtitle{Let's refresh some useful concept}
+\course{Advanced Financial Modelling}
+\author{\href{mailto:matteo.sani@unisi.it}{Matteo Sani}}
+
+\begin{document}
+	\begin{frame}[plain]
+		\maketitle
+	\end{frame}        
+
+	\section{No Arbitrage Theory}
+	\subsection{No Arbitrage Principle\ldots}
+	
+	\begin{frame}{Risk Neutral Pricing Foundations}
+		Harrison and Pliska proved and formalized the following results:
+		\begin{itemize}
+			\item \textbf{The market is free of arbitrage if (and only if) there exists an \textcolor{red}{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).}
+		\end{itemize}
+		\vfill
+	\end{frame}
+	
+	\begin{frame}{Risk Neutral Pricing Foundations}
+		\begin{itemize}
+			\item Arbitrage opportunities rarely exist in practice. If and when they do, gains are extremely small, and are typically short-lived and difficult to spot. \textcolor{red}{Arbitrage exclusion in the mathematical model is close enough to reality}.
+			\item An \textcolor{red}{equivalent martingale measure} $\mathbb{Q}$ is a probability measure on the space $\Omega$ such that
+			\begin{enumerate}
+				\item $\mathbb{Q}$ is equivalent to $\mathbb{P}$ (real world measure);
+				\item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a (martingale) price $\pi_t$
+				\begin{equation*}
+					\pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
+				\end{equation*}
+				More on the $D(t, T)$ term later.
+			\end{enumerate}				
+		\end{itemize}
+		\begin{block}{Definition}
+			A \textbf{(probability) measure} ($\mathbb{P}, \mathbb{Q}\ldots$) is a mapping which associates a probability to each element in the sample space. Two measures are \textbf{equivalent} if they agree "on what is possible". Note the word \emph{possible}: the two measures can have different probabilities for the same event, but must have the same \emph{null-set} $\{x\in {\mathbb{P}}\mid p (x)=0\}$.
+		\end{block}
+	\end{frame}
+	
+	\subsection{Risk Neutral Measure}
+	\begin{frame}{Risk Neutral Measure}
+		\begin{itemize}
+			\item The fundamental distinction between the \textbf{Physical Measure} ($\mathbb{P}$) and the \textbf{Risk-Neutral Measure} ($\mathbb{Q}$) lies in the \textcolor{red}{drift of the underlying process}.
+			
+			\item \textbf{Physical Measure ($\mathbb{P}$):} reflects historical data and subjective expectations. The expected return of a risky asset includes a \textbf{risk premium} ($\mu = r + \text{risk premium}$), which is notoriously difficult to estimate.
+			
+			\item \textbf{Risk-Neutral Measure ($\mathbb{Q}$):} a mathematical construct (EMM) where all assets have an expected return equal to the \textcolor{red}{risk-free rate} ($r$). 
+			
+			\item It allows us to price derivatives using observable market data (like implied volatility) rather than unobservable risk preferences. 
+			
+			\item Under the \textit{No-Arbitrage} assumption, $\mathbb{Q}$ is an \textit{implied distribution} extracted from liquid market instruments, used to ensure that the discounted price process is a \textcolor{red}{$\mathbb{Q}$-martingale}.
+		\end{itemize}
+%		\begin{itemize}
+%			\item  The difference between real world and risk neutral measures is in the treatment of the market price of risk.
+%			\item If you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \textcolor{red}{real or physical probability}.
+%			\item The \textcolor{red}{risk neutral measure}, instead, allows determination of a market-consistent value without making any assumption about the market price of risk. That is useful because the price of risk is not directly observable, but the market prices used to calibrate a risk-neutral generator are.
+%			\item The risk neutral measure is a direct consequence of no arbitrage assumption. It is an \emph{implied probability distribution} from observable prices of tradable instruments, and used to determine \textcolor{red}{objective fair prices} for a financial instrument.
+%		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Risk Neutral Pricing Foundations}
+		Harrison and Pliska proved and formalized the following results:
+		\begin{itemize}
+			\item The market is free of arbitrage if (and only if) there exists an \textcolor{red}{equivalent martingale measure} (EMM) (i.e. a risk neutral measure).
+			\item \textbf{The market is complete if and only if the martingale measure is unique.}
+			
+			(Note that market completeness means that any contingent claim can be replicated by a portfolio, or in other words that every asset in every possible state of the world has a price.)
+		\end{itemize}
+		\begin{block}{Definition}
+			A \textbf{contingent claim} is a contract whose future payoff depends on the value of another “underlying” asset, or more generally, that is dependent on the realization of some uncertain future event $(S, X\ldots)$		    
+		\end{block}
+		\vfill
+	\end{frame}
+				
+	\begin{frame}{Risk Neutral Pricing Foundations}
+		Harrison and Pliska proved and formalized the following results:
+		\begin{itemize}
+			\item The market is free of arbitrage if (and only if) there exists an \textcolor{red}{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).
+			\item The market is complete if and only if the martingale measure is unique;
+			\item \textbf{In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure}
+			\begin{equation}
+				\Pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
+				\label{eq:risk_neutral_pricing}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+		
+	\begin{homework}
+		\begin{frame}{\textcolor{white}{Homework}}
+			\begin{itemize}
+				\item[white] A stock is currently priced at $S_0=100$. In one year, it can either go up to $S_u=120$ or down to $S_d=90$. The risk-free rate is $r=5\%$ (annual compounding).
+				\begin{itemize}
+					\item[white] Calculate the risk-neutral probabilities $q$ and $1-q$;
+					\item[white] If the "real-world" probability of an up-move is $p=0.7$, calculate the risk premium ($\mu - r$) that investors are demanding in the real world.
+				\end{itemize}
+				\item[white] Suppose you are in a market with one underlying stock and two different risk-neutral measures, $\mathbb{Q}^1$ and $\mathbb{Q}^2$, both of which exclude arbitrage.
+				\begin{itemize}
+					\item[white] Is the market complete? Why or why not?
+					\item[white] What does this imply for the pricing of a European Call option on that stock?
+					\item[white] How does this relate to the Harrison-Pliska results in your slides?
+				\end{itemize}
+				\item[white] Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. Is this a martingale ?
+				\item[white]  Show that the exponential SDE
+				\begin{equation*}
+					dX_t = A_t X_tdW_t,\quad X_0=x_0
+				\end{equation*}
+				has the following solution
+				\begin{equation*}
+					X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
+				\end{equation*}
+			\end{itemize}
+		\end{frame}
+	\end{homework}
+
+
+	\begin{frame}{Single Curve Approach}
+		\begin{block}{Disclaimer}
+			What follows is a detailed exposition of the classic \textcolor{red}{single curve}
+			approach for interest rate derivatives. 
+			
+			Today a \textcolor{red}{multi-curve approach} is
+			used in practical applications. Nevertheless you need to understand
+			deeply this basic approach as a prerequisite for the extension to the
+			multi-curve model.
+		\end{block}
+	\end{frame}  
+
+\subsection{Money Market Account}
+\begin{frame}{Money Market Account}
+	\begin{itemize}
+		\item<0-> The \textcolor{red}{money market account} represents a risk-less investment, where profit is accrued continuously at the risk-free rate, and its value is denoted by $B(t)$.
+		\item<1-> We assume $B(0)=1$ and by definition
+		\begin{equation}
+			dB(t) = r(t)B(t)dt
+		\end{equation}
+		\item<2-> This evolution can be solved through variable separation
+		\begin{equation}
+			\begin{gathered}
+				\frac{dB_t}{B_t} = r_t dt \implies \int_0^t \frac{dB_t}{B_t} = \int_0^t r_s ds \\
+				\implies \log\frac{B_t}{B_0} = \int_0^t r_s ds \implies \boxed{B(t) = \exp\left(\int_0^t r_s ds\right)}
+			\end{gathered}
+		\end{equation}
+		where $r_t$ is referred to as \textcolor{red}{instantaneous spot rate} or \textcolor{red}{short rate}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Money Market Account}
+	\begin{itemize}
+		\item<0-> The \emph{short rate} $r_t$ can be modeled either by a deterministic or a stochastic process.
+		\item<1-> \textbf{Deterministic case}: from the definition of money market account, if I have $A$ units of currency at time 0, it follows that 
+		\begin{equation*}
+			V(0) = A\cdot B(0) \implies V(t) = A\cdot B(t)
+		\end{equation*}
+		\item<2-> If we want to have at time $T$ exactly 1 unit of currency
+		\begin{equation*}
+			AB(T) = 1 \implies A = \frac{1}{B(T)} \implies AB(t) = \frac{B(t)}{B(T)} 
+		\end{equation*}
+		hence $\frac{B(t)}{B(T)}$ is \textcolor{red}{the value of one unit of currency payable at time $T$ seen from $t$}.
+		
+		%%		\item We now define the abstract quantity $r(t)$, the \textbf{short rate}, as
+		%%		\begin{equation}
+			%%			r(t) = \lim_{T\rightarrow t^+} L(t,T) \simeq L(t, t+\epsilon)
+			%%		\end{equation}\quad with $\epsilon$ small
+	\end{itemize}
+\end{frame}
+
+\subsection{Stochastic Discount Factor and Zero Coupon Bond}
+\begin{frame}{Stochastic Discount Factor}
+	\uncover<1->{
+		\begin{block}{Definition}
+			The \textcolor{red}{(stochastic) discount factor} $D(t, T)$ is the amount at time $t$ that is \emph{equivalent} to one unit of currency payable at time $T$ and is given by
+			\begin{equation}
+				D(t, T) = \frac{B(t)}{B(T)} = e^{-\int_t^T r_s ds}
+			\end{equation}
+	\end{block}}
+	\begin{itemize}
+		\item<2-> Can you guess what is the unit of measurement of a discount factor ?	
+		\item<3-> In many pricing application (e.g. Black-Scholes formula) $r$ is assumed to be a \textcolor{red}{deterministic} function of time, and so are $B(t)$ and $D(t,T)$:
+		\begin{itemize}
+			\item<3-> this is motivated by the small influence interest rate variations have on equity prices.
+		\end{itemize}
+		\item<4-> When dealing with interest rate products, $r$ becomes the main actor, so the deterministic assumption must be dropped.
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}{Deterministic vs Stochastic}
+	\begin{itemize}
+		\item<0-> Recall the risk-neutral pricing formula 
+		\begin{equation*}
+			\Pi_t = \expect{Q^B}[D(t,T)A|\mathcal{F}_t]
+		\end{equation*}
+		where the risk-neutral measure is often denoted by $\mathbb{Q}^0$ or $\mathbb{Q}^B$, and similarly for the expectations. 
+		\item<1-> When \textcolor{red}{interest rates are deterministic}, the exponential can be brought out of the expectation
+		\begin{equation*}
+			\Pi_t = e^{-\int_t^T r_s ds} \expect{B}\left[A|\mathcal{F}_t\right]
+		\end{equation*}
+		\item<2-> If in addition \textcolor{maincolor}{rates are constant} (e.g. Black-Scholes or Heston models)
+		\begin{equation*}
+			\Pi_t = e^{-r(T-t)}\expect{B}\left[A|\mathcal{F}_t\right]
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Why the Money Market Account is "Special"}
+	\begin{itemize}
+		\item A fundamental requirement of the Harrison-Pliska theorem is that the \textbf{discounted price process} must be a martingale (since a stock that grows on average cannot be martingale; it must be "leveled out" by the risk-free rate).
+		\item You might wonder: why use $B_t$ ? Why not discount by the price of gold or another stock ?
+		\item The money market account is the only asset with \textbf{locally}$^{*}$ zero variance. It grows predictably at rate $r$. (Choosing $B_t$ as a \emph{numeraire} defines the Risk-Neutral Measure, whereas choosing $P(t,T)$ as a numeraire would define the Forward Measure.)
+		\item When we change the measure from $\mathbb{P}$ to $\mathbb{Q}$, we are specifically looking for the probability set that makes the expected return of any asset equal to the return of $B_t$.
+	\end{itemize}
+	\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+		\footnotesize
+		 $^{*}$ At time $t$, $r_t$ is known ($\mathcal{F}_t$-measurable). In $[t, t+dt]$, $B_t$ is determined only by the drift $r_t B_t dt$, no "shock" from a Brownian motion. Over $[t,T]$, $B_T=\exp{\int_t^T r_s ds}$ is random because we don't know the future path of $r_s$.
+	\end{tcolorbox}
+\end{frame}
+
+%This is a crucial technical point. In advanced stochastic calculus for finance, we distinguish between assets that are stochastic (risky) and those that are locally deterministic.
+%
+%When we say the Money Market Account ($B_t$) has locally zero variance, we are making a statement about its diffusion term (the $dW_t$ component) in a stochastic differential equation (SDE).
+%
+%Let’s look at the SDEs for a risky stock ($S_t$) and the money market account ($B_t$):
+%
+%For the Stock ($S_t$):
+%
+%$dS_t=\mu S_t dt+\sigma S_t dW_t$
+%
+%Variance over dt: The variance of the change $dS_t$ is $\sigma^2 S_t^2 dt$. This is non-zero as long as $\sigma >0$.
+%
+%For the Money Market Account:
+%$dB_t =r_t B_t dt + 0\cdot dW_t
+
+
+%Summary: B_t is locally riskless but globally risky (if rates are stochastic).
+%
+%3. Why this matters for the EMM
+%
+%This unique property is why we use B_t to define the "Risk-Neutral" world.
+%
+%If you tried to use a stock as a numeraire, the "baseline" you are measuring against would itself be jumping around due to its own diffusion term. Because B_t has no diffusion, it acts as a "clean" filter. When we divide a risky asset S_t by B_t, we aren't adding any new sources of noise; we are simply "peeling away" the predictable growth ($r$) to see if the remaining process is a martingale.
+
+
+
+
+\begin{frame}{Zero Coupon Bond}
+	\begin{itemize}
+		\item<1-> \textcolor{red}{Zero Coupon Bond} (ZCB) is a contract that pays one unit of money at time $T$. Its price at time $t$ is denoted by $P(t,T)$, and by definition $P(T,T) = 1$.
+		\item<1-> What is the relation between $P(t,T)$ and $D(t,T)$ ? \\
+	\end{itemize}
+	\uncover<2->{
+		\begin{table}[bt]
+			\centering
+			\footnotesize % Professional sizing for slides
+			\renewcommand{\arraystretch}{1.4}
+			\begin{tabular}{|l|c|c|} 
+				\hline
+				\textbf{Property} & \textbf{Discount Factor $D(t,T)$} & \textbf{ZC Bond $P(t,T)$} \\ \hline
+				\textbf{Nature} & Amount equivalent to \$1 & Price of a tradable contract \\ \hline
+				\textbf{Deterministic} & \multicolumn{2}{c|}{$D(t,T) = P(t,T) = e^{-\int_t^T r_s ds}$} \\ \hline
+				\textbf{Stochastic} & \textcolor{red}{Random} ($\mathcal{F}_T$-measurable) & \textcolor{red}{Known} ($\mathcal{F}_t$-measurable) \\ \hline
+				\textbf{Relationship} & --- & $P(t, T) = \mathbb{E}^{\mathbb{Q}}[D(t, T)|\mathcal{F}_t]$ \\ \hline
+			\end{tabular}
+		\end{table}}
+\end{frame}
+
+\begin{frame}{Spot Interest Rate}
+	\begin{itemize}
+		\item Simply-compounded \textcolor{red}{spot interest rate}
+		\begin{equation}
+			L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}		
+		\end{equation}
+		represents the interest rate applicable to a single payment at a future date, calculated using simple interest
+		\item The \textcolor{red}{yield curve} at time $t$ is the graph of:
+		\begin{equation*}
+			T\rightarrowtail L(t, T)
+		\end{equation*}
+		\item In the market these are the so called EURIBOR rates and are typically compounded with the actual/360 convention. They are the main rates underlying interest rate derivatives.
+	\end{itemize}
+\end{frame}
+
+\begin{homework}
+	\begin{frame}{\textcolor{white}{The Expectation Paradox}}
+		\begin{itemize}			
+			\item[white] In a stochastic interest rate world, is it true that 
+			\begin{equation*}
+				P(t,T)=\mathbb{E}^{\mathbb{Q}}\left[ \frac{1}{e^{\int_t^T r_s ds}} |\mathcal{F}_t \right]
+			\end{equation*} ?
+			\textbf{Hint}: use Jensen's inequality
+		\end{itemize}
+	\end{frame}
+\end{homework}
+
+\section{Forward Rate Agreement}
+\begin{frame}{Forward Rate Agreement}
+	\begin{itemize}	
+		\item<1-> A \textcolor{red}{Forward Rate Agreement} (FRA) is a contract involving three time instants: %the current time $t$, the fixing time $T>t$, and the maturity time $S>T$.
+		\begin{equation*}
+			\underbrace{t}_{\text{current time}} \leq \underbrace{T}_{\text{fixing time}} \leq\underbrace{S}_{\text{maturity}}
+		\end{equation*}
+		\item<2-> The FRA payout consists of an exchange of interest rate flows calculated for the time period $\tau=S-T$. At the maturity $S$, a fixed payment based on a fixed rate $K$ is exchanged against a floating payment based on the spot rate $L(T, S)$ whose value is known only in $T$.
+		\item<3-> Basically, this contract allows one to lock-in the interest rate between times $T$ and $S$ at a desired value $K$.
+		
+		\noindent
+		(\textbf{note:} interest rate flows are calculated using the simple compounding law).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{FRA Example}
+	\begin{itemize}
+		\item A FRA is an agreement that enables to \emph{hedge} against unfavourable movements in interest rates by fixing a rate on a notional amount that is (usually) of the same size and term as the exposure that starts sometime in the future. 
+		\vfill
+		\begin{center}
+			\includegraphics[width=0.9\linewidth]{images/FRA_diagram}
+		\end{center}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{FRA Time Table}
+	\begin{itemize}
+		\item Consider a $1\times 3$ FRA (1-month into 3-month): the 1 in the $1\times 3$ refers to 1 month' time when settlement (fixing) takes place, and the 3 to the expiry date of the FRA from deal date.
+		%, i.e. the rate quoted for the FRA is a 1-month rate at the time of settlement
+		\begin{center}
+			\includegraphics[width=0.8\linewidth]{images/fra_timeline}
+		\end{center}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{FRA: Formalization of the Contract}
+	\begin{itemize}
+		\item<1-> Formally, at time $S$ one receives $\tau(T, S)KN$ units of currency and pays the amount $\tau(T,S)L(T,S)N$, where $N$ is the contract nominal value.
+		\item<2-> Thus, at time $S$, the future (and \textbf{today unknown}) payout of the contract is: 
+		\begin{equation}
+			N\tau(T,S)(K-L(T,S))
+			\label{eq:fra_payoff}
+		\end{equation}
+		\item<3-> In order to assign a \textbf{value} at this contract we have to tackle two issues:
+		\begin{itemize}
+			\item<3-> estimate the future value of $L(T, S)$;
+			\item<3-> discount the result from $S$ to today (time $t$).
+		\end{itemize}
+		\item<4-> There are several ways to arrive at the final result: \textbf{no arbitrage is the common denominator.}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Intermezzo}
+	\begin{block}{Expectation Tower Property}
+		Consider a filtered probability space: $(\Omega, \mathcal{F}_{t\geq 0}, \mathbb{P})$.
+		For any $0\leq s \leq t$ and stochastic process $\{X_t\}_{t\geq 0}$, we have the following \emph{tower property}:
+		\begin{equation}	
+			\mathbb{E}[\mathbb{E}[X|\mathcal{F}_t]|\mathcal{F}_s]=\mathbb{E}[X|\mathcal{F}_s]
+		\end{equation}
+	\end{block}
+	%The LHS represents \emph{the best prediction at time $s$ of what the best prediction at time $t$ of $X$ would be}. 
+	
+	%The tower property says we can estimate $\mathbb{E}[X|\mathcal{F}_s]$ by averaging over our model's predictions for different $X$ values, weighting these predictions by how likely each $X$ is given $\mathcal{F}_s$.
+	
+	In real-world scenarios, it's often the case that you have a model that works well with complete information ($\mathcal{F}_t$), but you only have partial information ($\mathcal{F}_s$). The tower property provides a way to bridge this gap. It allows you to use your model even when you don't have all the input data, by averaging over the missing data in a way that is consistent with the data you do have.
+\end{frame}
+
+\subsection{FRA Valuation}
+\begin{frame}{FRA: Brigo-Mercurio Approach}
+	\begin{itemize}
+		\only<1-1>{
+			\item Substitute in \cref{eq:fra_payoff} $L(T,S)$ with its expression as a function of the zero-coupon bond price $P$ and get
+			\begin{equation*}
+				\mathbb{E}\left[D(t, S) N\bigg(\tau K + 1 - \frac{1}{P(T, S)}\bigg)\bigg| \mathcal{F}_t\right]
+			\end{equation*}
+		}
+		\only<2->{
+			\item Substitute in \cref{eq:fra_payoff} $L(T,S)$ with its expression as a function of the zero-coupon bond price $P$ and get
+			\begin{equation*}
+				\mathbb{E}\left[D(t, S) N\bigg(\tau K + 1 - \underbrace{\frac{1}{P(T, S)}}_{A}\bigg)\bigg| \mathcal{F}_t\right]
+			\end{equation*}
+		}
+		\item<2-> First interpret $A$ as an amount of money held at time $S$. At $T$ it's worth 1, indeed 
+		
+		\begin{equation*}
+			\mathbb{E}_t\left[ D(T,S)\frac{1}{P(T,S)}\right]  = \mathbb{E}_t\left[D(t,T)\mathbb{E}_T\left[D(T,S)\frac{1}{P(T,S)}\right] \right] =
+		\end{equation*}		
+		and since $\mathbb{E}_T[D(T,S)]=P(T,S)$,
+		\begin{equation*}
+			= \mathbb{E}_t\left[D(t,T)P(T,S)\frac{1}{P(T,S)}\right] = \mathbb{E}_t[D(t,T)] = P(t,T) 
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{FRA: Brigo-Mercurio Approach}
+	\begin{itemize}
+		\item Substitute in \cref{eq:fra_payoff} $L(T,S)$ with its expression as a function of the zero-coupon bond price $P$ and get
+		\begin{equation*}
+			\mathbb{E}\left[D(t, S) N\bigg(\underbrace{\tau K + 1}_{B} - \underbrace{\frac{1}{P(T, S)}}_{A}\bigg)\bigg| \mathcal{F}_t\right]
+		\end{equation*}
+		\item<1-> On the other hand $B$ (remember the payout is expressed at time $S$) becomes at time $t$:
+		$P(t,S)\tau K + P(t, S)$.
+		\item<2-> Collecting the terms we get
+		\begin{equation}
+			\boxed{\textbf{FRA}(t,T,S,\tau,N,K)=N[\underbrace{P(t,S)\tau K+P(t,S)}_{B}–\underbrace{P(t,T)}_{A}]} 
+		\end{equation}
+	\end{itemize}
+	\only<2->\myendproof
+\end{frame}
+
+%\subsection{FRA Detailed Proof}
+%\begin{frame}{FRA Detailed Proof}
+%	\begin{itemize}
+%		\item<1-> Let's start from the risk neutral pricing formula
+%		\begin{equation} \textbf{FRA} = 
+%			\expectt{Q}{t}[\tau D(t,S)(K - L(T,S))] = 	\expectt{Q}{t}[\tau D(t,S)K - \tau D(t,S)L(T,S)]
+%			\label{eq:fra_as_expectation}
+%		\end{equation}
+%		(\textbf{note:} to ease the notation $\expectt{Q}{t}[X] = \expect{Q}[X|\mathcal{F}_t]$).
+%		\item<2-> From which we can easily derive using the definition of \textbf{ZCB} value
+%		\begin{equation*}
+%			\begin{aligned}
+%				\textbf{FRA} = \tau &K\expectt{Q}{t}[D(t,S)] - \expectt{Q}{t}[\tau D(t,S)L(T,S)] = \\
+%				&=\tau KP(t,S) - \expectt{Q}{t}[\tau D(t,S)L(T,S)]
+%			\end{aligned}
+%		\end{equation*}
+%		\item<3-> For a discount factor the following holds
+%		\begin{equation*}
+%			D(t,S) = D(t,T)D(T,S)\quad(\text{since }e^{-\int_t^S r_s ds} = e^{-\int_t^T r_s ds - \int_T^S r_s ds}) 
+%		\end{equation*}
+%	\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{FRA Detailed Proof}
+%	\begin{itemize}
+%		\item<1-> So we get (omitting the risk-neutral symbol from the expectation)
+%		\begin{equation*}
+%			\textbf{FRA} = \tau KP(t,S)-\mathbb{E}_t[\tau D(t,T)D(T,S)L(T,S)]
+%		\end{equation*}
+%		\item<2-> Then using the tower expectation property
+%		\begin{equation*}
+%			\textbf{FRA} = \tau KP(t,S) - \mathbb{E}_t[\mathbb{E}_T[\tau D(t,T)D(T,S)L(T,S)]]
+%		\end{equation*}
+%		\item<3-> Last equation can be transformed as
+%		\begin{equation*}
+%			\textbf{FRA} = \tau KP(t,S) - \mathbb{E}_t[\tau D(t,T)L(T,S)\mathbb{E}_T[D(T,S)]]
+%		\end{equation*}
+%		\item<4-> From which
+%		\begin{equation*}
+%			\textbf{FRA} = \tau KP(t,S) - \expectt{Q}{t}[\tau D(t,T)L(T,S)P(T,S)]
+%		\end{equation*}
+%	\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{FRA Detailed Proof}
+%	\begin{itemize}
+%		\item<1-> Then using the definition of IBOR rate $L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}$
+%		\begin{equation*}
+%			\begin{aligned}
+%				\textbf{FRA} &= \tau KP(t,S) - \mathbb{E}_t\left[\cancel{\tau}D(t,T)\left(\cfrac{1-P(T,S)}{\cancel{\tau} P(T,S)}\right)P(T,S)\right] = \\
+%				&=\tau KP(t,S)-\mathbb{E}_t\left[D(t,T)P(T,S)\left(\frac{1}{P(T,S)}-1\right)\right]= \\
+%				&=\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t[D(t,T)P(T,S)]
+%			\end{aligned}
+%		\end{equation*}
+%		\item<2-> The last term can be expressed in terms of $D$
+%		\begin{equation*}
+%			\textbf{FRA} = \tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[D(t,T)\mathbb{E}_T[D(T,S)]\right]
+%		\end{equation*}		
+%	\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{FRA Detailed Proof}
+%	\begin{itemize}
+%		\item<1-> Bringing the discount factor inside the expectation
+%		\begin{equation*}
+%			\begin{aligned}
+%				\textbf{FRA} &= \tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[D(t,T)\mathbb{E}_T[D(T,S)]\right] \\
+%				&=\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[\mathbb{E}_T[D(t,T)D(T,S)]\right]=\\
+%				&=\tau KP(t,S)-\mathbb{E}_t[D(t,T)] + \mathbb{E}_t\left[\mathbb{E}_T[D(t,S)]\right]
+%			\end{aligned}
+%		\end{equation*}		
+%		\item<2-> Then applying the law of iterated expectations we arrive at the final result
+%		\begin{equation*}
+%			\begin{aligned}
+%				\textbf{FRA} &= \tau KP(t,S)-\expectt{Q}{t}[D(t,T)] + \expectt{Q}{t}[D(t,S)] = \\
+%				&= \boxed{\tau KP(t,S) - P(t,T) + P(t,S)}
+%			\end{aligned}
+%		\end{equation*}
+%		\myendproof
+%	\end{itemize}
+%	%\pause
+%	%\begin{tikzpicture}[remember picture,overlay]
+%	%	\node[xshift=6.cm,yshift=-4.cm] (image) at (current page.center) {\includegraphics[width=80px]{python}};
+%	%\end{tikzpicture}
+%\end{frame}
+
+\subsection{Forward Rate Definition}
+
+\begin{frame}{The Simply-Compounded Forward Rate}
+	\begin{itemize}
+		\item The \textcolor{red}{Forward Libor Rate} $F(t; T, S)$ is the fixed rate $K$ that makes the value of a FRA equal to zero at time $t$.
+		\item Setting $\text{FRA}(t, T, S, \tau, N, K) = 0$ in our previous result:
+		\begin{equation*}
+			P(t, S) \tau F + P(t, S) - P(t, T) = 0
+		\end{equation*}
+		\item Solving for $F$:
+		\begin{equation}
+			\boxed{F(t; T, S) = \frac{1}{\tau} \left( \frac{P(t, T)}{P(t, S)} - 1 \right)}
+		\end{equation}
+		\item \textbf{Economic Intuition:} It is the "break-even" rate currently implied by the Yield Curve for the period $[T, S]$.
+	\end{itemize}
+\end{frame}
+
+%
+%\begin{frame}{FRA: Forward Rate as Break-Even Rate}
+%	\begin{block}{Definition}
+%		The value of $K$ which makes the FRA worth zero is called \textcolor{red}{simply-compounded forward rate}
+%		\begin{equation}
+%			F(t;T,S):=\frac{1}{\tau(T,S)}\left[\frac{P(t,T)-P(t,S)}{P(t,S)}\right]
+%			\label{eq:forward_rate_definition}
+%		\end{equation}
+%		The forward rate can be interpreted as a rate observed in $t$ and spanning the time period $S-T$.
+%	\end{block}
+%	%Its value depends on no-arbitrage consideration.
+%	
+%\end{frame}
+
+\begin{frame}{Forward Rate}
+	\begin{itemize}
+		\item We can now re-write the value of the FRA in terms of the \emph{simply-compounded forward rate}
+		\begin{equation}
+			\begin{aligned}
+				\textbf{FRA}&=N[\tau KP(t,S)-P(t,T)+P(t,S)] = \\
+				&=N\tau P(t,S) \left[K +\frac{1}{\tau} \frac{P(t,S)-P(t,T)}{P(t,S)}\right] = N\tau P(t,S)(K-F(t;T,S))
+			\end{aligned}
+			\label{eq:fram_payoff_withF}
+		\end{equation}
+		(\textbf{note:} this formula will be used for the swap evaluation).
+		\item<2-> \textcolor{red}{The forward rate can be interpreted as an \emph{estimate} of the future spot rate}, which is unknown at time $t$ (random process based on the market conditions).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Forward Rate}
+	Comparing \cref{eq:fram_payoff_withF} to \cref{eq:fra_as_expectation} it is just like we had replaced the IBOR rate $L(T,S)$ with the forward rate $F(t;T,S)$ in the payoff and then taken the present value of the (\emph{now deterministic}) quantity.
+	\begin{equation*}
+		\begin{aligned}
+			\textbf{FRA} &= \mathbb{E}_t[N\tau D(t,S)(K-\overbrace{\textcolor{blue}{F(t; T, S)}}^{\text{replaces } L(T, S)})] = \\
+			& = \mathbb{E}_t[N\tau D(t,S)\underbrace{(K-F(t; T, S))}_{\text{deterministic quantity}}] = N\tau P(t,S)(K-F(t; T, S))]
+		\end{aligned}
+	\end{equation*}
+	\emph{We'll see later that indeed $F(t;T,S)$ is the expectation of $L(T,S)$ under a particular probability measure.}
+\end{frame}
+
+\begin{frame}{Instantaneous Forward Rate}
+	\begin{block}{Definition}
+		The \textcolor{red}{instantaneous forward rate} $f(t, T)$ is defined as 
+		\begin{equation}
+			\begin{aligned}
+				f(t, T) &:= \lim_{S\rightarrow T^+} F(t;T,S) =\\
+				& = \lim_{\epsilon\rightarrow 0}  \frac{1}{\tau(T,T+\epsilon)}\frac{P(t,T)-P(t,T+\epsilon)}{P(t,T+\epsilon)} = \\
+				& = \lim_{\epsilon\rightarrow 0} - \frac{1}{P(t,T)} \frac{P(t,T+\epsilon)-P(t,T)}{\epsilon} =\\
+				& = -\frac{\partial \log P(t, T)}{\partial T}
+			\end{aligned}
+		\end{equation}
+		\myendproof
+	\end{block}
+\end{frame}
+
+\begin{frame}{Instantaneous Forward Rate}
+	\begin{itemize}
+		\item From the previous equation we can derive
+		\begin{equation}
+			P(t, T) = e^{-\int_t^T f(t, s) ds}
+		\end{equation}
+		\item The \emph{instantaneous forward rate} represents the rate for a forward contract with an infinitesimal investment period after the settlement date.
+		\item Notice that
+		\begin{equation*}
+			r(t) = f(t,t)
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}[fragile]{FRA: Numerical Example}
+%	A company enters into a FRA to receive 4\% on \$100M for a 3-month period starting in 3 years. Imagine that EURIBOR is 4.5\% in 9 months.
+%	\begin{codebox}
+%		\begin{ipython}[linewidth=\linewidth]
+%			import tensorquant as tq, pandas as pd
+%			from datetime import date, datetime
+%			
+%			evaluation_date = tq.Settings.evaluation_date = date(2025, 1, 1)
+%			rates_estr = [0.045, 0.045, 0.045, 0.045]
+%			times_estr = [datetime.strptime(d, "%Y-%m-%d").date() for d in ['2025-04-01', '2028-01-01', '2028-04-01', '2029-01-01']]
+%			market_data = {}
+%			market_data["IR:EUR:ESTR"] = market_data["IR:EUR:3M"] = tq.RateCurve(reference_date=evaluation_date, pillars=times_estr,
+%			rates=rates_estr, interp='LINEAR',  daycounter_convention=tq.DayCounterConvention.ActualActual)
+%			eur3m_index = tq.IborIndex(calendar, 3, tq.TimeUnit.Months, tq.Currency.EUR, 2)
+%			eur3m_index.add_fixing(evaluation_date, 0.045)
+%			
+%			notional=100e6
+%			fixed_rate = 0.04
+%			eur_fra_builder = tq.FraGenerator(ccy=tq.Currency.EUR, start_delay=2, fixing_days=2, index_term="3M", 
+%			roll_convention= tq.BusinessDayConvention.ModifiedFollowing, notional=notional,
+%			day_count_convention=tq.DayCounterConvention.Actual360, calendar=tq.TARGET(), index=eur3m_index)
+%			fra = eur_fra_builder.build(trade_date=evaluation_date, quote=fixed_rate, term="3M-12M")
+%			fra_engine = tq.FraPricer(tq.market_map)
+%			fra_engine.price(fra, market_data, True)
+%			print(f"NPV FRA: {fra.price :,.0f}")
+%		\end{ipython}
+%		\begin{ioutput}
+%			NPV FRA: 329,145
+%		\end{ioutput}
+%	\end{codebox}
+%\end{frame}
+
+\begin{homework}
+	\begin{frame}{\textcolor{white}{Homework}}
+		\begin{itemize}			
+			\item[white] Suppose we have a $1\times 4$ FRA with a notional principal of €1 million.  At contract expiration, the 90-day LIBOR at settlement is 6\% and the contract rate is 5.5\%. Calculate the value of the FRA at maturity.
+			\item[white] The 1-year spot rate on US treasury bonds is 9\%, the 2-year spot rate is 9.5\% and the 3-year spot rate is 10\%. 
+			\begin{itemize}
+				\item[white] Calculate the implied 1-year ahead, 1-year forward rate, $F(0;1,2)$. Explain why a 1-year forward rate of 9.6\% could not be explained by the market;
+				\item[white] calculate the forward rates  $F(0; 2, 3)$ and $F(0; 1,3)$. Is there a link between $F(0;1,2),F(0;2,3)$ and $F(0;1,3)$ ?
+			\end{itemize}
+			\item[white] If the yield curve is upward sloping, will the FRA rate $K$ be higher or lower than the current 6-month EURIBOR ? If the treasurer "buys" the FRA (pays fixed, receives floating), show using the Brigo-Mercurio formula how the bank account $B_t$ disappears from the final payoff value at time $t$. 
+		\end{itemize}
+	\end{frame}
+\end{homework}
+
+\section{Interest Rate Swap}
+\begin{frame}{Interest Rate Swap}
+	\begin{itemize}
+		\item An \textcolor{red}{Interest Rate Swap} (IRS) is a contract that exchanges payments between two differently indexed \emph{legs}, starting from a future time. At every pre-specified instant $T_i$, the \emph{fixed leg} pays the amount ($N$ is the contract nominal)
+		\begin{equation*}
+			C_{\text{fixed}} = N\tau(T_{i-1}, T_i)K
+		\end{equation*}
+		while the \emph{variable leg} pays the amount
+		\begin{equation*}
+			C_{\text{floating}} = N\tau(T_{i-1}, T_i)L(T_{i-1}, T_i)
+		\end{equation*}
+		where for simplicity we are assuming the same payment dates for the two legs.
+		\item<2-> When the fixed leg is paid, the IRS is termed \textcolor{red}{Payer IRS}. If the opposite holds, we have a \textcolor{red}{Receiver IRS}.
+		\item<3-> The discounted payoff of a \emph{Payer IRS} can be expressed as:
+		\begin{equation}
+			N\sum_{i=\alpha+1}^{\beta} D(t,T_i) \underbrace{\tau_i}_{\tau(T_{i-1},T_i)}
+			\left[L(T_{i-1},T_i)-K\right]
+			\label{eq:payoff_payer_irs}
+		\end{equation}	
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Interest Rate Swap}
+	\begin{center}
+		\includegraphics[width=0.9\linewidth]{images/Interest-Rate-Swap-diagram}
+	\end{center}
+\end{frame}
+
+\begin{frame}{IRS and FRA}
+	\begin{itemize}
+		\item The swap payoff in \cref{eq:payoff_payer_irs} can be re-interpreted as a portfolio of FRAs.
+		\item Indeed consider a \emph{Receiver IRS} and express its payoff as a sum of FRAs using \cref{eq:fram_payoff_withF}
+		\begin{equation*}
+			\begin{aligned}
+				\textbf{RFS}&(t,T,\tau,N,K) = N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,T_i)\tau_i(K - L(T_{i-1},T_i))]=\\
+				&=N\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)(K-F(t;T_{i-1},T_i))=\\
+				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N\sum_{i=\alpha+1}^{\beta}(P_{i-1}-P_i)=\quad (\text{where }P(t, T_i) = P_i) \\
+				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N[(P_\alpha -\cancel{P_{\alpha+1}}) + (\cancel{P_{\alpha+1}} - \cancel{P_{\alpha+2}}) + \ldots + (\cancel{P_{\beta-1}} - P_{\beta})] \\
+			\end{aligned}
+		\end{equation*}
+		\item Note that the floating leg of a swap is equivalent to "Long a bond at the start ($T_\alpha$) and Short a bond at the end ($T_\beta$)".
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{IRS and FRA}
+	\begin{itemize}
+		\item The swap payoff in \cref{eq:payoff_payer_irs} can be re-interpreted as a portfolio of FRAs.
+		\item Indeed consider a \emph{Receiver IRS} and express its payoff as a sum of FRAs using \cref{eq:fram_payoff_withF}
+		\begin{equation}
+			\begin{aligned}
+				\textbf{RFS}&(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,S)\tau_i(K - L(T_{i-1},T_i))]= \ldots =\\
+				&=N\sum_{i=\alpha+1}^{\beta}\tau_i KP_i-N[(P_\alpha -\cancel{P_{\alpha+1}}) + (\cancel{P_{\alpha+1}} - \cancel{P_{\alpha+2}}) + \ldots + (\cancel{P_{\beta-1}} - P_{\beta})] =\\
+				&=\boxed{N\sum_{i=\alpha+1}^{\beta}\tau_i KP(t,T_i)-NP(t,T_\alpha)+NP(t,T_\beta)}\quad\quad\quad\qedsymbol
+			\end{aligned}
+			\label{eq:swap_as_sum_fra}
+		\end{equation}
+		%#FIXME FIXME FIXME
+		\item Substituting Libor $L(T,S)$ with Bond ratios is a very robust way to teach because it doesn't require assuming a specific model yet—it's entirely model-independent.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{IRS and FRA}
+	\begin{itemize}
+		\item<1-> Even if a swap at inception has a null NPV, not all the FRAs in a swap with zero value have zero value (\emph{except for the degenerate case of flat forward rates}): some of them will have positive NPV, some other negative; the only constraint being their sum to be zero.
+		\item<2-> In a \emph{Payer Swap} with increasing forward rates the first FRAs will have negative value, the last positive. Still their NPV's sum is zero.
+		\item<3-> If the market doesn't move so much the swap rate payer will have to pay a net interest differential in the first part of the contract life, and to receive net interest in the second.
+		\item<4-> So the rate payer will have to fund the payments for the first part of the contract and to invest at his best the receipt during the second part. (this feature is sometimes referred to as the \emph{funding profile of the contract}).
+		\item<5-> Example: because the Payer "pays first and receives later" in an upward-sloping curve, the bank actually has a negative exposure in the early years and a positive exposure in the later years. This makes the timing of default very important !
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{IRS as FRA Example}
+	\begin{columns}
+		\column{0.65\linewidth}
+		\begin{ipython}			
+from finmarkets import DiscountCurve, GlobalConst, TimeInterval
+from finmarkets import InterestRateSwap, SwapSide
+
+def makePFS(rates):
+    vals = []
+    today = GlobalConst.OBSERVATION_DATE
+    dfs = [1/(1+rates[i])**i for i in range(1, len(rates))]
+    dc = DiscountCurve(today, [today+TimeInterval(f"{i}y") \\ 
+                               for i in range(1, len(rates))], dfs)
+    dummy_irs = InterestRateSwap(1, today, "5y", 0.137, "1y", side=SwapSide.Payer)
+    swap_rate = dummy_irs.swap_rate(dc)
+    irs = InterestRateSwap(1, today, "5y", swap_rate, "1y", side=SwapSide.Payer)
+    val, vals = irs.npv_with_FRA(dc)
+
+makePFS([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])
+makePFS([0.05] * 7)
+makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
+		\end{ipython}
+		\column{0.35\linewidth}
+		%\begin{center}
+		\includegraphics[width=0.62\linewidth]{images/swap_fra_up.png}\\
+		\includegraphics[width=0.62\linewidth]{images/swap_fra_flat.png}\\
+		\includegraphics[width=0.62\linewidth]{images/swap_fra_down.png}\\
+		%\end{center}
+	\end{columns}
+	
+\end{frame}
+
+\begin{homework}
+	\begin{frame}{\textcolor{white}{Homework}}
+		\begin{itemize}
+			\item[white] Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A. Determine the value of the swap using the relationship between interest rate swap and FRA.
+			\item[white] Which of the following strategies is (are) appropriate ?
+			\small{
+				\begin{itemize}
+					\item[white] If a borrower has a fixed rate debt and is expecting interest rates to rise, then the borrower should not enter into a swap.
+					\item[white] If an investor has floating rate assets and is expecting interest rates to rise, then the investor should enter into a receiver swap.
+					\item[white] If a borrower has floating rate debt and is expecting interest rates to rise, then the borrower should enter into a payer swap.
+					\item[white] If an investor has fixed income assets and is expecting interest rates to drop, then the investor should enter into a payer swap.
+			\end{itemize}}
+		\end{itemize}
+	\end{frame}
+\end{homework}
+
+\subsection{Swap Rate}
+\begin{frame}{Swap Rate as Break-Even Rate}
+	Similarly to FRA break-even rate\ldots
+	\begin{block}{Definition}
+		The fixed rate $K$ which makes the above expression null is called \textcolor{red}{forward swap rate}:
+		\begin{equation}
+			S_{\alpha,\beta}(t) = \frac{P(t, T_\alpha)-P(t,T_\beta)}{\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)}
+		\end{equation}
+		If $T_\alpha=0$ we have the \textcolor{red}{spot swap rate}. The swap rate makes the contract fair at inception by definition.
+	\end{block}
+	The \textcolor{red}{Annuity (Level factor)}: $A_{\alpha,\beta}(t) = \sum_{i=\alpha+1}^{\beta} \tau_i P(t, T_i)$.
+\end{frame}
+
+\begin{frame}{Swap Payoff Alternative Expression}
+	\begin{itemize}
+		\item<1-> Consider a Payer IRS with $N=1$ for simplicity (using \cref{eq:swap_as_sum_fra})
+		\begin{equation*}
+			\textbf{PFS} = P(t,T_\alpha)-P(t,T_\beta)-\sum_{i=\alpha+1}^{\beta}\tau_iKP(t,T_i)
+		\end{equation*}
+		\item<2-> By multiplying and dividing by (the so called \textcolor{red}{annuity}) $A = \sum_{i=\alpha+1}^{\beta}\tau_i P(t, T_i)$
+		we get
+		\begin{equation}
+			\begin{gathered}
+				\textbf{PFS}=\frac{A}{\sum\tau_iP(t, T_i)}\left[P(t,T_\alpha)-P(t,T_\beta)-K\sum_{i=\alpha+1}^{\beta}\tau_i P(t,T_i)\right]=\\
+				= \boxed{A (S_{\alpha,\beta}(t)-K)}
+			\end{gathered}
+			\label{eq:swap_payoff_with_swap_rate}
+		\end{equation}
+		(\textbf{note:} this expression will be useful when pricing swaptions).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Swap Curve}
+	\begin{itemize}
+		\item The \emph{swap curve} is a graphical representation of the relationship between the fixed interest rate and the maturity of IRS (typically ranging from 1 to 30 years).
+		\item These swap rates are determined through market transactions, reflecting the market's consensus on future interest rate expectations.
+		\begin{columns}
+			\column{0.35\linewidth}
+			\begin{center}
+				\includegraphics[width=1\linewidth]{images/swap_curve}
+			\end{center}
+			\column{0.65\linewidth}
+			\small{
+				\item An upward-sloping \emph{(normal)} curve indicates longer-term interest rates are higher than short-term rates (expectations of economic growth and inflation). 
+				\item A downward-sloping \emph{(inverted)} curve suggests short-term rates are higher than long-term rates (potential economic downturns or market uncertainties).}
+			%\item A flat curve indicates that short and long-term rates are relatively similar, indicating a neutral market sentiment.}
+	\end{columns}
+	\item Swap rates are often used as benchmarks for pricing other financial instruments, such as corporate bonds and loans.
+\end{itemize} 
+\end{frame}
+
+\begin{frame}{Yield vs Swap Curve} 
+\begin{itemize}
+	\item Several factors can impact swap curve movements (changes in interest rates, market sentiment, economic indicators, and central bank policies).
+	\item One way to interpret it through the \textbf{Swap Spread} = $S_{\alpha,\beta}(t) - \text{Yield}_{\text{Govt Bond}}$.
+%	\item Since the swap curve reflects exchanged rates over various time horizons, it offers a more accurate representation of market expectations and risk perceptions, as it is based on actual transactions.
+	\begin{columns}
+		\column{0.65\linewidth}
+		\item \textbf{Credit Component:} Reflects the perceived risk of the interbank sector (AA-rated banks) vs. the Sovereign.
+		\textbf{Liquidity Component:} Swaps are often more liquid than specific bond issues, making the swap curve a smoother benchmark for "market expectations."
+		\column{0.35\linewidth}
+		\begin{center}
+			\includegraphics[width=1.\linewidth]{images/swap_spread}
+		\end{center}
+	\end{columns}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Trading and Hedging Strategies}
+	\begin{itemize}
+		\item \textbf{Directional Bets:}
+		\begin{itemize}
+			\item Expect rates ↑: Enter \textbf{Payer Swap} (Gains value as curve shifts up).
+			\item Expect rates ↓: Enter \textbf{Receiver Swap} (Gains value as curve shifts down).
+		\end{itemize}
+		\item \textbf{Curve Trades (The Slope):}
+		\begin{itemize}
+			\item \textbf{Steepening:} Pay 30y / Receive 10y. Profit if the spread widens.
+			\item \textbf{Flattening:} Receive 30y / Pay 10y. Profit if the spread narrows.
+		\end{itemize}
+		\item \textbf{The Funding Profile:} In a normal curve, a Payer IRS has a "negative carry" initially (paying a high K vs. low spot EURIBOR), hoping for "back-ended" gains as floating rates reset higher.
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}{Trading and Hedging Strategies}
+%\begin{itemize}
+%	\item Suppose that there is an unexpected increase in inflation expectations due to rising commodity prices. This change would likely cause the swap curve to shift upward, reflecting the higher expected future interest rates. 
+%	\item Market participants who anticipate this shift may adjust their swap positions accordingly, either by entering into longer-term swaps or adjusting the mix of fixed and floating rates in their portfolios.
+%	\item When evaluating the swap curve, market participants should compare the benefits and drawbacks of floating and fixed rates. 
+%	\item Floating rates (such as those linked to LIBOR or EURIBOR), can provide flexibility and potentially lower costs, as they reflect the prevailing market conditions. 
+%	\item On the other hand, fixed rates offer certainty and protection against potential interest rate hikes. 
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Trading and Hedging Strategies}
+%\begin{itemize}
+%	\item Market participants need to carefully assess their risk appetite and market expectations to determine the most suitable rate structure for their swap transactions.
+%	\item From the perspective of a fixed-rate receiver, the swap curve determines the level of fixed interest payments they will receive over the life of the swap. 
+%	\item If the swap curve is upward sloping, the receiver would demand a higher fixed rate to compensate for the expected rise in interest rates. 
+%	\item Conversely, if the swap curve is downward sloping, it suggests that market expectations for future interest rates are declining, and a fixed-rate receiver would be willing to accept a lower fixed rate.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Trading the Curve (Slope and Curvature)}
+%\begin{itemize}
+%	\item Imagine you own a $5y$ payer swap, you make money if rates go higher, lose if they go lower.
+%	\item Owning two swaps instead allows to bet on the \textcolor{red}{slope} of the interest rate curve.
+%	\begin{itemize}
+%		\item If you bet on steepening (you want to profit if the gap (30y−10y) increases). You should Pay Fixed 30y and Receive Fixed 10y.
+%		\item If you bet on flattening (you want to profit if the gap narrows). You should Receive Fixed 30y and Pay Fixed 10y.		
+%	\end{itemize}
+%	\item This is a duration-neutral trade if notionals are adjusted (DV01 hedging)."
+%\end{itemize}
+%\end{frame}
+
+%1. Diversification: One of the most fundamental strategies for managing swap curve risks is diversification. By spreading investments across different points on the swap curve, investors can reduce their exposure to specific interest rate changes. For example, if an investor holds a portfolio of plain vanilla swaps with varying maturities, they are less vulnerable to sudden shifts in the swap curve at a particular point in time. Diversification allows for a balanced risk exposure and can help protect against adverse market conditions.
+
+%2. Hedging: Hedging is another strategy commonly used to manage swap curve risks. By entering into offsetting positions, investors can protect themselves from potential losses due to changes in the swap curve. For instance, if an investor holds a long position in a plain vanilla swap, they can hedge their risk by taking a short position in another swap with similar characteristics but at a different point on the swap curve. This way, any adverse movement in the swap curve would be offset by gains in the hedging position.
+
+%3. Dynamic Positioning: Instead of maintaining a static portfolio of plain vanilla swaps, some investors opt for dynamic positioning. This strategy involves actively adjusting the positions in response to changes in the swap curve. By closely monitoring the swap curve and making timely adjustments, investors can take advantage of favorable movements and minimize the impact of adverse shifts. For example, if the swap curve steepens, an investor may choose to increase their exposure to longer-dated swaps to capture higher yields.
+
+%4. duration matching: Duration matching is a strategy that aims to minimize interest rate risk by aligning the duration of a plain vanilla swap with the investor's investment horizon. Duration represents the weighted average time to receive or pay cash flows from a swap. By matching the duration of the swap with the investment horizon, investors can reduce the impact of changes in the swap curve on their portfolio's value. This strategy is particularly useful for risk-averse investors who prioritize stability and predictability.
+
+\subsection{Swap and Bond Switching}
+
+\begin{frame}{Swap and Bond Equivalence}
+	\begin{itemize}
+		\item A Swap is effectively an exchange of two bonds with the same notional N:
+		\begin{equation*}
+			\textbf{PFS}(t) = \underbrace{N(P(t,T_\alpha)-P(t,T_\beta))}{\text{Floating Leg (FRN)}} - \underbrace{NK \sum{i=\alpha+1}^{\beta} \tau_i P(t,T_i)}_{\text{Fixed Leg (Coupon Stream)}}
+		\end{equation*}
+		\item \textbf{Financial Interpretation:}
+		\begin{itemize}
+			\item The \textcolor{red}{Fixed Leg} is a stream of fixed coupons.
+			\item The \textcolor{red}{Floating Leg} is a Floating Rate Note (FRN) coupon stream (excluding the final principal).
+		\end{itemize}
+		\item \textbf{No-Arbitrage:} A Payer Swap is equivalent to being \textbf{Short a Fixed Rate Bond} and \textbf{Long a Floating Rate Note}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Valuing the Floating Rate Note (FRN)}
+	\begin{itemize}
+		\item Consider an FRN paying EURIBOR at dates {Tα+1​,…,Tβ​}, plus Notional N at Tβ​.
+		\item \textbf{The Valuation Trick:} Use the telescoping sum of Forward Rates.
+		\begin{equation*}
+			\begin{aligned}
+				\textbf{FRN}(t) &= \text{PV(Coupons)} + \text{PV(Principal)} \
+				&= N(P(t,T_\alpha) - P(t,T_\beta)) + N P(t,T_\beta) \
+				&= \boxed{N P(t, T_\alpha)}
+			\end{aligned}
+		\end{equation*}
+		\item \textbf{The "At-Par" Property:} If t=Tα​ (reset date), then P(t,t)=1 and FRN=N.
+		\item \textit{"An FRN always trades at par on its reset dates."}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{The "Sawtooth" Behavior of FRN Prices}
+	\begin{itemize}
+		\item Between reset dates, the FRN price is determined by the next coupon (Creset​) already fixed:
+		\begin{equation*}
+			\textbf{FRN}(t) = P(t, T_{\text{next}}) \times (N + \text{Coupon}_{\text{fixed}})
+		\end{equation*}
+		\item \textbf{Price Evolution:}
+		\begin{itemize}
+			\item Right \textbf{after} a reset: The bond trades at par (N).
+			\item \textbf{Towards} a reset: The price rises as the coupon "accrues."
+			\item Right \textbf{before} payment: Price = N+Coupon.
+		\end{itemize}
+	\end{itemize}
+	\begin{center}
+		
+	\end{center}
+	
+\end{frame}
+
+
+
+%
+%\begin{frame}{Swap and Bond Switching}
+%\begin{itemize}
+%	\item<1-> Consider again a Payer Forward Swap (this time with notional $N$)
+%	\begin{equation*}
+%		\textbf{PFS}(t,T_\alpha,T_\beta,\tau,N,K)=N(P(t,T_\alpha)-P(t,T_\beta))-NK\sum_{i=\alpha+1}^{\beta} \tau_iP(t,T_i)
+%	\end{equation*}
+%	\item<2-> A swap can be considered as an exchange between two kinds of bond with the same notional reimbursed at maturity. In fact:
+%	\begin{itemize}
+%		\item<3->\emph{the fixed leg} of the swap can be viewed as a \textcolor{red}{fixed coupon stream};
+%		\item<3-> while the \emph{variable} can be considered a \textcolor{red}{floating rate note coupon stream}. 
+%	\end{itemize}
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Fixed Rate Side}
+%\begin{itemize}
+%	\item<1-> Consider a coupon bond that pays the following cash flows $\mathcal{C}=\{c_{\alpha+1},\ldots,c_\beta\}$ on the schedule $\mathcal{T} = \{T_{\alpha+1},\ldots,T_\beta\}$ with 
+%	\begin{equation*}
+%		\begin{cases}
+%			c_i = N\tau K,\quad i<\beta \\
+%			c_\beta=N\tau K+N, \quad i=\beta	
+%		\end{cases}		
+%	\end{equation*}
+%	\item<2-> The coupon bond price can be written as the discounted sum of the cash-flows
+%	\begin{equation}
+%		\textbf{CBP}(t,\mathcal{C},T)=\sum_{i=\alpha+1}^{\beta}c_i P(t,T_i)
+%	\end{equation}
+%	\item<3-> Needless to say that in case $K=0$ the bond reduces to a zero-coupon bond with maturity $T_\beta$.
+%\end{itemize}
+%
+%	\end{frame}
+%	
+%\begin{frame}{Floating Rate Note (FRN)}
+%\begin{itemize}
+%	\item<0-> Next consider a floating rate note that pays coupons at dates
+%	\begin{equation*}
+%		\mathcal{T}_{\text{payments}} = \{T_{\alpha+1},\ldots,T_\beta\}
+%	\end{equation*}
+%	coupons calculated at the EURIBOR rate fixed in the previous period
+%	\begin{equation*}
+%		\mathcal{T}_{\text{fixings}} = \{T_{\alpha},\ldots,T_{\beta - 1}\}
+%	\end{equation*}
+%	\item<1-> At maturity $T_\beta$ the notional is reimbursed as before.
+%	\item<2-> To value this note we change sign to the \textbf{RFS} (\cref{eq:swap_as_sum_fra}), set $K=0$, i.e. no fixed rate payments are done, and finally add the present value of the notional at maturity: $NP(t,T_\beta)$
+%	\begin{equation*}
+%		\begin{aligned}
+%			\textbf{FRN} &= -\textbf{RFS} + NP(t,T_\beta) =\\
+%			& =NP(t,T_\alpha)-NP(t,T_\beta)-N\sum_{i=\alpha+1}^{\beta}K\tau_i P(t,T_i) + NP(t,T_\beta)
+%		\end{aligned}
+%	\end{equation*}
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Floating Rate Note (FRN)}
+%\begin{itemize}
+%	\item Next consider a floating rate note that pays coupons at dates
+%	\begin{equation*}
+%		\mathcal{T}_{\text{payments}} = \{T_{\alpha+1},\ldots,T_\beta\}
+%	\end{equation*}
+%	coupons calculated at the LIBOR rate fixed in the previous period
+%	\begin{equation*}
+%		\mathcal{T}_{\text{fixings}} = \{T_{\alpha},\ldots,T_{\beta - 1}\}
+%	\end{equation*}
+%	\item At maturity $T_\beta$ the notional is reimbursed as before.
+%	\item To value this note we change sign to the \textbf{RFS} (\cref{eq:swap_as_sum_fra}), set $K=0$, i.e. no fixed rate payments are done, and finally add the present value of the notional at maturity: $NP(t,T_\beta)$
+%	\begin{equation*}
+%		\begin{aligned}
+%			\textbf{FRN} &= -\textbf{RFS} + NP(t,T_\beta) =\\
+%			& =NP(t,T_\alpha)-\cancel{NP(t,T_\beta)}-\cancel{N\sum_{i=\alpha+1}^{\beta}K\tau_i P(t,T_i)} + \cancel{NP(t,T_\beta)} =NP(t,T_\alpha)
+%		\end{aligned}
+%	\end{equation*}
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Floating Rate Note (FRN)}
+%\begin{itemize}
+%	\item The intuition behind this formula is quite straightforward: if we set $T_\alpha =t$. 
+%	\begin{equation*}
+%		\textbf{FRN} = N P(t, T_\alpha) = N P(t, t) = N
+%	\end{equation*}
+%	\textcolor{red}{At the date of the first reset, the bond price equals par.} 
+%	\item This result also holds for all the dates equal to the reset of the floating rates (an \textbf{FRN} is equivalent to a roll-over strategy of short-term loans).
+%	\item This property is sometimes summarized by the sentence \emph{"the \textbf{FRN} always trade at par"}.
+%	\item The \textbf{FRN} is a debt security in which coupon payments adjust according to changes in interest rates. The coupons are closely tied to current short-term spot rates, such that their prices are always at or near par value (no arbitrage). 
+%	%\item Provide an example of Italian government floating rate note. Did they trade at par in recent times ? Provide an explanation.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Floating Rate Note Example}
+%\begin{itemize}
+%	\item Floating rate bond (FRN) usually refers to an instrument whose coupon is based on a short term rate (3-month T-bill, 6-month EURIBOR). 
+%	\item Variable coupon rates are fixed in advance at reset dates, which are 3- or 6-month (interest payment period) earlier.
+%	\item FRN price (with \emph{unit notional amount}), $n$ maturity, annual frequency ($\tau=1$), and the first coupon rate pre-determined at previous reset date ($C_{reset}$) is as follows:
+%	
+%	\begin{equation*}
+%		\begin{aligned}
+%			\textbf{FRN} & = D_{0,1}C_{reset} + \sum_{i=1}^nD_{0,i+1}F_{i,i+1} + D_{0,n}= \\
+%			& = D_{0,1}C_{reset} + D_{0,2}F_{1,2} + \ldots + D_{0,n-1}F_{n-2,n-1}+ D_{0,n}(1+F_{n-1,n}) = \\
+%			& = D_{0,1}C_{reset} + D_{0,2}\left(\frac{D_{0,1}}{D_{0,2}}-1\right) + \ldots + D_{0,n}\left(\frac{D_{0,n-1}}{D_{0,n}}-1\right) + D_{0,n} = \\
+%		\end{aligned}
+%	\end{equation*}
+%	where $f(t_1,t_2)$ denotes the forward rate between $t_1$ and $t_2$.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Floating Rate Note Example}
+%\begin{equation*}
+%	\begin{aligned}
+%		\textbf{FRN} & = D_{0,1}C_{reset} + (D_{0,1} - D_{0,2}) +(D_{0,2} - D_{0,3}) + \ldots + \\
+%		& + (D_{0,n-2} - D_{0,n-1}) + (D_{0,n-1} - D_{0,n}) + D_{0,n} = \\
+%		& = \boxed{D_{0,1} (1 +C_{reset})}
+%	\end{aligned}
+%\end{equation*}
+%\begin{itemize}
+%	\item The price of FRN has a range from \emph{par to par} + full coupon. It is par right before the reset date and is C right after the reset date (and is linear when pricing date is between two reset dates).
+%	\item Draw a plot showing the characteristic sawtooth behaviour of a floating rate note. 
+%	\begin{equation*}
+%		\textbf{FRN} = D_{0,1}C_{reset} + \sum_{i=1}^nD_{0,i+1}F_{i,i+1} + D_{0,n}
+%	\end{equation*}
+%\end{itemize}
+%\end{frame}
+
+\begin{frame}[fragile]{Floating Rate Note Example}
+\begin{columns}
+	\column{0.5\linewidth}
+	\begin{ipython}
+import pandas as pd, numpy as np
+		
+from datetime import date
+from dateutil.relativedelta import relativedelta
+		
+frn = FloatingRateNote(date.today(), "3Y", "3m")
+pillars = [date.today()+relativedelta(months=dt_from_str(f"{t}M")) 
+for t in rates['T']]
+	rates = rates['r'].values
+	prices = []
+		
+	d = date.today()
+	for i in range(0, 367*2):
+		next_pillars = [p for p in pillars if p >= d]
+		dts = [(p-d).days/360 for p in next_pillars]
+		dfs = [np.exp(-dt*rates[i]) for i, dt in enumerate(dts)]
+		dc = DiscountCurve(d, next_pillars, dfs)
+		
+		prices.append(frn.price(d, dc))
+		d = date.today()+relativedelta(days=i)
+\end{ipython}
+	\column{0.5\linewidth}
+	\begin{center}
+		\includegraphics[width=0.9\linewidth]{images/frn_sawtooth}
+	\end{center}
+\end{columns}
+\end{frame}
+
+
+\section{Economic Intuition: Why Banks Use Swaps}
+
+\begin{frame}{The Financing Dilemma: Fixed vs. Floating}
+	\begin{itemize}
+		\item Imagine \textit{MyFavouriteBank} needs to raise N in the market.
+		\item At inception (t=0), two strategies are NPV-equivalent:
+		\begin{enumerate}
+			\item \textbf{Floating Strategy:} Issue an FRN paying EURIBOR.
+			\item \textbf{Fixed Strategy:} Issue a Coupon Bond paying $K=S_{\alpha, \beta}$ (the Swap Rate).
+		\end{enumerate}
+		\item \textbf{The Choice:} The bank selects based on its \textcolor{red}{ALM (Asset Liability Management)} needs and investor demand.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Asset-Liability Matching (ALM)}
+	\begin{itemize}
+		\item \textbf{The Retail Paradox:} Individuals hate floating rates (mortgages) because salaries are fixed.
+		\item \textbf{The Bank Perspective:} Banks often prefer \textbf{floating liabilities} to match their \textbf{floating assets} (commercial loans).
+		\item \textbf{Rate Rise Scenario:}
+		\begin{itemize}
+			\item \textbf{Liability Side:} The bank pays higher coupons to bondholders.
+			\item \textbf{Asset Side:} The bank earns higher interest from its loan portfolio.
+			\item \textbf{Result:} The Net Interest Margin (NIM) remains stable.
+		\end{itemize}
+		\item This "natural hedge" is the essence of bank risk management.
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{The Swap as a Transformation Tool}
+	\begin{itemize}
+		\item \textbf{The Problem:} Many investors (Insurance, Pension Funds) demand fixed coupons for long-term certainty.
+		\item \textbf{The Solution:}
+		\begin{enumerate}
+			\item Bank issues a Fixed Rate Bond to satisfy investors.
+			\item Bank enters a \textbf{Payer Swap} (Pays Floating, Receives Fixed).
+		\end{enumerate}
+		\item \textbf{The Result:} The "Received Fixed" from the swap cancels the "Fixed Coupon" of the bond. The bank is left with a synthetic Floating Rate Liability.
+	\end{itemize}
+	
+\end{frame}
+
+%\subsection{Fixed vs Variables}
+%\begin{frame}{Concepts behind the Formulas}
+%Suppose that a generic bank, \emph{MyFavouriteBank}, has the same credit risk of the corresponding average inter-bank entity. So, \textcolor{red}{the spread over the EURIBOR rate is 0}. Suppose now the bank needs financing and it plans to issue coupon bonds. It has two alternatives:
+%\begin{enumerate}
+%	\item<1-> borrow $N$ and pay floating interests at the rates
+%	\begin{equation*}
+%		L(T_{i-1},T_i);
+%	\end{equation*}
+%	\item<1-> borrow $N$ and pay fixed interests given by the coupon
+%	\begin{equation*}
+%		K = S_{\alpha,\beta}.
+%	\end{equation*}
+%	(clearly the overall cost to raise money must be the same at the beginning, i.e. fixed leg NPV equals floating leg NPV).
+%\end{enumerate}
+%\end{frame}
+%
+%\begin{frame}{Concepts behind the Formulas}
+%\begin{itemize}
+%	\item<1-> Given the two strategies are equivalent the bank will then opt for one of two alternatives depending on:
+%	\begin{enumerate}
+%		\item marketing considerations, i.e. which kind of bond people prefer;
+%		\item the interest rate risk it wants to have.
+%	\end{enumerate} 
+%	\item<2-> Remember that a variable rate mortgage is perceived risky by the average individual as salary is more or less fixed, but for bank this is not the case because it is left unarmed by the rate rise. Indeed if rates go up
+%	\begin{itemize}
+%		\item the bank loses in the higher coupons it has to pay to the bond holders;
+%		\item the bank gains in the higher rates it charges on new loans at the same time.
+%	\end{itemize}
+%	\item<3-> This is the most basic example of \emph{asset liability matching}.
+%	\item<3-> The same more or less holds for a rate decrease.%, but with some caveats.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Concepts behind the Formulas}
+%\begin{itemize}
+%	\item<0->Although banks like more floating rates exposure, there are pros and cons for this choice: 
+%	\begin{itemize}
+%		\item<1-> [\goodcheck] the liability value (the bond floating rate) resets with rates;
+%		\item<1-> [\goodcheck] often the costs are smaller then fixed rates;
+%		\item<1-> [\goodcheck]surely less expensive in the case of a long-term loan (e.g. 30-year mortgage), lenders require higher fixed rates in that case, due to bad accuracy in forecast economic conditions over such a long period of time.
+%		%\end{itemize}
+%		%\begin{itemize}
+%		\item<2-> [\badcheck] higher interest rate risk (risk of rising rates in the future);
+%		\item<2-> [\badcheck] with inverted yield curve, the cost of debt may actually be higher than fixed-rate. They have to offer higher interest rates to attract buyers, especially for long-term debt. since investors are demanding more compensation for the perceived economic slowdown risk (however, this is the exception rather than the norm).
+%	\end{itemize}
+%	% There is a general assumption that interest rates will rise – or, increase – over time,
+%	\item<3-> So why do not banks issue only floating rate notes ?
+%	\item<4-> Banks must issue fixed rate coupon bonds to attract customers (think of yourself or insurance companies) but then will hedge the liability  with an investment bank. In this way the final risk exposure will be at a variable rate as they like. 
+%	%\item<3-> \textcolor{red}{Swaps are both a hedging instrument and a pricing tool.}
+%\end{itemize}
+%\end{frame}
+
+
+
+
+
+
+\subsection{Basis Swaps}
+\begin{frame}{What is a Basis Swap?}
+	\begin{itemize}
+		\item A \textcolor{red}{Basis Swap} exchanges two floating legs with different tenors (e.g., EURIBOR 3M vs. EURIBOR 6M).
+		\item \textbf{Market Convention:} One leg is paid "flat," while a \textcolor{red}{spread s} is added to the other (usually the shorter tenor) to make the NPV zero at inception.
+	\end{itemize}
+	\begin{equation}
+		\boxed{\text{NPV}(t) = \text{Leg}{\text{Long}} - (\text{Leg}{\text{Short}} + s \cdot \text{Annuity}_{\text{Short}})}
+	\end{equation}
+	
+\end{frame}
+
+\begin{frame}{The Classical Paradox: Single Curve Framework}
+	\begin{itemize}
+		\item \textbf{Theory:} In the pre-2008 framework, any floating leg (assuming no credit risk) is worth:
+		\begin{equation*}
+			\text{Value} = P(t, T_{\text{start}}) - P(t, T_{\text{end}})
+		\end{equation*}
+		\item \textbf{The Result:} If both legs start at T0 and Tbeta end, their values must be identical.
+		\item \textbf{The Paradox:} If Leg3M​=Leg6M​, then the basis spread s should be zero.
+	\end{itemize}
+	\begin{block}{Why the theory fails}
+		The market treats a 6-month loan as riskier than two consecutive 3-month loans. This difference reflects Credit and Liquidity Risk that the single-curve model ignores.
+	\end{block}
+\end{frame}
+
+\begin{frame}{The Post-Crisis Shift: Multi-Curve Pricing}
+	\begin{itemize}
+		\item Today, we no longer use one curve. We use:
+		\begin{enumerate}
+			\item \textbf{Discounting Curve:} Usually the OIS (Overnight Index Swap) curve (risk-free).
+			\item \textbf{Forward Curves:} Separate curves for each tenor (3M, 6M, 12M).
+		\end{enumerate}
+		\item \textbf{The Spread s:} Represents the market's preference for liquidity. In times of stress, the spread between 3M and 6M widens significantly as banks become reluctant to lend for longer periods.
+	\end{itemize}
+	
+\end{frame}
+
+
+%\begin{frame}{Basis Swap}
+%\begin{itemize}
+%	\item A \textcolor{red}{(Tenor) Basis Swap} is defined as a contract in which two floating legs are exchanged.
+%	\item The two legs can differ both in the tenor of the underlying rate and in the frequency of payments.
+%	\item For instance a typical Basis Swap is one in which a floating leg indexed to EURIBOR-6M is exchanged against one indexed to EURIBOR-3M.
+%\end{itemize}
+%\begin{center}
+%	\includegraphics[width=0.6\linewidth]{images/tenor_basis_swap}
+%\end{center}
+%\end{frame}
+%
+%\begin{frame}{Basis Swap Valuation}
+%\begin{itemize}
+%	\only<1-2>{
+%		\item A Tenor Basis Swap can be priced according to the following expression
+%		\begin{equation}
+%			\boxed{
+%				\begin{aligned}
+%					\textbf{TBS}(t) = \sum_{i=1}^n \tau_i^{L} F^{L}&(t;T_{i-1},T_i)P(t,T_i) - \\
+%					&- \sum_{j=1}^m \tau_j^{S} (F^{S}(t;T_{j-1},T_j)+s)P(t,T_j)
+%				\end{aligned}
+%			}
+%		\end{equation}
+%		where $L$ (long index) denotes the index with the longer tenor and $S$ (short index) the other with the shorter tenor.}
+%	\only<3->{
+%		\item A Tenor Basis Swap can be priced according to the following expression
+%		\begin{equation}
+%			\boxed{
+%				\begin{aligned}\textbf{TBS}(t) = \sum_{i=1}^n \tau_i^{L} F^{L}&(t;T_{i-1},T_i)P(t,T_i) - \\
+%					&-\sum_{j=1}^m \tau_j^{S} (F^{S}(t;T_{j-1},T_j)+\textcolor{red}{s})P(t,T_j)
+%				\end{aligned}
+%			}
+%		\end{equation}
+%		where $L$ (long index) denotes the index with the longer tenor and $S$ (short index) the other with the shorter tenor.}
+%	
+%	\item<2-> Basis Swaps usually quote at par, meaning that the price of the swap is zero and that the present value (PV) of each of the traded legs is the same. 
+%	\item<3-> This is made possible by adding a \textcolor{red}{basis spread $s$} to the LIBOR index with the lower frequency tenor.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Basis Swap Spread}
+%\begin{itemize}
+%	\item But according to the \textcolor{red}{single curve framework} there should be no basis as the value of the floating leg is given by (assuming $N=1$)
+%	\begin{equation*}
+%		P(0, T_0) - P(0, T_n), \quad \text{(forward start case)}
+%	\end{equation*}
+%	or by 
+%	\begin{equation*}
+%		1 - P(0, T_n), \quad \text{(spot case)}
+%	\end{equation*}
+%	\begin{columns}
+%		\column{0.4\linewidth}
+%		\item In both cases what matters are the first and the last payment dates; hence if they are the same for the two legs (regardless the reset frequency and the index tenor), the basis should be zero.
+%		\column{0.4\linewidth}
+%		\begin{center}
+%			\includegraphics[width=1.1\linewidth]{images/Basis-Swap-spreads-Euribor-3M-Vs-Euribor-6M-Euribor-6M-Vs-Euribor-12M-and-Eonia-Vs}
+%		\end{center}
+%	\end{columns}
+%\end{itemize}
+%%Exercise: write in detail the above argument, and provide an example for both a 10Y spot start basis swap and a 1Y forward 10Y Swap. Which condition you need to derive the result?
+%\end{frame}
+
+
+\section{Credit Risk and Asset Swap}
+
+\begin{frame}{The Impact of Credit Risk}
+	\begin{itemize}
+		\item In the real world, entities (Banks/Corporates) pay a \textcolor{red}{credit spread} over the risk-free rate (EURIBOR/OIS).
+		\item A "Risky" Issuer must offer higher yields to attract investors:
+		\begin{enumerate}
+			\item \textbf{Fixed Bond:} A higher coupon $K_{risky}_{\alpha,\beta}$.
+			\item \textbf{Floating Bond:} A spread over the variable rate ($L+s$).
+		\end{enumerate}
+		\item \textbf{Asset-Liability Management (ALM):} To hedge interest rate risk, a bank often swaps its fixed-rate risky debt into floating, leading to the Asset Swap structure.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Par Asset Swap: The Synthetic FRN}
+	\begin{itemize}
+		\item An \textcolor{red}{Asset Swap (AS)} transforms a risky fixed-rate bond into a synthetic floating-rate note, keeping the credit risk profile unchanged.
+		\item \textbf{The Package:}
+		\begin{enumerate}
+			\item Purchase of a risky bond at market price $\overline{\text{CBP}}$.
+			\item An Interest Rate Swap to exchange fixed coupons for $L+s_{AS}$.
+		\end{enumerate}
+		\item \textbf{Par Mechanism:} At $t=0$, the buyer pays exactly \textbf{Par (100\%)}:
+		\begin{itemize}
+			\item If Bond price $\overline{\text{CBP}}$<100: Buyer pays 100 total (Bond + upfront to Seller).
+			\item If Bond price $\overline{\text{CBP}}$>100: Buyer pays 100 total (Bond - upfront from Seller).
+		\end{itemize}
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{Asset Swap Spread ($s_{AS}$)}
+	\begin{itemize}
+		\item The \textcolor{red}{Asset Swap Spread ($s_{AS}$)} is the spread over EURIBOR that makes the package worth par at inception.
+		\item From the derivation (canceling out the risk-free principal $P(0,T_\beta)$:
+		\begin{equation}
+			\boxed{s_{AS} = \frac{\text{CBP} - \overline{\text{CBP}}}{A_{\alpha,\beta}(0)}}
+		\end{equation}
+		\item \textbf{Interpretation:}
+		\begin{itemize}
+			\item \textbf{CBP:} Price of an identical bond if it were \textit{risk-free}.
+			\item \textbf{\overline{\text{CBP}}:} Current market price of the \textit{risky} bond.
+			\item The spread $s_{AS}$"monetizes" the price discount caused by credit risk.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Hedging Credit: AS vs. CDS}
+	\begin{itemize}
+		\item sAS measures credit risk, but the buyer is still exposed to default.
+		\item To hedge the default event, an investor buys a \textcolor{red}{Credit Default Swap (CDS)} for a premium sCDS.
+		\item \textbf{No-Arbitrage (The Basis):} In theory, sAS≈sCDS.
+		\item \textbf{Negative Basis Trading:}
+		\begin{itemize}
+			\item If sAS>sCDS: The market pays you more for the risk (sAS) than it costs to insure it (sCDS).
+			\item \textbf{Strategy:} Buy Bond + Buy AS + Buy CDS Protection = (Almost) Risk-free spread.
+		\end{itemize}
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{Valuing Default: The Probability Approach}
+	\begin{itemize}
+		\item How does default affect a ZCB price? Consider probability p and Recovery R.
+		\item \textbf{Expected Payoff at T:}
+		E[Payoff]=Survival(1−p)N+Defaultp⋅(NR)
+		
+		
+		\item \textbf{Risky Bond Price:} Discount the expectation at the risk-free rate Df:
+		\begin{equation}
+			\overline{P}(0,T) = D_f \cdot N \cdot [1 - p(1 - R)]
+		\end{equation}
+		\item This shows the direct link between the price discount (CBP) and the Probability of Default (PD).
+	\end{itemize}
+	
+\end{frame}
+
+%\begin{frame}{Adding Credit Risk}
+%\begin{itemize}
+%	\item When we make the real world enter the picture, a typical bank will pay a spread over EURIBOR representing the \textcolor{red}{credit risk} (and other stuff, but leave this extra aside here). 
+%	%\item For the swap to be worth 0 at inception the fixed rate must be higher as well. 
+%	\item<2-> Hence a bank, which \emph{has credit risk},  will have to pay
+%	\begin{enumerate}
+%		\item a higher coupon if it issues a bond with fixed coupon;
+%		\item a spread over the variable rate if it opts for a floating rate bond.
+%	\end{enumerate}
+%	\item<3-> Often, in the first case, it will swap the liability, i.e. the bank is liable towards the bond holders, to hedge the pure rate risk. 
+%	\item<4-> This lead us to the next topic, the Asset Swap contract.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Par Asset Swap}
+%\begin{itemize}
+%	\item<1-> An \textcolor{red}{Asset Swap} (AS) can be defined as a \emph{synthetic floating-rate note}.
+%	\item In fact, the Asset Swap transforms a fixed rate into a floating one, \textcolor{red}{leaving the credit risk profile unchanged}.
+%	\item<1-> There are several kinds of Asset Swap contract, in the following we are going to consider \textcolor{red}{Par Asset Swaps}. 
+%	\item<2-> The package is made of a position in a bond and another in a swap.
+%	\item<3-> In case of \textbf{default} of the bond issuer, the Asset Swap buyer \textbf{must pay the fixed leg and the principal in the swap} but \textcolor{red}{does not receive the coupon} of the defaulted bond. 
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Valuation of the Asset Swap}
+%\begin{center}
+%	\includegraphics[width=0.7\linewidth]{images/asset_swap}
+%\end{center}
+%\end{frame}
+%
+%\subsection{Asset Swap Valuation}
+%\begin{frame}{Valuation of the Asset Swap}
+%At valuation time $t$ the \emph{three} following facts are observed:
+%\begin{itemize}
+%	\item<2-> the AS buyer buys a generic \emph{risky} coupon bond at the market price $\overline{\textbf{CBP}}(t,T,K,1)$;
+%	\item<3-> the AS seller pays/receives to/from the asset swap buyer the difference $\Delta = \overline{\textbf{CBP}}(t,T,K,1)-1$ in such a way that the net sum paid from the AS buyer is always 1; 
+%	\begin{itemize}
+%		\item \textcolor{red}{if the bond trades above par} the difference $\Delta$ is paid to the AS buyer by the seller;
+%		\item conversely \textcolor{red}{if the bond trades below par} the difference $\Delta$ is paid to the AS seller by the buyer.
+%	\end{itemize}
+%	\item<4-> A swap is then started between the two counter-parties such that the AS seller receives a fixed leg equal to the coupon stream of the bond and the AS buyer receives the floating leg given by EURIBOR rate plus a \textcolor{red}{spread ($s$)} (again for simplicity the floating payment dates are the same as the fixed leg ones).
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Valuation of the Asset Swap}
+%\begin{itemize}
+%	\item From the perspective of the Asset Swap seller the value of the package is given by (we are considering spot trading so $T_\alpha = t = 0$)
+%	\begin{equation}
+%		\begin{aligned}
+%			\textbf{AS}=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i)-\sum_{i=1}^{\beta}\tau_i P(0,T_i)(L(T_{i-1},T_i)+s) =\\
+%			=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i)\\
+%			&-\sum_{i=1}^{\beta}\tau_i P(0,T_i)L(T_{i-1},T_i)-\sum_{i=1}^{\beta}\tau_i P(0,T_i)s=0
+%		\end{aligned}
+%		\label{eq:asset_swap_value}
+%	\end{equation}
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Valuation of the Asset Swap}
+%\begin{itemize}
+%	\item We can replace the future rates with the forward rates definition in terms of ZCB, and by its definition (\cref{eq:forward_rate_definition})
+%	\begin{equation*}
+%		\begin{aligned}
+%			\sum_{i=1}^\beta &\tau_i P(0,T_i)F(t;T_{i-1},T_i) =  \sum_{i=1}^\beta \cancel{\tau_i P(0,T_i)}\frac{P(0,T_{i-1})-P(0,T_i)}{\cancel{\tau_i P(0,T_i)}} = \\
+%			= &P(0,0) \cancel{- P(0,T_1)} + \cancel{P(0,T_1)} \cancel{- P(0,T_2)} + \cancel{P(0,T_2)} + \\
+%			&\ldots \cancel{- P(0, T_{\beta-1})} \cancel{+ P(0, T_{\beta-1})}-P(0,T_\beta) = 1-P(0,T_\beta) 
+%		\end{aligned}
+%	\end{equation*}
+%	\item Substitute into \cref{eq:asset_swap_value} to get
+%	\begin{equation*}
+%		\begin{aligned}
+%			\textbf{AS}=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i) -(1-P(0,T_\beta))
+%			+ \sum_{i=1}^\beta\tau_i P(0,T_i)s=0
+%		\end{aligned}
+%	\end{equation*}
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Valuation of the Asset Swap}
+%\begin{itemize}
+%	\item Canceling out the 1s
+%	\begin{equation*}
+%		\begin{aligned}
+%			\textbf{AS}=&-\overline{\textbf{CBP}}+K\sum_{i=1}^\beta\tau_i P(0,T_i) + \\
+%			& + P(0,T_\beta) + \sum_{i=1}^{\beta}\tau_i P(0,T_i)s=0
+%		\end{aligned}
+%	\end{equation*}
+%	\item Finally we know that
+%	\begin{equation*}
+%		\textbf{CBP} = P(0,T_\beta) + K\sum_{i=1}^\beta\tau_i P(0,T_i)
+%	\end{equation*}
+%	represents the price of coupons and principal of a  risk-free bond which can be denoted by \textbf{CBP}.
+%\end{itemize}
+%\end{frame}
+%
+%\subsection{Asset Swap Spread}
+%\begin{frame}{Asset Swap Spread}
+%Solving for $s$ we arrive at the final expression
+%\begin{equation}
+%	\boxed{s = \frac{\textbf{CBP}-\overline{\textbf{CBP}}}{\sum_{i=1}^{\beta}\tau_iP(0,T_i)}}
+%\end{equation}
+%\myendproof
+%\begin{itemize}
+%	\item<2-> An asset swap enables an investor to buy a fixed rate bond and then hedge out the interest rate risk by swapping the fixed payments to floating. In doing so the investor retains the credit risk of the bond but earns a corresponding return. 
+%	\item<3-> The investor is \emph{still exposed to the loss of the coupons and redemption on the bond}, i.e. the difference between bond and recovery value.
+%	\item<4-> In economic terms the purpose of the Asset Swap Spread is to compensate the Asset Swap buyer for taking these risks, which is \textbf{measured} by the spread. If the credit worthiness of the issuer reduces ($\overline{\textbf{CBP}}$ decreases), rates remain constant, so $s$ increases.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{Asset Swap: Credit Considerations}
+%\begin {itemize}
+%%	\item If the bond defaults, the AS buyer has to continue paying on the swap, which can no longer be funded with the coupon from the bond, or the swap can be closed out at market value. The asset swap buyer also loses the par redemption of the bond, receiving whatever recovery rate the bond issuer pays. 
+%\item A trader may want to hedge anyway the credit risk carried on with the asset swap entering into a \emph{Credit Default Swap (CDS)}.
+%\item A CDS is a credit insurance contract where the protection buyer pays \emph{spread} ($s_{CDS}$) and in case of a credit event, the protection seller must pay the contingency payment so that the buyer receives no losses from the default.
+%\end{itemize}
+%\begin{center}
+%\includegraphics[width=0.7\linewidth]{images/credit-default-swaps}
+%\end{center}
+%\end{frame}
+%
+%\begin{frame}{Asset Swap: Credit Considerations}
+%\begin {itemize}
+%\item Like $s_{AS}$, also $s_{CDS}$ is quoted on the market, tracking the perceived credit worthiness of the underlying reference entity.
+%\item To avoid arbitrage opportunities, $s_{AS}$ of bond with maturity $T$ must be very close to corresponding maturity CDS spread $s_{CDS}$
+%\begin{itemize}
+%\item if $s_{AS} - s_{CDS} > 0$ the investor can buy the bond, financing the purchase, enters in AS and buying protection, making an (almost) risk free profit (\emph{negative basis trading});
+%\item if $s_{AS} - s_{CDS} < 0$ can do the opposite.
+%\end{itemize}
+%\end{itemize}
+%\end{frame}
+
+\begin{frame}{Bond and Default}
+\begin{itemize}
+\item How does the bond price change with non-zero default probability for the issuer ?
+\item For simplicity consider a zero coupon bond, with a flat probability of default $p_{\text{def}}$ and a recovery rate $R$.
+The price of the bond will be
+\begin{equation*}
+\begin{cases}
+	D_f\cdot R \cdot N\quad\text{ with default} \\
+	D_f\cdot N\quad \text{ with no default}
+\end{cases}
+\end{equation*}
+\begin{columns}
+\column{0.5\linewidth}
+\item But we know the probability of default so the price estimate will be
+\begin{equation*}
+	\mathbb{E}(\textbf{ZCB}) = p_{\text{def}}\cdot(D_f\cdot R\cdot N) + (1 - p_{\text{def}})(D_f\cdot N)
+\end{equation*}
+This formula can be easily extended to coupon bearing bonds.
+\column{0.4\linewidth}
+\includegraphics[width=0.9\linewidth]{images/default_tree}
+\end{columns}
+\end{itemize}
+\end{frame}
+
+%\begin{frame}[fragile]{ASWP Spread and Default Probability}
+%Consider ASWP on a 5Y fixed rate bond (yearly coupons 3\%). If the counterparty has nonull default probability, let's see how ASWP spread varies.
+%
+%\begin{columns}
+%\column{0.5\linewidth}
+%\begin{ipython}
+%import numpy as np
+%
+%pds = np.arange(0, 1.0, 0.01)
+%
+%bond = FixedRateBond(today, 0.03, "5y", "1y", 100)
+%asw = ParAssetSwap(bond)
+%
+%spreads = []
+%prices = []
+%for pd in pds:
+%market_price_bond = bond.npv_default(dc, pd=pd, R=0.4)
+%prices.append(market_price_bond)
+%spreads.append(asw.asspread(dc, pd))    
+%\end{ipython}
+%\column{0.5\linewidth}
+%\includegraphics[width=0.9\linewidth]{images/aswp_spread}
+%\end{columns}
+%
+%\end{frame}
+
+\begin{homework}
+\begin{frame}{\textcolor{white}{Homework}}
+\begin{itemize}
+\item[white] Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increases, all the rest being equal ? What does it mean in term of credit quality expectation by the market for the bond's issuer ?
+\item[white]  Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
+Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond ? 
+For this exercise assume that all annuity factors have a value of 10.0 for simplicity.
+\item[white] Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond ?
+\end{itemize}
+\end{frame}
+\end{homework}
+
+\end{document}
