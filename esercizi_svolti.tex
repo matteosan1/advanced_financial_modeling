@@ -1,561 +1,1586 @@
-\documentclass{beamer}
-\usetheme{afm}
-\usepackage{bm}
+\documentclass[12pt,a4paper]{exam}
 
-\title{Exercises}
-\course{Advanced Financial Modeling}
-\author{\href{mailto:matteo.sani@unisi.it}{Matteo Sani}}
+\input{exercises/exam_header}
+\usepackage{array}
+\usepackage{tabularx}
+\title{Advanced Financial Modeling Course 25/26\\ Exercises}
+\author{Matteo Sani}
+\date{$17^{\mathrm{th}}$ February 2026}
 
+\printanswers
+%\noprintanswers
 \begin{document}
-\begin{frame}[plain]
-  \maketitle
-\end{frame}
+\maketitle
+	
+\section*{Exercises}
+\vspace{.5cm}
+\begin{questions}
+\question \textbf{The One-Period Binomial Model} \\
+A stock is currently priced at $S_0=100$. In one year, it can either go up to $S_u=120$ or down to $S_d=90$. The risk-free rate is $r=5\%$ (annual compounding).
+\begin{parts}
+	\part Calculate the risk-neutral probabilities $q$ and $1-q$.
+	\part If the "real-world" probability of an up-move is $p=0.7$, calculate the risk premium ($\mu - r$) that investors are demanding in the real world.
+\end{parts}
 
-\begin{frame}{}
-\begin{block}{Martingale}
-Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. \\
-Is this a martingale ? (\textbf{hint:} $\frac{da^x}{dx}=a^x\ln a$)
-\end{block}
-\uncover<2->{
-With $g(t)=2^{W(t)}$, we find:
+\begin{solution}
+	\begin{parts}
+		\part In a risk-neutral world, the current price $S_0$ must be the expected future price discounted at the risk-free rate $r$.
+		\begin{equation}
+			S_0=\frac{1}{1+r}[qS_u +(1-q)S_d]
+		\end{equation}
+		Plugging in the numbers:
+		\begin{gather*}
+			100=\frac{1}{1.05}[120\cdot q + 90\cdot(1-q)] \\
+			105=120\cdot q+90-90\cdot q
+		\end{gather*}
+		Hence: $15=30\cdot q \implies q = 0.5$. So, the risk-neutral probabilities are 50\% up and 50\% down.
+		\part To find the risk premium ($\mu - r$) we can start from the real-world expected return:
+		\begin{equation*}
+			\mathbb{E}^{\mathbb{P}}[S_1]=p S_u+(1-p)S_d = 0.7\cdot 120 + 0.3\cdot 90 = 111.0
+		\end{equation*}
+		This can be compared to just investing into risk-free which brings 105, so the risk premium turns out to be 6\%.		
+	\end{parts}
+\end{solution}
+
+\question \textbf{Risk-Neutral Measure} \\
+Suppose you are in a market with one underlying stock and two different risk-neutral measures, $\mathbb{Q}^1$ and $\mathbb{Q}^2$, both of which exclude arbitrage.
+\begin{parts}
+	\part Is the market complete? Why or why not?
+	\part What does this imply for the pricing of a European Call option on that stock?
+	\part How does this relate to the Harrison-Pliska results in your slides?
+\end{parts}
+
+\begin{solution}
+\begin{parts}
+\part No. According to the Second Fundamental Theorem of Asset Pricing, a market is complete if and only if there is a unique risk-neutral measure $\mathbb{Q}$. Since we have two measures ($\mathbb{Q}^1$ and $\mathbb{Q}^2$), the market is incomplete.
+\part There is no single "fair" price. In a complete market, you can perfectly replicate the option with a portfolio of the stock and a bond. In an incomplete market, you cannot perfectly replicate it. Therefore, the price is not uniquely determined by the underlying. There exists a range of arbitrage-free prices: any price between $\mathbb{E}^{\mathbb{Q}^1}[payoff]$ and $\mathbb{E}^{\mathbb{Q}^2}[payoff]$ could technically be valid.
+\part This highlights that "No Arbitrage" (First Theorem) only ensures that at least one $\mathbb{Q}$ exists. It doesn't guarantee there is only one. Incompleteness usually arises because there are more sources of randomness (e.g., jumps or stochastic volatility) than there are assets to trade.
+\end{parts}
+\end{solution}
+
+\question \textbf{Martingale Property} \\
+Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. Is this a martingale ?
+Show that the exponential SDE
 \begin{equation*}
-dg(t) = \ln2\cdot 2^{W(t)}dW(t) +\cfrac{(\ln2)^2}{2}2^{W(t)}dt
+	dX_t = A_t X_tdW_t,\quad X_0=x_0
 \end{equation*}
-Note that $g, g_{x}, g_{xx}$ exist and are continuos. 
-Due to the appearance of a $dt$-term, the process is not a martingale.
-}
-\end{frame}
-
-\begin{frame}{}
-\begin{block}{Martingale Game}
-Suppose you play the following series of games: in game $i, i = 1, 2,\ldots$, you bet \$1 and roll a fair die. If the outcome is $\{1,2\}$ you win \$1, if it is $\{3,4\}$ nothing happens, and if the outcome is $\{5,6\}$ you lose \$1.\\
-Prove that the random process representing the gamer gain is a martingale.
-\end{block}
-\uncover<2->{
-Let $X_i$ be a random variable representing the amount of money you win or lose in bet $i$, this kind of game is said to be \emph{fair} since
+has the following solution
 \begin{equation*}
-\mathbb{E}[X_i]= \sum_{\Omega}p(\omega)\cdot x(\omega) = \frac{2}{6}\cdot 1 + \frac{2}{6}\cdot 0 + \frac{2}{6}\cdot -1 = 0\;\forall i
-\end{equation*}
-so no unbalance between losses or wins.
-}
-\end{frame}
-
-\begin{frame}{}
-Now define another random variable $Z_n = \sum_{i=1}^{n} X_i$, i.e. the amount of money held at the $n$-th game.
-
-$Z_n$ is a martingale and $\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = Z_{n-1}$.
-\begin{equation*}
-	\begin{aligned}
-		&\mathbb{E}[Z_n|X_1,\ldots, X_{n-1}] = \mathbb{E}[X_1 +\ldots + X_n|X_1,\ldots, X_{n-1}] \\
-		& = \underbrace{\mathbb{E}[X_1|X_1,\ldots, X_{n-1}]}_{X_1} + \ldots + \underbrace{\mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}]}_{X_{n-1}} + \underbrace{\mathbb{E}[X_n|X_1,\ldots, X_{n-1}]}_{\mathbb{E}[X_n]=0} \\
-		& = \mathbb{E}[X_1|X_1,\ldots, X_{n-1}] + \ldots + \mathbb{E}[X_{n-1}|X_1,\ldots, X_{n-1}] + 0 = Z_{n-1}
-	\end{aligned}
-\end{equation*}
-\end{frame}
-
-\begin{frame}{}
-\begin{block}{Bootstrap}
-Consider different bonds with a face value of \$ 100, with the coupon rates as in Tab.\ref{tab:coupons}.
-
-\begin{table}[htb]
-  \begin{center}
-    \begin{tabular}{|l|c|c|c|}
-      \hline
-      \textbf{Maturity}    & 1Y    & 2Y     & 3Y     \\ \hline
-      \textbf{Coupon (\%)} & 3.0   & 3.5    & 4.5    \\ \hline
-      \textbf{Price (\$)}  & 99.76 & 99.54  & 100.77 \\ \hline
-    \end{tabular}
-    \end{center}
-    \caption{Coupon-bond characteristics.}
-    \label{tab:coupons}
-  \end{table}
-Each bond has a annual payment schedule. Applying the bootstrap technique determine the implied yield curve.
-\end{block}
-\uncover<2->{
-Considering the first bond we can deduce that
-\begin{equation*}
-  P_1 = \frac{N + C_1}{(1+r_{1y})} \implies r_{1y} = 3.248\%
-\end{equation*}
-}
-\end{frame}
-
-\begin{frame}{}
-The second bond has an intermediate copoun (at 1y) before expiry so previous formula becomes
-
-\begin{equation*}
-  \begin{gathered}
-    P_2 = \frac{C_2}{(1+r_{1y})} + \frac{N + C_2}{(1+r_{2y})^2} \implies r_{2y} = 3.752 \%
-  \end{gathered}
+	X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
 \end{equation*}
 
-Analogously for the third bond\ldots
-\end{frame}
-
-\begin{frame}{}
-\begin{block}{Forward Rate Agreement}
-The following term structure of LIBOR is given 
-\begin{table}[htbp]
-\begin{center}
-\begin{tabular}{c|c}
-90 days & 6.00\% \\ \hline
-180 days & 6.20\% \\ \hline
-270 days & 6.30\% \\ \hline
-360 days & 6.35\% \\
-\end{tabular}
-\end{center}
-\end{table}
+\begin{solution}
+To determine if $Y(t)$ is a martingale, we first rewrite the process in base $e$:
+\begin{equation*}
+	Y(t) = e^{W(t) \ln 2}
+\end{equation*}
+Let $f(W_t) = e^{\sigma W_t}$ where $\sigma = \ln 2$. We apply Itô's Lemma:
+\begin{equation*}
+dY_t = \frac{\partial f}{\partial t} dt + \frac{\partial f}{\partial W} dW_t + \frac{1}{2} \frac{\partial^2 f}{\partial W^2} (dW_t)^2
+\end{equation*}
+The partial derivatives are:
 \begin{itemize}
-\item Find the rate on a new 6 × 9 FRA;
-\item Consider a FRA that was established previously at a rate of 5.2\% with a notional amount of 30~M. The FRA expires in 180 days, and the underlying is 180-day LIBOR. Find its value from the perspective of the party paying fixed as of the point in time at which this term structure applies.
+	\item $\frac{\partial f}{\partial t} = 0$
+	\item $\frac{\partial f}{\partial W} = \sigma e^{\sigma W_t} = (\ln 2) Y_t$
+	\item $\frac{\partial^2 f}{\partial W^2} = \sigma^2 e^{\sigma W_t} = (\ln 2)^2 Y_t$
 \end{itemize}
-\end{block}
-\end{frame}
+Substituting these into the expression (recalling that $(dW_t)^2 = dt$):
+\begin{equation*}
+	dY_t = Y_t \left( \frac{(\ln 2)^2}{2} dt + (\ln 2) dW_t \right)
+\end{equation*}
+For a process to be a martingale, the drift ($dt$) term must be zero. Since $\frac{(\ln 2)^2}{2} \neq 0$, the process \textbf{is not a martingale}. (Specifically, it is a submartingale).
+	
+\vspace{1em}
+	
+Define a auxiliary process $Z_t = \ln X_t$. We apply Itô's Lemma to the function $g(X_t) = \ln X_t$:
+\begin{equation*}
+	dZ_t = \frac{1}{X_t} dX_t - \frac{1}{2 X_t^2} (dX_t)^2
+\end{equation*}
+From the given SDE, we have $dX_t = A_t X_t dW_t$. Consequently, $(dX_t)^2 = A_t^2 X_t^2 dt$. Substituting these into the expression for $dZ_t$:
+\begin{equation*}
+	dZ_t = \frac{1}{X_t} (A_t X_t dW_t) - \frac{1}{2 X_t^2} (A_t^2 X_t^2 dt)
+\end{equation*}
+\begin{equation*}
+	dZ_t = A_t dW_t - \frac{1}{2} A_t^2 dt
+\end{equation*}
+Integrating from $0$ to $t$:
+\begin{equation*}
+	Z_t - Z_0 = \int_0^t A_s dW_s - \frac{1}{2} \int_0^t A_s^2 ds
+\end{equation*}
+Since $Z_t = \ln X_t$ and $Z_0 = \ln x_0$:
+\begin{equation*}
+	\ln \left( \frac{X_t}{x_0} \right) = \int_0^t A_s dW_s - \frac{1}{2} \int_0^t A_s^2 ds
+\end{equation*}
+Exponentiating both sides yields the final solution:
+\begin{equation*}
+	X_t = x_0 \exp \left( -\frac{1}{2} \int_0^t A_s^2 ds + \int_0^t A_s dW_s \right)
+\end{equation*}
+\end{solution}
 
-\begin{frame}{}
+\question \textbf{The Expectation Paradox} \\
+In a stochastic interest rate world, is it true that 
+\begin{equation*}
+	P(t,T)=\mathbb{E}^{\mathbb{Q}}\left[ \frac{1}{e^{\int_t^T r_s ds}} |\mathcal{F}_t \right] ?
+\end{equation*}
+\textbf{Hint}: use Jensen's inequality
+
+\begin{solution}
+The risk-neutral pricing formula states that the price of a Zero-Coupon Bond (ZCB) is:
+\begin{equation}
+	P(t,T) = \mathbb{E}^{\mathbb{Q}}\left[ e^{-\int_t^T r_s ds} \middle| \mathcal{F}_t \right]
+\end{equation}
+This expression is \textbf{true} by the definition of the risk-neutral measure $\mathbb{Q}$, where the money market account $B_t = e^{\int_0^t r_s ds}$ is the numeraire.
+	
+To explore the paradox, consider the function $f(x) = e^{-x}$. This function is \textcolor{red}{strictly convex} because $f''(x) = e^{-x} > 0$.
+	
+By \textbf{Jensen's Inequality}, for any convex function $f$ and random variable $X$:
+\begin{equation}
+	f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)]
+\end{equation}
+	
+Let $X = \int_t^T r_s ds$. Applying the inequality to the bond price formula:
+\begin{equation}
+	\underbrace{\exp\left( -\mathbb{E}^{\mathbb{Q}}\left[ \int_t^T r_s ds \middle| \mathcal{F}_t \right] \right)}_{\text{Function of Expectation}} < \underbrace{\mathbb{E}^{\mathbb{Q}}\left[ e^{-\int_t^T r_s ds} \middle| \mathcal{F}_t \right]}_{\text{Bond Price } P(t,T)}
+\end{equation}
+	
+The actual bond price $P(t,T)$ is higher than the price calculated by simply using the expected average path of interest rates. 
+	
+Due to the \textcolor{red}{convexity} of the bond price-yield relationship, volatility in interest rates increases the bond's value. This is why "Convexity Adjustments" are required when moving between different interest rate products (like Eurodollar futures vs. FRAs).
+
+The "paradox" is a psychological and linguistic one rather than a mathematical error. It arises because our intuition often tricks us into thinking that the average price should be determined by the average rate.
+
+Here is why it is called a paradox in a classroom or trading floor setting:
+1. The Intuition Trap
+
+If you ask a student: "If the expected average interest rate for the next year is 5%, what is the bond price?"
+Most will answer: $e^{-0.05\cdot 1}$.
+
+But as you proved using Jensen's Inequality: $P(t,T)>e^{-\mathbb{E}[r]}$.
+
+
+The "Paradox" is that the bond is more expensive than the "average" interest rate suggests. Even if your forecast of the interest rate is perfectly correct on average, your bond price calculation will be wrong (too low) if you ignore volatility.
+2. The Jensen's Gap
+
+The paradox is essentially the existence of the Convexity Bias.
+
+If rates go down by 1%, the bond price rises by, say, $1.10.
+
+If rates go up by 1%, the bond price falls by only $0.90.
+
+Net result: If rates are volatile but stay at 5% on average, the bond price keeps gaining value from the swings.
+
+3. The Practical Paradox: Futures vs. Forwards
+
+This paradox has a multi-billion dollar consequence in the markets known as the Futures-Forward Basis.
+
+A Forward Rate Agreement (FRA) is priced directly off the expectation.
+
+A Eurodollar Future is "marked-to-market" daily.
+
+Because of the convexity paradox, the Futures rate is always higher than the Forward rate for the same period. If a trader forgets this "paradox" and treats them as equal, they will lose money on every trade because they haven't accounted for the Convexity Adjustment.
+In summary, the paradox is:
+
+"To get the right price, you must use the wrong rate (an adjusted one), because the 'correct' expected rate gives you a price that is too low."
+
+Consider a ZCB where the rate $r$ is $5\%$ on average, but volatile ($0\%$ or $10\%$ with $p=0.5$).
 \begin{itemize}
-\item<1-> The contract at inception has to be \emph{fair} so the requested rate is the break-even rate of the contract or the forward rate $F(t; T=180, S=270)$, hence
-\begin{equation*}
-K = \cfrac{6.3\cdot\frac{9}{12}-6.2\cdot0.5}{\frac{9}{12}-0.5} = 6.5\%
-\end{equation*}
-\item<2-> The old contract value (seen by the party paying fixed) is given by 
-\begin{equation*}
-\textbf{FRA} = -N\cdot[P(t,S)\tau K - P(t,T) + P(t, S)]
-\end{equation*}
-where $t=T=0$, so $P(t,S)=\cfrac{1}{1-0.062*0.5}= 0.9699$, $\tau=0.5$ and $P(t,T)=1$.
-\begin{equation*}
-\textbf{FRA} \approx 146500
-\end{equation*}
-a positive value was expected since $K<L$.
+	\item \textbf{Naive Price} (using average rate): 
+	$e^{-0.05} = 0.9512$
+	\item \textbf{Market Price} (average of prices): 
+	$0.5(e^{-0.10}) + 0.5(e^{0}) = 0.9524$
 \end{itemize}
-\end{frame}
 
-\begin{frame}{}
-\begin{block}{Forward Rate}
+The bond is \textbf{more expensive} than the average rate implies. 
+In markets, this is the \textcolor{red}{Convexity Bias}. 
+To price correctly, we must subtract a \textit{convexity adjustment} from the expected future rate.
+\end{solution}
+
+\question \textbf{Forward Rate Agreement} \\
+Suppose we have a $1\times 4$ FRA with a notional principal of €1 million.  At contract expiration, the 90-day LIBOR at settlement is 6\% and the contract rate is 5.5\%. Calculate the value of the FRA at maturity.
+	
+\begin{solution}	
+Using the standard FRA settlement formula:
+\begin{equation*}
+	\text{Value} = N \times \frac{(L - K) \times \tau}{1 + L \times \tau}
+\end{equation*}
+Where $\tau = \frac{90}{360} = 0.25$.
+\begin{enumerate}
+	\item \textbf{Interest Difference:} $1,000,000 \times (0.06 - 0.055) \times 0.25 = 1,250$
+	\item \textbf{Discounting to Settlement:} $\frac{1,250}{1 + (0.06 \times 0.25)} = \frac{1,250}{1.015}$
+	\item \textbf{Final Value:} \boxed{€1,231.53}
+\end{enumerate}
+The long position (the buyer) receives this amount because the market rate ($6\%$) is higher than the contract rate ($5.5\%$).
+\end{solution}
+	
+\question \textbf{Forward Rates} \\	
 The 1-year spot rate on US treasury bonds is 9\%, the 2-year spot rate is 9.5\% and the 3-year spot rate is 10\%. 
-%\begin{itemize}
-%\item 
-Calculate the implied 1-year ahead, 1-year forward rate, $F(0;1,2)$. Explain why a 1-year forward rate of 9.6\% could not be explained by the market;
-%\item calculate the forward rates  $F(0; 2, 3)$ and $F(0; 1,3)$. Is there a link between $F(0;1,2),F(0;2,3)$ and $F(0;1,3)$ ?
-%\end{itemize}
-\end{block}
-\uncover<2->{
-%\begin{itemize}
-%\item 
-The forward rates are as follows:
-\begin{equation*}
-\begin{aligned}
-F(0;1,2) &= \cfrac{0.095*2 - 0.09*1}{2-1} = 0.1, \quad F(0;2,3)= \cfrac{0.1*3 - 0.095*2}{3-2} = 0.11, \\ 
-F(0;1,3) &= \cfrac{0.1*3 - 0.09*1}{3-1} = 0.105
-\end{aligned}
-\end{equation*}
-%\end{itemize}
-}
-\end{frame}
+\begin{parts}
+	\part Calculate the implied 1-year ahead, 1-year forward rate, $F(0;1,2)$. Explain why a 1-year forward rate of 9.6\% could not be explained by the market;
+	\part calculate the forward rates  $F(0; 2, 3)$ and $F(0; 1,3)$. Is there a link between $F(0;1,2),F(0;2,3)$ and $F(0;1,3)$ ?
+\end{parts}
+	
+\begin{solution}
+To solve this exercise, we use the no-arbitrage relationship between spot rates ($s_n$) and forward rates ($F(0;m,n)$). We assume annual discrete compounding for the US Treasury bonds.
+\begin{parts}
+	\part The relationship between the 1-year spot rate ($s_1$=9\%), the 2-year spot rate ($s_2$=9.5\%), and the forward rate is:
+	\begin{equation*}
+		(1+s_2)^2=(1+s_1)^1\cdot (1+F(0;1,2))
+	\end{equation*}
+	
+	Solving for $F(0;1,2)$:
+	\begin{gather*}
+		1+F(0;1,2)=\frac{(1+s_2)^2}{(1+s_1)}=\frac{(1+0.095)^2}{(1+0.09)}=\frac{1.199025}{1.09}\approx 1.100023 \\
+		F(0;1,2)\approx 10.0023\%
+	\end{gather*}
+	
+	The implied forward rate of about 10\% is the only rate consistent with the current spot rates that prevents arbitrage.
+	If the market forward rate were 9.6\%, it would be "too low" compared to the synthetic forward rate derived from the spot market.
+	An arbitrageur could synthesize a loan to "lend" at the higher implied rate (10\%) and "borrow" at the lower market forward rate (9.6\%). Specifically, one could sell a 1-year bond and buy a 2-year bond (creating a synthetic lending at 10\% for the second year) while simultaneously entering a forward contract to borrow at 9.6\%. This would lock in a risk-free profit. In an efficient market, such opportunities are eliminated by trading, forcing the forward rate to equal the implied rate.
+	
+	\part This is the 1-year forward rate starting 2 years from now. The formula is:
+	\begin{gather*}
+		(1+s_3)^3=(1+s_2)^2\cdot (1+F(0;2,3)) \\
+		1+F(0;2,3)=\frac{(1+s_3)^3}{(1+s_2)^2}=\frac{1.10^3}{1.095^2}=1\frac{1.331}{1.199025}\approx 1.110069 \\
+		F(0;2,3) \approx 11.0069\%
+	\end{gather*}
+	
+	This is the annualized 2-year forward rate starting 1 year from now. The formula is:
+	\begin{gather*}
+		(1+s_3)^3=(1+s_1)^1\cdot (1+F(0;1,3))^2 \\
+		1+F(0;1,3)^2=1\frac{1.331}{1.091}\approx 1.221101 \\
+		F(0;1,3)=\sqrt{1.221101-1} \approx 1.105034
+		F(0;1,3) \approx 10.5034\%
+	\end{gather*}
+	
+	There is a geometric link. The total return of an investment from year 1 to year 3 can be viewed as one 2-year period or two consecutive 1-year periods:
+	\begin{equation*}
+		(1+F(0;1,3))^2=(1+F(0;1,2))\cdot(1+F(0;2,3))
+	\end{equation*}
+	
+	This shows that the 2-year forward rate is the geometric average of the two consecutive 1-year forward rates.
+\end{parts}	
+\end{solution}
 
-\begin{frame}{}
-If you lend €100 at $t=1$ at 9.6\%, your cash flow is -€100 at $t=1$ and €109.6 at $t=2$. 
-You can do better by borrowing now for 1 year $€100/1.09=€91.74$ and lending the same amount for 2 years. Your net cash flow is then €0 at $t=0$, -€100 at $t=1$ (that is $€91.74\cdot 1.09$), and €110 at $t=2$ (that is $€91.74\cdot 1.095^2$). 
+\question \textbf{Forward Rate Agreement} \\
+If the yield curve is upward sloping, will the FRA rate $K$ be higher or lower than the current 6-month EURIBOR ? 
 
-Compared to the first option, you have thus a certain higher cash flow at $t=2$: €110 vs. €109.6.  There is no reason to accept the 9.6\% rate contract. 
-%\begin{itemize}
-%\item The link between the forward rate is as follows:
-%\begin{equation*}
-%\cfrac{(1+F(0;1,3))^2}{1+F(0;1,2)} = \cfrac{(1+r_3)^3}{(1+r^2)} \Rightarrow (1+F(0;1,3)^2 = (1+F(0;1,2))(1+F(0;2,3))
-%\end{equation*}
-%Hence, with any two of three forward rates, you can deduct the third one.
-%\end{itemize}
-\end{frame}
+The value of a FRA at time $t$ can be expresses as $V_t=N\tau P(t, T_2)[F(t;T_1, T_2)-K]$. Given that the stochastic bank account $B_t$ is the numearair for the risk-neutral measure $\mathbb{Q}$, explain why it no loget appears explicitly in this valuation formula. What does this "disappearence" imply about the relationship between FRAs and teh replication of interest rate risk ?.
 
+\begin{solution}
+In a market characterized by an upward-sloping yield curve, the FRA rate $K$ (which is the forward rate $F(t; T_1, T_2)$ will be higher than the current spot 6-month EURIBOR. This is due to the term structure of interest rates: when the curve is normal (upward-sloping), the market anticipates higher future short-term rates or demands a liquidity premium for longer-dated maturities. Consequently, the discount factor $P(0, T_2)$ decays more rapidly than $P(0, T_1)$, resulting in a forward rate that sits above the current spot rate.
 
-\begin{frame}{}
-\begin{block}{Interest Rate Swap}
-A 100~M interest rate swap has a remaining life of 10 months. Under the terms of the swap; 6-month LIBOR is exchanged for 7\% p.a. (compounded semi-annually). The average of the bid-offer rate being exchanged for 6-month LIBOR in swaps of all maturities is currently 5\% p.a.. The 6-month LIBOR rate was 4.6\% p.a. 2 months ago. 
+The fact that $B_t$ vanishes from the final expression is not just an algebraic convenience; it carries three fundamental messages in financial engineering:
 \begin{itemize}
-\item What is the current value of the swap to the party paying floating ?
-\item What is its value to the party paying fixed ?
+	\item The Principle of Static Replication: the disappearance of $B_t$ proves that a FRA is a linear instrument that can be perfectly replicated using only traded bonds ($P(t,T_1)$ and $P(t,T_2)$).Since the bank account $B_t$ represents the "path-dependent" cost of rolling over overnight financing, its absence shows that the value of a FRA depends only on the endpoints ($T_1$ and $T_2$) and not on the specific path interest rates take in between.
+	\item From Stochastic Expectations to Market Observables: in the starting formula, $B_{T_2}$ is a stochastic variable-we don't know what the bank account value will be in the future. By simplifying the expression, we move from a probabilistic world (expectations of unknown paths) to a market-price world (observed bond prices). This allows a trader to mark-to-market a position using only the current yield curve without needing a complex volatility model (like Vasicek or Hull-White).
+	\item Change of Numeraire Intuition: the disappearance of $B_t$ is the "smoking gun" that suggests the existence of the Forward Measure. In the Risk-Neutral measure, we discount by $B_t$, which is stochastic and correlated with the interest rates in the payoff. This correlation makes the expectation hard to compute. The disappearance tells us that there exists a specific "coordinate system" (the T-Forward Measure) where the bond price $P(t,T)$ acts as the discount factor, effectively "absorbing" the stochasticity of the interest rates.
+	\item The "No-Convexity" Signal: mathematically, $B_t$ disappears because the FRA payoff is linear. If you were valuing an Interest Rate Caplet (which is a call option on the rate), $B_t$ would not disappear so easily. It would remain "trapped" inside the expectation, requiring a volatility adjustment. The disappearance is the mathematical proof that FRAs have zero convexity bias relative to the forward curve.
 \end{itemize}
-\end{block}
-\uncover<2->{
-In four months 3.5~M ($0.5\times 0.07\times 100$~M) will be received and 2.3~M ($0.5\times 0.046\times 100$~M) will be paid. (We ignore day count issues.) 
+\end{solution}
 
-In 10 months 6~M will be received, and the LIBOR rate prevailing in four months-time will be paid. The value of the fixed-rate bond underlying the swap is
+\question \textbf{Forward Rate Agreement} \\
+Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continuously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A. Determine the value of the swap using the relationship between interest rate swap and FRA.
+
+Which of the following strategies is (are) appropriate ?
+\begin{itemize}
+	\item If a borrower has a fixed rate debt and is expecting interest rates to rise, then the borrower should not enter into a swap.
+	\item If an investor has floating rate assets and is expecting interest rates to rise, then the investor should enter into a receiver swap.
+	\item If a borrower has floating rate debt and is expecting interest rates to rise, then the borrower should enter into a payer swap.
+	\item If an investor has fixed income assets and is expecting interest rates to drop, then the investor should enter into a payer swap.
+\end{itemize}
+
+\begin{solution}
+Company A is a Receiver, meaning they receive 8\% Fixed and pay 6-month LIBOR.
+
+The swap expires in 1.25 years (15 months). Since payments are every 6 months, the payment dates relative to today ($t=0$) are: $T_1=0.25$ years (3 months), $T_2=0.75$ years (9 months) and $T_3=1.25$ years (15 months).
+
+Using continuous compounding $P(0,T)=e^{-rT}$: $P(0,0.25)=e^{-0.10\cdot 0.25}\approx 0.9753$, $P(0,0.75)=e^{-0.105\cdot 0.75}\approx 0.9243$ and $P(0,1.25)=e^{-0.11\cdot 1.25}\approx 0.8715$.
+
+The fixed rate is $K=8\%$. Payments are semi-annual, so $\tau=0.5$.
 \begin{equation*}
-3.5 \cfrac{1}{1.025^{4/6}} + 103.5 \cfrac{1}{1.025^{10/6}} = 102.770\text{~M}
-\end{equation*}}
-\end{frame}
-
-\begin{frame}{}
-The value of the floating-rate bond underlying the swap is 
-\begin{equation*}
-(100 + 2.3) \cfrac{1}{1.025^{4/6}} = 100.629 \text{~M}
-\end{equation*}
-The value of the swap to the party paying floating is $102.770-100.629 = 2.141$~M. 
-The value of the swap to the party paying fixed is the opposite. 
-
-\textbf{Alternative solution:}
-These results can also be derived by decomposing the swap into forward contracts. Consider the party paying floating. The first forward contract involves paying 3.5~M and receiving 2.3~M in four months. It has a value of $1.2\cfrac{1}{1.025^{4/6}} = 1.180$~M.
-To value the second forward contract, we note that the forward interest rate is 5\% p.a.. The value of the forward contract is
-\begin{equation*}
-100\times (0.035-0.025)\cfrac{1}{1.025^{10/6}} = 0.960 \text{~M}
-\end{equation*}
-
-The total value of the forward contract is therefore $1.181 + 0.960 = 2.141$~M.
-\end{frame}
-
-\begin{frame}{}
-\begin{block}{Interest Rate Swap}
-Assume that company A has agreed to pay a 6-month LIBOR and receive a fixed interest rate of 8\% p.a. (with interest payable every six months) from the face value of 100~M. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. The 6-month LIBOR is currently 10.2\%. Calculate the value of this swap for company A.
-\end{block}
-\uncover<2->{
-Since company A pays floating and receives fixed $V = V_{\text{fix}}-V_{\text{float}}$.
-The fixed leg value is
-\begin{equation*}
-\begin{gathered}
-V_{\text{fix}} = \sum_{i=1}^n \cfrac{K/2}{(1+r_i/2)^{t_i}} + \cfrac{N}{(1+r_n/2)^{t_n}} = \\
-= \cfrac{4}{(1+0.05)^{3/6}} + \cfrac{4}{(1+0.0525)^{9/6}} + \cfrac{104}{(1+0.055)^{15/6}} = 98.58\text{~M}
-\end{gathered}
-\end{equation*}
-}
-\end{frame}
-
-\begin{frame}
-The floating payment is based on LIBOR and the nearest (first) payment is 
-\begin{equation*}
-F = 0.102\cdot0.5\cdot 100 = 5.1~\text{M}
+\text{Fixed Leg Value} = K\cdot A = 100\cdot 0.5\cdot 0.08\cdot (0.9753+0.9243+0.8715) = \$11.0844 M
 \end{equation*}
 
-Hence:
+The floating leg instead has a first payment $T_1$ this rate was already "fixed" 3.75 months ago (the current LIBOR of 10.2\%) so Flow1$= N\tau 0.102\cdot 0.9753 = \$4.9740 M$.
+For the second and third payments we use the implied Forward Rates: $N[P(0,T_1)-P(0,T_3)] = 100\cdot (0.9753-0.8715)=\$10.38 M$.
+
+The total Swap Value to Company A $\text{Fixed Leg}-\text{Floating Leg} = 11.0844-(4.9740+10.38)=11.0844-15.354=-\$4.2696 M$
+
+Which strategies are appropriate?
+\begin{itemize}
+	\item CORRECT. If rates rise, their fixed debt becomes "cheaper" relative to market rates. Entering a payer swap would convert them to floating, which is exactly what they want to avoid if rates are rising.
+	\item INCORRECT. If rates rise, the floating assets will pay more. A receiver swap would convert that into a fixed rate, capping their gains. They should stay floating.
+	\item CORRECT. This is a standard hedge. The payer swap pays floating (canceling the debt payment) and receives floating, leaving the borrower with a fixed rate obligation.
+	\item INCORRECT. If rates drop, fixed assets gain value. A payer swap would offset this by paying a fixed rate (which is now high) and receiving a floating rate (which is now low).
+\end{itemize}
+\end{solution}
+
+\question \textbf{Asset Swap} \\
+Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increases, all the rest being equal ? What does it mean in term of credit quality expectation by the market for the bond's issuer ?
+
+Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
+
+Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond ? 
+For this exercise assume that all annuity factors have a value of 10.0 for simplicity.
+
+Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond ?
+
+\begin{solution}
+The Asset Swap (AS) for a coupon bond is a package consisting of:
+\begin{itemize}
+\item Buying the risky bond at its dirty price $P(t)$.
+\item Entering a swap where you pay the bond's fixed coupons C and receive floating LIBOR/EURIBOR plus a spread $s$.
+\item An upfront payment (or exchange of notional) such that the net initial outlay for the investor is exactly Par (100).
+\end{itemize}
+
+The Asset Swap Spread $s$ is the "price of risk." Using the simplified relationship:
 \begin{equation*}
-V_{\text{float}} = \cfrac{105.1}{(1+0.05)^{3/6}}= 102.57~\text{M}
+s = \text{AnnuityRisk} -  \text{Free Price} - \text{Market Risky Price}
 \end{equation*}
 
-And the final calculation
-\begin{equation*}
-V = 98.24-102.51=-3.99~\text{M}
-\end{equation*}
-which is the swap value for company A.
-\end{frame}
+If $s$ increases (all else being equal), the Price $P(t)$ must decrease.
+An increasing spread indicates a deterioration in credit quality expectations. The market is demanding a higher premium to hold the issuer's debt because the perceived probability of default has risen or the liquidity of the bond has dried up.
 
-\begin{frame}{}
-\begin{block}{Alternative Solution}
-Determine the value of the swap from the previous exercise in the way as described in the Relationship between interest rate swap and FRA part.
-\end{block}
-\uncover<2->{
-The cash flows that will be exchanged after three months can be calculated as: the interest rate of 8\% will be exchanged for a rate of 10.2\%. Let us call it FRA1:
-\begin{equation*}
-\text{FRA1} = \cfrac{0.5\cdot 100\cdot (0.08-0.102)}{(1+0.05)^{3/6}}=-1.07~\text{M}
-\end{equation*}
-Determination of flows after 9th and 15th month requires to calculate forward interest rate. 
-\begin{equation*}
-F_{3m,9m}=\cfrac{r_{9m}\cdot 0.75-r_{3m}\cdot0.25}{0.5} = 0.1075
-\end{equation*}
-}
-\end{frame}
+Clean Price = 104.58 (Since we aren't given accrued interest, we assume Dirty$\approx$Clean for the calculation), Fixed Coupon $K_{bond}=0.5\%$, Swap Rate $S_{10y}=0.44\%$ and Annuity $A=10.0$.
 
-\begin{frame}{}
-The present value of the cash flow exchanged in 9 months is:
-\begin{equation*}
-\text{FRA2}=\cfrac{0.5\cdot100\cdot(0.08-0.1075)}{(1+0.0525)^{9/6}}=-1.27~\text{M}
+The "Risk-Free" price is the price the bond would have if it were priced exactly at the swap curve ($K=S$): $CBP=100+(Coupon-Swap Rate)\cdot A = 100+(0.5\%-0.44\%)\cdot 10=100.60$.
+
+\begin{equation*}	
+s=A\cdot (CBP - CBP) = 10\cdot (100.6-104.58) = -0.398\%
 \end{equation*}
 
-To calculate the present value of the cash flow that will occur in 1 year and 3 months, we need to calculate forward interest rate for the half-year period for 9 months from now.
+The Asset Swap Spread is -39.8 bps.
+Note: It is normal for Bunds to have a negative spread because they are often considered "safer" than the interbank swap market.
+
+Clean Price = 75.28, Fixed Coupon $K_{bond}=3.0\%$, Swap Rate $S_{10y}=0.44\%$, Annuity $A=10.0$ (assuming the same for comparison).
+
+Calculate the "Risk-Free" Bond Price $CBP=100+(3.0\%-0.44\%)\cdot 10=100+(2.56\cdot 10)=125.60$
+
+Solve for the Asset Swap Spread
 \begin{equation*}
-F_{9m,15m} = \cfrac{r_{15m}\cdot1.25-r_{9m}0.75}{0.5}=0.1175
+s=10\cdot (125-60-75.28)=5.032\%
+\end{equation*}
+The Asset Swap Spread is +503.2 bps.
+
+The Bund trades at a negative spread (-39.8 bps). This means the bond is so expensive (trading at 104.58 despite a tiny coupon) that you actually "give up" yield to the swap counterparty to hold it. It is a flight-to-quality asset.
+
+The Greek Bond trades at a massive positive spread (+503.2 bps). This compensates the investor for the high credit risk and the fact that the bond is trading at a deep discount (75.28).
+
+The formula $P=100+(K-S)A$ is a linear approximation of $P=\sum K\cdot P_i + 100\cdot P_n$. It is highly accurate for small differences between the coupon and the swap rate.
+\end{solution}
+
+\question \textbf{DV01} \\
+Consider a 2-year Interest Rate Swap on a notional of 1M, with a fixed rate of 5\% and paying Libor rate annually. The term-structure of interest rates is flat at 5\%.
+Estimate the DV01 of the swap numerically. 
+
+\begin{solution}
+Calculate the initial NPV, since $K$ equals the flat market rate (5\%), the Swap is at par: $NPV_0=0$.
+Bump the curve by +1 bp (aka r=5.01\%). We use the Payer Swap perspective (Pay Fixed, Receive Floating).
+\begin{align*}
+\text{Fixed Leg} &= N K [P(0,1)+P(0,2)]=1M 0.05 [e^{-0.0501\cdot 1} + e^{-0.0501\cdot 2}] \approx \\
+&\approx 95112.7 + 90465.4 = 185578.1 \\
+\text{Floating Leg} &= N [1-P(0,2)] = 1M [1-e^{-0.0501\cdot 2}] \approx 1M [1-0.904654] = 95346\\
+NPV + 1 bp &\approx 95346-185578\approx = -90232
+\end{align*}
+(Note: this logic assumes the float leg is valued via the $1-P$ shortcut).
+
+For a par swap on a flat curve, the DV01 is approximately the Annuity times the change in rate:
+\begin{equation*}
+DV01 \approx N\cdot\tau\cdot\sum P(0,T_i)\cdot 0.0001 \approx 1000000\cdot [0.9512+0.9048]\cdot 0.0001 \approx 185.60
+\end{equation*}
+\end{solution}
+
+\question \textbf{Cap-Floor Parity} \\
+Prove that the difference between the price of a Cap and a Floor with the same strike $K$ and the same maturity structure is equal to the value of a Payer Interest Rate Swap (IRS).
+
+\begin{solution}
+Consider a single accrual period $[T_{i-1}, T_i]$. The payoffs at maturity $T_i$ for a Caplet and a Floorlet are defined as:
+\begin{itemize}
+	\item \textbf{Caplet:} $N \tau_i (L(T_{i-1}, T_i) - K)^+$
+	\item \textbf{Floorlet:} $N \tau_i (K - L(T_{i-1}, T_i))^+$
+\end{itemize}
+
+By subtracting the Floorlet payoff from the Caplet payoff, we obtain:
+\begin{equation*}
+	N \tau_i \left[ (L(T_{i-1}, T_i) - K)^+ - (K - L(T_{i-1}, T_i))^+ \right]
 \end{equation*}
 
-The present value of the cash flow exchanged in 15 months is:
+Using the algebraic identity $(x - k)^+ - (k - x)^+ = x - k$, the resulting difference in payoff is:
 \begin{equation*}
-\text{FRA3}= \cfrac{0.5\cdot100\cdot(0.08-0.1175)}{(1+0.055)^{15/6}}=-1.64~\text{M}
+	N \tau_i (L(T_{i-1}, T_i) - K)
 \end{equation*}
 
-The value of the swap is then 
-\begin{equation*}
-V = \text{FRA1}+\text{FRA2}+\text{FRA3} = -1.07-1.41-1.79=-3.99~\text{M}
-\end{equation*}
-\end{frame}
+This expression is exactly the payoff of one exchange in a \textbf{Payer Swap} (where one pays the fixed rate $K$ and receives the floating rate $L$). 
 
-%\begin{frame}
-%\begin{block}{DV01}
-%Consider a 2-year Interest Rate Swap on a notional of 1~M, with a fixed rate of 5\% and paying LIBOR rate annually. The term-structure of interest rates is flat at 5\%.
-%
-%Estimate the DV01 of the swap numerically.  
-%\end{block}
-%\uncover<2->{
-%$\textbf{IRS}=A(S-K)$. The DV01 can be approximated in two ways:
-%
-%\begin{itemize}
-%\item $DV01 = \cfrac{\textbf{IRS}(+\delta r)- \textbf{IRS}(-\delta r)}{2}$ with $\delta r = 1$~bp
-%or
-%\item $DV01 = 100\Delta\textbf{IRS}(\frac{1}{100}\text{bp})$
+Summing these payoffs over all periods from $i = \alpha+1$ to $\beta$ and discounting them back to time $t$ under the risk-neutral measure $\mathbb{Q}$, we get:
+\begin{equation*}
+	\sum_{i=\alpha+1}^{\beta} \text{Cpl}_i(K) - \sum_{i=\alpha+1}^{\beta} \text{Flr}_i(K) = \mathbb{E}^{\mathbb{Q}} \left[ \sum_{i=\alpha+1}^{\beta} e^{-\int_t^{T_i} r_s ds} N \tau_i (L(T_{i-1}, T_i) - K) \middle| \mathcal{F}_t \right]
+\end{equation*}
+
+Which simplifies to the fundamental parity relationship:
+\begin{equation}
+	\text{Cap}(t, K) - \text{Floor}(t, K) = \text{Payer Swap}(t, K)
+\end{equation}
+\end{solution}
+
+
+\question \textbf{Interest Rate Hedging} \\
+In order to hedge your position against interest rate movements which kind of contract would you use:
+\begin{itemize}
+	\item a Swap;
+	\item a Cap/Floor;
+	\item a Swaption.
+\end{itemize}
+List the pros and cons about each one and declare your favourite.
+
+\begin{solution}
+	\begin{center}
+		\renewcommand{\arraystretch}{1.4} 
+		\small % Slightly smaller to ensure it fits the margins
+		\begin{tabular}{|l|p{4.5cm}|p{4.5cm}|}
+			\hline
+			\textbf{Instrument} & \textbf{Pros} & \textbf{Cons} \\ \hline
+			\textbf{Swap} & 
+			\textbf{Cost:} Zero upfront premium. \newline 
+			\textbf{Precision:} Perfect linear hedge against rate moves. & 
+			\textbf{Obligation:} You are ``locked in.'' If rates move in your favor, you cannot benefit from the market change. \\ \hline
+			\textbf{Cap/Floor} & 
+			\textbf{Flexibility:} Protects against bad moves while allowing profit from good ones. \newline 
+			\textbf{Granularity:} Protects individual periods. & 
+			\textbf{Cost:} Expensive upfront premium (sum of many options). \\ \hline
+			\textbf{Swaption} & 
+			\textbf{Strategy:} Best for future/contingent liabilities. \newline 
+			\textbf{Lower premium:} Than a Cap (since it is one decision, not many). & 
+			\textbf{Execution:} Once exercised, you are locked into a linear swap. If the view changes after exercise, you are stuck. \\ \hline
+		\end{tabular}
+		\\[10pt] % Manual spacing since we removed the caption float
+		\textit{Table 1: Comparison of Interest Rate Hedging Instruments}
+	\end{center}
+\end{solution}
+
+
+
+
+
+
+%		\begin{itemize}
+%	\item[white] A stock is currently priced at $S_0=100$. In one year, it can either go up to $S_u=120$ or down to $S_d=90$. The risk-free rate is $r=5\%$ (annual compounding).
+%	\begin{itemize}
+%		\item[white] Calculate the risk-neutral probabilities $q$ and $1-q$;
+%		\item[white] If the "real-world" probability of an up-move is $p=0.7$, calculate the risk premium ($\mu - r$) that investors are demanding in the real world.
+%	\end{itemize}
+%	\item[white] Suppose you are in a market with one underlying stock and two different risk-neutral measures, $\mathbb{Q}^1$ and $\mathbb{Q}^2$, both of which exclude arbitrage.
+%	\begin{itemize}
+%		\item[white] Is the market complete? Why or why not?
+%		\item[white] What does this imply for the pricing of a European Call option on that stock?
+%		\item[white] How does this relate to the Harrison-Pliska results in your slides?
+%	\end{itemize}
+%	\item[white] Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. Is this a martingale ?
+%	\item[white]  Show that the exponential SDE
+%	\begin{equation*}
+%		dX_t = A_t X_tdW_t,\quad X_0=x_0
+%	\end{equation*}
+%	has the following solution
+%	\begin{equation*}
+%		X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
+%	\end{equation*}
 %\end{itemize}
 %
-%\begin{equation*}
-%DV01 = \cfrac{A(S+\delta r-K) - A(S-\delta r-K)}{2} = A\delta r = (e^{-0.05}+e^{-0.1})\cdot 0.0001 \approx 0.0002
-%\end{equation*}
-%}
-%\end{frame}
-
-\begin{frame}{}
-\begin{block}{Change of Measure}
-Let $\phi_t \in [0, T]$ be a bounded process, and define the process $Z_t \in [0,T]$ as the unique solution to $dZ_t = -\phi_t Z_t dW_t$, starting from $Z_0 = 1$. For any $t \ge 0$, define $\mathbb{Q}$ as
-\begin{equation*}
-d\mathbb{Q} = Z_t d\mathbb{P}
-\end{equation*}
-
-Prove that
-\begin{equation*}
-\expect{P}[Z_T \log(Z_T)]=\expect{Q}\left[\cfrac{1}{2}\int_0^T\phi^2_s ds\right]
-\end{equation*}
-\end{block}
-\uncover<2->{	
-$Z$ is a $\mathbb{P}$-martingale, so that $\mathbb{Q}$ defines a genuine probability measure, and therefore
-\begin{equation*}
-\expect{P}[Z_T \log(Z_T)] = \expect{Q}[\log(Z_T)]
-\end{equation*}
-}
-\end{frame}
-
-\begin{frame}{}
-Now, applying \ito~'s formula, we can write
-\begin{equation*}
-Z_T = \exp\left(-\cfrac{1}{2}\int_0^T\phi^2_s ds -\int_0^T\phi_s dW_s\right)
-\end{equation*}
-
-From Girsanov’s theorem, the process $\tilde{W}$ defined as $\tilde{W_t} = W_t + \int_0^t \phi_s ds$ is a standard Brownian motion under $\mathbb{Q}$, and
-\begin{equation*}
--\int_0^t\phi_s dW_s -\cfrac{1}{2}\int_0^t\phi^2_s ds = -
-\int_0^t\phi_s d\tilde{W_s} + \cfrac{1}{2}\int_0^t\phi^2_s ds
-\end{equation*}
-from which the result follows.
-\end{frame}
-
-\begin{frame}{}
-\begin{block}{Moving Away from $\mathbb{P}$ Measure}
-Assume that a stock price has the following dynamics (Geometric Brownian Motion) under the real-world measure $\mathbb{P}$
-\begin{equation*}
-dS_t = \mu S_t dt + \sigma S_t dW_t
-\end{equation*}
-
-By definition the bank account dynamics is described by (for simplicity let's consider deterministic rates)
-\begin{equation*}
-dB_t = rB_tdt\implies B_t = e^{rt}
-\end{equation*}
-
-Show what happens to the stock SDE when moving to two different numeraires:
-\begin{itemize}
-\item risk-neutral measure (bank account numeraire);
-\item stock measure (stock numeraire).
-\end{itemize}
-\end{block}
-\end{frame}
-
-\begin{frame}{}
-A process defined as an asset divided by the numeraire is a martingale, hence
-\begin{equation*}
-Z_t = \cfrac{S_t}{B_t} = \mathbb{E}^{B}\left[\frac{S_T}{B_T}\bigg|\mathcal{F}_t\right]
-\end{equation*}
-
-So the evolution for $Z_t$ can be described by
-\begin{equation*}
-dZ_t = \sigma Z_t dW_t^B
-\end{equation*}
-where $dW_t^B$ is a Brownian motion under the $\mathbb{Q}^B$ measure.
-
-The $Z_t$ differential (by It$\hat{o}$'s rule at first order)
-\begin{equation*}
-\begin{aligned}
-d\left(\frac{S_t}{B_t}\right) &= \frac{dS_t}{B_t} + S_t d\left(\frac{1}{B_t}\right) =
-\frac{dS_t}{B_t} + S_t d\left(e^{-rt}\right) = \\
-&= \frac{dS_t}{B_t} - S_t re^{-rt}dt = \frac{dS_t}{B_t} - r\frac{S_t}{B_t}dt 
-\end{aligned}
-\end{equation*}
-\end{frame}
-
-\begin{frame}
-Now substitute for $dS_t$
-\begin{equation*}
-d\left(\frac{S_t}{B_t}\right)= \frac{ \mu S_t dt + \sigma S_t dW_t}{B_t} - r\frac{S_t}{B_t}dt = \sigma\frac{S_t}{B_t}\left(\frac{\mu - r}{\sigma}dt + dW_t \right)
-\end{equation*}	
-
-In terms of $Z_t$ it becomes
-\begin{equation*}
-dZ_t = \sigma Z_t\left(\frac{\mu - r}{\sigma}dt + dW_t \right)
-\end{equation*}
-
-Both previous Eqs. represent the dynamics of $Z_t$ so they must be equal
-\begin{equation*}
-\cancel{\sigma Z_t}dW_t^B = \cancel{\sigma Z_t}\left(\frac{\mu - r}{\sigma}dt + dW_t\right)
-\end{equation*}
-Replacing the Brownian Motion into the real-world dynamics
-\begin{equation*}
-\begin{aligned}
-dS_t &= \mu S_t dt + \sigma S_t \left(dW_t^B - \frac{\mu - r}{\sigma}dt\right) =\\
-& = \cancel{\mu S_t dt} \cancel{-\mu S_t dt} + rS_t dt + \sigma S_t dW_t^B  = \boxed{rS_t dt + \sigma S_t dW_t^B}
-\end{aligned}
-\end{equation*}
-\end{frame}
-
-\begin{frame}{}
-Now let's see what happens under the stock numeraire.
-Under the risk-neutral measure $\mathcal{Q}^B$
-\begin{equation*}
-\frac{S_0}{B_0} = \mathbb{E}^{B}\left[\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right] \implies
-S_0 = \mathbb{E}^{B}\left[B_0\frac{S_t}{B_t}\bigg|\mathcal{F}_0\right]
-\end{equation*}
-
-By the Change of Numeraire Theorem under the measure $\mathbb{Q}^U$ induced by asset numeraire $U$
-\begin{equation*}
-S_0 = \mathbb{E}^{U}\left[U_0\frac{S_t}{U_t}\bigg|\mathcal{F}_0\right]
-\end{equation*}
-
-Since both expressions represent a price of an asset they must be the same and we can equal the terms inside the expectations. Note that the expectations are computed according two different measures so we keep the factors $d\mathbb{Q}^X$. 
-
-\begin{equation*}
-\frac{B_0}{B_t}d\mathbb{Q}^B = \frac{U_0}{U_t}d\mathbb{Q}^U\implies \frac{d\mathbb{Q}^U}{d\mathbb{Q}^B}=\frac{B_0U_t}{B_tU_0}
-\end{equation*}
-\end{frame}
-
-\begin{frame}{}
-We have already derived the analytical GBM solution in the risk-neutral measure
-\begin{equation*} 
-U_t = U_0 \exp\left(rt-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
-\end{equation*}
-
-So we can replace the numeraire definition into the Radon-Nikodym derivative
-\begin{equation*}
-\frac{d\mathbb{Q}^U}{d\mathbb{Q}^B}=\frac{\cancel{U_0}e^{\cancel{rt}-\frac{1}{2}\sigma^2 t + \sigma W^B_t}}{\cancel{e^{rt}}\cancel{U_0}}=\exp\left(-\frac{1}{2}\sigma^2 t + \sigma W^B_t\right)
-\end{equation*}
-
-From the Girsanov theorem, setting the function $\gamma_t = \sigma$, we can get the transformed diffusion process
-\begin{equation*}
-dW_t^U = dW_t^B - \sigma dt 
-\end{equation*}
-
-Substituting back into the risk-neutral dynamics we get
-\begin{equation*}
-\begin{aligned}
-dS_t &= r S_t dt + \sigma S_t dW_t^B = 
-rS_t dt + \sigma S_t (dW_t^U + \sigma dt) \\
-& = \boxed{(r + \sigma^2)S_t dt + \sigma S_t dW^U_t}
-\end{aligned}
-\end{equation*}
-\end{frame}
-
-\begin{frame}{}
-\begin{block}{Pricing Formula for Exotic Payoff}
-Develop a formula for the price of a derivative paying
-\begin{equation*}
-\max(S_T(S_T-K))
-\end{equation*}
-\end{block}
-\uncover<2->{
-The standard risk-neutral measure ($\mathbb{Q}$) uses the bank account, $B_t=e^{rt}$, as numeraire. 
-We define a new probability measure, $\mathbb{Q}^1\sim \mathbb{Q}$ which uses the stock price, $S_t$ as numeraire. 
-
-The new measure is defined via
-\begin{equation*}
-\cfrac{d\mathbb{Q}^1}{d\mathbb{Q}}=\cfrac{S_TB_0}{S_0B_T}=\cfrac{S_T}{S_0}e^{-rT}
-\end{equation*}
-}
-\end{frame}
-
-\begin{frame}{}
-The price of our option is then
-\begin{equation*}
-\begin{aligned}
-e^{-rT}&\expect{Q}[\max(S^2_T-KS_T,0)]=e^{-rT}\mathbb{E}^{\mathbb{Q}^1}\left[\cfrac{dQ}{dQ^1}\max(S^2_T-KS_T,0)\right]= \\
-&=S_0\mathbb{E}^{\mathbb{Q}^1}[\max(S_T-K,0)]= S_0(\mathbb{E}^{\mathbb{Q}^1}[S_T\bm{1}_{\{S_T\ge K\}}]-K\mathbb{E}^{\mathbb{Q}^1}[\bm{1}_{\{ST\ge K\}}])= \\
-&=S_0(\mathbb{Q}^1[S_T\bm{1}_{\{S_T\ge K\}}]-K\mathbb{Q}^1[\{S_T\ge K\}])
-\end{aligned}
-\end{equation*}
-To compute the first expectation, we (again) use a change of numeraire. Let $N^\alpha_{t,T}$ be the time-$t$  price of an asset paying $S^\alpha_T$ at time $T$. 
-Then,
-\begin{equation*}
-\cfrac{d\mathbb{Q}^\alpha}{d\mathbb{Q}}=\cfrac{N^\alpha_{T,T}B_0}{N^\alpha_{0,T}B_T}
-\end{equation*}
-\end{frame}
-
-\begin{frame}{}
-Thus,
-\begin{equation*}
-\cfrac{d\mathbb{Q}^\alpha}{d\mathbb{Q}^1}=\cfrac{d\mathbb{Q}^\alpha d\mathbb{Q}}{d\mathbb{Q}d\mathbb{Q}^1}=\cfrac{N^\alpha_{T,T}B_0}{N^\alpha_{0,T}B_T}\cfrac{S_0B_T}{S_TB_0}=\cfrac{S^\alpha _TS_0}{N^\alpha_{0,T}S_T}
-\end{equation*}
-Using $\alpha=2$, we obtain
-\begin{equation*}
-\mathbb{E}^{\mathbb{Q}^1}\left[S_T\bm{1}_{\{S_T\ge K\}}\right]=\cfrac{N^2_{0,T}}{S_0}\mathbb{E}^{\mathbb{Q}^2}\left[\bm{1}_{\{S_T\ge K\}}\right]=\cfrac{N^2_{0,T}}{S_0}\mathbb{Q}^2[\{S_T\ge K\}]
-\end{equation*}
-The final option price thus reads as
-\begin{equation*}
-e^{-rT}\expect{Q}[\max(S^2_T-KS_T,0)]=N^2_{0,T}\mathbb{Q}^2[\{S_T\ge K\}]-KS_0\mathbb{Q}^1[\{S_T\ge K\}]
-\end{equation*}
-which resembles the Black-Scholes formula.
-\end{frame}
-
-\begin{frame}{}
-Let $S_T$ be a geometric Brownian motion under any arbitrary probability measure $\mathbb{P}$. Then,
-\begin{equation*}
-S_T=S_0\exp\left(\left(\mu-\frac{1}{2}\sigma^2\right)T+\sigma W_T\right)
-\end{equation*}
-where $\mu$ is the drift under the measure $\mathbb{P}$. Thus, using that $W_T\sim \mathcal{N}(0,T)$,
-\begin{equation*}
-\begin{gathered}
-\mathbb{P}[\{S_T\ge K\}]=\mathbb{P}[\{\ln(S_T)\ge \ln(K)\}]=\mathbb{P}\left[\left\{\left(\mu-\frac{1}{2}\sigma^2\right)T+\sigma  W_T\ge -\ln(S_0K)\right\}\right]= \\
-=\mathbb{P}\left[\left\{Z\ge\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right\}\right]=1-\Phi\left(\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right)=\\
-=\Phi\left(\frac{-\ln(S_0K)+\left(\mu-\frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}\right)
-\end{gathered}
-\end{equation*}
-where $Z\sim \mathcal{N}(0,1)$. %I used the property Φ(x)=1−Φ(−x).
-\end{frame}
-
-\begin{frame}{}
-Depending on which measure we use for $\mathbb{P}$, we merely need to get the right drift. 
-
-From the Girsanov theorem we can determine both the diffusion and the drift part of the new dynamics.
-
-The dynamics of $N^\alpha_{t,T}$ is 
-\begin{equation*}
-\mathrm{d}N_{t,T}^\alpha=rN_{t,T}^\alpha\mathrm{d}t+\alpha\sigma N_{t,T}^\alpha\mathrm{d}W_t
-\end{equation*}
-so that in the sense of Girsanov's theorem, $\gamma_T=\alpha\sigma$. 
-
-The Radon-Nikodym derivative to move from the money market account to the stock numeraire is
-\begin{equation*}\cfrac{d\mathbb{Q}^\alpha}{d\mathbb{Q}}=\cfrac{S^\alpha_T}{S^\alpha_0 e^{rT}}=e^{-\frac{1}{2}\alpha^2\sigma^2T+\alpha\sigma W^Q_T}
-\end{equation*}
-and the Girsanov theorem tell us that
-\begin{equation*}
-dW^Q_t=\alpha\sigma dt+dW^{Q^\alpha}_t
-\end{equation*}
-\end{frame}
-
-\begin{frame}{}
-We are now able to express $dW^Q_t$ under the new measure $\mathbb{Q}^\alpha$. Thus,
-\begin{equation*}
-\begin{aligned}
-dS_t&=rS_tdt+\sigma S_t dW^Q_t=rS_tdt+\sigma S_t(\alpha\sigma dt+dW^{Q^\alpha}_t)=\\
-&=(r+\alpha\sigma^2)S_tdt+\sigma S_tdW^{Q^\alpha}_t
-\end{aligned}
-\end{equation*}
-
-The drift of the stock price under the standard risk-neutral measure is $r$ and under a stock measure, $\mathbb{Q}^\alpha$, this drift changes to $(r+\alpha\sigma^2)$.
-Thus,
-\begin{equation*}
-\mathbb{Q}^\alpha[\{S_T\ge K\}]=\Phi\left(\frac{\ln(S_0K)+\left(r+\left(\alpha-\frac{1}{2}\sigma^2\right)\right)T}{\sigma\sqrt{T}}\right).
-\end{equation*}
-
-We alsp recover the special cases $\mathbb{Q}^1[\{S_T\ge K\}]=\Phi(d_1)$ and $\mathbb{Q}[\{S_T\ge K\}]=\Phi(d_2)$.
-\end{frame}
-
-
-%\begin{frame}{}
-%	\begin{block}{Stochastic Discount Factor}
-%		What is the mathematical relation between a discount factor $P(t,T)$ and the short-rate $r(t)$ ? The entire derivation is not needed, but provide $P(t,T) = f(r(t))$ considering both the cases where $r(t)$ is a generic deterministic function of time and where $r(t)$ is a random variable (possibly described by a stochastic process).
-%	\end{block}
-%\end{frame}
-
-\begin{frame}{}
-	\begin{block}{Forward Measure}
-		Specify under which measure is the forward rate $F(0,99,100)$ a martingale.
-	\end{block}
-\end{frame}
-
+%
+%		
+%		
+%		%%%%%%%%%%%%%%%%%%%
+%		Suppose we have entered into a one-year swap with quarterly payments on days 90, 180, 270 and 360. The fixed rate we pay is 3.68\% (annualized). 
+%		The underlying is 90-day EURIBOR. The notional principal is \$1,000,000. On day 0 the 90-day EURIBOR was 3.45\%. 
+%		Suppose we have now moved 60 days into the life of the swap. At day 60, we face a new term structure of EURIBORs which is given as follows:
+%		L60(30) = 0.0425, L60(120) = 0.0432, L60(210) = 0.0437, L60(300) = 0.0444.
+%		What is the value of the swap?
+%		A. \$7,900.
+%		B. \$5,300.
+%		C. \$4,700.
+%		Correct Answer: C
+%		The new set of discount factors is:
+%		B60(90) = 1 / (1 + 0.0425 x 30/360) = 0.9965.
+%		B60(180) = 1 / (1 + 0.0432 x 120/360) = 0.9858.
+%		B60(270) = 1 / (1 + 0.0437 x 210/360) = 0.9751.
+%		B60(360) = 1 / (1 + 0.0444 x 300/360) = 0.9643.
+%		
+%		The present value of the remaining fixed payments of 0.0092 (0.0368/4), including the hypothetical notional principal, is 0.0092 x (0.9965 + 0.9858 + 0.9751 + 0.9643) + 1 x 0.9643 = 1.0004.
+%		As the market value of the remaining payments on day 90, including the hypothetical final notional principal, is 1.0, we discount 1.00 + 0.0086 (which is 0.0345/4) = 1.0086 back 30 days to obtain 1.0086 x 0.9965 = 1.0051.
+%		Therefore, the value of the swap is (1.0051 - 1.0004) x 1,000,000 = \$4,700.
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		Consider a one-year interest rate swap with semi-annual payments. The term structure of EURIBOR spot rates is given as follows: L0(180) = 7.2\%, and L0(360) = 8.0\%. 
+%		What is the annualized fixed rate on the swap?
+%		A. 7.56%.
+%		B. 7.84%.
+%		C. 7.42%.
+%		Correct Answer: B
+%		First calculate the present value factors for 180 and 360 days:
+%		B0(180) = 1 / (1 + 0.072 x 180/360) = 0.9653.
+%		B0(360) = 1 / (1 + 0.08 x 360/360) = 0.9259.
+%		
+%		The fixed rate is (1/0.5) x (1 - 0.9259) / (0.9653 + 0.9259) = 0.0784, or 7.84%.
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%
+%		Consider a one-year interest rate swap with semi-annual payments. The annualized fixed rate is 7.84\%. The term structure of EURIBOR spot rates is given as follows:
+%		On day 0: L0(180) = 7.2\%, and L0(360) = 8.0\%.
+%		On day 90: L90(90) = 7.1\%, and L90(270) = 7.4\%.
+%		Assume a notional principal of \$1 million. What is the market value of the swap from the perspective of the party paying the floating rate on day 90 ?
+%		A. \$5,100.
+%		B. \$4,200.
+%		C. -\$4,200.
+%		Correct Answer: A
+%		Calculate the new present value factors for 90 and 270 days:
+%		B90(180) = 1 / (1 + 0.071 x 90/360) = 0.9826.
+%		B90(360) = 1 / (1 + 0.074 x 270/360) = 0.9474.
+%		
+%		The present value of the remaining fixed payments of 0.0392 (0.0784/2), including the hypothetical notional principal, is 0.0392 x (0.9826 + 0.9474) + 1 x 0.9474 = 1.0231.
+%		As the market value of the remaining payments on day 90, including the hypothetical final notional principal, is 1.0, we discount 1.00 + 0.036 (which is 0.072/2) = 1.036 back 90 days to obtain 1.036 x 0.9826 = 1.0180.
+%		Therefore, the value of the swap is (1.0231 - 1.018) x 1,000,000 = \$5,100.
+%		
+%		%%%%%%%%%%%%%%%%%%%
+%		\question If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
+%		\begin{solution}
+%			A flat yield curve means that the market expects the rates to be constant.
+%			The interpretation of a monotonically upward sloping yield curve depends on the slope. For instance, consider that the 1-year, 2-year and 3-year YTM are respectively 4\%, 5\% and 6\%. Then the forwards are $F(0;1,2)=6\%$, $F(0;2,3)=8\%$ meaning that the rates are expected to grow monotonically. If instead, the 1-year, 2-year and 3-year YTM are for instance  4\%, 5\% and 5.1\%. Then the forward are $F(0;1,2)=6\%'$, $F(0;2,3)=5.3\%$ meaning that the rates are \textbf{not} expected to grow monotonically. 
+%			The same reasoning holds for a downward sloping yield curve.
+%		\end{solution}
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		
+%		\question Companies A and B have been offered the following rates per annum on a 20 million 5-year loan:
+%		\begin{center}
+%			\begin{tabular}{|c|c|c|}
+%				\hline
+%				& Fixed rate & Floating rate \\ \hline
+%				Company A &  5.0\% & LIBOR+0.1\% \\ \hline
+%				Company B & 6.4\% & LIBOR+0.6\%  \\ \hline
+%			\end{tabular}
+%		\end{center}
+%		
+%		Company A requires a floating-rate loan; company B requires a fixed-rate loan. Design a swap that will net a bank, acting as intermediary, 0.1\% per annum and that will appear equally attractive to both companies.
+%		\begin{solution}
+%			A has an apparent comparative advantage in fixed-rate markets but wants to borrow floating. B has an apparent comparative advantage in floating-rate markets but wants to borrow fixed. This provides the basis for the swap. There is a 1.4\% per annum differential between the fixed rates offered to the two companies and a 0.5\% per annum
+%			differential between the floating rates offered to the two companies. The total gain to all parties from the swap is therefore 1.4-0.5 = 0.9\% per annum. Because the bank gets 0.1\% per annum of this gain, the swap should make each of A and B 0.4\% per
+%			annum better off. This means that it should lead to A borrowing at LIBOR -0.3\% and to B borrowing at 6\%. 
+%		\end{solution}
+%		
+%		\question  A financial institution has entered into an interest rate swap with company A. Under the terms of the swap, it receives 10\% per annum and pays 6-month LIBOR on a principal of 10 million for 5 years. Payments are made every 6 months. 
+%		Suppose that company A defaults on the sixth payment date (at the end of year 3) when the interest rate (with semiannual compounding) is 8\% per annum for all maturities. 
+%		What is the loss to the financial institution ? Assume that 6-month LIBOR was 9\% per annum halfway through year 3. 
+%		Use LIBOR discounting.
+%		
+%		\begin{solution}
+%			At the end of year 3 the financial institution was due to receive 500000 and pay 450000. The immediate loss is therefore 50000.
+%			
+%			To value the remaining swap we assume that forward rates are 8\% per annum. The remaining cash flows are therefore valued on the assumption that the floating payment is and the net payment that would be received is . The total cost of default is therefore the cost of foregoing the following cash flows:
+%			\begin{center}
+%				\begin{tabular}{|l|l|}
+%					\hline
+%					3 year & 50000 \\ \hline
+%					3.5 year & 100000 \\ \hline
+%					4 year &  100000 \\ \hline
+%					4.5 year & 100000 \\ \hline
+%					5 year & 100000 \\ \hline
+%				\end{tabular}
+%			\end{center}
+%			Discounting these cash flows to year 3 at 4\% per six months, we obtain the cost of the default as 413000.
+%		\end{solution}
+%		
+%		\question A currency swap has a remaining life of 15 months. It involves exchanging interest at 10\% on 20 million for interest at 6\% on 30 million once a year. The term structure of interest rates in both the United Kingdom and the United States is currently flat,
+%		and if the swap were negotiated today the interest rates exchanged would be 4\% in dollars and 7\% in sterlings. All interest rates are quoted with annual compounding. The current exchange rate (dollars per pound sterling) is 1.8500. What is the value of the swap to the party paying sterling ? What is the value of the swap to the party paying dollars ?
+%		
+%		\begin{solution}
+%			The swap involves exchanging the sterling interest of $20\cdot 0.14 = 2.8$~million for the dollar interest of $30\cdot 0.1 = 3$~million. 
+%			The principal amounts are also exchanged at the end of the life of the swap. The value of the sterling bond underlying the swap is
+%			$2.8(1.11)^{-0.25} + 22.8(1.11)^{-5/4} = 22.739$~million pounds.
+%			
+%			The value of the dollar bond underlying the swap is $3(1.08)^{-0.25} + 33(1.08)^{-5/4} = 32.916$~million.
+%			
+%			The value of the swap to the party paying sterling is therefore
+%			-4.604 million.
+%			
+%			The results can also be obtained by viewing the swap as a portfolio of forward contracts. The continuously compounded interest rates in sterling and dollars are 10.436\% per annum and 7.696\% per annum. The 3-month and 15-month forward exchange rates are
+%			$1:65e^{-(0.10436-0.07696)0.25}= 1.6387$ and $1.65e^{-(0:10436-0.07696)1.25} = 1.5944$.
+%			The values of the two forward contracts corresponding to the exchange of interest for the party paying sterling are therefore
+%			$(3-2.8\times  1.6387) e^{-0.07696*0.25} = -2.558$~ million
+%			and $(3- 2.8\times  1.5944) e^{-0.07696*1:25} = 1.330$~million.
+%			The value of the forward contract corresponding to the exchange of principals is $(30-20\times 1.5944) e^{-0.07696*1:25} = -1.716$~million.
+%			The total value of the swap is $1.558-1.330-1.716 = 4.604$~million.
+%		\end{solution}
+%		
+%		\question A financial institution has entered into a 10-year currency swap with company A.
+%		Under the terms of the swap, the financial institution receives interest at 3\% per annum in Swiss francs and pays interest at 8\% per annum in US dollars. Interest payments are exchanged once a year. The principal amounts are 7 million dollars and 10 million
+%		francs. Suppose that company A declares bankruptcy at the end of year 6, when the exchange rate is 0.80 dollars per franc. What is the cost to the financial institution ? Assume that, at the end of year 6, the interest rate is 3\% per annum in Swiss francs and 8\%
+%		per annum in US dollars for all maturities. All interest rates are quoted with annual compounding.
+%		
+%		\begin{solution}
+%			When interest rates are compounded annually
+%			\begin{equation*}
+%				F_0 = S_0\left(\cfrac{1+r}{1+r_f}\right)^T
+%			\end{equation*}
+%			where $F_0$ is the T-year forward rate, $S_0$ is the spot rate, $r$ is the domestic risk-free rate, and $r_f$ is the foreign risk-free rate. As $r = 0.08$ and $r_f = 0.03$, the spot and forward
+%			exchange rates at the end of year 6 are
+%			
+%			\begin{center}
+%				\begin{tabular}{|l|l|}
+%					\hline
+%					Spot & 0.8000 \\ \hline
+%					1 year forward & 0:8388 \\ \hline
+%					2 year forward & 0:8796 \\ \hline
+%					3 year forward & 0:9223 \\ \hline
+%					4 year forward & 0:9670 \\ \hline
+%				\end{tabular}
+%			\end{center}
+%			
+%			The value of the swap at the time of the default can be calculated on the assumption that forward rates are realized. The cash flows lost as a result of the default are therefore as follows:
+%			
+%			\begin{center}
+%				\begin{tabular}{|c|c|c|c|c|c|}
+%					\hline
+%					Year & Dollar& Sw Fr & Forward &Dollar Equivalent. & Loss \\ \hline
+%					6 &560000& 300000& 0.8000& 240000 & (320000) \\ \hline
+%					7 &560000& 300000& 0.8388& 251000 & (308400) \\ \hline
+%					8 &560000& 300000& 0.8796& 263900 & (296100) \\ \hline
+%					9 &560000& 300000& 0.9223& 276700 & (283300) \\ \hline
+%					10& 7560000& 10300000& 0.9670& 9960100 & 2400100 \\ \hline
+%				\end{tabular}
+%			\end{center}
+%			
+%			Discounting the numbers in the final column to the end of year 6 at 8\% per annum, the cost of the default is 679800. Note that, if this were the only contract entered into by company B, it would make no sense for the company to default at the end of year six as the exchange of payments. At that time has a positive value to company B.
+%			In practice company B is likely to be defaulting and declaring bankruptcy for reasons unrelated to this particular contract and payments on the contract are likely to stop when bankruptcy is declared.
+%		\end{solution}
+%		
+%		
+%		
+%		\question Assume that yield curves in Japan and in the US are flat. The interest rate in Japan is equal to 4\% per annum, and in the US to 9\% per annum (with continuous compounding). The financial institution takes position in the swap contract, under which it receives 5\% on an annual basis of the amount denominated in yen and pays 8\% per annum of the amount denominated in dollars. These amounts are respectively 10 million USD and 1200 million yen. The contract is valid for 3 years and the current exchange rate is 110 USDJPY. What is the value of this currency swap?
+%		\begin{solution}
+%			We should use the formula for swap valuation: 
+%			\begin{equation*}
+%				V=\cfrac{1}{S}\cdot(V_f-V_d)
+%			\end{equation*}
+%			
+%			Note that $S$ should be appropriately entered to the formula to calculate $V$ in USD.
+%			
+%			The cash flows in domestic (USD) and foreign (JPY) currency:
+%			\begin{equation*}
+%				\begin{aligned}
+%					k_d&=r_{d, fix}\cdot 10 mln USD =0.8 mln USD \\
+%					k_f&=r_{f, fix}\cdot 1200 mln JPY 60 mln JPY
+%				\end{aligned}
+%			\end{equation*}
+%			
+%			Now we can calculate bond values by discounting the cash flows with respective interest rates ($r_f$ and $r_d$):
+%			\begin{equation*}
+%				\begin{aligned}
+%					V_d&=0.8\cdot e^{-0.09\cdot1}+0.8\cdot e^{-0.09\cdot2}+10.8\cdot e^{-0.09\cdot 3}=9.64 mln USD\\
+%					V_f&=60\cdot e^{-0.04\cdot1}+60\cdot e^{-0.04\cdot 2}+1260\cdot e{-0.04\cdot 3}=1230.55 mln JPY
+%				\end{aligned}
+%			\end{equation*}
+%			The formula for swap value gives:
+%			\begin{equation*}
+%				V = S\cdot V_f - V_d =1230.55 mln JPY110 USDJPY-9.64 mln USD=1.55 mln USD
+%			\end{equation*}
+%			
+%			The swap value for a financial institution is 1.55 million USD.
+%		\end{solution}
+%		
+%		\question Determine the value of the swap from Exercise 3 as the sum of forward contracts.
+%		
+%		\begin{solution}
+%			We will calculate all the values in USD. The exchange rate is 110 USDJPY and says how many yens one should pay for 1 USD. We need the ratio in USD therefore we can write it as a rate of the form of JPYUSD and then $(S'=0.009091=\frac{1}{110})$ JPYUSD (0.009091 USD per 1 yen). At the beginning, we will calculate forward exchange rates for one, two and three years:
+%			\begin{equation*}
+%				\begin{aligned}
+%					F&=S'\cdot e^{(r_d-r_f)T}\\
+%					F_1&=0.009091\cdot e^{0.05\cdot 1}=0.0096
+%					F_2&=0.009091\cdot e^{0.05\cdot 2}=0.0101
+%					F_3&=0.009091\cdot e^{0.05\cdot 3}=0.0106
+%				\end{aligned}
+%			\end{equation*}
+%			
+%			Using the formulas given in the theoretical part, we can calculate the values of cash flows that will occur at the end of the first, second and third year:
+%			\begin{equation*}
+%				\begin{aligned}
+%					FC_1&=(60\cdot0.0096-0.8)\cdot e^{-0.09\cdot1}=-0.21 \\
+%					FC_2&=(60\cdot0.0101-0.8)\cdot e^{-0.09\cdot2}=-0.16 \\
+%					FC_3&=(60\cdot0.0106-0.8)\cdot e^{-0.09\cdot3}=-0.13
+%				\end{aligned}
+%			\end{equation*}
+%			In addition, the swap notional will also be exchanged at the end of the third year. Let’s calculate the value of this flow: $FC_n=(1200\cdot 0.0106-10)e^{-0.09\cdot3}=2.05$.
+%			
+%			The final value of a currency swap is the sum of the above four values:
+%			\begin{equation*}
+%				V=-0.21-0.16-0.13+2.05=1.55 mln USD
+%			\end{equation*}
+%		\end{solution}
+%		
+%		\question The currency swap has 3 years to expire. Agreement assumes the exchange of the following payments: A pays to B 14\% from GBP 20 million, while B pays to A 10\% from USD 30 million. The term structure of interest rates is flat in both the United Kingdom and the United States. At present, US rates are 8\%, and Great Britain rates are 11\% (continous compounding). Interest is paid once a year. The current exchange rate is 1.65 GBPUSD.
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item What is the value of the swap for the company A and for the company B?
+%			\item How will the answer to the above question change if we assume a decreasing structure of interest rates, both in GBP and USD?
+%			USD: 8\%, 7\%, 6\% for Y1, Y2, Y3 respectively
+%			GBP: 11\%, 10\%, 9\% for Y1, Y2, Y3 respectively
+%			\item Will the value of the swap change if we assume that the parties pay floating payments based on market rates? Use the forward contracts to calculate swap value.
+%		\end{enumerate}
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item Company A receives payments in USD and pays in GBP. Therefore we should use the formula for swap valuation using bonds portfolio $V= B_{USD}-FX\cdot B_{GBP}$.
+%				
+%				The value of GBP cash flow and the bond underlying the swap is:
+%				$C F_{GBP}=20 mln\cdot 14\%=2.8 mln GBP$ and $B_{GBP}=2.8e^{-0.11\cdot1}+2.8e^{-0.11\cdot2}+22.8e^{-0.11\cdot 3}=21.15 mln GBP$.
+%				
+%				The value of USD cash flow bond underlying the swap is:
+%				$CF_{USD}=30 mln\cdot10\%=3 mln USD$ and $B_{USD}=3e^{-0.08\cdot1}+3e^{-0.08\cdot2}+33e^{-0.08\cdot3}=31.28 mln USD$.
+%				
+%				The value of the contract to the A (paying GBP) is
+%				$V=B_{USD}-FX\cdot B_{GBP}=31.28-1.65\cdot21.15=-3.62 mln USD$
+%				\item In this case we should use appropriate interest rate term structure to calculate bond values.
+%				
+%				The value of GBP bond underlying the swap is: $CF_{GBP}=20 mln\cdot14\%=2.8 mln GBP$ and $B_{GBP}=2.8e^{-0.11\cdot1}+2.8e^{-0.10\cdot 2}+22.8e^{-0.09\cdot3}=22.21 mln GBP$
+%				
+%				The value of USD bond underlying the swap is: $CF_{USD}=30 mln\cdot 10\%=3 mln GBP$ and $B_{USD}=3e^{-0.08\cdot1}+3e^{-0.07\cdot2}+33e^{-0.06\cdot3}=32.94 mln USD$.
+%				
+%				The value of the contract to the A (paying GBP) is $V=B_{USD}-FX\cdot B_{GBP}=32.94-1.65\cdot22.21=-3.71 mln USD$
+%				\item At the beginning we have to calculate market rates i.e. forward rates for GBP and USD. Because rates are continously compounded we will use:
+%				\begin{equation*}
+%					e^{r_{t+n}(t+n)}=e^{r_t\cdot t}e^{F_{t, n}n}
+%				\end{equation*}
+%				
+%				Solving the formula for $F_{t, n}$ we have:
+%				\begin{equation*}
+%					F_{t, n}=\cfrac{r_{t+n}\cdot(t+n)-r_t t}{n}
+%				\end{equation*}
+%				In our case:
+%				$r_{i,GBP}=11\%,10\%,9\%$ and $r_{i,USD}=8\%,7\%,6\%$
+%				
+%				Therefore:
+%				$F'_{i,i+1,GBP} = 0.11,0.09,0.07$ and $F'_{i,i+1,USD} = 0.08,0.06,0.04$.
+%				
+%				The rates are continuously compounded therefore we have to convert them into annual compounding (for details see exercise 2):
+%				$F_{i,i+1,GBP}=0.1163,0.0942,0.0725$ and $F_{i, i+1,USD}=0.0833,0.0618,0.0408$.
+%				
+%				Now have to calculate also forward exchange rate $(F=Se^{(r_d-r_f)T})$:
+%				$F1=1.6012,1.5539,1.5050$
+%				
+%				Now we can calculate the cash flows:
+%				$FC_1=-1.1310, FC_2=-0.9317, FC_3=-0.8040$
+%				
+%				And the principal cash flow:
+%				$FC_n=(30-20\cdot F_2)e^{-r_{3,USD}\cdot 3} = -0.1334$
+%				
+%				The value of the swap is:
+%				\begin{equation*}
+%					V=FC_1+FC_2+FC_3+FC_n=-1.1310-0.9317-0.8040-0.1334=-3.00 mlnUSD
+%				\end{equation*}
+%				Note that the solution of this point would be a one line if we use the bond valuation based approach (since both bonds are valued at beginning of its life so the values are equal to face value):$(30-20\cdot 1.65)=-3$.
+%				
+%				If time at which we value a swap contract is later than moment of bond issue then one should use the full formula for bond valuations.
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		\question Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58. 
+%		Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond? 
+%		For this exercise assume the all Annuity Factors have a value of 10.0 for simplicity.
+%		\begin{solution}
+%			Recall the Asset Swap Spread $s$ can be calculated using 
+%			Firstly we calculate the swap components giving 
+%			The Par-Par adjustment is the dominating term and evaluates to
+%			Par-Par Adjustment =
+%			
+%			%100 − 104.58
+%			%100 !
+%			%= -4.580%
+%			%We proceed to calculate the asset swap spread s as
+%			%s =
+%			%0.600% - 4.580%
+%			%10.0
+%			%= -0.3980%
+%			%or -39.80 basis points
+%		\end{solution}
+%		
+%		\question Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond?
+%		
+%		\begin{solution}
+%			Using the Asset Swap Spread $s$ can be calculated using  
+%			%Again we calculate the swap components giving
+%			%The Par-Par adjustment evaluates to
+%			%Par-Par Adjustment =
+%			%
+%			%100 - 75.280
+%			%100 !
+%			%= 24.72%
+%			%We proceed to calculate the asset swap spread s as
+%			%s =
+%			%25.60% + 24.72%
+%			%10.0
+%			%= 5.0320%
+%			%or 503.20 basis points
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% GIRSANOV
+%		\question Let $\{W(T):t\geq 0\}$ be a Brownian motion on a probability space and let $\mathcal{F}_t$ be its natural filtration. Consider a stock with price process $\{S(t):0\leq t \leq T\}$, with 
+%		\begin{equation*}
+%			S(t)=S(0)\exp\left\{\int_0^t e^{-u}dW(u) + \int_0^t(1-\frac{1}{2}e^{-2u}du\right\}
+%		\end{equation*}
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item Let 
+%			\begin{equation*}
+%				X(t)=\int_0^t e^{-u}dW(u)+\int_0^t(1-\frac{1}{2}e^{-2u}du
+%			\end{equation*}
+%			and determine the distribution of $X(t)$.
+%			\item Prove that $\{S(t):t\geq 0\}$ is an \ito's process.
+%			\item Let $r$ be a constant interest rate. Find the risk-neutral measure $\tilde{\mathbb{P}}$, equivalent to $\mathbb{P}$, such that the discounted price process $\{we^{-rt}S(t): 0\leq t \leq T\}$ is a martingale under $\tilde{\mathbb{P}}$.
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item Let $Y(t)=\int_0^t e^{-u}dW(u)$, or the first term of the $X(t)$ process. From the stochastic calculus results we know that $Y(t)$ is normally distributed with $\mathbb{E}[Y(t)]=0$ and 
+%				\begin{equation*}
+%					\text{Var}[Y(t)]=\int_0^t e^{-2u}du = \frac{1}{2}(1-e^{-2t})
+%				\end{equation*} 
+%				Since 
+%				\begin{equation*}
+%					X(t) = Y(t) + \int_0^t (1-\frac{1}{2}e^{-2u})du = Y(t) + t + \frac{1}{4}(e^{-2t}-1)
+%				\end{equation*} 
+%				we see that $X(t)$ is normally distributed, with mean 
+%				\begin{equation*}
+%					\mathbb{E}[X(t)] = t + \frac{1}{4}(e^{-2t}-1)
+%				\end{equation*} 
+%				and variance
+%				\begin{equation*}
+%					\text{Var}[X(t)] = \text{Var}[Y(t)] = \frac{1}{2}(1-e^{-2t})
+%				\end{equation*} 
+%				\item With 
+%				\begin{equation*}
+%					X(t) = \int_0^t e^{-u}dW(u) + \int_0^t (1-\frac{1}{2}e^{-2u})du
+%				\end{equation*} 
+%				we have 
+%				\begin{equation*}
+%					dX(t) = e^{-t}dW(t) + (1-\frac{1}{2}e^{-2t})dt
+%				\end{equation*} 
+%				and $dX(t)dX(t)=e^{-2t} dt$. Note that $S(t)=S(0)e^{X(t)}$, so let $f(x)=S(0)e^x$, then $f_x(x)=f_{xx}(x)=f(x)$. By the \ito formula we get
+%				\begin{equation*}
+%					\begin{aligned}
+%						dS_t &= df(X_t) = S_tdX+\frac{1}{2}S(t)dXdX = \\
+%						&=S_t\left(e^{-t}dW + (1-\frac{1}{2}e^{-2t})dt\right)+\frac{1}{2}S_t e^{-2t}dt = \\
+%						&=S_t dt+S_t e^{-t}dW
+%					\end{aligned}
+%				\end{equation*}
+%				This shows that $S_t$ is an \ito process.
+%				\item Define 
+%				\begin{equation*}
+%					\theta(r)=\cfrac{1-r}{e^{-t}}=e^t (1-r)
+%				\end{equation*}
+%				Consider the random variable $Z$, defined by
+%				\begin{equation*}
+%					\begin{aligned}
+%						Z &= \exp\left(-\int_0^T \theta(u)dW(u) - \frac{1}{2}\int_0^T \theta^2(u)du\right) = \\
+%						&=\exp\left(-\int_0^T e^u (1-r)dW(u) - \frac{1}{2}\int_0^T e^{2u} (1-r)^2 du\right)
+%					\end{aligned}
+%				\end{equation*}
+%				Define the measure $\tilde{\mathbb{P}}$ by $\tilde{\mathbb{P}}(A) =\int_A Z d\mathbb{P}$ and consider the process 
+%				\begin{equation*}
+%					\begin{aligned}
+%						\tilde{W}_t = \int_0^t \theta(u)dW(u) +W(t) = \int_0^t e^{u}(1-r)du+W(t)=(1-r)(e^t -1)+W(t)
+%					\end{aligned}
+%				\end{equation*}
+%				By Girsanov Theorem $\tilde{W}$ is a Brownian motion under $\tilde{\mathbb{P}}$ and hence it is a martingale under $\tilde{\mathbb{P}}$. 
+%				Using the SDE of part (a), together with the \ito product rule, we have 
+%				\begin{equation*}
+%					\begin{aligned}
+%						d(e^{-rt}S(t)) &= e^{-rt}dS_t-r e^{-rt}S_t dt = \\
+%						&= e^{-rt}(S_t dt + S_te^{-t}dW)-re^{-rt}S_t = \\
+%						&= e^{-rt}S_t((1-r)dt + e^{-t}dW)) = \\
+%						&= e^{-rt}S_t(e^{-t}\theta_t dt + e^{-t}dW)) = \\
+%						&= e^{-t(r+1)}S_t d\tilde{W}_t
+%					\end{aligned}
+%				\end{equation*}
+%				Since $e^{-rt}S(t)$ is an \ito integral, we see that the discounted price process is a martingale under $\tilde{\mathbb{P}}$.
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		%MARTINGALE
+%		\question Suppose that $X(t)$ satisfies the following SDE:
+%		\begin{equation*}
+%			dX_t = 0.04X_t dt + \sigma X_t dW_t
+%		\end{equation*}
+%		and $Y_t$ satisfies:
+%		\begin{equation*}
+%			dY_t = \beta Y_t dt + 0.1 Y_t dW_t
+%		\end{equation*}
+%		Parameters $\beta, \sigma$ are postive and both processes are driven by the same Brownian Motion $W(t)$.
+%		For a given process
+%		\begin{equation*}
+%			Z_t = 2\cfrac{X_t}{Y_t}-\lambda t
+%		\end{equation*}
+%		with $\lambda\in\mathbb{R}^+$.
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item Find the SDE for $Z_t$;
+%			\item For which values of $\beta$ and $\lambda$ is the process $Z_t$ a martingale ?
+%		\end{enumerate}
+%		
+%		\fillwithlines{3cm}
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item We have 
+%				\begin{equation*}
+%					\begin{gathered}
+%						X_t = e^{\sigma W_t-\frac{\sigma^2}{2}t+0.04 t}\\
+%						dX_t = 0.04 X_t dt + \sigma X_t dW_t\\
+%						Y_t = e^{0.1W_t -\frac{0.01}{2}t+\beta t}\\
+%						dY_t = \beta Y_t dt + 0.1 Y_t dW_t
+%					\end{gathered}
+%				\end{equation*}
+%				Using the expressions fot $X_t$ and $Y_t$ we get
+%				\begin{equation*}
+%					Z_t = 2\exp\left((\sigma-0.1)W_t + (0.04+\frac{0.01}{2}-\beta-\frac{\sigma^2}{2})t\right)-\lambda t
+%				\end{equation*}
+%				\item A martingale process does not contain a drift term. We have 
+%				\begin{equation*}
+%					dZ_t = (Z+\lambda t)(0.01+0.04-\beta-0.1\sigma)dt-\lambda dt + (Z+\lambda t)(\sigma-0.1)dW_t
+%				\end{equation*}
+%				With $\beta$ and $\sigma$ constant and $\lambda\in\mathbb{R}^+$, the necessary conditions for a vanishing drift term are $\lambda=0$ and
+%				\begin{equation*}
+%					0.01+0.04-\beta-0.1\sigma=0\implies \beta=0.05-0.15\sigma
+%				\end{equation*}
+%				%To check this result we employ the \ito derivative rules for multivariate functions...
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% GIRSANOV
+%		\question Suppose $W(t)$ is a standard Brownian motion. For each of the following choices of $X_t$, find an equivalent probability measure $\mathbb{Q}$ such that $X_t$ is a Brownian motion in the new measure. Assume $X_0=W_0=0$
+%		\begin{equation*}
+%			\begin{gathered}
+%				dX_t = 2dt + dW_t\\
+%				dX_t = 2dt + 6dW_t
+%			\end{gathered}
+%		\end{equation*}
+%		
+%		\fillwithlines{3cm}
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item The Girsanov transformation tells us that for a process X driven by Brownian motion $B$ under the original measure P and density process Z, the process defined as:
+%				
+%				%dY_t = X_t - ∫_0^t Z_s dB_s
+%				%
+%				%will be a Brownian motion under the new measure Q with Radon-Nikodym derivative:
+%				%
+%				%dQ/dP = exp(∫_0^t Z_s dB_s - 1/2 ∫_0^t Z_s^2 ds)
+%				%
+%				%Since Z_t is standard normal, we can simplify the calculations.
+%				%
+%				%Case 1: dX_t = 2dt + dB_t
+%				%
+%				%Here, Z_t = 1. Plugging into the equations:
+%				%
+%				%dY_t = X_t - ∫_0^t dB_s = X_t - B_t
+%				%
+%				%dQ/dP = exp(B_t - 1/2 t)
+%				%
+%				%Therefore, under the measure Q defined by this Radon-Nikodym derivative, Y_t = X_t - B_t becomes a Brownian motion starting from 0.
+%				%
+%				%Case 2: dX_t = 2dt + 6dB_t
+%				%
+%				%In this case, Z_t = 6. Following the same steps:
+%				%
+%				%dY_t = X_t - ∫_0^t 6 dB_s = X_t - 6B_t
+%				%
+%				%dQ/dP = exp(6B_t - 18t)
+%				%
+%				%Under the measure Q defined by this Radon-Nikodym derivative, Y_t = X_t - 6B_t becomes a Brownian motion starting from 0.
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		%\question Let $f$ be a function double differentiable. Assume that $f$ is a solution of the heat equation
+%		%\begin{equation*}
+%		%\cfrac{\partial}{\partial t}f(t, x) = -\cfrac{1}{2}\cfrac{\partial^2}{\partial x^2}f(t, x)
+%		%\end{equation*}
+%		%Let $B_t$ be a standard Brownian motion.
+%		%\begin{enumerate}[label=(\alph*),font=\itshape]
+%		%\item Find the SDE solved by $f(t, B_t)$.
+%		%\item Deduce that $f(t, B_t)$ is a martingale if and only if $f$ is solution of the heat equation.
+%		%\end{enumerate}
+%		%\fillwithlines{3cm}
+%		%\begin{solution}
+%		%\begin{enumerate}[label=(\alph*),font=\itshape]
+%		%\item Apply Ito's formula to function $f(t, B_t)$ to get the differential
+%		%\begin{equation*}
+%		%df = \cfrac{\partial f}{\partial t} dt + \cfrac{\partial f}{\partial B}dB_t + \frac{1}{2}\cfrac{\partial^2 f}{\partial B^2}dB_t^2
+%		%\end{equation*}
+%		%Given that $f$ is solution of the heat equation we can simplify the differential (replacing $dB_t^2=dt$)
+%		%\begin{equation*}
+%		%df =\cfrac{\partial f}{\partial B}dB_t = \phi_t dB_t
+%		%\end{equation*}
+%		%Considering again the differential $df$,  if the function is a martingale the only surviving term should be the one in $dB_t$ hence it must hold
+%		%\begin{equation*}
+%		%\cfrac{\partial}{\partial t}f(t, x) = -\cfrac{1}{2}\cfrac{\partial^2}{\partial x^2}f(t, x)
+%		%\end{equation*}
+%		%so $f$ is a solution of the heat equation.
+%		%\end{enumerate}
+%		%\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		
+%		\question Calculate the integral $\int_0^T W_t dW_t$.
+%		\begin{solution}
+%			According to Ito's formula
+%			\begin{equation*}
+%				d[(W_t)^2] = 2W_t dW_t + dt
+%			\end{equation*}
+%			Hence,
+%			\begin{equation*}
+%				\int_0^T W_t dW_t = \cfrac{1}{2}\int_0^T(d[(W_t)^2] - dt = \cfrac{1}{2}(W^2_T - T)
+%			\end{equation*}
+%		\end{solution}
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		
+%		
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		\question Let $W_1(t)$ and $W_2(t)$ a
+%		2D-Brownian motion defined on a probability space $(\Omega, \mathcal{F}, \mathbb{P})$. Consider two price processes $\{S_1(t):t\geq 0\}$ and $\{S_2(t):t\geq 0\}$ with corresponding SDEs given by
+%		\begin{equation*}
+%			\begin{aligned}
+%				dS_1(t) &= 2S_1(t)dW_1(t) + 3S_1(t)dW_2(t)\\
+%				dS_2(t) &= S_2(t)dt + S_2dW_1(t)
+%			\end{aligned}
+%		\end{equation*}
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item Show that $S_1(t)S_2(t)$ is a 2D-\ito process.
+%			\item Consider an expiration date $T$, and suppose tha interest rate is a constant $r$. Show that the market price equations have a unique solution, and determine the risk-neutral probability measure $\tilde{\mathbb{P}}$ for the process $\{S_1(t),S_2(t):0\leq t\leq T\}$.
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item We apply \ito product rule, we find
+%				\begin{equation*}
+%					d(S_1S_2) = S_1dS_1+S_2dS_2+dS_1 dS_2
+%				\end{equation*}
+%				Using 
+%				\begin{equation*}
+%					dS_1 = 2S_1dW_1+3S_1dW_2 \\
+%					dS_2 = S_2dt +S_2dt +S_2dW_1
+%				\end{equation*}
+%				and
+%				\begin{equation*}
+%					dS_1 dS_2 = 2S_1 S_2 dt 
+%				\end{equation*}
+%				we get after simplifying
+%				\begin{equation*}
+%					d(S_1 S_2) = 3S_1 S_2 dt + 3S_1S_2dW_1 + 3S_1S_2dW_2 
+%				\end{equation*}
+%				Hence  $\{S_1(t),S_2(t):0\leq t\leq T\}$ is a 2D-\ito process.
+%				\item Using the notation of the book, 
+%				%we have α1 = 0, σ11 = 2, σ12 =
+%				%3, α2 = 1, σ21 = 1, σ22 = 0. The market price equations in this case
+%				%are given by the system,
+%				%−r = 2θ1(t) + 3θ2(t)
+%				%1 − r = θ1(t).
+%				%Solving for θ1(t), θ2(t), we get
+%				%θ1(t) = 1 − r
+%				%θ2(t) = r − 2
+%				%3
+%				%.
+%				%Setting,
+%				%Z = exp (
+%				%−
+%				%Z T
+%				%0
+%				%(θ1(t)dW1(t) + θ2(t)dW2(t)) −
+%				%1
+%				%2
+%				%Z T
+%				%0
+%				%
+%				%θ
+%				%2
+%				%1
+%				%(t) + θ
+%				%2
+%				%2
+%				%(t)
+%				%
+%				%dt
+%				%)
+%				%= exp 
+%				%(r − 1)W1(T) + 2 − r
+%				%3
+%				%W2(T) −
+%				%1
+%				%2
+%				%
+%				%(1 − r)
+%				%2 +
+%				%(r − 2)2
+%				%9
+%				%
+%				%T
+%				%
+%				%,
+%				%the risk-neutral measure is given by P˜(A) = R
+%				%A
+%				%ZdP. To check this,
+%				%we set W˜
+%				%1(t) = (1 − r)t + W1(t) and W˜
+%				%2(t) = r−2
+%				%3
+%				%t + W2(t). By
+%				%the 2-dimensional Girsanov Theorem, the process {(W˜
+%					%1(t), W˜
+%					%2(t) :
+%					%0 ≤ t ≤ T} is a 2-dimensional Brownian motion under P˜. Rewritin
+%				%5
+%				%e
+%				%−rtS1(t), e
+%				%−rtS2(t) in terms of W˜
+%				%1(t), W˜
+%				%2(t), we get, after applying
+%				%the Itˆo product rule,
+%				%d(e−rtS1(t)) = e−rtS1(t)(2dW˜
+%				%1(t) + 3dW˜
+%				%2(t))
+%				%d(e−rtS2(t)) = e−rtS2(t)dW˜
+%				%1(t),
+%				%which shows that the discounted price processes are Itˆo integrals, and
+%				%hence martingales under P˜.
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		\question Assume we have a European call and put option, with the same expiry date $T=1/4$, i.e. exercise in three months, and strike price $K=10$. The current share price is 11, assuming a constant interest rate $R=6\%$. Determine an arbitrage opportunity if both options currently have the value $c(0)=p(0)=2.5$.
+%		
+%		\fillwithlines{3cm}
+%		\begin{solution}
+%			We form two portfolios using the options, the underlying asset and a cash amount $K$, with one based on the put and the other based on the call, as follows
+%			\begin{equation*}
+%				\begin{aligned}
+%					\Pi_1(t) &= p(t) + S(t)\\
+%					\Pi_2(t) &= c(t) + Ke^{-r(T-t)}
+%				\end{aligned}
+%			\end{equation*}
+%			These portfolios have same value at expiry time $T$. By the put-call parity, their value should be equal any time prior to the exercise time, as otherwise arbitrage opportunities will appear. In the case of a mismatch in value, one can buy the cheaper portfolio and sell the expensive one. At the expiry time $T$, one can trade these two portfolios without any cost, hence the initial sell-buy difference is reflected as a profit. 
+%			
+%			Returning to the exercise and looking at the arbitrage opportunity when both options are worth 2.5, we assume this takes place at $t < T$. Using the put-call parity relation, we find the following relation for not having an arbitrage opportunity, 
+%			\begin{equation*}
+%				S(t) = 10e^{-0.06(0.25-t)}
+%			\end{equation*}
+%			Hence, at $t = 0$, assuming that the option values are 2.5, one can benefit from selling portfolio $Pi_1$ and buying $\Pi_2$. As long as $S(t) > 10 e^{
+%				-0.06(0.25-t)}$, one can follow this strategy, when $S(t) < 10 e^{-0.06(0.25-t)}$, one should revert the strategy.
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% GIRSANOV
+%		\question Consider the process $Z_t$ whose dynamics is defined by the following SDE $dZ_t = -\phi_tZ_tdW_t, Z_0=1$, where $W_t$ is a Brownian motion under the measure $\mathbb{P}$. For any $t\geq 0$ define the a new measure $\mathbb{Q}$ according to $d\mathbb{Q}=Z_t d\mathbb{P}$.
+%		Prove that 
+%		\begin{equation*}
+%			\mathbb{E}^{\mathbb{Q}}[Z_T\log(Z_T)] = \mathbb{E}^{\mathbb{Q}}\left(\frac{1}{2}\int_0^T\phi_s^2 ds\right)
+%		\end{equation*}
+%		
+%		\fillwithlines{3cm}
+%		\begin{solution}
+%			$Z$ is clearly a $\mathbb{P}$-martingale, so that $\mathbb{Q}$ defines a genuine probability measure, and therefore
+%			\begin{equation*}
+%				\expect{P}(Z_t\log(Z_t)) = \expect{Q}(\log(Z_t))
+%			\end{equation*}
+%			Now, applying \ito formula, we can write
+%			\begin{equation*}
+%				Z_T = \exp\left(-\frac{1}{2}\int_0^T \phi_s^2 ds - \int_0^T \phi_s dW_s\right)
+%			\end{equation*}
+%			From Girsanov theorem, the process $\tilde{W}$ defined pathwise as $\tilde{W}_t := W_t +\int_0^t\phi_s ds$ is a standard Brownian motion under $\mathbb{Q}$ and 
+%			\begin{equation*}
+%				-\frac{1}{2}\int_0^t \phi_s^2 ds - \int_0^t \phi_s dW_s = \frac{1}{2}\int_0^t \phi_s^2 ds - \int_0^t \phi_s d\tilde{W}_s
+%			\end{equation*}
+%			from which the result follows.
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% GIRSANOV
+%		\question Let $X_t$ be the unique solution to the following stochastic differential equation, under $\mathbb{P}$:
+%		\begin{equation*}
+%			dX_t = X_t(\mu_t dt + \sigma_t dW_t)
+%		\end{equation*}
+%		where $\mu$ and $\sigma$ are bounded and adapted processes, and $\sigma >0$ almost surely.
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item Show that $X_t\exp(-\int_0^t \mu_s ds)$ is a martingale.
+%			\item Find a probability $\mathbb{Q}$, equivalent to $\mathbb{P}$ under which $X$ is a martingale.
+%			\item Find a probability $\tilde{\mathbb{P}}$, equivalent to $\mathbb{P}$, under which the inverse process $X^{-1}$ is a martingale.
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item From \ito formula we can write for any $t\geq 0$
+%				\begin{equation*}
+%					X_t = \exp\left\{\int_0^t\left(\mu_s - \frac{1}{2}\sigma_s^2\right)ds + \int_0^t\sigma_s dW_s\right\}
+%				\end{equation*}
+%				so that (a) follows immediately. One can apply Girsanov theorem to introduce the probability measure $\mathbb{Q}$ via $d\mathbb{Q}=Z_t d\mathbb{P}$ with $dZ_t = Z_t\mu_t \sigma_t^{-1}dW_t$, such that $B_t := W_t +\mu_t\sigma^{-1}_t dt$ is a standard Brownian motion under $\mathbb{Q}$.
+%				Finally, applying \ito formula yields
+%				\begin{equation*}
+%					dX^{-1}_t = -X^{-1}_t \sigma_t  \left( dW_t - \frac{\sigma_t^2 - \mu_t}{\sigma_t}dt\right)
+%				\end{equation*}
+%				such that (c) follows again by a direct application of Girsanov theorem.
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		%GIRSANOV
+%		\question Fix some $\lambda\in\mathbb{R}$, and let $X$ be a process such that
+%		\begin{equation*}
+%			dX_t = -\lambda X_t dt + dW_t
+%		\end{equation*}
+%		and introduce the process $Z$ as 
+%		\begin{equation*}
+%			Z_t := \exp\left\{\lambda\int_0^t X_s dW_s - \frac{\lambda^2}{2}\int_0^t X_s^2 ds\right\}
+%		\end{equation*}
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item Show that $Z$ is a martingale.
+%			\item Define the new probability measure $\mathbb{Q}$ as $d\mathbb{Q}:=Z_td\mathbb{P}$. Write the stochastic differential equation solved by the process $X$ under $\mathbb{Q}$.
+%			\item Show that 
+%			\begin{equation*}
+%				Z_t := \exp\left\{\lambda\int_0^t X_s dW_s + \frac{\lambda^2}{2}\int_0^t X_s^2 ds\right\}
+%			\end{equation*}
+%			and compute, for any $u\in\mathbb{R}$, the expectation
+%			\begin{equation*}
+%				\mathbb{E}^{\mathbb{P}}\left[\exp\left\{\frac{u^2}{2}\int_0^t X_s^2 ds\right\}\right]
+%			\end{equation*}
+%			You might need to show first that an application of \ito formula yields
+%			\begin{equation*}
+%				\int_0^t W_s dW_s = \cfrac{W_t^2-t}{2}
+%			\end{equation*}
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			This is a straightforward application of Girsanov theorem: under $\mathbb{Q}$ the process $W_t -\lambda\int_0^tX_s ds$ is a standard Brownian motion. Combining this with the SDE, we obatain that 
+%			\begin{equation*}
+%				X_t = x -\lambda\int_0^t X_s ds + W_t
+%			\end{equation*}
+%			is a standard Brownian motion under $\mathbb{Q}$. Finally
+%			\begin{equation*}
+%				\begin{aligned}
+%					\mathbb{E}^{\mathbb{P}}\left[\exp\left\{\frac{u^2}{2}\int_0^t X_s^2 ds\right\}\right] &= \mathbb{E}^{\mathbb{Q}}\left[Z_t^{-1}\exp\left\{\frac{u^2}{2}\int_0^t X_s^2 ds\right\}\right] \\
+%					&= \mathbb{E}^{\mathbb{Q}}\left[\exp\left\{-\frac{u^2+\lambda^2}{2}\int_0^t X_s^2 ds-\lambda\int_0^t X_s dX_s \right\}\right] \\
+%					&= \mathbb{E}^{\mathbb{Q}}\left[\exp\left\{-\frac{u^2+\lambda^2}{2}\int_0^t X_s^2 ds-\frac{\lambda}{2}(X_t^2-t)\right\}\right] \\
+%					&= e^{\lambda t/2}\mathcal{N}\left(\frac{\lambda}{2}, \sqrt{\lambda^2 + u^2}\right)
+%				\end{aligned}
+%			\end{equation*}
+%			where $\mathcal{N}$ denote the Gaussian cumulative distribution function.
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		\question Let $S$ be a martingale satisfying the stochastic differential equation $dS_t = \sigma S_t dW_t$, starting from $S_0 = 1$,
+%		where $\sigma$ is a strictly positive constant.
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item Check that $S_t$ is strictly positive almost surely for all $t \geq 0$.
+%			\item Compute explicitly $Xt := S_t^{-1}$.
+%			\item Let $\mathbb{Q}$ be a new probability measure defined via $d\mathbb{Q} := S_t d\mathbb{P}$. What is the law of $X_t$ under $\mathbb{Q}$ ? 
+%			\item Show finally the Put-Call symmetry (different from the Put-Call parity!!!!):
+%			\begin{equation*}
+%				\mathbb{E}^{\mathbb{P}}(S_T-K)^+ = K\mathbb{E}^{\mathbb{Q}}\left[(K^{-1}-X_T)^+\right]
+%			\end{equation*}
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alpha*),font=\itshape]
+%				\item \ito’s lemma implies that $S_t = \exp (-\frac{1}{2}\sigma^2 t + \sigma W_t)$ for any $t \geq 0$. Since the Brownian motion does not
+%				explode to infinity over any finite time horizon, the result follows.
+%				\item Using the previous representation, we immediately have
+%				\begin{equation*}
+%					X_t = S_t^{-1} = \exp\left(\frac{1}{2}\sigma^2 t - \sigma W_t\right)
+%				\end{equation*}
+%				It further satisfies the stochastic differential equation (by Itˆo’s lemma):
+%				\begin{equation*}
+%					dX_t = -\frac{dS_t}{S_t^2} + \frac{dS^2_t}{S_t^3} = -\sigma X_t dW_t + \sigma^2_t X_t dt
+%				\end{equation*}
+%				\item Since $S_t$ is a true strictly positive martingale, $\mathbb{Q}$ is a well-defined probability measure, equivalent to $\mathbb{P}$.
+%				Therefore the process $B_t$ defined by $B_t := W_t - \sigma t$ is a standard Brownian motion under $\mathbb{Q}$, and so is $W^{\mathbb{Q}} := -B$, and hence 
+%				\begin{equation*}
+%					dX_t = -\sigma X_t(dW_t - \sigma dt) = \sigma X_t dW_t^{\mathbb{Q}}
+%				\end{equation*}
+%				Under $\mathbb{Q}$, the process $X$ is therefore a geometric Brownian motion.
+%				\item Using the change of measure introduced previously, we can write, for all $K>0$,
+%				\begin{equation*}
+%					\mathbb{E}^{\mathbb{P}}(S_T-K)^+ = \mathbb{E}^{\mathbb{P}}\left[S_T\left(1-\frac{K}{S_T}\right)^+\right] = K \mathbb{E}^{\mathbb{Q}}\left[\left(\frac{1}{K}-\frac{1}{S_T}\right)^+\right] = K\mathbb{E}^{\mathbb{Q}}\left[(K^{-1}-X_T)^+\right]
+%				\end{equation*}
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% MARTINGALE
+%		\question Consider the process $S_t$ given by
+%		\begin{equation*}
+%			S_t = S_0\exp(2\mu t + 2W_t)
+%		\end{equation*}
+%		Show that $S$ is a submartingale whenever $\mu\geq -1$, and a supermartingale otherwise. Show then that the price of an Asian option, with payoff $\frac{1}{T}\int_0^T S_u du - K)^+$ is greater than the corresponding Call price with payoff $(S_T-K)^+$, for small enough $K\geq 0$.
+%		\textbf{Hint:} you may want to show first that the representation $S_t = S_0 + martingale + 2(1 + \mu)\int_0^t S_u du$  holds almost surely for all $t \geq 0$, and then the trivial inequality (which follows from the convexity of the exponential function) $e^x \leq 1 + xe^x$ for any $x \in\mathbb{R}$.
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% CEV
+%		\question For any $\beta\in\mathbb{R}$, consider the process $S_t$ defined as the solution to the stochastic differential equation $dS_t = \sigma S^\beta_t dW_t$, $S_0 = 1$.
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item What is this process when $\beta=0$ and $\beta = 1$ ?
+%			\item Take $\sigma = 0.1$ and $\beta = 2$. Using the closed-form representation, compute, on the same plot, the functions $K\rightarrow \mathbb{E}(S_T - K)^+$, for $T\in\{0, 0.1, 1, 5\}$, and discuss the plots.
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			The given stochastic differential equation (SDE) describes the dynamics of a process $S_t$ driven by Brownian motion $dW_t$ and scaled by the current value of $S_t$ raised to the power of $\beta$. Let's see how the process behaves for different values of $\beta$:
+%			\begin{itemize}
+%				\item \textbf{$\beta=0$} In this case, the SDE becomes: $dS_t = \sigma dW_t$. This is simply the standard Wiener process, also known as Brownian motion. It means the change in $S_t$ depends only on the Brownian motion and is independent of the current value of $S_t$. Therefore, $S_t$ follows a normal distribution with mean $t$ and variance $\sigma^2 t$.
+%				\item \textbf{$\beta=1$} The SDE becomes: $dS_t = \sigma S_t dW_t$. This is a geometric Brownian motion (GBM). The change in $S_t$ is now proportional to the current value of $S_t$ and the Brownian motion. Hence, $S_t$ can become larger or smaller quickly depending on the random fluctuations. The solution has the form:
+%				\begin{equation*}
+%					S_t = S_0 \exp\left(\sigma W_t - \frac{\sigma^2}{2}t\right) 
+%				\end{equation*}
+%				where $S_0$ is the initial value (1 in this case). This implies that $S_t$ follows a lognormal distribution with parameters $\mu=\frac{\sigma^2}{2}t$ and $\sigma^2 = \sigma^2 t$.
+%			\end{itemize}
+%			\begin{center}
+%				\includegraphics[width=0.8\linewidth]{addons/cev_sim}
+%			\end{center}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% ITO
+%		\question Compute the stochastic differential $dZ$ when
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item $Z(t) = \exp(\alpha t)$;
+%			\item $Z(t) = \int_0^t g_s dW_s$ where $g$ is an adapted stochastic process;
+%			\item $Z(t) = \exp(\alpha W(t))$;
+%			\item $Z(t) = \exp(\alpha X(t))$ where $X$ has stochastic differential $dX(t)=\mu dt + \sigma dW(t)$ with $\mu$ and $\sigma$ constants;
+%			\item $Z(t) = X^2(t)$ where $X$ has stochastic differential $dX(t)=\alpha X(t)dt + \sigma X(t)dW(t)$.
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item $dZ_t= \alpha e^{\alpha t}dt$;
+%				\item $dZ_t = g(t) dW_t$;
+%				\item by \ito formula: $dZ_t = \frac{\alpha^2}{2}Z(t)dt + \alpha Z_t W_t$;
+%				\item by \ito formula: $dZ_t = (\alpha\mu + \frac{\alpha^2\sigma^2}{2})Z(t)dt + \alpha \sigma Z_t W_t$;
+%				\item by \ito formula: $dZ_t = (\sigma^2 + 2\alpha)Z_t dt + 2\sigma Z_t W_t$.
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% ITO
+%		\question Compute the stochastic differential for $Z$ when $Z(t) = \/X(t)$ and $X$ has stochastic differential 
+%		\begin{equation*}
+%			dX(t) = \alpha X(t) dt + \sigma X(t) dW(t)
+%		\end{equation*}
+%		\fillwithlines{3cm}
+%		\begin{solution}
+%			$dZ(t)=(\sigma^2 - \alpha)Z(t)dt -\sigma Z(t)dW(t)$
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		%ITO
+%		\question Compute the stochastic differential for $Z$ when
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item $Z(t) = \int_0^t e^{-as}\sigma dW(s)$
+%			\item $Z(t) = e^{at}\int_0^t e^{-as}\sigma dW(s)$
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item $dZ(t) = e^{-at}\sigma dW(t)$;
+%				\item Let $Y(t)=\int_0^t e^{-as}\sigma dW(s)$ and $F(t, y)=e^{at}y$. Then $Z(t)=F(t, Y)$ and \ito formula gives
+%				\begin{equation*}
+%					dZ(t) = a\left\{e^{at}\int_0^t e^{-as}\sigma dW(s)\right\}dt + \sigma dW(t)
+%				\end{equation*}
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		\question Solve the n-dimensional linear equation
+%		\begin{equation*}
+%			\begin{aligned}
+%				dX(t) &= AX(t) dt + \sigma dW(t)\\
+%				X(0) &= x_0
+%			\end{aligned}
+%		\end{equation*}
+%		where $B$ is a d-dimensional Brownian motion, $\sigma$ is a $n\times d$-matrix and $A$ is an $n\times n$-matrix
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			Using \ito formula one can check that the solution is given by
+%			\begin{equation*}
+%				X(t) = e^{At}x_0 + \int_0^te^{A(t-s)}\sigma dW(s)
+%			\end{equation*}
+%			where we have used the matrix exponential $e^{At}$ defined by
+%			\begin{equation*}
+%				e^{At} = \sum_{k=0}^{\infty} \cfrac{A^k}{k!}t^k
+%			\end{equation*}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% MARTINGALE
+%		\question Let $W$ be a Brownian motion and $\mathcal{F}$ the natural filtration generated by $W$. Show, using stochastic calculus, that the following processes are martingales,
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item $W^2(t) - t$;
+%			\item $\exp\{\lambda W(t) - \lambda^2\frac{t}{2}\}$, where $\lambda$ is a fixed real number.
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			\ito formula gives
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item $d(W^2(t) - t) = 2W(t)dW(t)$;
+%				\item $d(\exp\{\lambda W(t) - \lambda^2\frac{t}{2}\}) = \lambda\exp\{\lambda W(t) - \lambda^2t/2\}dW(t)$.
+%			\end{enumerate}
+%			We know that $\int_0^tX(s)dW(s)$ is a martingale if $X$ is adapted (and square integrable) so we see that the process are martingales.
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% MARTINGALE 
+%		\question Check whether the following processes $X(t)$ are martingales (w.r.t. the natural filtration generated by $W$),
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item $X(t) = W(t) + 4t$;
+%			\item $X(t) = W^2(t)$;
+%			\item $X(t) = t^2W(t) - 2\int_0^tsW(s)ds$;
+%			\item $X(t) = W_1(t) + W_2(t)$ where $W_1$ and $W_2$ is a 2-dimensional Brownian motion.
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			\ito formula gives the stochastic differentials 
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item $dX(t) = 4dt + dW(t) $;
+%				\item $dX(t) = dt+2W(t)dW(t)$;
+%				\item $dX(t) = t^2dW(t)$;
+%				\item $dX(t) = W_1(t)dW_2(t) + W_2(t)dW_1(t)$.
+%			\end{enumerate}
+%			Since the drift term has to be zero in order for the process to be a martingale we see that the process in (a) and (b) are not martingales, while the processes in (c) and (d) are.
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% MARTINGALE 
+%		\question Supoose that $X$ satisfies the SDE
+%		\begin{equation*}
+%			dX(t) = \alpha X(t)dt + \sigma X^{\beta}(t)dW(t)
+%		\end{equation*}
+%		where $\alpha, \sigma, \beta$ are constants and $W$ is a Brownian motion.
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item Determine the constants $a, b, c$ such that $Y(t) = \exp\{-a X^b(t) + ct\}$ is a martingale;
+%			\item compute $\mathbb{E}[X(t)]$ when $\beta =1/2$;
+%			\item compute $\text{Var}[X(t)]$ when $\beta =1/2$.
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item $a=2\alpha/(b\sigma^2)$, $b=2(1-\beta)$ and $c=ab(b-1)\sigma^2/2$;
+%				\item $\mathbb{E}[X(t)] = x_0e^{\alpha t}$;
+%				\item $\text{Var}[X(t)] = \frac{x_0\sigma^2}{\alpha}(e^{2\alpha t}-e^{\alpha t})$.
+%			\end{enumerate}
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% ITO
+%		\question Let $h(t)$ be a deterministic function and define the process $X$ by
+%		\begin{equation*}
+%			X(t) = \int_0^t h(s) dW(s)
+%		\end{equation*}
+%		Show that $X(t)$ is normally distributed with 
+%		\begin{equation*}
+%			\mathbb{E}[X(t)] = 0, \quad \text{Var}[X(t)] = \int_0^t h^2(s) ds
+%		\end{equation*}
+%		by showing that 
+%		\begin{equation*}
+%			\mathbb{E}[\exp\{i u X(t)\}] = \exp\left\{-\frac{1}{2}u^2 \int_0^t h^2(s) ds\right\}
+%		\end{equation*}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			Fix $u$ and put $Z(t)=\exp (iuX(t))$. Using \ito formula gives
+%			\begin{equation*}
+%				Z(t) = Z_0 - \int_0^t \cfrac{1}{2}u^2h_s^2Z_s ds + \int_0^t iuh_sZ_sdW_s
+%			\end{equation*}
+%			Taking expected value and solving the resulitng ODE for $m(t)=\mathbb{E}[Z(t)]$:
+%			\begin{equation*}
+%				\frac{dm}{dt} = -{1}{2}u^2h^2(t)m(t), \quad m(0)=1
+%			\end{equation*}
+%			yields the result.
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		\question Let $X$ and $Y$ satisfy the following system of SDE's
+%		\begin{equation*}
+%			\begin{cases}
+%				dX(t) = \alpha X(t) dt + Y(t)dW(t), \quad X(0) = x_0\\
+%				dY(t) = \alpha Y(t) dt - X(t)dW(t), \quad Y(0) = x_0\\
+%			\end{cases}
+%		\end{equation*}
+%		where $x_0$ and $y_0$ are deterministic constants.
+%		\begin{enumerate}[label=(\alph*),font=\itshape]
+%			\item Show that $R$, defined by $R(t) = X^2(t)+Y^2(t)$ is deterministic;
+%			\item compute $\mathbb{E}[X(t)]$ and $\text{Cov}(X(t), Y(t))$, and determine for which value of $\alpha$ the process $R$ becomes a deterministic constant.
+%		\end{enumerate}
+%		\fillwithlines{3cm}
+%		
+%		\begin{solution}
+%			\begin{enumerate}[label=(\alph*),font=\itshape]
+%				\item \ito formula gives
+%				\begin{equation*}
+%					dR(t)=(2\alpha + 1)R(t)dt,\quad R(0)=x_o^2 + y_0^2
+%				\end{equation*}
+%				Hence $R(t) = (x_0^2 + y_0^2)e^{(2\alpha + 1)t}$.
+%				\item First compute $\mathbb{E}[X(t)] = x_0e^{\alpha t}$ and  $\mathbb{E}[Y(t)] = y_0e^{\alpha t}$. The let $Z=XY$ and use \ito formula. Taking expected value gives
+%				\begin{equation*} 
+%					\mathbb{E}[Z(t)] = x_0y_0 + \int_0^t(2\alpha - 1)\mathbb{E}[Z(s)]ds
+%				\end{equation*}
+%				Solving the ODE for $m(t) = \mathbb{E}[Z(t)]$ gives 
+%				\begin{equation*} 
+%					m(t) = x_0y_0e^{(2\alpha - 1)t}
+%				\end{equation*}
+%				Using $\text{Cov}(X(t)Y(t))=\mathbb{E}[X(t)Y(t)]-\mathbb{E}[X(t)]\mathbb{E}[Y(t)]$ gives the answer
+%				\begin{equation*} 
+%					\text{Cov}(X(t), Y(t)) = x_oy_0e^{2\alpha t}(e^t - 1)
+%				\end{equation*}
+%			\end{enumerate}
+%			
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		% ODE
+%		\question Let $X$ and $Y$ be given by
+%		\begin{equation*}
+%			\begin{cases}
+%				dX(t) = \alpha X(t) dt + \beta X(t)dW_2(t), \quad X(0) = x_0\\
+%				dY(t) = \gamma Y(t) dt + \sigma X(t)dW_1(t), \quad Y(0) = x_0\\
+%			\end{cases}
+%		\end{equation*}
+%		where $\alpha, \beta, \gamma$ are constant and $W_1$ and $W_2$ are independent Brownian motions.
+%		Compute $\mathbb{E}[X(t)Y(t)]$.
+%		\fillwithlines{3cm}
+%		\begin{solution}
+%			With $Z=XY$ we have by \ito formula that
+%			\begin{equation*}
+%				dZ(t) = (\gamma+\alpha\sigma)Z(t)dt + (\alpha + \sigma)Z(t)dW_1(t) + \beta Z(t)dW_2(t)
+%			\end{equation*}
+%			Integrating and taking expectation gives
+%			\begin{equation*}
+%				\mathbb{E}[Z(t)] = Z_0 + (\gamma+\alpha\sigma)\int_0^t\mathbb{E}[Z(s)]ds
+%			\end{equation*}
+%			Put $m(t)=\mathbb{E}[Z(t)]$ we get the ODE for $m$:
+%			\begin{equation*}
+%				\cfrac{dm}{m} = (\gamma+\alpha\sigma)m(t),\quad m(0)=x_0y_0
+%			\end{equation*}
+%			Solving this ODE we get $\mathbb{E}[Z(t)]=x_0y_0e^{(\gamma+\alpha\sigma)t}$
+%		\end{solution}
+%		
+%		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		
+%		
+	\end{questions}
 \end{document}
