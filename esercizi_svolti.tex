@@ -1,6 +1,6 @@
 \documentclass[12pt,a4paper]{exam}
 
-\input{exercises/exam_header}
+%\input{exercises/exam_header}
 \usepackage{array}
 \usepackage{tabularx}
 \title{Advanced Financial Modeling Course 25/26\\ Exercises}
@@ -315,6 +315,52 @@ Which strategies are appropriate?
 \end{itemize}
 \end{solution}
 
+\question \textbf{Interest Rate Swap} \\
+A bank enters into a 2-year Payer Interest Rate Swap with a notional $N=\$10,000,000$. The swap has annual payments ($\tau =1.0$). You are given the following market prices for Zero-Coupon Bonds (ZCBs) today ($t=0$):
+\begin{itemize}
+	\item[white] 1-year ZCB price: $P(0,1)=0.9850$;
+	\item[white] 2-year ZCB price: $P(0,2)=0.9600$.
+\end{itemize}
+Calculate:
+\begin{parts}
+	\part the Annuity Factor ($A_{0,2}$);
+	\part the Par Swap Rate ($S_{0,2}$);
+	\part the 1-year Forward Libor rate $F(0;1,2)$ and show that the Par Swap Rate is indeed a weighted average of the forward rates.
+\end{parts}
+
+\begin{solution}
+\begin{parts}
+	\part The annuity factor is the sum of the discounted day-count fractions for each payment date:
+\begin{equation*}
+A_{0,2}= \sum_{i=1}^2 \tau_i P(0,T_i) = $A_{0,2}=(1.0\cdot 0.9850)+(1.0\cdot 0.9600)=1.9450$
+\end{equation*}
+	\part Using the model-independent formula derived in your slides:
+	$S_{0,2}=\frac{[P(0,T_0)-P(0,T_2)]}{A_{0,2}}$. 
+	Since we are at $t=T_0$, $P(0,T_0)=1$.
+\begin{equation*}
+S_{0,2}=\frac{(1−0.9600){1.9450} = 2.057\%
+\end{equation*}
+	\part First, find the individual forward rates for each period:
+\begin{itemize}
+	\item Year 1 Spot Rate: $F(0;0,1)=11(0.98501-1)\approx 1.523\%$
+	\item Year 2 Forward Rate: $F(0;1,2)=11 (0.960/0.9850-1)\approx 2.604\%$
+\end{itemize}
+Now, verify the weighted average:
+\begin{equation*}
+S &=w_1 F(0; 0,1)+ w_2 F(0; 1, 2)​
+\end{equation*}
+with $w_1=\frac{\tau P(0,T_i)}{A_{0,2}}$.
+So $w_1 = \frac{0.9850}{1.9450} = 0.5064$ while $w_2=\frac{0.9600​}{1.9450} = 0.4936$.
+
+Finally verify:
+\begin{equation*}
+S_{0,2}​=(0.5064\cdot 0.015228)+(0.4936\cdot 0.02604) = 0.020565
+\end{equation*}	
+The result match the previously calculated value. The rationale is that the swap rate is the average of the actualized forward rates.
+\end{parts}
+
+\end{solution}
+
 \question \textbf{Asset Swap} \\
 Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increases, all the rest being equal ? What does it mean in term of credit quality expectation by the market for the bond's issuer ?
 
@@ -457,6 +503,27 @@ List the pros and cons about each one and declare your favourite.
 		\textit{Table 1: Comparison of Interest Rate Hedging Instruments}
 	\end{center}
 \end{solution}
+
+\question \textbf{Swap Curve} \\
+If the 10-year Swap Rate is 3\% and the 10-year Government Bond yield is 2.5\%, what is the Swap Spread ? 
+If the market enters a financial crisis and bank credit risk increases, what do you expect to happen to this spread ?
+
+\begin{solution}
+The spread is 50 bps. In a crisis, the spread usually widens because the risk of banks (swap counterparties) increases relative to the government.
+\end{solution}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
