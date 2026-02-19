@@ -20,20 +20,19 @@
 				\label{eq:risk_neutral_pricing}
 			\end{equation}
 			ideally we would like to define a probability measure $\mathbb{Q}^X$ under which the discounted derivative process is a martingale and such that the expectation of the payoff is analytically tractable (i.e. easy to compute).
-			\item<1-> The question that arises is: how can we determine such measure $\mathbb{Q}^X$ ?
-			\item<2-> The answer is through \textcolor{maincolor}{change of numeraire}.
-			\item<3-> A \textcolor{maincolor}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as a unit of reference when pricing an asset $S_t$
+			\item<1-> We determine such measure $\mathbb{Q}^X$ with a \textcolor{maincolor}{change of numeraire}.
+			\item<3-> A \textcolor{maincolor}{numeraire} is any strictly positive stochastic process $N_t$ that is taken as unit of reference when pricing an asset $S_t$
 			\begin{equation*}
 				\tilde{S_t}:=\frac{S_t}{N_t}, \quad t \ge 0
 			\end{equation*}
 		\end{itemize}
 	\end{frame}
 	
-	\begin{frame}{Numeraires}
+	\begin{frame}{How to Choose a Numerair}
 		\begin{itemize}
-			\item We may compute asset values w.r.t. USD, EUR or JPY.
-			\item Others might prefer commodities: 1~oz of gold could be a numeraire.
-			\item In any case, once we choose a numeraire e.g. 1 USD, we determine the value of all the other assets:
+			\item We may compute asset values w.r.t. USD, EUR or JPY. Others might prefer commodities: 1~oz of gold could be a numeraire.
+			\item In any case, once we choose a numeraire, all the other asset values are determined.
+			\item Practical reasons induce to prefer one numeraire to others but theory doesn't suggest there is a best one. \textbf{We want to exploit this in our financial models.}
 			\begin{columns}
 				\column{0.5\linewidth}
 				\includegraphics[width=0.9\linewidth]{images/usd_eur}
@@ -43,15 +42,7 @@
 		\end{itemize}
 	\end{frame}
 	
-	\begin{frame}{Numeraires}
-		\begin{itemize}
-			\item Of course, in practice there are reasons to prefer gold to other commodities e.g. corn, live cattle, or one currency with respect to another (e.g. political reasons)\ldots
-			\item But intuitively there should be no theoretical reason (at least at the scale of investors) to prefer to measure value in gold rather than USD (there used to be also the "gold standard")
-			\item \textbf{Basically we want to exploit this fact in our financial models.}
-		\end{itemize}
-	\end{frame}
-	
-	\begin{frame}{Numeraires}
+	\begin{frame}{Deterministic or Stochastic Numeraires}
 		\begin{itemize}
 			\item<1-> \textcolor{maincolor}{Deterministic numeraires} are easy to handle as they imply just an algebraic transformation (i.e. do not involve any risk),
 			\begin{itemize}
@@ -69,7 +60,7 @@
 		\end{itemize}
 	\end{frame}
 	
-	\begin{frame}{Numeraire Examples (I)}
+	\begin{frame}{Stochastic Numeraire Examples (I)}
 		\begin{itemize}
 			\item<1-> \textbf{Money market account.} Given $r_t$, a possibly random and time dependent risk-free interest rate process, let
 			\begin{equation*}
@@ -88,7 +79,7 @@
 		\end{itemize}
 	\end{frame}
 	
-	\begin{frame}{Numeraire Examples (II)}
+	\begin{frame}{Stochastic Numeraire Examples (II)}
 		\begin{itemize}
 			\item<1-> \textbf{Forward numeraire.} The price $P(t,T)$ of a bond paying $P(T,T)=1$ at maturity $T$. In this case
 			\begin{equation*}
@@ -105,78 +96,50 @@
 	
 	\subsection{Radon-Nikodym Derivative}
 	\begin{frame}{Radon-Nikodym Derivative}
-		\begin{itemize}
-			\item Now we need to understand how to pass from a numeraire to another, and hence by a measure to another, in an arbitrage free setting (notice that until now we have implicitly assumed the bank account $B$ as our numeraire).
-			\item Before formalizing how this can be done it is worth stating the following:
-			\begin{itemize}
-				\item given two probability measures ($\mu$ and $\nu$) formally we can indicate with
-				\begin{equation*}
-					\begin{gathered}
-						\mathbb{N}_\mu := \{A\in \Omega \mid \mu(A)=0\}\\
-						\mathbb{N}_\nu := \{A\in \Omega \mid \nu(A)=0\}
-					\end{gathered}
-				\end{equation*}
-				the $\mu$-null sets and the $\nu$-null sets, respectively.
-				The two measures are called equivalent if and only if $\mathbb {N}_\mu= \mathbb{N}_\nu$;
-				\item In other words two probability measures are said to be equivalent when they agree on which events are "available".
-			\end{itemize}
-		\end{itemize}
-	\end{frame}
-	
-	\begin{frame}{Radon-Nikodym Derivative}
+		We need to understand how to pass from a numeraire to another, hence by a measure to another, in an arbitrage free setting (until now we have worked with the bank account $B$ numeraire).
 		\begin{block}{Definition}
 			When two measures are equivalent it is possible to express the first in terms of the second through the \textcolor{maincolor}{Radon-Nikodym derivative}. Indeed there exists a strictly positive \textcolor{maincolor}{martingale process $\zeta_t$} such that
 			\begin{equation*}
-				\mathbb{Q}^* =\int_{A} \zeta_t(\omega)d\mathbb{Q}(\omega)
-			\end{equation*}
-			which can be written in a more concise form as
-			\begin{equation}
-				\frac{d\mathbb{Q}^*}{d\mathbb{Q}} = \zeta_t
+				\mathbb{Q}^* =\int_{A} \zeta_t(\omega)d\mathbb{Q}(\omega) := \frac{d\mathbb{Q}^*}{d\mathbb{Q}} = \zeta_t
 				\label{eq:radon_nikodym_der}
-			\end{equation}
+			\end{equation*}				
 		\end{block}
 	\end{frame}
 	
 	\begin{frame}{Intuition from Expected Value}
 		\begin{itemize}
-			\item To get a sense of what a Radon-Nikodym derivative is we can write the expected value of a generic function $F(x)$ under a measure $\mathbb{P}$, with associated density function $p(x)$ as
+			\item To get a sense about Radon-Nikodym derivative, consider a function $F(x)$ with density function $p(x)$ under a measure $\mathbb{P}$.
+			\item Suppose there exists a function $q(x)$, which the properties of a density function, then we can write
 			\begin{equation*}
-				\expect{P}=\int F(x)p(x)dx
-			\end{equation*}
-			\item Suppose there exists a function $q(x)$, which satisfies the mathematical conditions required to be a density function, then we can write
-			\begin{equation*}
-				\expect{P}=\int F(x)p(x)\frac{q(x)}{q(x)}dx
+				\expect{P}[F(x)]=\int F(x)p(x)dx = \int F(x)p(x)\frac{q(x)}{q(x)}dx
 			\end{equation*}
 			\item If we define $\psi(x)=F(x)\frac{p(x)}{q(x)}$ the expected value can be written as 
 			\begin{equation*}
-				\expect{P}[F(x)]=\int\psi(x)q(x)dx=\expect{Q}[\psi(x)]=\expect{Q}\left[F(x)\frac{p(x)}{q(x)}\right]
+				\expect{P}[F(x)] =\int\psi(x)q(x)dx=\expect{Q}[\psi(x)]=\expect{Q}\left[F(x)\frac{p(x)}{q(x)}\right] 
+				=\expect{Q}\left[F(x)\zeta\right]
+			\end{equation*}
+			\item The process $\zeta$ tracks the \emph{likelihood ratio} between two measures and transforms the expectations dynamically. What is $\E[\zeta]$ ? Intuitively, we have that
+			\begin{equation*}
+				\E^\mathbb{Q}[\zeta]=\E^\mathbb{Q}\left[\frac{d\mathbb{P}}{d\mathbb{Q}}\right]=\int \frac{p(x)}{\cancel{q(x)}} \cancel{q(x)} dx =\int p(x)dx = 1
 			\end{equation*}
 		\end{itemize}
+		
 	\end{frame}
 	
-	\begin{frame}{Radon-Nikodym Derivative}
+	\begin{frame}{Conditional Expectations}
 		\begin{itemize}
-			\item The expectations corresponding to the two measures are related by
-			\begin{equation*}
-				\expect{Q^*}[X] = \expect{Q}\left[X\frac{d\mathbb{Q}^*}{d\mathbb{Q}}\right]= \expect{Q}[X\zeta]
-			\end{equation*}
-			\pause
 			\item In case of a conditioned expectation
 			\begin{equation}
-				\expect{*}[X|\mathcal{F}_t] = \frac{\E\left[X\cfrac{d\mathbb{Q}^*}{d\mathbb{Q}}\bigg|\mathcal{F}_t\right]}{\E[\zeta_t|\mathcal{F}_t]}
+				\expect{P}[X|\mathcal{F}_t] = \frac{\expect{Q}\left[X\cfrac{d\mathbb{P}}{d\mathbb{Q}}\bigg|\mathcal{F}_t\right]}{\expect{Q}[\zeta_t|\mathcal{F}_t]}
 				\label{eq:conditioned_expectation}
 			\end{equation}
-		\end{itemize}
-	\end{frame}
-	
-	\begin{frame}{Derivation: Abstract Bayes Formula}
-		To prove $ \mathbb{E}^{\mathbb{Q}}[X|\mathcal{F}_t] = \frac{\mathbb{E}^{\mathbb{P}}[X\zeta|\mathcal{F}_t]}{\zeta_t} $, check the defining property for $A \in \mathcal{F}_t$:
+			\item To prove this result, for $A \in \mathcal{F}_t$:
 		\begin{align*}
-			\int_A \frac{\mathbb{E}^{\mathbb{P}}[X\zeta|\mathcal{F}_t]}{\zeta_t} d\mathbb{Q} &= \int_A \frac{\mathbb{E}^{\mathbb{P}}[X\zeta|\mathcal{F}_t]}{\zeta_t} \zeta d\mathbb{P} \\
-			&= \int_A \mathbb{E}^{\mathbb{P}} \left[ \frac{\mathbb{E}^{\mathbb{P}}[X\zeta|\mathcal{F}_t]}{\zeta_t} \zeta \bigg| \mathcal{F}_t \right] d\mathbb{P} \\
-			&= \int_A \frac{\mathbb{E}^{\mathbb{P}}[X\zeta|\mathcal{F}_t]}{\zeta_t} \mathbb{E}^{\mathbb{P}}[\zeta|\mathcal{F}_t] d\mathbb{P} \\
-			&= \int_A \mathbb{E}^{\mathbb{P}}[X\zeta|\mathcal{F}_t] d\mathbb{P} = \int_A X\zeta d\mathbb{P} = \int_A X d\mathbb{Q}
+			\int_A \frac{\mathbb{E}^\mathbb{Q}[X\zeta_T|\mathcal{F}_t]}{\zeta_t} d\mathbb{P} &= \int_A \frac{\mathbb{E}^\mathbb{Q}[X\zeta_T|\mathcal{F}_t]}{\zeta_t} \zeta_T d\mathbb{Q} = \quad \text{by tower property}  \\ 
+			&= \int_A \mathbb{E}^\mathbb{Q} \left[ \frac{\mathbb{E}^\mathbb{Q}[X\zeta_T|\mathcal{F}_t]}{\zeta_t} \zeta_T \bigg| \mathcal{F}_t \right] d\mathbb{Q} = \int_A \frac{\mathbb{E}^\mathbb{Q}[X\zeta_T|\mathcal{F}_t]}{\zeta_t} \mathbb{E}^\mathbb{Q}[\zeta_T|\mathcal{F}_t] d\mathbb{Q} \\
+			&= \int_A \mathbb{E}^\mathbb{Q}[X\zeta_T|\mathcal{F}_t] d\mathbb{Q} = \int_A X\zeta_T d\mathbb{Q} = \int_A X d\mathbb{P}
 		\end{align*}
+		\end{itemize}
 	\end{frame}
 	
 	\begin{frame}[fragile]{Radon-Nikodym Derivative Example}
@@ -186,19 +149,27 @@
 		\end{itemize}
 		\begin{columns}
 			\column{0.5\linewidth}
-			\begin{ipython}[linewidth=0.9\linewidth]
-				import numpy as np
-				
-				from scipy.stats import norm
-				
-				def radon_nikodym(x, P, Q):
-				return Q.pdf(x)/P.pdf(x)
-				
-				mu1, mu2 = 0.05, 0.1
-				sigma1, sigma2 = 0.2, 0.4
-				P = norm(mu1, sigma1)
-				Q = norm(mu2, sigma2)	
-			\end{ipython}
+			\begin{ipython}
+mu_p, sigma_p = 0.05, 0.2
+mu_q, sigma_q = 0.02, 0.2
+
+P = norm(mu_p, sigma_p)
+Q = norm(mu_q, sigma_q)
+
+def dQ_dP(x):
+    return Q.pdf(x) / P.pdf(x)
+
+def f(x, strike=0.03):
+    return np.maximum(x - strike, 0)
+
+val_Q, _ = quad(lambda x: f(x) * Q.pdf(x), -5, 5)
+val_P_adj, _ = quad(lambda x: f(x)*dQ_dP(x)*P.pdf(x), -5, 5)
+E_RND, _ = quad(lambda x: dQ_dP(x)* P.pdf(x), -5, 5)
+\end{ipython}
+\begin{ioutput}
+Expectation under Q (P scaled): 0.074888 (0.074888)
+Expectation RDN: 1.0
+\end{ioutput}
 			\column{0.5\linewidth}
 			\begin{center}
 				\includegraphics[width=1\linewidth]{images/radon_nikodym_plot}
@@ -206,112 +177,22 @@
 		\end{columns}
 	\end{frame}
 	
-	\begin{frame}[fragile]{Radon-Nikodym Derivative Example}
-		\begin{itemize}
-			\item Consider the Radon-Nikodym derivative
-			\begin{equation*}
-				\cfrac{d\mathbb{Q}}{d\mathbb{P}}=\zeta;\quad Q(A) = \int_A \zeta dP
-			\end{equation*}
-			\item What is $\E[\zeta]$ ? Intuitively, we have that
-			\begin{equation*}
-				\E[\zeta]=\E\left[\frac{dQ}{dP}\right]=\int \frac{dQ}{dP} dP
-			\end{equation*}
-			so the $dP$ "cancel out" and we get
-			\begin{equation*}
-				\E[\zeta]=\int dQ = 1
-			\end{equation*}
-		\end{itemize}
-	\end{frame}
-	
-	\begin{frame}[fragile]{Radon-Nikodym Derivative Example}
-		\begin{columns}
-			\column{0.5\linewidth}
-			Let's verify our calculation with a Monte Carlo simulation:
-			\begin{equation*}
-				\begin{gathered}
-					<f(x)> = \frac{1}{b-a}  \int_{a}^{b} f(x) \,dx\\
-					\int_{a}^{b} f(x) \,dx = (b-a) <f(x)>\\
-					\int_{a}^{b} f(x) \,dx \approx (b-a) \frac{1}{N} \sum_{i=1}^{N} f(x_i)
-				\end{gathered}
-			\end{equation*}
-			\column{0.5\linewidth}
-			
-			\begin{ipython}
-				import numpy as np
-				from scipy.stats import norm
-				
-				def radon_nikodym(x, P, Q):
-				den = P.pdf(x)
-				den = np.where(den == 0, 1e-30, den)
-				return Q.pdf(x)/den
-				
-				def integration_mc(f, args, llim, ulim, iter=10000):
-				x = np.random.rand(iter)
-				x = x * (ulim-llim) + llim
-				dP = args[0].pdf(x)
-				vals = f(x, *args)*dP
-				return (ulim-llim)*np.mean(vals)
-				
-				print (integration_mc(radon_nikodym, (P, Q,), 
-				-5, 5, 10000000))
-			\end{ipython}	
-			\begin{ioutput}
-				
-				0.9990560242171255
-			\end{ioutput}	
-		\end{columns}
-	\end{frame}
-	
-	%\begin{frame}{Conditional Expectation}
-	%	\begin{itemize}
-		%	\item The classic form of Bayes' theorem for continuous random variables involves integrating over the parameter space:
-		%	\begin{equation*}	
-			%	P(\theta|x) = \cfrac{p(x|\theta)P(\theta)}{\int p(x|\theta')P(\theta')d\theta'}
-			%	\end{equation*}
-		%	\item Now, introduce a reference probability density function $q(x)$ on the same data space as $p(x)$. The Radon-Nikodym derivative is such that:
-		%	\begin{equation*}
-			%	\int f(x)q(x)dx = \int p(x)dx
-			%	\end{equation*}
-		%	\item In our case, we can choose $q(x)$ to be the marginal density $P(x)$. Then, the likelihood function in Bayes' theorem can be represented using the Radon-Nikodym derivative:
-		%	\begin{equation*}
-			%	P(\theta|x) = d(p(x|\theta)P(\theta)|P(x))
-			%	\end{equation*}
-		%	\item This means the posterior density of the parameter $\theta$ given the data $x$ is proportional to the Radon-Nikodym derivative of the product of the likelihood function and the prior density, with respect to the marginal density.
-		%	\item Intuitively, the Radon-Nikodym derivative measures how much "denser" the product of the likelihood and prior is compared to the marginal density at each data point $x$. This "rate of change" helps identify parameter values that make the observed data more likely, updating our belief about the parameter based on the evidence.
-		%	\end{itemize}	
-	%\end{frame}
-	
 	\subsection{Change of Numeraire}
 	\begin{frame}{Change of Numeraire}
 		\begin{block}{Theorem}
-			Assume exists a numeraire $N_t$ and the associated measure $\mathbb{Q}^N$, equivalent to $\mathbb{P}$, such that the price of every traded asset $S_t$ relative to $N$ is a martingale under $\mathbb{Q}^N$
-			\begin{equation*}
-				\frac{S_t}{N_t} = \expect{N}\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
-			\end{equation*}
-			Let $U$ be another arbitrary numeraire. Then \textbf{there exists a measure $\mathbb{Q}^U$, also equivalent to $\mathbb{P}$, such that the price of every traded asset $S_t$, normalized to $U$, is a martingale under $\mathbb{Q}^U$}
+			Assume exists a numeraire $N_t$ and the associated measure $\mathbb{Q}^N$, \textit{equivalent} to $\mathbb{P}$, such that the price of every traded asset $S_t$ relative to $N$ is a \textit{martingale} under $\mathbb{Q}^N$.
+			\begin{enumerate}
+			\item Let $U$ be another arbitrary numeraire, \textbf{there exists a measure $\mathbb{Q}^U$, also equivalent to $\mathbb{P}$, such that the price of every traded asset $S_t$, normalized to $U$, is a martingale under $\mathbb{Q}^U$}
 			\begin{equation*}
 				\frac{S_t}{U_t} = \expect{U}\left[\frac{S_T}{U_T}\bigg|\mathcal{F}_t\right],\quad 0\le t \le T
 			\end{equation*}
-		\end{block}
-	\end{frame}	
-	
-	\begin{frame}{Change of Numeraire}
-		\begin{block}{Theorem cntd.}
-			The Radon-Nikodym derivative defining the measure $\mathbb{Q}^U$ is given by
+			\item The Radon-Nikodym derivative defining the measure $\mathbb{Q}^U$ is given by
 			\begin{equation}
 				\frac{d\mathbb{Q}^U}{d\mathbb{Q}^N} = \frac{U_T N_t}{U_t N_T}
 				\label{eq:radon_nikodym_der2}
 			\end{equation}
+			\end{enumerate}
 		\end{block}
-	\vfill	
-	\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
-		\footnotesize
-		From time to time to ease the notation I will use
-		\begin{equation*}
-			\expect{N}\left[\cdots \middle| \mathcal{F}_t\right] = \expectt{N}{t}\left[\cdots\right]
-		\end{equation*}
-	\end{tcolorbox}
-		
 	\end{frame}	
 	
 	\begin{frame}{Change of Numeraire (Proof part 2)}
@@ -328,7 +209,12 @@
 			\begin{equation*}
 				\expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] = \expectt{U}{t}\left[\cfrac{U_t S_T}{N_t U_T}\right]
 			\end{equation*}
-		\end{itemize} 
+		\end{itemize}
+		\vfill
+		\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+		\footnotesize
+		From time to time to ease the notation I will use $\expect{N}\left[\cdots \middle| \mathcal{F}_t\right] = \expectt{N}{t}\left[\cdots\right]$
+		\end{tcolorbox}
 	\end{frame}
 	
 	\begin{frame}{Change of Numeraire (Proof part 2)}
@@ -346,32 +232,7 @@
 		\myendproof
 	\end{frame}
 	
-	\begin{frame}{Change of Numeraire (Proof part 1)}
-		\begin{itemize}
-			\item<1-> Now we can prove the first part of the change of numeraire theorem. The conditional expectation formula~\cref{eq:conditioned_expectation} gives
-			\begin{equation*}
-				\expect{U}\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\bigg|\mathcal{F}_t\right]}
-			\end{equation*}
-			\item<2-> But 
-			\begin{equation*}
-				\begin{cases}
-					\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\right]= \expectt{N}{t}\left[\cfrac{\cancel{U_T} N_t}{N_T U_t}\cfrac{S_T}{\cancel{U_T}}\right]=\cfrac{N_t S_t}{U_t N_t} \\
-					\expectt{N}{t}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\right]= \expectt{N}{t}\left[\cfrac{U_T N_t}{N_T U_t}\right] = \cfrac{N_t U_t}{U_t N_t}\quad\text{(the density process is a martingale)}
-				\end{cases}
-			\end{equation*}
-		\end{itemize}
-	\end{frame}	
-	
-%	\begin{frame}{Change of Numeraire (Proof part 1)}
-%		\begin{itemize}
-%			\item Now we can prove the first part of the change of numeraire theorem. The conditional expectation formula~\cref{eq:conditioned_expectation} gives
-%			\begin{equation*}
-%				\expect{U}\left[\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]=\cfrac{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\cfrac{S_T}{U_T}\bigg|\mathcal{F}_t\right]}{\expect{N}\left[\cfrac{d\mathbb{Q}^U}{d\mathbb{Q}^N}\bigg|\mathcal{F}_t\right]} = \cfrac{\cfrac{\cancel{N_t} S_t}{\cancel{U_t} \cancel{N_t}}}{\cfrac{\cancel{N_t} U_t}{\cancel{U_t} \cancel{N_t}}} = \cfrac{S_t}{U_t}
-%			\end{equation*}
-%		\end{itemize}
-%		\myendproof
-%	\end{frame}	
-	
+
 	
 	\begin{frame}{Change of Numeraire (Proof part 1)}
 		\begin{itemize}
@@ -392,49 +253,40 @@
 	\begin{frame}{Change of Numeraire Remarks}
 		This powerful theorem, we have just proved allows to
 		\begin{enumerate}
-			\item find a characterization of our process by means of which we can work-out more easily the fundamental pricing formula. In particular allows to find a measure associated to the new numeraire such that \textcolor{maincolor}{the price of any asset divided by that numeraire is a martingale};
 			\item give a simple rule to write (the otherwise difficult to derive) Radon-Nikodym derivative;
-			\item \textcolor{maincolor}{the risk-neutral price is invariant under change of numeraire}
-			\begin{equation*}
-				\text{Price} = \expectt{N}{t}\left[\cfrac{N_t S_T}{N_T}\right] = \expectt{U}{t}\left[\cfrac{U_t S_T}{U_T}\right]
-			\end{equation*}
-		\end{enumerate}
-	\end{frame}
-	
-	\begin{frame}{The Fundamental Identity: Why do we do this?}
-		\begin{itemize}
-			\item \textbf{Price Invariance:} The arbitrage-free price of a claim $V$ at time $t$ is unique. The choice of numeraire only changes the \textit{representation} of the calculation:
+			\item the arbitrage-free price of a claim $V$ at time $t$ is unique. The choice of numeraire only changes the \textit{representation} of the calculation:
 			\begin{equation*}
 				V_t = B_t \mathbb{E}^{\mathbb{Q}^B} \left[ \frac{V_T}{B_T} \bigg| \mathcal{F}_t \right] = N_t \mathbb{E}^{\mathbb{Q}^N} \left[ \frac{V_T}{N_T} \bigg| \mathcal{F}_t \right]
 			\end{equation*}
-			\item \textbf{The Martingale Advantage:} Under the "standard" risk-neutral measure $\mathbb{Q}^B$, assets grow at rate $r$. This drift makes integration difficult.
-			\item By switching to measure $\mathbb{Q}^N$:
-			\begin{enumerate}
-				\item We "normalize" the world so that $N$ is the benchmark.
-				\item The relative price $S/N$ becomes a \textcolor{red}{driftless process} (Martingale).
-				\item The expectation $\mathbb{E}^{\mathbb{Q}^N}$ becomes a simple calculation of the payoff's "average" value in terms of the new benchmark.
-			\end{enumerate}
-		\end{itemize}
+			\item find a characterization of our process by means of which we can work-out more easily the fundamental pricing formula. In particular under the "standard" risk-neutral measure $\mathbb{Q}^B$, assets grow at rate $r$ which makes integration harder.
+			By switching to measure $\mathbb{Q}^N$:
+			 \begin{itemize}
+			 	\item "normalize" the world so that $N$ is the benchmark.
+			 	\item the relative price $S/N$ becomes a \textcolor{red}{driftless process} (Martingale).
+			 	\item the expectation $\mathbb{E}^{\mathbb{Q}^N}$ becomes a simple calculation of the payoff's "average" value in terms of the new benchmark.
+			 \end{itemize}
+		\end{enumerate}
 	\end{frame}
 	
-	\begin{frame}{Asset Price divided by Numeraire}
-		\begin{itemize}
-			\item<1-> Let $B$ be the money market account and $\mathbb{Q}^B$ the corresponding risk-neutral measure. Also let $N$ be another numeraire (note that for what just said $N/B$ is a $\mathbb{Q}^B$-martingale). 
-			\item<2-> From the Change of Numeraire Theorem we can define a new measure by mean of
-			\begin{equation*}
-				\frac{d\mathbb{Q}^N}{d\mathbb{Q}^B} = \frac{N_TB_0}{B_TN_0}
-			\end{equation*}
-			\item<3-> Then, for any asset $S$ such that $S/B$ is a $\mathbb{Q}^B$-martingale
-			\begin{equation*}
-				\expect{N}\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right] = \cfrac{\expect{B}\left[\cfrac{S_T}{N_T}\cfrac{N_TB_0}{B_TN_0}\bigg|\mathcal{F}_t\right]}{\expect{B}\left[\cfrac{N_TB_0}{B_TN_0}\bigg|\mathcal{F}_t\right]}
-				=\cfrac{\expect{B}\left[\cfrac{S_T}{B_T}\bigg|\mathcal{F}_t\right]}
-				{\expect{B}\left[\cfrac{N_T}{B_T}\bigg|\mathcal{F}_t\right]}
-				=\frac{S_tB_t}{N_tB_t}=\frac{S_t}{N_t}
-			\end{equation*}
-			\myendproof
-			\item<4-> \textcolor{maincolor}{So $S/N$ is a $\mathbb{Q}^N$-martingale.}
-		\end{itemize}
-	\end{frame}
+
+%	\begin{frame}{Asset Price divided by Numeraire}
+%		\begin{itemize}
+%			\item<1-> Let $B$ be the money market account and $\mathbb{Q}^B$ the corresponding risk-neutral measure. Also let $N$ be another numeraire (note that for what just said $N/B$ is a $\mathbb{Q}^B$-martingale). 
+%			\item<2-> From the Change of Numeraire Theorem we can define a new measure by mean of
+%			\begin{equation*}
+%				\frac{d\mathbb{Q}^N}{d\mathbb{Q}^B} = \frac{N_TB_0}{B_TN_0}
+%			\end{equation*}
+%			\item<3-> Then, for any asset $S$ such that $S/B$ is a $\mathbb{Q}^B$-martingale
+%			\begin{equation*}
+%				\expect{N}\left[\frac{S_T}{N_T}\bigg|\mathcal{F}_t\right] = \cfrac{\expect{B}\left[\cfrac{S_T}{N_T}\cfrac{N_TB_0}{B_TN_0}\bigg|\mathcal{F}_t\right]}{\expect{B}\left[\cfrac{N_TB_0}{B_TN_0}\bigg|\mathcal{F}_t\right]}
+%				=\cfrac{\expect{B}\left[\cfrac{S_T}{B_T}\bigg|\mathcal{F}_t\right]}
+%				{\expect{B}\left[\cfrac{N_T}{B_T}\bigg|\mathcal{F}_t\right]}
+%				=\frac{S_tB_t}{N_tB_t}=\frac{S_t}{N_t}
+%			\end{equation*}
+%			\myendproof
+%			\item<4-> \textcolor{maincolor}{So $S/N$ is a $\mathbb{Q}^N$-martingale.}
+%		\end{itemize}
+%	\end{frame}
 	
 	\subsection{Applications}
 	\begin{frame}{Examples}
@@ -478,46 +330,38 @@
 		\end{table}}
 	\end{frame}
 	
-	\begin{frame}{A Useful Separation}
-		\begin{itemize}
-			\item<1-> Until now we have used $B(t)$, the money market account, as numeraire. But as we have seen it is natural to look for the most convenient one, that is, the one which minimizes the mathematical difficulties according to the problem at hand.
-			\item<2-> Given a contingent claim whose payoff at time $T$ is $\chi$, we have the following formula for its price $\Pi$
-			\begin{equation*}
-				\Pi_\chi(t,T)=\expect{B}\left[e^{-\int_t^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=\expect{B}\left[e^{\int_0^t r_s ds}e^{-\int_0^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=B_t\expect{B}\left[B^{-1}_T\chi|\mathcal{F}_t\right]
-			\end{equation*}
-			\item<3-> If $\chi$ and the short rate process were independent under $\mathbb{Q}^B$ (recall $\E[XY]=\E[X]\E[Y]$) then we could write
-			\begin{equation*}
-				\Pi_\chi(t,T)=\expect{B}\left[e^{-\int_t^T r_s ds}\bigg|\mathcal{F}_t\right]\expect{B}\left[\chi|\mathcal{F}_t\right] = P(t,T)\expect{B}\left[\chi|\mathcal{F}_t\right]
-			\end{equation*}
-		\end{itemize}
-	\end{frame}
+%	\begin{frame}{A Useful Separation}
+%		\begin{itemize}
+%			\item<1-> Until now we have used $B(t)$, the money market account, as numeraire. But as we have seen it is natural to look for the most convenient one, that is, the one which minimizes the mathematical difficulties according to the problem at hand.
+%			\item<2-> Given a contingent claim whose payoff at time $T$ is $\chi$, we have the following formula for its price $\Pi$
+%			\begin{equation*}
+%				\Pi_\chi(t,T)=\expect{B}\left[e^{-\int_t^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=\expect{B}\left[e^{\int_0^t r_s ds}e^{-\int_0^T r_s ds}\chi\bigg|\mathcal{F}_t \right]=B_t\expect{B}\left[B^{-1}_T\chi|\mathcal{F}_t\right]
+%			\end{equation*}
+%			\item<3-> If $\chi$ and the short rate process were independent under $\mathbb{Q}^B$ (recall $\E[XY]=\E[X]\E[Y]$) then we could write
+%			\begin{equation*}
+%				\Pi_\chi(t,T)=\expect{B}\left[e^{-\int_t^T r_s ds}\bigg|\mathcal{F}_t\right]\expect{B}\left[\chi|\mathcal{F}_t\right] = P(t,T)\expect{B}\left[\chi|\mathcal{F}_t\right]
+%			\end{equation*}
+%		\end{itemize}
+%	\end{frame}
 	
-	\begin{frame}{A Useful Separation}
+	\begin{frame}{Simplifying the Pricing Formula}
 		\begin{itemize}
-			\item<1-> In general the above separation is not possible due to the interaction between the discount factors and the claim payoff. 
-			\item<2-> In this, like in other concrete situations, a better numeraire is indeed the ZCB with the same maturity $T$ of the derivative to price (recall $P(T,T)=1)$.
-			\item<3-> The \textcolor{maincolor}{forward measure $\mathbb{Q}^T$ (also called the $T$-measure)} is defined as the martingale measure for the numeraire process $P(\cdot,T)$, the ZCB maturing in T indeed, i.e. what we called $\mathbb{Q}^2$ in the example above.
-			\item<4-> It is easy to see that using \cref{eq:radon_nikodym_der2}, the Radon-Nykodim derivative is given in this case by
+			\item  Until now we have used $B(t)$, the money market account, as numeraire. In other situations, a better numeraire ist he \textcolor{maincolor}{forward measure} $\mathbb{Q}^T$ (also called the $T$-measure) is defined as the martingale measure associated to the numeraire process $P(\cdot,T)$.
+			\item It is easy to see that using \cref{eq:radon_nikodym_der2}, the Radon-Nykodim derivative is given in this case by
 			\begin{equation}
-				\zeta_t = \frac{d\mathbb{Q}^T}{d\mathbb{Q}^B} = \frac{P(t,T)\overbrace{B(0)}^{=1}}{B_t P(0,T)} ,\quad\left(\zeta_T=\frac{\overbrace{P(T,T)}^{=1}B(0)}{B(T)P(0,T)}=\frac{1}{B(T)P(0,T)}\right)
+				\zeta_t = \frac{d\mathbb{Q}^T}{d\mathbb{Q}^B} = \frac{P(t,T)\cancel{B(0)}}{B_t P(0,T)} ,\quad\left(\zeta_T=\frac{\cancel{P(T,T)}B(0)}{B(T)P(0,T)}=\frac{1}{B(T)P(0,T)}\right)
 				\label{eq:radon_nikodym_t_forward}
 			\end{equation}
-		\end{itemize}
-	\end{frame}
-	
-	\begin{frame}{A Useful Separation}
-		\begin{itemize}
-			\item<1-> Applying the change of numeraire to the pricing formula, we get
+			\item Applying the change of numeraire to the pricing formula, we get
 			\begin{equation*}
 				\begin{aligned}
-					\Pi_\chi(t,T) & = B_t\expect{B}\left[B^{-1}_T\chi|\mathcal{F}_t\right] \\
-					& = B_t\expect{B}\left[P(0,T)\zeta_T\chi|\mathcal{F}_t\right]\quad\text{(using } B_T^{-1} = \zeta_TP(0,T))\\
+					\Pi_\chi(t,T) & = B_t\expect{B}\left[B^{-1}_T\chi|\mathcal{F}_t\right] 
+					= B_t\expect{B}\left[P(0,T)\zeta_T\chi|\mathcal{F}_t\right]\quad\text{(using } B_T^{-1} = \zeta_TP(0,T))\\
 					& = B_tP(0,T)\expect{B}\left[\zeta_T|\mathcal{F}_t\right]\expect{T}\left[\chi|\mathcal{F}_t\right]\quad\text{(by \cref{eq:conditioned_expectation}, cond. expect.)}\\
-					& = B_tP(0,T)\zeta_t\expect{T}\left[\chi|\mathcal{F}_t\right] =  \cancel{B_tP(0,T)}\frac{P(t,T)}{\cancel{B_tP(0,T)}}\expect{T}\left[\chi|\mathcal{F}_t\right] \\
-					& = P(t,T)\expect{T}\left[\chi|\mathcal{F}_t\right] \\
+					& = B_tP(0,T)\zeta_t\expect{T}\left[\chi|\mathcal{F}_t\right] =  \cancel{B_tP(0,T)}\frac{P(t,T)}{\cancel{B_tP(0,T)}}\expect{T}\left[\chi|\mathcal{F}_t\right] = P(t,T)\expect{T}\left[\chi|\mathcal{F}_t\right]
 				\end{aligned}
 			\end{equation*}
-			\item<2-> It achieves the desired separation although under a new measure. Clearly this kind of transformations are useful when $\chi$ has known dynamics under the new measure.
+			\item It achieves the desired separation although under a new measure.			
 		\end{itemize}
 	\end{frame}
 	
@@ -541,83 +385,43 @@
 		\end{block}
 	\end{frame}
 
-	
-%	\begin{frame}{Clarification on Time}
-%		\begin{itemize}
-%			\item Clearly as the Radon-Nikodym derivative is a martingale for valuation time $t$, we have
-%			\begin{equation*}
-%				\frac{d\mathbb{Q}^U}{d\mathbb{Q}^N}=\frac{U_tN_0}{U_0N_t}
-%			\end{equation*}
-%			\item Do not confuse the maturity of the numeraire bond $T$ with the times at which you have to take the values of the numeraire, in this case $t$ and 0.
-%			\item If you want to switch from the $T$ measure to the $S$ measure, i.e. the one induced by the bond $P(.,S)$, for the valuation time $t$ we get
-%			\begin{equation*}
-%				\frac{d\mathbb{Q}^S}{d\mathbb{Q}^T}=\frac{P(t,S)P(0,T)}{P(t,T)P(0,S)}
-%			\end{equation*}
-%		\end{itemize}
-%	\end{frame}
-	
-	%%%%%%%%%%%%%%%%%%%%%%%%%%  PARTE 1
-	
 	\begin{frame}{The Forward Rate Under $\mathbb{Q}^T$}
 		\begin{block}{Proposition}
 			Consider the forward numeraire $P(t,T)$ and denote with $\mathbb{Q}^T$ its associated measure.
 			The forward rate spanning the interval $[S,T]$ is the $\mathbb{Q}^T$-expectation of the future spot rate at time $S$ for the maturity $T$
 			\begin{equation}
-				F(t;S,T) =\expect{T}[L(S,T)|\mathcal{F}_t]
+				F(t;S,T) =\expect{T}[L(S,T)|\mathcal{F}_t]\quad \text{with }t<S<T
 			\end{equation}
-			with $t<s<T$.
 		\end{block}
-	\end{frame}
-	
-	\begin{frame}{The Forward Rate Under $\mathbb{Q}^T$ (Proof)}
-		\begin{equation*}
-			\begin{gathered}
-				F(t;S,T) = \frac{1}{\tau}\left[\frac{P(t,S)-P(t,T)}{P(t,T)}\right] \\[0.3cm]
-				F(t;S,T)P(t,T) = \frac{P(t,S)-P(t,T)}{\tau}
-			\end{gathered}
-		\end{equation*}
-		
-		Since $F(t;S,T)P(t,T)$ is the value of a tradable portfolio (long $1/\tau$ bonds maturing at $S$, short $1/\tau$ bonds maturing at $T$), its value divided by the numeraire $P(t,T)$ must be a $\mathbb{Q}^T$-martingale
-		\begin{equation*}
-			F(t,S,T) = \frac{F(t;S,T)P(t,T)}{P(t,T)}
-		\end{equation*}
-		\pause Hence
+		\vfill
+		$F(t;S,T) = (P(t,S)-P(t,T))/(\tau\cdot P(t,T))$ is the value of a tradable portfolio (long $1/\tau$ bonds maturing at $S$, short $1/\tau$ bonds maturing at $T$) divided by the numeraire $P(t,T)$. It must be a $\mathbb{Q}^T$-martingale
 		\begin{equation*}
 			F(t;S,T) = \expect{T}[F(S;S,T)|\mathcal{F}_t] = \expect{T}\left[\frac{1}{\tau}\left(\frac{1-P(S,T)}{P(S,T)}\right)\bigg|\mathcal{F}_t\right] = \expect{T}[L(S,T)|\mathcal{F}_t]
 		\end{equation*}
 		\myendproof
 	\end{frame}
 	
-	\begin{frame}{The Forward Rate Under $\mathbb{Q}^T$}
+	\begin{frame}{The Forward Rate Under $\mathbb{Q}^T$ (I)}
 		A similar result can be derived for the corresponding instantaneous quantities
-		\begin{equation}
-			f(t,T)=\expect{T}[r_T|\mathcal{F}_t]
-		\end{equation}
-		\pause
-		Indeed from the definition of $\mathbb{Q}^B$
+		$f(t,T)=\expect{T}[r_T|\mathcal{F}_t]$. Indeed in $\mathbb{Q}^B$ measure
 		\begin{equation*}
-			\frac{P(t,T)}{B_t}=\expect{B}\left[\frac{P(T,T)}{B_T}\bigg|\mathcal{F}_t\right]
-		\end{equation*}
-		but $P(T,T)=1$ so
-		\begin{equation*}
+			\frac{P(t,T)}{B_t}=\expect{B}\left[\frac{P(T,T)}{B_T}\bigg|\mathcal{F}_t\right] \implies
 			P(t,T)=\expect{B}\left[\frac{B_tP(T,T)}{B_T}\bigg|\mathcal{F}_t\right]=\expect{B}\left[e^{-\int_t^Tr_u du}\big|\mathcal{F}_t\right]
 		\end{equation*}
-		\pause
 		Differentiating with respect to $T$ ($\frac{d}{dx}\int_c^x f(t)dt=f(x)$)
 		\begin{equation*}
 			\frac{\partial P(t,T)}{\partial T}=
 			\expect{B}\left[-r(T)e^{-\int_t^Tr_u du}\big|\mathcal{F}_t\right]
 		\end{equation*}
-	\end{frame}
-	
-	\begin{frame}{The Forward Rate Under $\mathbb{Q}^T$}
-		Now we can change numeraire to $P(\cdot,T)$ so that, using reciprocal of \cref{eq:radon_nikodym_t_forward} ($\zeta^{-1}=\frac{B_t/B_T}{P(t,T)/P(T,T)}$)
+		Changing numeraire to $P(\cdot,T)$and using reciprocal of \cref{eq:radon_nikodym_t_forward} ($\zeta^{-1}=\frac{B_t/B_T}{P(t,T)/P(T,T)}$)
 		\begin{equation*}
 			\frac{\partial P(t,T)}{\partial T}=
 			\expect{T}\left[-r(T)\cancel{e^{-\int_t^Tr_u du}}\frac{P(t,T)}{\cancel{e^{-\int_t^Tr_u du}}}\bigg|\mathcal{F}_t\right]=
 			P(t,T)\expect{T}\left[-r(T)|\mathcal{F}_t\right]
 		\end{equation*}
-		\pause
+	\end{frame}
+	
+	\begin{frame}{The Forward Rate Under $\mathbb{Q}^T$ (II)}
 		Hence
 		\begin{equation*}
 			\begin{aligned}
@@ -625,274 +429,72 @@
 				-\frac{\partial \ln P(t,T)}{\partial T}
 				= \expect{T}\left[r(T)|\mathcal{F}_t\right]=	\expect{T}\left[f(T,T)|\mathcal{F}_t\right]
 			\end{aligned}
-		\end{equation*}\myendproof
+		\end{equation*}
+		Which demonstrates the initial statement and also shows that \textcolor{maincolor}{the instantaneous forward rate is a martingale under the $T$-forward measure}. 
+		\myendproof
 		
-		Which demonstrates the initial statement and also shows that \textcolor{maincolor}{the instantaneous forward rate is a martingale under the $T$-forward measure}. Note the negative sign which represents the "decay" of the bond
+		Note the negative sign which represents the "decay" of the bond
 		price as maturity increase.
-	\end{frame}
-	
-	\begin{frame}{The Expectation Hypothesis}
-		\begin{itemize}
-			\item Previous result
-			\begin{equation*}
-				f(t, T) = \expect{T}[r(T)|\mathcal{F}_t]
-			\end{equation*}
-			has a nice connection with the \textcolor{maincolor}{expectation hypothesis of the term structure of interest rates}.
-			\item Its basic idea is that the long-term rate is determined purely by current and future expected short-term rates.
-			\item We cannot dive into it, but there are a lot of papers on the subject, among which I suggest
+		
+		\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+			\footnotesize
+			$f(t, T) = \expect{T}[r(T)|\mathcal{F}_t]$ has a nice connection with the \textcolor{maincolor}{expectation hypothesis of the term structure of interest rates}.
+			Its basic idea is that the long-term rate is determined purely by current and future expected short-term rates.
 			\begin{itemize}
 				\item \href{https://pages.stern.nyu.edu/~sternfin/asangvin/ExpHyp.pdf}{\emph{The Expectation Hypothesis, A. Sangvinatsos}}
 				\item \href{https://www.jstor.org/stable/2327547}{\emph{A Re-Examination of Traditional Hypotheses about the Term Structure of Interest Rates}, J.C. Cox, J.E. Ingersoll, and S.A. Ross}
-				%\item \href{https://www.albany.edu/~bd445/Economics_802_Financial_Economics_Slides_Fall_2013/Risk_Neutrality_and_the_Expectations_Theory.pdf}{\emph{Slides from Fall 2013}}
 			\end{itemize}
-			%\item According to the pure expectation hypothesis, the above formula is valid if the expected value is taken under the real probability.
-			%\item Absence of arbitrage makes this incompatible with stochastic interest rates.
-			
-			
-			The Expectation Hypothesis: This is a crucial bridge to macroeconomics. You might add a small note that in the "real world" (P measure), this hypothesis often fails due to the Term Premium. The formula f(t,T)=ET[r(T)] holds under the forward measure by construction (no-arbitrage), but f(t,T)=EP[r(T)] is an empirical claim that usually requires a risk premium adjustment.
-			
-			Homework Slide: The question about "tight" monetary policy is excellent. It forces students to think about how raising r(t) (the short end) affects expectations of future inflation and growth, which are embedded in the long-term forward rates f(t,T) through the forward measure.
-			
-			
-		\end{itemize}
+		\end{tcolorbox}	
 	\end{frame}
-	
-	\begin{homework}
-		\begin{frame}{\textcolor{white}{Homework}}
-			\begin{itemize}
-				\item[white] If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
-			\end{itemize}
-		\end{frame}
-	\end{homework}
-	
-	
-	%The Expectations Hypothesis (EH) is a theory in finance that attempts to explain the relationship between short-term and long-term interest rates, as well as the shape of the yield curve.  It essentially posits that long-term interest rates are determined by current and expected future short-term interest rates.  Here's a breakdown:   
-	%
-	%Core Idea:
-	%
-	%The EH states that the forward rate (the interest rate agreed upon today for a future transaction) is an unbiased predictor of the future spot rate (the actual interest rate at that future time).  In simpler terms, if you want to know what the market expects short-term interest rates to be in the future, just look at the current forward rates.   
-	%
-	%Implications:
-	%
-	%Yield Curve Shape: The shape of the yield curve (a graph showing interest rates at different maturities) is determined by market expectations of future short-term interest rates.
-	%
-	%Upward Sloping Yield Curve (Normal): Indicates that the market expects short-term interest rates to rise in the future.   
-	%Downward Sloping Yield Curve (Inverted): Suggests that the market anticipates short-term interest rates to decline.   
-	%Flat Yield Curve: Implies that the market expects short-term interest rates to remain relatively stable.
-	%Investment Decisions: The EH suggests that investors should be indifferent between investing in a long-term bond or a series of short-term bonds, as long as they have the same expected return.  This is because the long-term rate is just the average of the expected future short-term rates.
-	%
-	%Formal Expression (Simplified):
-	%
-	%The basic idea can be expressed as:
-	%
-	%Forward Rate (for period n) = Expected Future Spot Rate (for period n)
-	%
-	%Or, more generally:
-	%
-	%(1 + Long-term Rate)^n = (1 + Short-term Rate 1) * (1 + Expected Short-term Rate 2) * ... * (1 + Expected Short-term Rate n)
-	%
-	%Criticisms and Limitations:
-	%
-	%The Expectations Hypothesis is rarely considered a complete explanation of the yield curve.  It has several significant limitations:
-	%
-	%Risk Premium: The EH ignores the concept of a risk premium. Investors typically demand a premium (extra return) for holding long-term bonds because they are exposed to greater interest rate risk. The Liquidity Preference Theory and the Market Segmentation Theory incorporate risk premiums.   
-	%Other Factors: The EH focuses solely on expectations of future short-term rates. Other factors, such as supply and demand for bonds, inflation expectations, and economic growth prospects, also influence long-term rates and the shape of the yield curve.   
-	%Empirical Evidence: Empirical studies have shown that the EH does not consistently hold up in real-world markets. While expectations play a role, they are not the only, or even the most important, determinant of long-term rates.
-	%Related Theories:
-	%
-	%Liquidity Preference Theory: Extends the EH by incorporating a liquidity premium. Investors prefer short-term, more liquid bonds and require a premium to hold less liquid long-term bonds.
-	%Market Segmentation Theory: Suggests that the yield curve is shaped by the supply and demand for bonds of different maturities, driven by the specific needs and preferences of different investor groups (e.g., banks, insurance companies, pension funds).
-	%In Summary:
-	%
-	%The Expectations Hypothesis provides a basic framework for understanding the relationship between short-term and long-term interest rates. While it highlights the importance of expectations, it is an oversimplification of reality.  Other factors, especially risk premiums and supply/demand dynamics, play a crucial role in determining the shape of the yield curve.  Therefore, while the EH is a useful starting point, it should be used in conjunction with other theories to gain a more complete understanding of interest rate behavior.   
-	%
-	%
-	%Sources and related content
-	%Expectations hypothesis - Wikipedia
-	%
-	%en.wikipedia.org
-	%
-	%The Forward Rate as a Predictor of the Future Spot Rate—A Stochastic Coefficient Approach
-	%
-	%www.researchgate.net
-	%
-	%Bonds 102: Understanding the Yield Curve - PIMCO
-	%
-	%www.pimco.com
-	%
-	%What does an inverted yield curve signal about the economy? | U.S. Bank
-	%
-	%www.usbank.com
-	%
-	%Term premia: models and some stylised facts - Bank for International Settlements
-	%
-	%www.bis.org
-	%
-	%
-	%
-	%
-	%
-	%
-	%
-	%If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
-	%
-	%
-	%
-	%Why the Yield Curve Can Be Flat, Upward Sloping, or Downward Sloping Under the Pure Expectations Hypothesis
-	%
-	%The pure expectations hypothesis (PEH) suggests that the shape of the yield curve is solely determined by market expectations of future short-term interest rates. Here's how different expectations lead to different yield curve shapes:
-	%
-	%Flat Yield Curve: A flat yield curve implies that the market expects short-term interest rates to remain relatively constant in the future. If investors anticipate that short-term rates will neither rise nor fall significantly, long-term rates (which are essentially averages of expected future short-term rates) will be similar to current short-term rates, resulting in a flat curve.
-	%
-	%Upward Sloping Yield Curve: An upward sloping yield curve (also known as a "normal" yield curve) indicates that the market expects short-term interest rates to rise in the future. As long-term rates reflect the average of expected future short-term rates, they will be higher than current short-term rates if future rates are anticipated to increase.   
-	%
-	%Downward Sloping Yield Curve: A downward sloping yield curve (also known as an "inverted" yield curve) suggests that the market expects short-term interest rates to decline in the future. In this case, long-term rates will be lower than current short-term rates because they incorporate the expectation of falling future short-term rates.   
-	%
-	%How a "Tight" Monetary Policy Affects the Yield Curve
-	%
-	%When a government implements a credible "tight" monetary policy by raising short-term interest rates, it can have a significant impact on the yield curve. Here's how:
-	%
-	%Initial Impact: The immediate effect of raising short-term rates is to push the very front end of the yield curve upward. This is because the policy directly targets short-term rates.
-	%
-	%Expectations of Future Rates: The key question is how this policy action affects market expectations of future short-term rates. If the market believes that the central bank's commitment to tight monetary policy is credible and that the rate hikes are likely to be sustained for some time to combat inflation, then expectations of future short-term rates may also rise. This would lead to an upward shift in the entire yield curve.
-	%
-	%Potential for Inversion: However, if the market believes that the rate hikes will eventually lead to an economic slowdown or recession, expectations of future short-term rates may actually decline. In this scenario, the yield curve could become flat or even inverted. This is because long-term rates would reflect the expectation of lower future short-term rates, even though current short-term rates are high due to the policy action.
-	%
-	%Credibility is Key
-	%
-	%The credibility of the government's monetary policy is crucial in determining how the yield curve responds. If the market trusts that the central bank will stick to its tight policy, the yield curve is more likely to shift upward. However, if the market doubts the central bank's resolve or believes that the policy will be short-lived, the yield curve may flatten or invert.
-	%
-	%Other Factors
-	%
-	%It's important to remember that the yield curve is influenced by various factors beyond just expectations of future short-term rates. These include:   
-	%
-	%Inflation expectations: If the tight monetary policy is successful in curbing inflation, this could lower long-term rates.
-	%Economic growth prospects: If the market believes the rate hikes will lead to a recession, this could put downward pressure on long-term rates.
-	%Supply and demand for bonds: The relative supply and demand for bonds of different maturities can also affect the yield curve.   
-	%In summary:
-	%
-	%The yield curve's shape reflects market expectations of future short-term interest rates.
-	%
-	%A credible tight monetary policy can initially raise short-term rates and potentially lead to an upward shift in the yield curve if the market believes the policy will be sustained. However, if the market anticipates an economic slowdown, the yield curve may flatten or invert. The credibility of the policy and other economic factors play a significant role in determining the ultimate impact on the yield curve.   
-	
-	
-	
-	%The Relationship between Forward Rate over Second Year
-	%and Spot Rate Expected over Second Year
-	%Given a forecast of bond B’s price, an investor can choose one of two strategies at date 0:
-	% 1. Buy a one-year bond. Proceeds at date 1 would be:
-	% $1,080 = $1,000 x 1.08 (A.10)
-	
-	% 2. Buy a two-year bond but sell at date 1. Expected proceeds would be:
-	% $1,000 x (1.10)2
-	%____________________________
-	%1 +  Spot rate expected over year 2 (A.11)
-	% Given our discussion of forward rates, we can rewrite Equation A.11 as:
-	% $1,000 x 1.08 x 1.1204
-	%____________________________
-	%1  Spot rate expected over year 2 (A.12)
-	% (Remember that 12.04 percent was the forward rate over year 2; that is, f2 = 12.04%.)
-	% Under what condition will the return from strategy 1 equal the expected return from
-	%strategy 2? In other words, under what condition will Equation A.10 equal Equation A.12?
-	% The two strategies will yield the same expected return only when:
-	% 12.04%  Spot rate expected over year 2 (A.13)
-	%In other words, if the forward rate equals the expected spot rate, one would expect to earn
-	%the same return over the first year whether one
-	%• Invested in a one-year bond.
-	%• Invested in a two-year bond but sold after one year.
-	
-	
-	%The Expectations Hypothesis
-	%Equation A.13 seems fairly reasonable. That is, it is reasonable that investors would set
-	%interest rates in such a way that the forward rate would equal the spot rate expected by the
-	%marketplace a year from now.
-	% For example, imagine that individuals in the marketplace do
-	%not concern themselves with risk. If the forward rate, f2, is less than the spot rate expected
-	%over year 2, individuals desiring to invest for one year would always buy a one-year bond.
-	%That is, our work shows that an individual investing in a two-year bond but planning to sell
-	%at the end of one year would expect to earn less than if he simply bought a one-year bond.
-	% Equation A.13 was stated for the specific case where the forward rate was 12.04 percent.
-	%We can generalize this as follows:
-	%Expectations Hypothesis:
-	% f2 = Spot rate expected over year 2 (A.14)
-	%Equation A.14 says that the forward rate over the second year is set to the spot rate that
-	%people expect to prevail over the second year. This is called the expectations hypothesis. It
-	%states that investors will set interest rates such that the forward rate over the second year is
-	%equal to the one-year spot rate expected over the second year.
-	
-	
-	%Liquidity Preference Hypothesis
-	%At this point, many students think that Equation A.14 must hold. However, note that we
-	%developed Equation A.14 by assuming that investors were risk-neutral. Suppose, alternatively, that investors are averse to risk.
-	% Which strategy would appear more risky for an individual who wants to invest for one year?
-	% 1. Invest in a one-year bond.
-	% 2. Invest in a two-year bond but sell at the end of one year.
-	
-	%Strategy 1 has no risk because the investor knows that the rate of return must be r1. Conversely,
-	%strategy 2 has much risk: The fi nal return is dependent on what happens to interest rates.
-	% Because strategy 2 has more risk than strategy 1, no risk-averse investor will choose
-	%strategy 2 if both strategies have the same expected return. Risk-averse investors can have
-	%no preference for one strategy over the other only when the expected return on strategy
-	%2 is above the return on strategy 1. Because the two strategies have the same expected
-	%return when f2 equals the spot rate expected over year 2, strategy 2 can have a higher rate
-	%of return only when the following condition holds:
-	%Liquidity Preference Hypothesis:
-	% f2 >  Spot rate expected over year 2 (A.15)
-	
-	%That is, to induce investors to hold the riskier two-year bonds, the market sets the forward
-	%rate over the second year to be above the spot rate expected over the second year. Equation A.15 is called the liquidity preference hypothesis.
-	% We developed the entire discussion by assuming that individuals are planning to invest
-	%over one year. We pointed out that for these types of individuals, a two-year bond has extra
-	%risk because it must be sold prematurely. What about individuals who want to invest for two
-	%years? (We call these people investors with a two-year time horizon.)
-	% They could choose one of the following strategies:
-	% 3. Buy a two-year zero coupon bond.
-	% 4. Buy a one-year bond. When the bond matures, immediately buy another one-year bond.
-	% Strategy 3 has no risk for an investor with a two-year time horizon because the proceeds
-	%to be received at date 2 are known as of date 0. However, strategy 4 has risk because the
-	%spot rate over year 2 is unknown at date 0. It can be shown that risk-averse investors will
-	%prefer neither strategy 3 nor strategy 4 over the other when:
-	% f2 < Spot rate expected over year 2 (A.16)
-	
-	% Note that the assumption of risk aversion gives contrary predictions. Relationship A.15
-	%holds for a market dominated by investors with a one-year time horizon. Relationship A.16
-	%holds for a market dominated by investors with a two-year time horizon. Financial economists have generally argued that the time horizon of the typical investor is generally much
-	%shorter than the maturity of typical bonds in the marketplace. Thus, economists view A.15
-	%as the best depiction of equilibrium in the bond market with risk-averse investors.
-	% However, do we have a market of risk-neutral or risk-averse investors? In other words,
-	%can the expectations hypothesis of Equation A.14 or the liquidity preference hypothesis of
-	%Equation A.15 be expected to hold? As we will learn later in this book, economists view
-	%investors as being risk-averse for the most part. Yet, economists are never satisfi ed with a
-	% casual examination of a theory’s assumptions. To them, empirical evidence of a theory’s
-	%predictions must be the fi nal arbiter.
-	% There has been a great deal of empirical evidence about the term structure of interest
-	%rates. Unfortunately (perhaps fortunately for some students), we will not be able to present
-	%the evidence in any detail. Suffi ce it to say that, in our opinion, the evidence supports the
-	% liquidity preference hypothesis over the expectations hypothesis. One simple result might
-	%give students the fl avor of this research. Consider an individual choosing between one of
-	%the following two strategies:
-	% 1. Invest in a one-year bond.
-	% 2. Invest in a 20-year bond but sell at the end of one year.
-	%www.mhhe.com/rwj r
-	%Chapter 5 How to Value Bonds and Stocks 5A-9
-	% [Strategy 2 is identical to strategy 2, except that a 20-year bond is substituted for a
-	%2-year bond.]
-	% The expectations hypothesis states that the expected returns on both strategies are
-	%identical. The liquidity preference hypothesis states that the expected return on strategy
-	%2 should be above the expected return on strategy 1. Though no one knows what returns
-	%are actually expected over a particular time period, actual returns from the past may allow
-	%us to infer expectations. The results from January 1926 to December 1999 are illuminating. The average yearly return on strategy 1 is 3.8 percent and 5.5 percent on strategy 2
-	%over this time period.7,8 This evidence is generally considered to be consistent with the
-	% liquidity preference hypothesis and inconsistent with the expectations hypothesis.
-	%\end{frame}
-	
-	    Radon-Nikodym: Tells you how to re-weight the outcomes (the terminal distribution). It’s like saying: "In this new world, bad outcomes are 50% less likely."
-	
-	Girsanov: Tells you how to change the engine (the SDE). It says: "To make those outcomes 50% less likely, you must add this specific constant to the wind (drift) every second."
-	
-	The Link: Without Girsanov, you have a new measure Q, but you don't know the SDE for St​ under Q. You can't run a Monte Carlo simulation without Girsanov.
-	
-	
+		
+%	\begin{homework}
+%		\begin{frame}{\textcolor{white}{Homework}}
+%			\begin{itemize}
+%				\item[white] If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
+%			\end{itemize}
+%	%If the pure expectations hypothesis holds, why might the yield curve be flat, upward sloping, or downward sloping? The government implements a credible “tight” monetary policy by raising short-term (e.g. 3-month) interest rates. How could this affect the yield curve?
+%	%
+%	%
+%	%
+%	%Why the Yield Curve Can Be Flat, Upward Sloping, or Downward Sloping Under the Pure Expectations Hypothesis
+%	%
+%	%The pure expectations hypothesis (PEH) suggests that the shape of the yield curve is solely determined by market expectations of future short-term interest rates. Here's how different expectations lead to different yield curve shapes:
+%	%
+%	%Flat Yield Curve: A flat yield curve implies that the market expects short-term interest rates to remain relatively constant in the future. If investors anticipate that short-term rates will neither rise nor fall significantly, long-term rates (which are essentially averages of expected future short-term rates) will be similar to current short-term rates, resulting in a flat curve.
+%	%
+%	%Upward Sloping Yield Curve: An upward sloping yield curve (also known as a "normal" yield curve) indicates that the market expects short-term interest rates to rise in the future. As long-term rates reflect the average of expected future short-term rates, they will be higher than current short-term rates if future rates are anticipated to increase.   
+%	%
+%	%Downward Sloping Yield Curve: A downward sloping yield curve (also known as an "inverted" yield curve) suggests that the market expects short-term interest rates to decline in the future. In this case, long-term rates will be lower than current short-term rates because they incorporate the expectation of falling future short-term rates.   
+%	%
+%	%How a "Tight" Monetary Policy Affects the Yield Curve
+%	%
+%	%When a government implements a credible "tight" monetary policy by raising short-term interest rates, it can have a significant impact on the yield curve. Here's how:
+%	%
+%	%Initial Impact: The immediate effect of raising short-term rates is to push the very front end of the yield curve upward. This is because the policy directly targets short-term rates.
+%	%
+%	%Expectations of Future Rates: The key question is how this policy action affects market expectations of future short-term rates. If the market believes that the central bank's commitment to tight monetary policy is credible and that the rate hikes are likely to be sustained for some time to combat inflation, then expectations of future short-term rates may also rise. This would lead to an upward shift in the entire yield curve.
+%	%
+%	%Potential for Inversion: However, if the market believes that the rate hikes will eventually lead to an economic slowdown or recession, expectations of future short-term rates may actually decline. In this scenario, the yield curve could become flat or even inverted. This is because long-term rates would reflect the expectation of lower future short-term rates, even though current short-term rates are high due to the policy action.
+%	%
+%	%Credibility is Key
+%	%
+%	%The credibility of the government's monetary policy is crucial in determining how the yield curve responds. If the market trusts that the central bank will stick to its tight policy, the yield curve is more likely to shift upward. However, if the market doubts the central bank's resolve or believes that the policy will be short-lived, the yield curve may flatten or invert.
+%	%
+%	%Other Factors
+%	%
+%	%It's important to remember that the yield curve is influenced by various factors beyond just expectations of future short-term rates. These include:   
+%	%
+%	%Inflation expectations: If the tight monetary policy is successful in curbing inflation, this could lower long-term rates.
+%	%Economic growth prospects: If the market believes the rate hikes will lead to a recession, this could put downward pressure on long-term rates.
+%	%Supply and demand for bonds: The relative supply and demand for bonds of different maturities can also affect the yield curve.   
+%	%In summary:
+%	%
+%	%The yield curve's shape reflects market expectations of future short-term interest rates.
+%	%
+%	%A credible tight monetary policy can initially raise short-term rates and potentially lead to an upward shift in the yield curve if the market believes the policy will be sustained. However, if the market anticipates an economic slowdown, the yield curve may flatten or invert. The credibility of the policy and other economic factors play a significant role in determining the ultimate impact on the yield curve.   
+%		\end{frame}
+%	\end{homework}
+
 	
 	\subsection{Girsanov Theorem}
 	\begin{frame}{Which Dynamics ?}
@@ -905,81 +507,79 @@
 		\end{itemize}
 	\end{frame}
 	
-	\begin{frame}{Girsanov Theorem}
-		\begin{block}{Theorem}
-			Consider the SDE 
-			\begin{equation*}
-				dX_t = f_t dt + \sigma_t dW_t
-			\end{equation*}
-			under $\mathbb{P}$. 
-			
-			Let be given a new drift $f^*_t$ and assume $\gamma_t=\frac{f_t^*-f_t}{\sigma_t}$ such that $\E\left[\exp\left(\frac{1}{2}\int_0^t\gamma_t^2dt\right)\right]<\infty$.
-			Define the measure 
-			\begin{equation}
-				\frac{d\mathbb{P}^*}{d\mathbb{P}}=\exp\left(-\frac{1}{2}\int_0^t \gamma_s^2 ds + \int_0^t \gamma_s dW_s \right)
-			\end{equation}
-			Then $\mathbb{P}^*$ is equivalent to $\mathbb{P}$. 
-			The Radon-Nikodym derivative process is an \textcolor{maincolor}{exponential martingale}.
-		\end{block}
-	\end{frame}
-	
-	\begin{frame}{Girsanov Theorem}
-		\begin{block}{Theorem continued}
-			Also the process
-			\begin{equation}
-				dW^*_t = dW_t -\gamma_s dt
-			\end{equation} 
-			is a Brownian motion under $\mathbb{P}^*$, and 
-			\begin{equation*}
-				dX_t = f^*_t dt + \sigma_t dW^*_t
-			\end{equation*}
-			The condition $\E\left[\exp\left(\frac{1}{2}\int_0^t\gamma_t^2dt\right)\right]<\infty$ is a sufficient but non-necessary, and it is know as the \textcolor{maincolor}{Novikov condition}.
-			
-			    Novikov Condition: Clarify that this ensures the RN derivative is a true martingale and not just a local martingale. If it's not a true martingale, E[dPdQ​]=1, and Q is not a probability measure.
-			
-		\end{block}
-	\end{frame}
-		
-	\begin{frame}{A Trivial Example}
-		\begin{itemize}
-			\item Consider the stochastic differential equation
-			\begin{equation*}
-				dX_t = b(X_t, t) dt + a(X_t, t) dW_t
-			\end{equation*}
-			\item Let's assume that the drift and diffusion coefficients are such that there exists a unique solution to the equation which is $X$.
-			\item We want to find a probability measure $\mathbb{P}^*$ such that the drift of $X$ is $\tilde{b}(X_t,t)$ instead of $b(X_t,t)$.
-		\end{itemize}
-	\end{frame}
-	
-	\begin{frame}{A Trivial Example}
+\begin{frame}{Girsanov Theorem}
+	\begin{block}{Theorem}
+		Consider the SDE 
 		\begin{equation*}
-			\begin{aligned}
-				dX_t &= \tilde{b}(X_t,t) dt+b(X_t,t) dt -\tilde{b}(X_t,t) dt + a(X_t,t) dW_t = \\
-				&=\tilde{b_t} dt + (b_t -\tilde{b_t})dt + a_t dW_t =\\
-				&=\tilde{b_t}dt+ a_t\overbrace{\left(\frac{b_t-\tilde{b_t}}{a_t}\right)}^{-\gamma_t}dt + a_t dW_t = \\
-				&= \tilde{b_t}dt+a_t dW_t - a_t\gamma_t dt\\
-				&=\tilde{b_t}dt+a_t d\tilde{W_t}
-			\end{aligned}
+			dX_t = f_t dt + \sigma_t dW_t
 		\end{equation*}
-		where $d\tilde{W_t}=dW_t-\gamma_t dt$.
+		under $\mathbb{P}$. 
 		
-		    Typo: You have bt​~​dt+(bt​−bt​~​)dt+at​dWt​. On the next line, you define −γt​=at​bt​−b~t​​.
+		Let be given a new drift $f^*_t$ and assume $\gamma_t=\frac{f_t^*-f_t}{\sigma_t}$ such that $\E\left[\exp\left(\frac{1}{2}\int_0^t\gamma_t^2dt\right)\right]<\infty$.
+		Define the measure 
+		\begin{equation}
+			\frac{d\mathbb{P}^*}{d\mathbb{P}}=\exp\left(-\frac{1}{2}\int_0^t \gamma_s^2 ds + \int_0^t \gamma_s dW_s \right)
+		\end{equation}
+		Then $\mathbb{P}^*$ is equivalent to $\mathbb{P}$. 
+		The Radon-Nikodym derivative process is an \textcolor{maincolor}{exponential martingale}.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Girsanov Theorem}
+	\begin{block}{Theorem continued}
+		Also the process
+		\begin{equation}
+			dW^*_t = dW_t -\gamma_s dt
+		\end{equation} 
+		is a Brownian motion under $\mathbb{P}^*$, and 
+		\begin{equation*}
+			dX_t = f^*_t dt + \sigma_t dW^*_t
+		\end{equation*}
+		The condition $\E\left[\exp\left(\frac{1}{2}\int_0^t\gamma_t^2dt\right)\right]<\infty$ is a sufficient but non-necessary, and it is know as the \textcolor{maincolor}{Novikov condition}.
+		This ensures the RN derivative is a true martingale and not just a local martingale. If it's not a true martingale, $\E[\frac{d\mathbb{Q}}{d\mathbb{P}}]\ne 1$, and $\mathbb{Q}$ is not a probability measure.
+	\end{block}
+\end{frame}
 		
-		Clarity: Explicitly state: "We are 'borrowing' drift from the dt term and 'hiding' it inside the dWt​ term to create dW~t​."
-		
-	\end{frame}
-	
-	\begin{frame}{A Trivial Example}
-		\begin{itemize}
-			\item<1-> If the Novikov condition is satisfied then we can apply the Girsanov theorem and we have that
-			\begin{equation}
-				\mathbb{P}^* = \expect{P}\left[\exp\left(-\frac{1}{2}\int_0^t \gamma_s^2 ds + \int_0^t \gamma_s dW_s \right)\right]
-			\end{equation}
-			and that $\tilde{W}$ is a Brownian motion on $\mathbb{P}^*$.
-			\item<2-> In practice, don't need to determine the new measure $\mathbb{P}^*$.
-			\item<2-> It is enough to know it exists, such that we can work with the resulting SDE of the process of interest under the new measure.	
-		\end{itemize}
-	\end{frame}
+%	\begin{frame}{A Trivial Example}
+%		\begin{itemize}
+%			\item Consider the stochastic differential equation
+%			\begin{equation*}
+%				dX_t = b(X_t, t) dt + a(X_t, t) dW_t
+%			\end{equation*}
+%			\item Let's assume that the drift and diffusion coefficients are such that there exists a unique solution to the equation which is $X$.
+%			\item We want to find a probability measure $\mathbb{P}^*$ such that the drift of $X$ is $\tilde{b}(X_t,t)$ instead of $b(X_t,t)$.
+%		\end{itemize}
+%	\end{frame}
+%	
+%	\begin{frame}{A Trivial Example}
+%		\begin{equation*}
+%			\begin{aligned}
+%				dX_t &= \tilde{b}(X_t,t) dt+b(X_t,t) dt -\tilde{b}(X_t,t) dt + a(X_t,t) dW_t = \\
+%				&=\tilde{b_t} dt + (b_t -\tilde{b_t})dt + a_t dW_t =\\
+%				&=\tilde{b_t}dt+ a_t\overbrace{\left(\frac{b_t-\tilde{b_t}}{a_t}\right)}^{-\gamma_t}dt + a_t dW_t = \\
+%				&= \tilde{b_t}dt+a_t dW_t - a_t\gamma_t dt\\
+%				&=\tilde{b_t}dt+a_t d\tilde{W_t}
+%			\end{aligned}
+%		\end{equation*}
+%		where $d\tilde{W_t}=dW_t-\gamma_t dt$.
+%		
+%		    Typo: You have bt​~​dt+(bt​−bt​~​)dt+at​dWt​. On the next line, you define −γt​=at​bt​−b~t​​.
+%		
+%		Clarity: Explicitly state: "We are 'borrowing' drift from the dt term and 'hiding' it inside the dWt​ term to create dW~t​."
+%		
+%	\end{frame}
+%	
+%	\begin{frame}{A Trivial Example}
+%		\begin{itemize}
+%			\item<1-> If the Novikov condition is satisfied then we can apply the Girsanov theorem and we have that
+%			\begin{equation}
+%				\mathbb{P}^* = \expect{P}\left[\exp\left(-\frac{1}{2}\int_0^t \gamma_s^2 ds + \int_0^t \gamma_s dW_s \right)\right]
+%			\end{equation}
+%			and that $\tilde{W}$ is a Brownian motion on $\mathbb{P}^*$.
+%			\item<2-> In practice, don't need to determine the new measure $\mathbb{P}^*$.
+%			\item<2-> It is enough to know it exists, such that we can work with the resulting SDE of the process of interest under the new measure.	
+%		\end{itemize}
+%	\end{frame}
 	
 	\begin{frame}{Monte Carlo Strikes Again}
 		Consider an Ito process with drift $\mu=0.8$ and diffusion coefficient $\sigma=0.4$, ($Y_0=0$).
@@ -996,25 +596,18 @@
 		First simulate $N=10000$ realizations of a Brownian Motion ($W$) and a of an Ito process ($Y$).
 		\begin{codebox}
 			\begin{ipython}[linewidth=0.6\linewidth]
-				import numpy as np
-				
-				T = 1
-				M = 252
-				dt = T/M
-				N = 100000
-				mu = 0.8
-				sigma = 0.4
-				
-				epsilon = np.zeros(shape=(M, N))
-				for i in range(N):
-				epsilon[1:, i] = np.random.normal(size=M-1)
-				
-				dW = np.zeros_like(epsilon)
-				dW[1:, :] = sigma*np.sqrt(dt)*epsilon[1:, :]
-				W = np.cumsum(dW, axis=0)
-				dY = np.zeros_like(epsilon)
-				dY[1:, :] = mu*dt + sigma*np.sqrt(dt)*epsilon[1:, :]
-				Y = np.cumsum(dY, axis=0)
+T = 1
+M = 252
+dt = T/M
+N = 10000
+mu = 0.8
+sigma = 0.4
+
+epsilon = np.random.normal(size=(M, N))
+dW = np.sqrt(dt) * epsilon
+W = np.cumsum(np.vstack([np.zeros(N), dW]), axis=0)
+dY = mu * dt + sigma * dW
+Y = np.cumsum(np.vstack([np.zeros(N), dY]), axis=0)
 			\end{ipython}
 		\end{codebox}
 	\end{frame}
@@ -1041,370 +634,382 @@
 			\column{0.5\linewidth}
 			Define the $RN$ process according to the Girsanov theorem and compute $\E$ and standard deviation for the process $Y$ in the original measure and in the new one (using the Radon-Ninkodym derivative).
 			\begin{ipython}	
-				RN = np.ones_like(epsilon)
-				gamma = -mu/sigma
-				RN[1:, :] = np.exp(gamma*dY[1:, :]/ \\
-				sigma - 0.5*gamma**2*dt)
-				YQ = np.cumsum(dY*RN, axis=0)
-				
-				Y_mean_P = np.mean(Y, axis=1)
-				Y_std_P = np.std(Y, axis=1)
-				Y_mean_Q = np.mean(YQ, axis=1)
-				Y_std_Q = np.std(YQ, axis=1)
-			\end{ipython}
+gamma = -mu/sigma
+
+W_T = np.random.normal(0, np.sqrt(T), N)
+Y_T = mu * T + sigma * W_T
+
+zeta_T = np.exp(gamma * W_T - 0.5 * (gamma**2) * T)
+mean_P = np.mean(Y_T)
+std_P = np.std(Y_T)
+mean_Q = np.mean(Y_T * zeta_T)
+std_Q = np.sqrt(np.mean((Y_T - mean_Q)**2 * zeta_T))
+\end{ipython}
+\begin{ioutput}
+Mean under P: 0.8002 (Expected: 0.8000)
+Mean under Q: 0.0035 (Expected: 0.0000)
+Volatility P: 0.4003
+Volatility Q: 0.3933	
+\end{ioutput}			
 			\column{0.5\linewidth}
-			\hfill\includegraphics[width=0.55\linewidth]{images/transformed_processes}\\
-			\includegraphics[width=0.55\linewidth]{images/single_realization_girsanov}
+			\includegraphics[width=0.9\linewidth]{images/girsanov}
 		\end{columns}
 	\end{frame}
 	
 	
-	\begin{homework}
-		\begin{frame}{\textcolor{white}{Homework}}
-			\begin{itemize}
-				\item[white] Consider a stock price which has the following dynamics under the real-world measure $\mathbb{P}$
-				\begin{equation*}
-					dS_t = \mu S_t dt + \sigma S_t dW_t
-				\end{equation*}
-				Determine what happens to the stock SDE when moving to two different numeraires:
-				\begin{itemize}
-					\item[white] risk-neutral measure (bank account numeraire);
-					\item[white] stock measure (stock numeraire).
-				\end{itemize}
-			\end{itemize}
-		\end{frame}
-	\end{homework}
-	
-	\begin{frame}[fragile]{Physical vs Risk-Neutral Measure}
-		\begin{columns}
-			\column{0.5\linewidth}
-			Imagine an underlying asset $S$ which currently is valued 100. Simulate $N$ possible realization of the random variable $S$ both under the \textbf{physical} probability measure and the in the \textbf{risk-neutral measure}.
-			
-			Consider then a 1 year call option on that asset with strike $K=120$. Determine and compare its value using Monte Carlo simulation under both measures.	
-			\column{0.5\linewidth}
-			\begin{ipython}	
-				import numpy as np
-				
-				mu = 0.05
-				r = 0.01
-				sigma = 0.20
-				gamma = (mu-r)/sigma
-				S0 = 100
-				K = 120
-				T = 1
-				M = 365
-				dt = T/M
-				N = 100000
-			\end{ipython}
-		\end{columns}
-	\end{frame}
-	
-	\begin{frame}[fragile]{Physical vs Risk-Neutral Measure}
-		\begin{codebox}
-			\begin{ipython}[linewidth=0.7\linewidth]
-				dW = np.sqrt(dt)*np.random.normal(size=N*M).reshape(M, N)
-				SP = np.zeros_like(dW)
-				SP[0, :] = S0
-				for t in range(1, M):
-				SP[t, :] = SP[t-1, :] + mu*dt*SP[t-1, :] + sigma*SP[t-1, :]*dW[t-1, :]
-				
-				SP_exp = np.mean(SP, axis=1)
-			\end{ipython}
-		\end{codebox}
-		\begin{center}
-			\includegraphics[width=0.60\linewidth]{images/evolution_under_P}
-		\end{center}
-	\end{frame}
-	
-	\begin{frame}[fragile]{Physical vs Risk-Neutral Measure}
-		\begin{codebox}
-			\begin{ipython}[linewidth=0.7\linewidth]
-				SQ = np.zeros_like(dW)
-				SQ[0, :] = S0
-				for t in range(1, M):
-				SQ[t, :] = SQ[t-1, :] + r*dt*SQ[t-1, :] + sigma*SQ[t-1, :]*dW[t-1, :]
-				
-				SQ_exp = np.mean(SQ, axis=1)
-			\end{ipython}
-		\end{codebox}
-		\begin{center}
-			\includegraphics[width=0.60\linewidth]{images/evolution_under_Q}
-		\end{center}
-	\end{frame}
-	
-	\begin{frame}[fragile]{Physical vs Risk-Neutral Measure}
-		\begin{columns}
-			\column{0.7\linewidth}
-			\begin{ipython}
-				# sanity check with Radon-Nikodym Derivative
-				
-				RN = np.ones_like(dW)
-				for t in range(1, M):
-				RN[t, :] = np.exp(-gamma*dW[t, :] - 0.5*gamma**2*dt)
-				
-				
-				
-				# call price calculation under the two measures
-				
-				CQ = np.exp(-r*T)*np.maximum((SQ[-1, :]-K), 0)
-				print (f"Price under Q: {np.mean(CQ):.2f}")
-				
-				CP_RN = np.exp(-r*T)*np.maximum((SP[-1, :]-K), 0)*np.cumprod(RN, axis=0)[-1, :]
-				print (f"Price under Q (via RN): {np.mean(CP_RN):.2f}")		
-			\end{ipython}
-			\begin{ioutput}
-				
-				Price under Q: 2.31
-				Price under Q (via RN): 2.30
-			\end{ioutput}
-			\column{0.3\linewidth}
-			\includegraphics[width=0.80\linewidth]{images/rdn_physical_risk_neutral}
-			\vspace{1.6cm}
-		\end{columns}	
-	\end{frame}
-	
-	\begin{homework}
-		\begin{frame}{\textcolor{white}{Homework}}
-			\begin{itemize}
-				\item[white] Suppose $W(t)$ is a standard Brownian motion. For each of the following choices of $X_t$, find an equivalent probability measure $\mathbb{Q}$ such that $X_t$ is a Brownian motion in the new measure. Assume $X_0=W_0=0$
-				\begin{equation*}
-					\begin{gathered}
-						dX_t = 2dt + dW_t\\
-						dX_t = 2dt + 6dW_t
-					\end{gathered}
-				\end{equation*}
-				\item[white] Let $X_t$ be the unique solution to the following stochastic differential equation, under $\mathbb{P}$:
-				\begin{equation*}
-					dX_t = X_t(\mu_t dt + \sigma_t dW_t)
-				\end{equation*}
-				where $\mu$ and $\sigma$ are bounded and adapted processes, and $\sigma >0$ almost surely.
-				\begin{itemize}
-					\item[white] Show that $X_t\exp(-\int_0^t \mu_s ds)$ is a martingale.
-					\item[white] Find a probability $\mathbb{Q}$, equivalent to $\mathbb{P}$ under which $X$ is a martingale.
-					\item[white] Find a probability $\tilde{\mathbb{P}}$, equivalent to $\mathbb{P}$, under which the inverse process $X^{-1}$ is a martingale.
-				\end{itemize}
-			\end{itemize}
-		\end{frame}
-	\end{homework}
+%	\begin{homework}
+%		\begin{frame}{\textcolor{white}{Homework}}
+%			\begin{itemize}
+%				\item[white] Consider a stock price which has the following dynamics under the real-world measure $\mathbb{P}$
+%				\begin{equation*}
+%					dS_t = \mu S_t dt + \sigma S_t dW_t
+%				\end{equation*}
+%				Determine what happens to the stock SDE when moving to two different numeraires:
+%				\begin{itemize}
+%					\item[white] risk-neutral measure (bank account numeraire);
+%					\item[white] stock measure (stock numeraire).
+%				\end{itemize}
+%			\end{itemize}
+%		\end{frame}
+%	\end{homework}
+
+
+
+
+
+%	\begin{frame}[fragile]{Physical vs Risk-Neutral Measure}
+%		\begin{columns}
+%			\column{0.5\linewidth}
+%			Imagine an underlying asset $S$ which currently is valued 100. Simulate $N$ possible realization of the random variable $S$ both under the \textbf{physical} probability measure and the in the \textbf{risk-neutral measure}.
+%			
+%			Consider then a 1 year call option on that asset with strike $K=120$. Determine and compare its value using Monte Carlo simulation under both measures.	
+%			\column{0.5\linewidth}
+%			\begin{ipython}	
+%				import numpy as np
+%				
+%				mu = 0.05
+%				r = 0.01
+%				sigma = 0.20
+%				gamma = (mu-r)/sigma
+%				S0 = 100
+%				K = 120
+%				T = 1
+%				M = 365
+%				dt = T/M
+%				N = 100000
+%			\end{ipython}
+%		\end{columns}
+%	\end{frame}
+%	
+%	\begin{frame}[fragile]{Physical vs Risk-Neutral Measure}
+%		\begin{codebox}
+%			\begin{ipython}[linewidth=0.7\linewidth]
+%				dW = np.sqrt(dt)*np.random.normal(size=N*M).reshape(M, N)
+%				SP = np.zeros_like(dW)
+%				SP[0, :] = S0
+%				for t in range(1, M):
+%				SP[t, :] = SP[t-1, :] + mu*dt*SP[t-1, :] + sigma*SP[t-1, :]*dW[t-1, :]
+%				
+%				SP_exp = np.mean(SP, axis=1)
+%			\end{ipython}
+%		\end{codebox}
+%		\begin{center}
+%			\includegraphics[width=0.60\linewidth]{images/evolution_under_P}
+%		\end{center}
+%	\end{frame}
+%	
+%	\begin{frame}[fragile]{Physical vs Risk-Neutral Measure}
+%		\begin{codebox}
+%			\begin{ipython}[linewidth=0.7\linewidth]
+%				SQ = np.zeros_like(dW)
+%				SQ[0, :] = S0
+%				for t in range(1, M):
+%				SQ[t, :] = SQ[t-1, :] + r*dt*SQ[t-1, :] + sigma*SQ[t-1, :]*dW[t-1, :]
+%				
+%				SQ_exp = np.mean(SQ, axis=1)
+%			\end{ipython}
+%		\end{codebox}
+%		\begin{center}
+%			\includegraphics[width=0.60\linewidth]{images/evolution_under_Q}
+%		\end{center}
+%	\end{frame}
+%	
+%	\begin{frame}[fragile]{Physical vs Risk-Neutral Measure}
+%		\begin{columns}
+%			\column{0.7\linewidth}
+%			\begin{ipython}
+%				# sanity check with Radon-Nikodym Derivative
+%				
+%				RN = np.ones_like(dW)
+%				for t in range(1, M):
+%				RN[t, :] = np.exp(-gamma*dW[t, :] - 0.5*gamma**2*dt)
+%				
+%				
+%				
+%				# call price calculation under the two measures
+%				
+%				CQ = np.exp(-r*T)*np.maximum((SQ[-1, :]-K), 0)
+%				print (f"Price under Q: {np.mean(CQ):.2f}")
+%				
+%				CP_RN = np.exp(-r*T)*np.maximum((SP[-1, :]-K), 0)*np.cumprod(RN, axis=0)[-1, :]
+%				print (f"Price under Q (via RN): {np.mean(CP_RN):.2f}")		
+%			\end{ipython}
+%			\begin{ioutput}
+%				
+%				Price under Q: 2.31
+%				Price under Q (via RN): 2.30
+%			\end{ioutput}
+%			\column{0.3\linewidth}
+%			\includegraphics[width=0.80\linewidth]{images/rdn_physical_risk_neutral}
+%			\vspace{1.6cm}
+%		\end{columns}	
+%	\end{frame}
+%	
+%	\begin{homework}
+%		\begin{frame}{\textcolor{white}{Homework}}
+%			\begin{itemize}
+%				\item[white] Suppose $W(t)$ is a standard Brownian motion. For each of the following choices of $X_t$, find an equivalent probability measure $\mathbb{Q}$ such that $X_t$ is a Brownian motion in the new measure. Assume $X_0=W_0=0$
+%				\begin{equation*}
+%					\begin{gathered}
+%						dX_t = 2dt + dW_t\\
+%						dX_t = 2dt + 6dW_t
+%					\end{gathered}
+%				\end{equation*}
+%				\item[white] Let $X_t$ be the unique solution to the following stochastic differential equation, under $\mathbb{P}$:
+%				\begin{equation*}
+%					dX_t = X_t(\mu_t dt + \sigma_t dW_t)
+%				\end{equation*}
+%				where $\mu$ and $\sigma$ are bounded and adapted processes, and $\sigma >0$ almost surely.
+%				\begin{itemize}
+%					\item[white] Show that $X_t\exp(-\int_0^t \mu_s ds)$ is a martingale.
+%					\item[white] Find a probability $\mathbb{Q}$, equivalent to $\mathbb{P}$ under which $X$ is a martingale.
+%					\item[white] Find a probability $\tilde{\mathbb{P}}$, equivalent to $\mathbb{P}$, under which the inverse process $X^{-1}$ is a martingale.
+%				\end{itemize}
+%			\end{itemize}
+%		\end{frame}
+%	\end{homework}
 	
 	\begin{frame}{Drift Changes Generalization}
 		\begin{block}{Proposition}
-			Assume that, under a generic $N$-measure, we have the following dynamics for a $n$-vector diffusion process $X$
+			Assume the following dynamics for a $n$-vector diffusion process $X$ under a generic $N$-measure
 			\begin{equation*}
 				dX_t = \mu_t^N(X_t)dt + \sigma_t(X_t)CdW^N_t
 			\end{equation*}
-			where $dW^N_t$ is a $n$-dimensional standard Brownian motion whose correlation is modeled by the $n\times n$ matrix $C$, $\mu$ is an $n\times 1$ vector and $\sigma_t$ a $n\times n$ diagonal matrix. Under the $U$-measure, we have
-			\begin{equation}
-				\mu^U_t(X_t) = \mu^N_t(X_t) - \rho\sigma(X_t)\left(\frac{\sigma^N_t}{N_t}-\frac{\sigma^U_t}{U_t}\right)'
-			\end{equation}
-			or \ldots
+			where $dW^N_t$ is a $n$-dimensional Brownian motion with correlation matrix $C$. Under the $U$-measure, we have
+			\begin{align}
+				\mu^U_t(X_t) &= \mu^N_t(X_t) - \rho\sigma(X_t)\left(\frac{\sigma^N_t}{N_t}-\frac{\sigma^U_t}{U_t}\right)' \\
+				CdW^U_t &= CdW^N_t + \rho\left(\frac{\sigma^N_t}{N_t}-\frac{\sigma^U_t}{U_t}\right)' dt
+			\end{align}
+$\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $\sigma^U_t$ are the (vector) volatilities of numeraires $N$ and $U$. %(one component for each Brownian motion).
 		\end{block}
 	\end{frame}
 	
-	\begin{frame}{Drift Changes Generalization}
-		\begin{block}{Proposition contd.}
-			\begin{equation}
-				CdW^U_t = CdW^N_t + \rho\left(\frac{\sigma^N_t}{N_t}-\frac{\sigma^U_t}{U_t}\right)' dt
-			\end{equation}
-			$\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $\sigma^U_t$ are the (vector) volatilities of numeraires $N$ and $U$. %(one component for each Brownian motion).
-		\end{block}
-	\end{frame}
+%	\begin{frame}{Drift Changes (Proof)}
+%		%We now provide a formal proof of the above proposition in the special case of \textcolor{maincolor}{$n=1$}, in which \textcolor{maincolor}{$\rho=1$}.
+%		
+%		Indicate by $\mathbb{Q}^N$ and $\mathbb{Q}^U$ the $N$-measure and $U$-measure. By Girsanov theorem we have the following expression for the Radon-Nikodym derivative
+%		\begin{equation*}
+%			\zeta_t = \frac{d\mathbb{Q}^N}{d\mathbb{Q}^U} = e^{-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s^U}
+%		\end{equation*}
+%		with 
+%		\begin{equation}
+%			\gamma_t=\frac{[\mu^N_t(X_t)-\mu_t^U(X_t)]'}{(\sigma_t(X_t)C)'}
+%			\label{eq:gamma_t}
+%		\end{equation}
+%		\pause
+%		We also know that $\zeta_t$ is an exponential martingale hence its dynamics is such that 
+%		\begin{equation}
+%			d\zeta_t=\gamma_t\zeta_tdW_t^U
+%			\label{eq:dzeta1}
+%		\end{equation}
+%	\end{frame}
+%	
+%	\begin{frame}{Drift Changes (Proof)}
+%		By the main theorem on numeraire change \cref{eq:radon_nikodym_der2}, and using the fact that $\zeta_t$ is a $\mathbb{Q}^U$-martingale, 
+%		\begin{equation}
+%			\zeta_t = \frac{d\mathbb{Q}^N}{d\mathbb{Q}^U} = \frac{U_0N_t}{N_0U_t}
+%			\label{eq:zeta_numeraire}
+%		\end{equation}
+%		thus
+%		\begin{equation}
+%			d\zeta_t= \frac{U_0}{N_0}d\left(\frac{N_t}{U_t}\right)= \frac{U_0}{N_0}\sigma_t^{N/U}CdW_t^U
+%			\label{eq:dzeta2}
+%		\end{equation}
+%		where $\sigma^{N/U}_t$ is the volatility of the process $N_t/U_t$, which is also a martingale under $\mathbb{Q}^U$.
+%	\end{frame}
+%	
+%	\begin{frame}{Drift Changes (Proof)}
+%		Comparing the two results for $d\zeta_t$ (\cref{eq:dzeta1}, \cref{eq:dzeta2} and using \cref{eq:zeta_numeraire}) we get
+%		\begin{equation*}
+%			\begin{gathered}
+%				\gamma_t\zeta_tdW_t^U = \gamma_t\frac{\cancel{U_0}N_t}{\cancel{N_0}U_t}\cancel{dW_t^U}=	\frac{\cancel{U_0}}{\cancel{N_0}}\sigma^{N/U}_tC\cancel{dW_t^U} \implies 
+%				\gamma_t = \frac{U_t}{N_t}\sigma^{N/U}_tC
+%			\end{gathered}
+%		\end{equation*}
+%		\pause
+%		Using the definition of $\gamma_t$ (\cref{eq:gamma_t}) and remembering that given two matrices $A$ and $B$ it holds ($(AB)' = B'A'$)
+%		\begin{equation}
+%			\begin{gathered}
+%				(\mu_t^N(X_t)-\mu_t^U(X_t))'= \gamma_t (\sigma_t(X_t)C)'=\frac{U_t}{N_t}\sigma^{N/U}_t CC'(\sigma_t(X_t))'\\
+%				\mu_t^U(X_t)=\mu_t^N(X_t)-\frac{U_t}{N_t}\sigma_t(X_t)\rho(\sigma^{N/U}_t)'
+%			\end{gathered}
+%			\label{eq:gamma}
+%		\end{equation}
+%	\end{frame}
+%	
+%	\begin{frame}{Intermezzo}
+%		\begin{itemize}
+%			\item One of the classical formulas of differential calculus is the Leibniz rule $d(x y) = x(dy) + y(dx)$
+%			\item For stochastic processes this becomes, applying It$\hat{o}$'s formula to the function $F(X,Y) = XY$
+%			\begin{equation*}
+%				dF(x_i)=\sum_{i=1}^n \frac{\partial F}{\partial x_i}dx_i
+%				+\frac{1}{2}\sum_{i,j=1}^2 \frac{\partial^2 F}{\partial x_i \partial x_j}dx_i dx_j
+%			\end{equation*}
+%			For $n=2$:
+%			\begin{equation*}
+%				\begin{gathered}
+%					\frac{\partial F}{\partial X}=Y,\frac{\partial F}{\partial Y}=X \\
+%					\frac{\partial^2 F}{\partial X^2}=0,\frac{\partial^2 F}{\partial X\partial Y}=\frac{\partial^2 F}{\partial Y\partial X}=1,\frac{\partial^2 F}{\partial Y^2}=0\\
+%					\\
+%					d(XY) = XdY + YdX + dXdY
+%				\end{gathered}
+%			\end{equation*}
+%		\end{itemize}
+%	\end{frame}
+%	
+%	\begin{frame}{Drift Changes (Proof)}	
+%		Now let $N_t$ and $U_t$ have dynamics under $\mathbb{Q}^U$ given by 
+%		\begin{equation*}
+%			\begin{gathered}
+%				dN_t = (\ldots) dt + \sigma_t^NCdW^U_t\\
+%				dU_t = (\ldots) dt + \sigma_t^UCdW^U_t 
+%			\end{gathered}
+%		\end{equation*}
+%		\pause
+%		From what we have just seen about the product rule in stochastic calculus
+%		\begin{equation*}
+%			\begin{gathered}
+%				d\left(\frac{N_t}{U_t}\right)=\frac{1}{U_t}dN_t+N_td\frac{1}{U_t}+dN_td\frac{1}{U_t} \quad \left(d\frac{1}{U_t}=-\frac{1}{U^2_t}dU_t+\cancel{\frac{1}{U^3_t}dU_tdU_t}\right) \\
+%			\end{gathered}
+%		\end{equation*}
+%		\pause
+%		Replacing the dynamics for $N_t$ and $U_t$ (ignoring the terms in $dt$ since we know that $d\cfrac{N_t}{U_t}$ is a martingale)
+%		\begin{equation}
+%			d\left(\frac{N_t}{U_t}\right) = \frac{dN}{U_t}-\frac{N_tdU}{U^2_t}\cancel{-\frac{dNdU}{U_t^2}}=\frac{\sigma^N_t CdW^U_t}{U_t} - \frac{N_t\sigma^U_t C dW^U_t}{U^2_t}
+%			\label{eq:dnu}
+%		\end{equation}
+%	\end{frame}
+%	
+%	\begin{frame}{Drift Changes (Proof)}   
+%		Taking $d(N_t/U_t)$ definition from \cref{eq:dzeta2} and comparing it with \cref{eq:dnu}
+%		\begin{equation}
+%			d\left(\frac{N_t}{U_t}\right)=\sigma_t^{N/U}\cancel{C dW^U_t} = \frac{\sigma^N_t \cancel{CdW^U_t}}{U_t} - \frac{N_t\sigma^U_t \cancel{C dW^U_t}}{U^2_t}\implies \sigma_t^{N/U}= \frac{\sigma^N_t}{U_t} - \frac{N_t\sigma^U_t}{U^2_t}
+%		\end{equation}
+%		Replacing above expression for $\sigma_t^{N/U}$ into \cref{eq:gamma}
+%		\begin{equation}
+%			\begin{aligned}
+%				\mu_t^U(X_t)&=\mu_t^N(X_t)-\frac{\cancel{U_t}}{N_t}\sigma_t(X_t)\rho\left(\frac{\sigma^N_t}{\cancel{U_t}} - \frac{N_t}{U_t^{\cancel{2}}}\sigma^U_t\right)'\\
+%				&=\mu_t^N(X_t)-\sigma_t(X_t)\rho\left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)'
+%			\end{aligned}
+%		\end{equation}
+%		which proves the \textcolor{maincolor}{first part} of the statement.
+%	\end{frame}
+%	
+%	\begin{frame}{Drift Changes (Proof)}
+%		Expressing $\gamma_t$ coefficient in terms of the numeraires volatilities
+%		\begin{equation*}
+%			\begin{cases}
+%				\gamma_t = \frac{[\mu_t^N(X_t) - \mu_t^U(X_t)]'}{(\sigma_t(X_t)C)'}\\
+%				\mu_t^N(X_t) - \mu_t^U(X_t) = \sigma_t(X_t)\rho \left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)'
+%			\end{cases}\implies \gamma_t = \frac{\left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)CC'(\sigma_t(X_t))}{C'(\sigma_t(X_t))'}
+%		\end{equation*}
+%		\begin{equation}
+%			\gamma_t = \left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)C = C'\left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)'\quad(\text{$C$ is a symmetric matrix})    
+%			\label{eq:gamma_3}
+%		\end{equation}
+%		\pause
+%		Finally from the Girsanov theorem we get the diffusion process under the new numeraire
+%		\begin{equation}
+%			\begin{gathered}
+%				CdW^N_t = CdW^U_t - C\gamma_t dt \\
+%				CdW^N_t = CdW^U_t - \rho\left(\frac{\sigma^N_t}{N_t}-\frac{\sigma^U_t}{U_t}\right)' dt
+%			\end{gathered}
+%			\label{eq:girsanov_shock_extended}
+%		\end{equation}
+%		\myendproof
+%		
+%		which proves also the \textcolor{maincolor}{second part} of the proposition.
+%		
+%		%As an exercise, once you know the Vasicek short rate model, try to determine the new drift when moving from bank account to forward meeasure.%the result is an application of the previous formula with $X = r$, $Q = P^T$ , $\sigma(X_t,t) = \sigma$, $\sigma_B (t) = -A(t, T)\sigma$ and $m(X_t,t) = a(b-rt)$.
+%	\end{frame}
 	
-	\begin{frame}{Drift Changes (Proof)}
-		%We now provide a formal proof of the above proposition in the special case of \textcolor{maincolor}{$n=1$}, in which \textcolor{maincolor}{$\rho=1$}.
-		
-		Indicate by $\mathbb{Q}^N$ and $\mathbb{Q}^U$ the $N$-measure and $U$-measure. By Girsanov theorem we have the following expression for the Radon-Nikodym derivative
-		\begin{equation*}
-			\zeta_t = \frac{d\mathbb{Q}^N}{d\mathbb{Q}^U} = e^{-\frac{1}{2}\int_0^t\gamma_s^2 ds + \int_0^t\gamma_s dW_s^U}
-		\end{equation*}
-		with 
-		\begin{equation}
-			\gamma_t=\frac{[\mu^N_t(X_t)-\mu_t^U(X_t)]'}{(\sigma_t(X_t)C)'}
-			\label{eq:gamma_t}
-		\end{equation}
-		\pause
-		We also know that $\zeta_t$ is an exponential martingale hence its dynamics is such that 
-		\begin{equation}
-			d\zeta_t=\gamma_t\zeta_tdW_t^U
-			\label{eq:dzeta1}
-		\end{equation}
-	\end{frame}
-	
-	\begin{frame}{Drift Changes (Proof)}
-		By the main theorem on numeraire change \cref{eq:radon_nikodym_der2}, and using the fact that $\zeta_t$ is a $\mathbb{Q}^U$-martingale, 
-		\begin{equation}
-			\zeta_t = \frac{d\mathbb{Q}^N}{d\mathbb{Q}^U} = \frac{U_0N_t}{N_0U_t}
-			\label{eq:zeta_numeraire}
-		\end{equation}
-		thus
-		\begin{equation}
-			d\zeta_t= \frac{U_0}{N_0}d\left(\frac{N_t}{U_t}\right)= \frac{U_0}{N_0}\sigma_t^{N/U}CdW_t^U
-			\label{eq:dzeta2}
-		\end{equation}
-		where $\sigma^{N/U}_t$ is the volatility of the process $N_t/U_t$, which is also a martingale under $\mathbb{Q}^U$.
-	\end{frame}
-	
-	\begin{frame}{Drift Changes (Proof)}
-		Comparing the two results for $d\zeta_t$ (\cref{eq:dzeta1}, \cref{eq:dzeta2} and using \cref{eq:zeta_numeraire}) we get
-		\begin{equation*}
-			\begin{gathered}
-				\gamma_t\zeta_tdW_t^U = \gamma_t\frac{\cancel{U_0}N_t}{\cancel{N_0}U_t}\cancel{dW_t^U}=	\frac{\cancel{U_0}}{\cancel{N_0}}\sigma^{N/U}_tC\cancel{dW_t^U} \implies 
-				\gamma_t = \frac{U_t}{N_t}\sigma^{N/U}_tC
-			\end{gathered}
-		\end{equation*}
-		\pause
-		Using the definition of $\gamma_t$ (\cref{eq:gamma_t}) and remembering that given two matrices $A$ and $B$ it holds ($(AB)' = B'A'$)
-		\begin{equation}
-			\begin{gathered}
-				(\mu_t^N(X_t)-\mu_t^U(X_t))'= \gamma_t (\sigma_t(X_t)C)'=\frac{U_t}{N_t}\sigma^{N/U}_t CC'(\sigma_t(X_t))'\\
-				\mu_t^U(X_t)=\mu_t^N(X_t)-\frac{U_t}{N_t}\sigma_t(X_t)\rho(\sigma^{N/U}_t)'
-			\end{gathered}
-			\label{eq:gamma}
-		\end{equation}
-	\end{frame}
-	
-	\begin{frame}{Intermezzo}
-		\begin{itemize}
-			\item One of the classical formulas of differential calculus is the Leibniz rule $d(x y) = x(dy) + y(dx)$
-			\item For stochastic processes this becomes, applying It$\hat{o}$'s formula to the function $F(X,Y) = XY$
-			\begin{equation*}
-				dF(x_i)=\sum_{i=1}^n \frac{\partial F}{\partial x_i}dx_i
-				+\frac{1}{2}\sum_{i,j=1}^2 \frac{\partial^2 F}{\partial x_i \partial x_j}dx_i dx_j
-			\end{equation*}
-			For $n=2$:
-			\begin{equation*}
-				\begin{gathered}
-					\frac{\partial F}{\partial X}=Y,\frac{\partial F}{\partial Y}=X \\
-					\frac{\partial^2 F}{\partial X^2}=0,\frac{\partial^2 F}{\partial X\partial Y}=\frac{\partial^2 F}{\partial Y\partial X}=1,\frac{\partial^2 F}{\partial Y^2}=0\\
-					\\
-					d(XY) = XdY + YdX + dXdY
-				\end{gathered}
-			\end{equation*}
-		\end{itemize}
-	\end{frame}
-	
-	\begin{frame}{Drift Changes (Proof)}	
-		Now let $N_t$ and $U_t$ have dynamics under $\mathbb{Q}^U$ given by 
-		\begin{equation*}
-			\begin{gathered}
-				dN_t = (\ldots) dt + \sigma_t^NCdW^U_t\\
-				dU_t = (\ldots) dt + \sigma_t^UCdW^U_t 
-			\end{gathered}
-		\end{equation*}
-		\pause
-		From what we have just seen about the product rule in stochastic calculus
-		\begin{equation*}
-			\begin{gathered}
-				d\left(\frac{N_t}{U_t}\right)=\frac{1}{U_t}dN_t+N_td\frac{1}{U_t}+dN_td\frac{1}{U_t} \quad \left(d\frac{1}{U_t}=-\frac{1}{U^2_t}dU_t+\cancel{\frac{1}{U^3_t}dU_tdU_t}\right) \\
-			\end{gathered}
-		\end{equation*}
-		\pause
-		Replacing the dynamics for $N_t$ and $U_t$ (ignoring the terms in $dt$ since we know that $d\cfrac{N_t}{U_t}$ is a martingale)
-		\begin{equation}
-			d\left(\frac{N_t}{U_t}\right) = \frac{dN}{U_t}-\frac{N_tdU}{U^2_t}\cancel{-\frac{dNdU}{U_t^2}}=\frac{\sigma^N_t CdW^U_t}{U_t} - \frac{N_t\sigma^U_t C dW^U_t}{U^2_t}
-			\label{eq:dnu}
-		\end{equation}
-	\end{frame}
-	
-	\begin{frame}{Drift Changes (Proof)}   
-		Taking $d(N_t/U_t)$ definition from \cref{eq:dzeta2} and comparing it with \cref{eq:dnu}
-		\begin{equation}
-			d\left(\frac{N_t}{U_t}\right)=\sigma_t^{N/U}\cancel{C dW^U_t} = \frac{\sigma^N_t \cancel{CdW^U_t}}{U_t} - \frac{N_t\sigma^U_t \cancel{C dW^U_t}}{U^2_t}\implies \sigma_t^{N/U}= \frac{\sigma^N_t}{U_t} - \frac{N_t\sigma^U_t}{U^2_t}
-		\end{equation}
-		Replacing above expression for $\sigma_t^{N/U}$ into \cref{eq:gamma}
-		\begin{equation}
-			\begin{aligned}
-				\mu_t^U(X_t)&=\mu_t^N(X_t)-\frac{\cancel{U_t}}{N_t}\sigma_t(X_t)\rho\left(\frac{\sigma^N_t}{\cancel{U_t}} - \frac{N_t}{U_t^{\cancel{2}}}\sigma^U_t\right)'\\
-				&=\mu_t^N(X_t)-\sigma_t(X_t)\rho\left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)'
-			\end{aligned}
-		\end{equation}
-		which proves the \textcolor{maincolor}{first part} of the statement.
-	\end{frame}
-	
-	\begin{frame}{Drift Changes (Proof)}
-		Expressing $\gamma_t$ coefficient in terms of the numeraires volatilities
-		\begin{equation*}
-			\begin{cases}
-				\gamma_t = \frac{[\mu_t^N(X_t) - \mu_t^U(X_t)]'}{(\sigma_t(X_t)C)'}\\
-				\mu_t^N(X_t) - \mu_t^U(X_t) = \sigma_t(X_t)\rho \left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)'
-			\end{cases}\implies \gamma_t = \frac{\left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)CC'(\sigma_t(X_t))}{C'(\sigma_t(X_t))'}
-		\end{equation*}
-		\begin{equation}
-			\gamma_t = \left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)C = C'\left(\frac{\sigma^N_t}{N_t} - \frac{\sigma^U_t}{U_t}\right)'\quad(\text{$C$ is a symmetric matrix})    
-			\label{eq:gamma_3}
-		\end{equation}
-		\pause
-		Finally from the Girsanov theorem we get the diffusion process under the new numeraire
-		\begin{equation}
-			\begin{gathered}
-				CdW^N_t = CdW^U_t - C\gamma_t dt \\
-				CdW^N_t = CdW^U_t - \rho\left(\frac{\sigma^N_t}{N_t}-\frac{\sigma^U_t}{U_t}\right)' dt
-			\end{gathered}
-			\label{eq:girsanov_shock_extended}
-		\end{equation}
-		\myendproof
-		
-		which proves also the \textcolor{maincolor}{second part} of the proposition.
-		
-		%As an exercise, once you know the Vasicek short rate model, try to determine the new drift when moving from bank account to forward meeasure.%the result is an application of the previous formula with $X = r$, $Q = P^T$ , $\sigma(X_t,t) = \sigma$, $\sigma_B (t) = -A(t, T)\sigma$ and $m(X_t,t) = a(b-rt)$.
-	\end{frame}
-	
-	\begin{frame}{Asset/Numeraire by Girsanov}
-		Assuming an asset $S$ and a numeraire $N$ with the following evolutions under the risk-neutral measure
-		\begin{equation}
-			\begin{cases}
-				\cfrac{dS_t}{S_t} = r_tdt + \sigma^S_t dW^B_t\quad\text{(asset)} \\
-				\cfrac{dN_t}{N_t} = r_tdt + \sigma^N_t dW^B_t\quad\text{(numeraire)}
-			\end{cases}
-			\label{eq:S_N_dynamics}
-		\end{equation}
-		
-		by Girsanov Theorem (\cref{eq:girsanov_shock_extended}), under $\mathbb{Q}^N$, we get
-		\begin{equation}
-			dW^N_t = dW_t^B - \sigma_t^N dt
-			\label{eq:girsanov_ex}
-		\end{equation}
-		which is a Brownian motion.
-	\end{frame}
-	
-	\begin{frame}{Asset/Numeraire by Girsanov}
-		Now let's apply It$\hat{o}$'s lemma to $S_t/N_t$
-		\begin{equation*}
-			\begin{aligned}
-				d\left(\frac{S}{N}\right) &= \frac{1}{S}dS - \frac{S}{N^2}dN + \frac{S}{N^3}dN^2-\frac{1}{N^2}dSdN = \frac{S}{N}\left(\frac{dS}{S}-\frac{dN}{N}+\frac{dN^2}{N^2}-\frac{dSdN}{SN} \right) = \\
-				&=\frac{S}{N}\left(rdt+\sigma^S dW^B - rdt - \sigma^N dW^B + (\sigma^N)^2 dt - \sigma^S\sigma^N dt \right) = \quad\textit{(with \cref{eq:S_N_dynamics})}\\
-				&=\frac{S}{N}((\sigma^N)^2 - \sigma^S\sigma^N) dt + \sigma^S dW^B - \sigma^N dW^B = \quad\textit{(with \cref{eq:girsanov_ex})}\\
-				&=\frac{S}{N}((\sigma^N)^2 - \sigma^S\sigma^N) dt + \sigma^S (dW^N + \sigma^N dt) - \sigma^N(dW^N+\sigma^Ndt) = \\
-				&=\frac{S}{N}(\sigma^S - \sigma^N)dW^N 
-			\end{aligned}
-		\end{equation*}
-		which shows that $\cfrac{S}{N}$ is a $\mathbb{Q}^N$-martingale (no drift in dynamics).
-	\end{frame}
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+%	\begin{frame}{Asset/Numeraire by Girsanov}
+%		Assuming an asset $S$ and a numeraire $N$ with the following evolutions under the risk-neutral measure
+%		\begin{equation}
+%			\begin{cases}
+%				\cfrac{dS_t}{S_t} = r_tdt + \sigma^S_t dW^B_t\quad\text{(asset)} \\
+%				\cfrac{dN_t}{N_t} = r_tdt + \sigma^N_t dW^B_t\quad\text{(numeraire)}
+%			\end{cases}
+%			\label{eq:S_N_dynamics}
+%		\end{equation}
+%		
+%		by Girsanov Theorem (\cref{eq:girsanov_shock_extended}), under $\mathbb{Q}^N$, we get
+%		\begin{equation}
+%			dW^N_t = dW_t^B - \sigma_t^N dt
+%			\label{eq:girsanov_ex}
+%		\end{equation}
+%		which is a Brownian motion.
+%	\end{frame}
+%	
+%	\begin{frame}{Asset/Numeraire by Girsanov}
+%		Now let's apply It$\hat{o}$'s lemma to $S_t/N_t$
+%		\begin{equation*}
+%			\begin{aligned}
+%				d\left(\frac{S}{N}\right) &= \frac{1}{S}dS - \frac{S}{N^2}dN + \frac{S}{N^3}dN^2-\frac{1}{N^2}dSdN = \frac{S}{N}\left(\frac{dS}{S}-\frac{dN}{N}+\frac{dN^2}{N^2}-\frac{dSdN}{SN} \right) = \\
+%				&=\frac{S}{N}\left(rdt+\sigma^S dW^B - rdt - \sigma^N dW^B + (\sigma^N)^2 dt - \sigma^S\sigma^N dt \right) = \quad\textit{(with \cref{eq:S_N_dynamics})}\\
+%				&=\frac{S}{N}((\sigma^N)^2 - \sigma^S\sigma^N) dt + \sigma^S dW^B - \sigma^N dW^B = \quad\textit{(with \cref{eq:girsanov_ex})}\\
+%				&=\frac{S}{N}((\sigma^N)^2 - \sigma^S\sigma^N) dt + \sigma^S (dW^N + \sigma^N dt) - \sigma^N(dW^N+\sigma^Ndt) = \\
+%				&=\frac{S}{N}(\sigma^S - \sigma^N)dW^N 
+%			\end{aligned}
+%		\end{equation*}
+%		which shows that $\cfrac{S}{N}$ is a $\mathbb{Q}^N$-martingale (no drift in dynamics).
+%	\end{frame}
+
 	\begin{frame}{The Vasicek Model under $\mathbb{P}$}
 		\begin{itemize}
-			\item Statistical analysis of historical interest rate data suggests that rates are mean-reverting. Under the physical measure $\mathbb{P}$, we model the short rate $r_t$​ as:
-				\begin{equation*}
-					dr_t = a(b-rt)dt + \sigma W_t^{\mathbb{P}}
-				\end{equation*}​
-			where $a$ speed of mean reversion, $b$ long-term mean level, \sigma volatility, and $W_t^{\mathbb{P}$ standard brownian motion under the real-world measure.
-			\item If we use this SDE to price a bond via $\E^{\mathbb{P}}[\exp(-\int r_s ds)]$, we will get a price that is inconsistent with the market. 
-			\textbf{Investors demand a premium for bearing interest rate risk}.
+			\item Statistical analysis of historical interest rate data suggests that rates are mean-reverting. Under the physical measure $\mathbb{P}$, we model the short rate $r_t$ as:
+			\begin{equation*}
+			dr_t = a(b-rt)dt + \sigma W_t^\mathbb{P}
+			\end{equation*}
+			where $a$ speed of mean reversion, $b$ long-term mean level, $\sigma$ volatility, and $W_t^\mathbb{P}$ Brownian motion under the real-world measure.
+			\item If we use this SDE to price a bond via $\E^\mathbb{P}[\exp(-\int r_s ds)]$, we are assuming investors are risk-neutral towards interest rate volatility.
+			\item In reality the bond is a risky asset and investors will not buy it unless the price is lower than the mathematical average of discounted cash-flows.
+			\item \textbf{Investors demand a premium for bearing interest rate risk}.
 		\end{itemize}
 	\end{frame}
 	
 	\begin{frame}{Market Price of Risk}
 		\begin{itemize}
-			\item To move to the Risk-Neutral measure $\mathbb{Q}$, we assume there exists a process $\lambda t$ called the \emph{Market Price of Risk}. 
-			In the simplest Vasicek case, we assume $\lambda$ is a constant vs time.
-			\item According to Girsanov’s Theorem, we define the new Brownian Motion $W_t^{\mathbb{Q}}$ as:
+			\item The \emph{Market Price of Risk} $\lambda$ represents the extra return (drift) investors demand per unit of risk they take on.
+			\item Girsanov’s Theorem allows us to mathematically "subtract" this compensation from the real-world drift, leaving us with a process that can be priced as if the world were risk-neutral
 			\begin{equation*}
-				dW_t^{\mathbb{Q}} = dW_t^{\mathbb{P}} + \lambda dt \implies dW_t^{\mathbb{P}} = dW_t^{\mathbb{Q}} - \lambda dt				
+				dW_t^\mathbb{Q} = dW_t^\mathbb{P} + \lambda dt \implies dW_t^\mathbb{P} = dW_t^\mathbb{Q} - \lambda dt	
 			\end{equation*}
 			\item Substituting this into our $\mathbb{P}$-dynamics:
 			\begin{equation*}
-				dr_t = a(b−rt)dt + \sigma(dW_t^{\mathbb{Q}} - \lambda dt)
+				dr_t = a(b-rt)dt + \sigma(dW_t^\mathbb{Q}-\lambda dt)
 			\end{equation*}
 			
 		\end{itemize}
@@ -1414,200 +1019,424 @@
 		\begin{itemize}
 			\item Grouping the $dt$ terms from the previous slide:
 			\begin{equation*}
-				dr_t=[a(b−rt)-\sigma\lambda]dt+\sigma dW_t^{\mathbb{Q}}
-			\end{equation*}			
-			\item To maintain the elegant mean-reverting structure $dr_t=a^∗(b^∗-rt)dt+\sigma dW_t^{\mathbb{Q}}$​, we distribute the terms:
-			\begin{align*}
-				dr_t&=[ab−art−\sigma\lambda]dt+\sigma dW_t^{\mathbb{Q}} \\​
-				dr_t&=a[(b−a\sigma\lambda)−rt]dt+\sigma dW_t^{\mathbb{Q}}​
-			\end{align*}
+				dr_t=[a(b-rt)-\sigma\lambda]dt+\sigma dW_t^\mathbb{Q}
+			\end{equation*}
+			\item To maintain the mean-reverting structure $dr_t=a^*(b^*-rt)dt+\sigma dW_t^\mathbb{Q}$, we distribute the terms:
+			\begin{equation*}
+				dr_t=[ab-ar_t-\sigma\lambda]dt+\sigma dW_t^\mathbb{Q} =\overbrace{a}^{a^*} \bigg[\overbrace{\left(b-\frac{\sigma\lambda}{a}\right)}^{b^*}-rt\bigg]dt+\sigma dW_t^\mathbb{Q}
+			\end{equation*}
+			where the speed of reversion remains unchanged, and the long-term mean $b^* = b - \frac{\sigma \lambda}{a}$ is shifted.
+			\item If $\lambda < 0$ (usual case for risk-aversion in bonds), then $b^* > b$.
+			The market "prices" bonds as if the long-term interest rate is higher than what we see in historical data. 
+			This compensates the bond buyer for the risk of rising rates.			
 		\end{itemize}
 	\end{frame}
 	
-	\begin{frame}{Interpreting the New Parameters}
-		\begin{itemize}
-			\item Under the pricing measure $\mathbb{Q}$, the SDE is:
-			\begin{equation*}
-				dr_t=a^∗(b^∗−rt)dt+\sigma dW_t^{\mathbb{Q}}				
-			\end{equation*}
-			where the new parameters are: $a^ = a^*$: the speed of reversion remains unchanged, $b^ = b - \frac{\sigma \lambda}{a^*}$: the long-term mean is shifted.
-			\item If $\lambda < 0$ (usual case for risk-aversion in bonds), then $b^ > b^*$.
-			The market "prices" bonds as if the long-term interest rate is higher than what we see in historical data. 
-			This compensates the bond buyer for the risk of rising rates.
+	\begin{frame}{An Example}
+		\begin{columns}
+		\column{0.4\linewidth}
+		\begin{itemize}		
+		\item \textcolor{blue}{The Blue Line ($\mathbb{P}$)}:"Best Guess" based on history: last 20 years of data, rates to return to 8\%.
+		\item \textcolor{red}{The Red Line ($\mathbb{Q}$)}: "Pricing Guess" investors are afraid of interest rate, they price bonds as if rates are at 7.4\%.
+		\item The vertical distance between the blue and red lines is where the Market Price of Risk lives.
 		\end{itemize}
+		\column{0.6\linewidth}
+		\includegraphics[width=0.9\linewidth]{images/vasicek_under_P}
+		\end{columns}
+		\vfill
+		We aren't changing the math of mean reversion; we are just changing the destination ($b\to b^*$) to ensure our model matches the market prices.
 	\end{frame}
 	
 	\begin{frame}{Why Girsanov is Essential Here}
 	\begin{itemize}
-		\item Without Girsanov we would simply know that "prices are expectations." But we wouldn't know which interest rate process to simulate.
-		\item With Girsanov we have a specific recipe. We take our historical $b$, subtract the risk adjustment $\frac{\sigma\lambda}{a}$, and we have a ready-to-use 
-		SDE for Monte Carlo or the Riccati equations.
+		\item Without Girsanov we would simply know that \emph{prices are expectations}, but we wouldn't know which interest rate process to simulate.
+		\item With Girsanov we have a specific recipe. We take our historical $b$, subtract the risk adjustment $\frac{\sigma\lambda}{a}$, and we have a ready-to-use SDE for Monte Carlo or the Riccati equations.
 		\item The Radon-Nikodym derivative that makes this happen is:
 		\begin{equation*}
-		\frac{d\mathbb{P}{d\mathbb{Q}}=\exp(-frac{1}{2}\int_0^T\lambda^2 dt - \int_0^T\lambda dW_t^{\mathbb{P}})
+		\frac{d\mathbb{P}}{d\mathbb{Q}}=\exp\left(-\frac{1}{2}\int_0^T\lambda^2 dt - \int_0^T\lambda dW_t^\mathbb{P}\right)
 		\end{equation*}
 	\end{itemize}
+	
+	
 \end{frame}
 
-	\begin{frame}{Quanto Options: Motivation and Setup}
+
+
+
+
+
+
+
+
+%	\begin{frame}{Quanto Options: Motivation and Setup}
+%	\begin{itemize}
+%		\item A Quanto is a derivative where the underlying asset is denominated in a \textcolor{blue}{foreign currency}, but the payoff is paid in a \textcolor{red}{domestic currency} at a fixed exchange rate $X_{fix}$.
+%		\item The assets:
+%		\begin{itemize}
+%			\item $S_t^f$: foreign asset price (in foreign currency);
+%			\item $X_t$: exchange rate (units of domestic per unit of foreign);
+%			\item $B_d(t)$, $B_f(t)$: domestic and foreign money market accounts.
+%		\end{itemize}
+%		\item The foreign asset $S_t^f$ is a martingale under the foreign risk-neutral measure $\mathbb{Q}^f$ (when divided by $B_f$). However, the domestic investor lives in the $\mathbb{Q}^d$ world.
+%		\item To price the asset in the domestic world, we must use the domestic bank account $B_d(t)$ as numeraire, but the asset's value in domestic terms is $S_t^d = X_t S_t^f$.
+%	\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{The Quanto Drift Adjustment}
+%	\begin{itemize}
+%		\item Under the domestic measure $\mathbb{Q}^d$, the process for the foreign asset $S^f$ is:
+%		\begin{equation*}
+%			\frac{dS^f_t}{S^f_t} = (r_f \textcolor{red}{-\rho\sigma_S \sigma_X} ) dt + \sigma_S dW^{d}_t
+%		\end{equation*}
+%		\item \textbf{Derivation via Numeraire Change:}
+%		\begin{enumerate}
+%			\item We move from $\mathbb{Q}^f$ (numeraire $B_f$) to $\mathbb{Q}^d$ (numeraire $B_d$).
+%			\item The Radon-Nikodym derivative is $\frac{\mathbb{Q}^d}{\mathbb{Q}^f}=\frac{B_d(T)X(0)}{B_f(T)X(T)}$.
+%			\item By Girsanov's Theorem, the drift of $S_f$ is adjusted by the covariance between the asset and the exchange rate.
+%		\end{enumerate}
+%		\item \textbf{Economic Intuition:} The term $-\rho\sigma_S\sigma_X$ is the \textcolor{red}{Quanto Adjustment}. If the foreign currency strengthens when the stock rises ($\rho > 0$), the domestic investor "loses" the currency gain due to the fixed exchange rate, so the expected return must be adjusted downwards.
+%	\end{itemize}
+%\end{frame}
+%	
+%
+%	\begin{frame}{The Radon-Nikodym Derivative}
+%	
+%	The Domestic investor uses $B_d(t)$ as a numeraire. Any asset $A_t$​ denominated in domestic currency must eb a\Qd-martingale when discounted by Bd​. The domestic value of the foreign bank account is Bf​(t)Xt​. Therefore, the Radon-Nikodym derivative ξt​=dQfdQd​​Ft​​ is:
+%	ξt​=Bf​(t)Xt​/(Bf​(0)X0​)Bd​(t)/Bd​(0)​=erf​t(Xt​/X0​)erd​t​
+%	
+%	Applying Itô's Lemma to ξt​=Xt​X0​​e(rd​−rf​)t, we find the dynamics of the density process:
+%	dξt​=−σX​ξt​dW2,tf​
+%	
+%	Crucial Step: This identifies the Girsanov kernel. The "volatility" of the RN derivative is −σX​ attached to the exchange rate's noise.
+%\end{frame}
+%\begin{frame}{Applying Girsanov's Theorem}
+%	
+%	Shifting the Wind Girsanov tells us that to get the Brownian motions under Qd, we must subtract the "covariance" between the asset's noise and the density process noise.
+%	
+%	Under Qd, the Brownian motions become:
+%	
+%	For W2​ (Exchange Rate): dW2,td​=dW2,tf​−(−σX​)dt=dW2,tf​+σX​dt.
+%	
+%	For W1​ (Asset): Since W1​ and W2​ are correlated by ρ, the shift is:
+%	dW1,td​=dW1,tf​−Cov(dW1f​,ξdξ​)
+%	dW1,td​=dW1,tf​−(−ρσX​)dt=dW1,tf​+ρσX​dt
+%	
+%	The result: dW1,tf​=dW1,td​−ρσX​dt.
+%\end{frame}
+%\begin{frame}{The Final Quanto SDE}
+%	
+%	The "Convexity" Adjustment Substitute dW1,tf​ back into the foreign asset SDE:
+%	Stf​dStf​​=rf​dt+σS​(dW1,td​−ρσX​dt)
+%	Stf​dStf​​=(rf​−ρσS​σX​)dt+σS​dW1,td​
+%	
+%	Why did the drift change?
+%	
+%	The domestic investor is exposed to Sf through the product Xt​Stf​.
+%	
+%	In a domestic risk-neutral world, the product Xt​Stf​ must grow at rate rd​.
+%	
+%	Because Xt​ and Stf​ are correlated, their product has an extra "covariance" term in its growth (d(XS)=XdS+SdX+dXdS).
+%	
+%	If we fix the exchange rate (Xfix​), we strip away the currency's volatility but we are left with the covariance residue.
+%\end{frame}
+%\begin{frame}{Mathematical Example for the Exam}
+%	
+%	The Forward Quanto Price Calculate the Forward price of a Quanto asset FQ​=EQd[STf​]. Since the drift of Sf under Qd is rq​=rf​−ρσS​σX​, the expectation is:
+%	FQ​=S0f​e(rf​−ρσS​σX​)T
+%	
+%	Comparison:
+%	
+%	Standard Forward (Foreign): F=S0f​erf​T
+%	
+%	Quanto Forward: FQ​=F⋅e−ρσS​σX​T
+%	
+%	Student takeaway: If ρ>0 (Stock and Currency rise together), the Quanto Forward is lower than the standard Forward. You are "penalized" for the fact that you don't benefit from the currency strengthening when your stock does well.
+%	Suggestions for "Challenging" additions:
+%	
+%	The "Reverse" Quanto: Ask students to derive the adjustment for a domestic asset priced in a foreign currency. (The sign of ρ flips).
+%	
+%	Implied Correlation: Since σS​ and σX​ are observable from options, but ρ is not, how can we use Quanto prices to "extract" the market's view on the correlation between Nikkei 225 and USD/JPY?
+%	
+%	Would you like me to create a slide on "Siegel's Paradox"? It’s a classic companion to Quanto theory that explains why 1/X doesn't have the same drift as X.
+%	
+%\end{frame}
+
+
+%%	Slide 1: Siegel’s Paradox - Il Problema della Simmetria
+%%	
+%%	La Domanda: Se il tasso di cambio Euro/Dollaro (Xt​) è una martingala sotto una certa misura, il tasso Dollaro/Euro (1/Xt​) può essere anch'esso una martingala?
+%%	
+%%	La Risposta Matematica: No. A causa della convessità della funzione f(x)=1/x, per la Disuguaglianza di Jensen:
+%%	E[XT​1​]>E[XT​]1​
+%%	
+%%	Significato Finanziario: Se entrambi gli investitori (USA e EU) fossero neutrali al rischio e convinti che il cambio non abbia drift, entrambi si aspetterebbero paradossalmente di guadagnare nel lungo termine detenendo la valuta estera.
+%%	Slide 2: Derivazione tramite il Lemma di Itô
+%%	
+%%	Supponiamo che sotto la misura domestica Qd, il cambio segua una dinamica GBM (senza drift per semplicità di calcolo):
+%%	Xt​dXt​​=0⋅dt+σX​dWt​
+%%	
+%%	Applichiamo il Lemma di Itô a Yt​=1/Xt​:
+%%	
+%%	f(X)=1/X⟹f′=−1/X2,f′′=2/X3
+%%	
+%%	dYt​=−Xt2​1​(dXt​)+21​Xt3​2​(dXt​)2
+%%	
+%%	dYt​=−Xt2​1​(σX​Xt​dWt​)+Xt3​1​(σX2​Xt2​dt)
+%%	
+%%	Risultato:
+%%	Yt​dYt​​=σX2​dt−σX​dWt​
+%%	
+%%	L'intuizione: Anche se X non ha drift, il suo inverso 1/X ha un drift positivo pari alla sua varianza σX2​. Questo è il "volatility smile" dei cambi in forma pura.
+%%	Slide 3: Girsanov e la Coerenza dei Mercati
+%%	
+%%	Perché non c'è arbitraggio? Potrebbe sembrare che tutti possano guadagnare semplicemente scambiando valuta. Girsanov risolve il paradosso imponendo un cambio di misura obbligatorio quando cambiamo prospettiva.
+%%	
+%%	Sotto Qd (Investitore Domestico), il cambio X (prezzo del foreign) ha drift rd​−rf​.
+%%	
+%%	Quando passiamo all'investitore straniero (Qf), non cambiamo solo l'asset, cambiamo la misura di probabilità.
+%%	
+%%	Il passaggio da Qd a Qf (visto nella slide del Quanto) introduce un termine di deriva che cancella esattamente il surplus di rendimento dovuto alla convessità (σX2​), rendendo i mercati internazionali coerenti.
+%%	Slide 4: Applicazione Pratica - Forward FX
+%%	
+%%	In un mondo risk-neutral, il tasso Forward è definito come:
+%%	Ft,T​=EtQd​[XT​]
+%%	
+%%	Se uno studente provasse a calcolare il forward inverso come 1/Ft,T​, commetterebbe un errore sistematico.
+%%	
+%%	Ft,T​=Xt​e(rd​−rf​)(T−t)
+%%	
+%%	EtQf​[1/XT​]=(1/Xt​)e(rf​−rd​)(T−t)
+%%	
+%%	Il paradosso di Siegel spiega perché, nei mercati reali, le opzioni out-of-the-money sulle valute costano in modo diverso a seconda della valuta di riferimento (il cosiddetto Vanna-Volga pricing).
+%%	Riassunto per gli Studenti: Il "Big Picture"
+%%	
+%%	Girsanov è il "traduttore" tra due mondi (valute).
+%%	
+%%	Il Quanto Adjustment è il prezzo che paghi per bloccare il traduttore (fissare il cambio).
+%%	
+%%	Il Paradosso di Siegel è la prova che non puoi tradurre semplicemente invertendo i numeri; devi invertire l'intera distribuzione di probabilità.
+
+\section{Convexity}
+\begin{frame}{Convexity Correction}
 	\begin{itemize}
-		\item A Quanto is a derivative where the underlying asset is denominated in a \textcolor{blue}{foreign currency}, but the payoff is paid in a \textcolor{red}{domestic currency} at a fixed exchange rate $X_{fix}$.
-		\item The assets:
-		\begin{itemize}
-			\item $S_t^f$: foreign asset price (in foreign currency);
-			\item $X_t$: exchange rate (units of domestic per unit of foreign);
-			\item $B_d(t)$, $B_f(t)$: domestic and foreign money market accounts.
-		\end{itemize}
-		\item The foreign asset $S_t^f$ is a martingale under the foreign risk-neutral measure $\mathbb{Q}^f$ (when divided by $B_f$). However, the domestic investor lives in the $\mathbb{Q}^d$ world.
-		\item To price the asset in the domestic world, we must use the domestic bank account $B_d(t)$ as numeraire, but the asset's value in domestic terms is $S_t^d = X_t S_t^f$.
+		\item<1-> In financial lingo, convexity is a broadly understood and often non-specific term for nonlinear behavior of the price of an instrument as a function of evolving markets.
+		\item<2-> The concept of \emph{convexity adjustment} is required for all asset classes when there are payment delays or when the payment dates of the contract do
+		not correspond to those used in the numeraire defintion. %Generally, if we have a maturity date $T$ but payment takes place at time $T + τ∗$ , convexity has to be taken into account. 
+		\item<3-> From the perspective of financial modeling they arise as the results of valuation done under the \emph{"wrong"} measure.
+		\item<4-> The higher the uncertainty in the market (high volatility) the more pronounced the effect of the convexity will become.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{The Quanto Drift Adjustment}
+\begin{frame}{The Good\ldots}
 	\begin{itemize}
-		\item Under the domestic measure $\mathbb{Q}^d$, the process for the foreign asset $S^f$ is:
+		\item<1-> Let us consider a basic interest rate payoff function, whose payoff depends on the EURIBOR rate
 		\begin{equation*}
-			\frac{dS^f_t}{S^f_t} = (r_f \textcolor{red}{-\rho\sigma_S \sigma_X} ) dt + \sigma_S dW^{d}_t
+			V(t_0) = N D(t_0)\expect{Q}\left[\cfrac{F(T_{i-1};T_{i-1},T_i)}{D(T_i)}\right]=
+			NP(t_0,T_i)\mathbb{E}^{T_i}[F(T_{i-1};T_{i-1},T_i)]
 		\end{equation*}
-		\item \textbf{Derivation via Numeraire Change:}
-		\begin{enumerate}
-			\item We move from $\mathbb{Q}^f$ (numeraire $B_f$) to $\mathbb{Q}^d$ (numeraire $B_d$).
-			\item The Radon-Nikodym derivative is $\frac{\mathbb{Q}^d}{\mathbb{Q}^f}=\frac{B_d(T)X(0)}{B_f(T)X(T)}$.
-			\item By Girsanov's Theorem, the drift of $S_f$ is adjusted by the covariance between the asset and the exchange rate.
-		\end{enumerate}
-		\item \textbf{Economic Intuition:} The term $-\rho\sigma_S\sigma_X$ is the \textcolor{red}{Quanto Adjustment}. If the foreign currency strengthens when the stock rises ($\rho > 0$), the domestic investor "loses" the currency gain due to the fixed exchange rate, so the expected return must be adjusted downwards.
+		\item<2-> Since $F_{i}(T_{i-1}) = F(T_{i-1};T_{i-1}, T_i)$ is a martingale under the $T_i$-forward measure, we get
+		\begin{equation*}
+			V(t_0)= NP(t_0,T_i)F_i(t_0)
+		\end{equation*}
 	\end{itemize}
 \end{frame}
-	
-	
-	Slide 1: Dynamics and Multi-Dimensional Setup
-	
-	To price a Quanto, we first define how the assets behave in their "natural" habitats. Under the Foreign Measure $\mathbb{Q}^f$, the assets follow:
-	\begin{equation*}
-	 \frac{dS_t^f}{S_t^f} = r_f dt + \sigma_S dW_{1,t}^f
- 	\end{equation*}
-	\begin{equation*}
-		\frac{dX_t}{X_t^f} = (r_d-r_f)dt + \sigma_X dW_{2,t}^f
-	\end{equation*}
-	Note: $X$ is domestic/foreign. Its drift under $\mathbb{Q}^f$ is not $(r_d−r_f)$​, but this is the dynamics we will transform.
-	
-	The two Brownian motions have a correlation $\rho$, such that $dW_1^f dW_2^f=\rho dt$. We can write $dW_{2,t}^f=\rho dW_{1,t}^f+1−\rho^2 dZ_t^f$​, where $Z^f$ is independent of $W_1^f$​.
 
-	Slide 2: The Radon-Nikodym Derivative
-	
-	The Domestic investor uses Bd​(t) as a numeraire. Any asset At​ denominated in domestic currency must be a Qd-martingale when discounted by Bd​. The domestic value of the foreign bank account is Bf​(t)Xt​. Therefore, the Radon-Nikodym derivative ξt​=dQfdQd​​Ft​​ is:
-	ξt​=Bf​(t)Xt​/(Bf​(0)X0​)Bd​(t)/Bd​(0)​=erf​t(Xt​/X0​)erd​t​
-	
-	Applying Itô's Lemma to ξt​=Xt​X0​​e(rd​−rf​)t, we find the dynamics of the density process:
-	dξt​=−σX​ξt​dW2,tf​
-	
-	Crucial Step: This identifies the Girsanov kernel. The "volatility" of the RN derivative is −σX​ attached to the exchange rate's noise.
-	Slide 3: Applying Girsanov's Theorem
-	
-	Shifting the Wind Girsanov tells us that to get the Brownian motions under Qd, we must subtract the "covariance" between the asset's noise and the density process noise.
-	
-	Under Qd, the Brownian motions become:
-	
-	For W2​ (Exchange Rate): dW2,td​=dW2,tf​−(−σX​)dt=dW2,tf​+σX​dt.
-	
-	For W1​ (Asset): Since W1​ and W2​ are correlated by ρ, the shift is:
-	dW1,td​=dW1,tf​−Cov(dW1f​,ξdξ​)
-	dW1,td​=dW1,tf​−(−ρσX​)dt=dW1,tf​+ρσX​dt
-	
-	The result: dW1,tf​=dW1,td​−ρσX​dt.
-	Slide 4: The Final Quanto SDE
-	
-	The "Convexity" Adjustment Substitute dW1,tf​ back into the foreign asset SDE:
-	Stf​dStf​​=rf​dt+σS​(dW1,td​−ρσX​dt)
-	Stf​dStf​​=(rf​−ρσS​σX​)dt+σS​dW1,td​
-	
-	Why did the drift change?
-	
-	The domestic investor is exposed to Sf through the product Xt​Stf​.
-	
-	In a domestic risk-neutral world, the product Xt​Stf​ must grow at rate rd​.
-	
-	Because Xt​ and Stf​ are correlated, their product has an extra "covariance" term in its growth (d(XS)=XdS+SdX+dXdS).
-	
-	If we fix the exchange rate (Xfix​), we strip away the currency's volatility but we are left with the covariance residue.
-	
-	Slide 5: Mathematical Example for the Exam
-	
-	The Forward Quanto Price Calculate the Forward price of a Quanto asset FQ​=EQd[STf​]. Since the drift of Sf under Qd is rq​=rf​−ρσS​σX​, the expectation is:
-	FQ​=S0f​e(rf​−ρσS​σX​)T
-	
-	Comparison:
-	
-	Standard Forward (Foreign): F=S0f​erf​T
-	
-	Quanto Forward: FQ​=F⋅e−ρσS​σX​T
-	
-	Student takeaway: If ρ>0 (Stock and Currency rise together), the Quanto Forward is lower than the standard Forward. You are "penalized" for the fact that you don't benefit from the currency strengthening when your stock does well.
-	Suggestions for "Challenging" additions:
-	
-	The "Reverse" Quanto: Ask students to derive the adjustment for a domestic asset priced in a foreign currency. (The sign of ρ flips).
-	
-	Implied Correlation: Since σS​ and σX​ are observable from options, but ρ is not, how can we use Quanto prices to "extract" the market's view on the correlation between Nikkei 225 and USD/JPY?
-	
-	Would you like me to create a slide on "Siegel's Paradox"? It’s a classic companion to Quanto theory that explains why 1/X doesn't have the same drift as X.
-	
-	
-	
-	
-	Ottima scelta. Il Paradosso di Siegel è il "pezzo mancante" per capire davvero perché i tassi forward e i cambi si comportano in modo strano quando passiamo da una valuta all'altra. È la dimostrazione matematica che "la media dell'inverso non è l'inverso della media".
-	
-	Ecco le slide per integrare questo concetto nel tuo corso.
-	Slide 1: Siegel’s Paradox - Il Problema della Simmetria
-	
-	La Domanda: Se il tasso di cambio Euro/Dollaro (Xt​) è una martingala sotto una certa misura, il tasso Dollaro/Euro (1/Xt​) può essere anch'esso una martingala?
-	
-	La Risposta Matematica: No. A causa della convessità della funzione f(x)=1/x, per la Disuguaglianza di Jensen:
-	E[XT​1​]>E[XT​]1​
-	
-	Significato Finanziario: Se entrambi gli investitori (USA e EU) fossero neutrali al rischio e convinti che il cambio non abbia drift, entrambi si aspetterebbero paradossalmente di guadagnare nel lungo termine detenendo la valuta estera.
-	Slide 2: Derivazione tramite il Lemma di Itô
-	
-	Supponiamo che sotto la misura domestica Qd, il cambio segua una dinamica GBM (senza drift per semplicità di calcolo):
-	Xt​dXt​​=0⋅dt+σX​dWt​
-	
-	Applichiamo il Lemma di Itô a Yt​=1/Xt​:
-	
-	f(X)=1/X⟹f′=−1/X2,f′′=2/X3
-	
-	dYt​=−Xt2​1​(dXt​)+21​Xt3​2​(dXt​)2
-	
-	dYt​=−Xt2​1​(σX​Xt​dWt​)+Xt3​1​(σX2​Xt2​dt)
-	
-	Risultato:
-	Yt​dYt​​=σX2​dt−σX​dWt​
-	
-	L'intuizione: Anche se X non ha drift, il suo inverso 1/X ha un drift positivo pari alla sua varianza σX2​. Questo è il "volatility smile" dei cambi in forma pura.
-	Slide 3: Girsanov e la Coerenza dei Mercati
-	
-	Perché non c'è arbitraggio? Potrebbe sembrare che tutti possano guadagnare semplicemente scambiando valuta. Girsanov risolve il paradosso imponendo un cambio di misura obbligatorio quando cambiamo prospettiva.
-	
-	Sotto Qd (Investitore Domestico), il cambio X (prezzo del foreign) ha drift rd​−rf​.
-	
-	Quando passiamo all'investitore straniero (Qf), non cambiamo solo l'asset, cambiamo la misura di probabilità.
-	
-	Il passaggio da Qd a Qf (visto nella slide del Quanto) introduce un termine di deriva che cancella esattamente il surplus di rendimento dovuto alla convessità (σX2​), rendendo i mercati internazionali coerenti.
-	Slide 4: Applicazione Pratica - Forward FX
-	
-	In un mondo risk-neutral, il tasso Forward è definito come:
-	Ft,T​=EtQd​[XT​]
-	
-	Se uno studente provasse a calcolare il forward inverso come 1/Ft,T​, commetterebbe un errore sistematico.
-	
-	Ft,T​=Xt​e(rd​−rf​)(T−t)
-	
-	EtQf​[1/XT​]=(1/Xt​)e(rf​−rd​)(T−t)
-	
-	Il paradosso di Siegel spiega perché, nei mercati reali, le opzioni out-of-the-money sulle valute costano in modo diverso a seconda della valuta di riferimento (il cosiddetto Vanna-Volga pricing).
-	Riassunto per gli Studenti: Il "Big Picture"
-	
-	Girsanov è il "traduttore" tra due mondi (valute).
-	
-	Il Quanto Adjustment è il prezzo che paghi per bloccare il traduttore (fissare il cambio).
-	
-	Il Paradosso di Siegel è la prova che non puoi tradurre semplicemente invertendo i numeri; devi invertire l'intera distribuzione di probabilità.
+\begin{frame}{\ldots and the Bad}
+	\begin{itemize}
+		\item<1-> Imagine now a similar contract where, however, the payments will take place at some earlier time $T_{i-1} < T_i$. \item<2->Its current value is given by
+		\begin{equation*}
+			V(t_0) = N D(t_0)\expect{Q}\left[\cfrac{F_i(T_{i-1})}{D(T_{i-1})}\right]
+		\end{equation*}
+		\item<3-> When changing measure (to the $T_{i-1}$-forward measure) we get the following Radon-Nikodym derivative:
+		\begin{equation*}
+			\cfrac{d\mathbb{Q}^{T_{i-1}}}{d\mathbb{Q}}=\cfrac{P(T_{i-1},T_{i-1})D(t_0)}{P(t_0,T_{i-1})D(T_{i-1})}
+		\end{equation*}
+		\item<4->So that
+		\begin{equation*}
+			V(t_0) = N D(t_0)\expect{Q}\left[\cfrac{F_i(T_{i-1})}{D(T_{i-1})}\right] = N D(t_0)\mathbb{E}^{T_{i-1}}\left[\cfrac{P(t_0,T_{i-1})D(T_{i-1})}{P(T_{i-1},T_{i-1})D(t_0)}\cfrac{F_i(T_{i-1})}{D(T_{i-1})}\right] 
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{The Correction}
+	\begin{itemize}
+		\item<1-> After few semplifications
+		\begin{equation*}
+			\begin{aligned}
+				V(t_0) = N \cancel{D(t_0)}\mathbb{E}^{T_{i-1}}&\left[\cfrac{P(t_0,T_{i-1})\cancel{D(T_{i-1})}}{P(T_{i-1},T_{i-1})\cancel{D(t_0)}}\cfrac{F_i(T_{i-1})}{\cancel{D(T_{i-1})}}\right] = \\
+				&= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}[F_i(T_{i-1})]
+			\end{aligned}
+		\end{equation*}
+		\item<1-> Although the Libor rate is a martingale under the $T_i$-forward
+		measure, it is however not a martingale under the $T_{i-1}$-forward measure, i.e.,
+		\begin{equation*}
+			\mathbb{E}^{T_{i-1}}\left[F_i(T_{i-1})\right]\neq \mathbb{E}^{T_i}\left[F_i(T_{i-1})\right] = F_i(t_0)
+		\end{equation*}
+		\item<2-> The difference between these two expectations is commonly referred to as a \textbf{convexity}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Changing Measures}
+	\begin{itemize}
+		\item<1-> By the change of measure technique, we can simplify the expressions above, to some extent. 
+		\item<2-> Indeed moving to the $T_i$-forward measure, we find:
+		\begin{equation*}
+			\cfrac{d\mathbb{Q}^{T_i}}{d\mathbb{Q}^{T_{i-1}}}=\cfrac{P(T_{i-1},T_i)P(t_0,T_{i-1})}{P(t_0,T_i)P(T_{i-1},T_{i-1})}
+		\end{equation*}
+		\item<3-> The derivative value is then equal to
+		\only<3-3>{\begin{equation*}
+				\begin{aligned}
+					V(t_0) &= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}[F_i(T_{i-1})] = \\
+					&=N P(t_0,T_{i-1})\mathbb{E}^{T_i}\left[F_i(T_{i-1})\cfrac{P(t_0,T_i)P(T_{i-1},T_{i-1})}{P(T_{i-1},T_i)P(t_0,T_{i-1})}\right]=\\
+				\end{aligned}
+		\end{equation*}}
+		\only<4-4>{\begin{equation*}
+				\begin{aligned}
+					V(t_0) &= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}[F_i(T_{i-1})] = \\
+					&=N \cancel{P(t_0,T_{i-1})}\mathbb{E}^{T_i}\Bigg[F_i(T_{i-1})\cfrac{P(t_0,T_i)\overbrace{P(T_{i-1},T_{i-1})}^{=1}}{P(T_{i-1},T_i)\cancel{P(t_0,T_{i-1})}}\Bigg]=\\
+				\end{aligned}
+		\end{equation*}}
+		\only<5->{\begin{equation*}
+				\begin{aligned}
+					V(t_0) &= N P(t_0,T_{i-1})\mathbb{E}^{T_{i-1}}[F_i(T_{i-1})] = \\
+					&=N \mathbb{E}^{T_i}\left[F_i(T_{i-1})\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}\right]\\
+				\end{aligned}
+		\end{equation*}}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{The Correction}
+	\begin{itemize}
+		\item<1-> By simply adding and subtracting $F_i(T_{i-1})$ can be rewritten as 
+		\begin{equation*}
+			\begin{aligned}
+				V(t_0) &= N \mathbb{E}^{T_i}[F_i(T_{i-1})] + N \mathbb{E}^{T_i}\left[F_i(T_{i-1})\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\\
+				&=N\left(F_i(t_0) + \mathbb{E}^{T_i}\left[F_i(T_{i-1})\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\right)
+			\end{aligned}
+		\end{equation*}
+		\item<2-> The convexity correction can finally be expressed as
+		\begin{equation}
+			\boxed{	
+				P(t_0,T_i)\mathbb{E}^{T_i}\left[\cfrac{F_i(T_{i-1})}{P(T_{i-1},T_i)}\right]-F_i(t_0)}
+		\end{equation}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Final Remark}
+	\begin{itemize}
+		\item<1-> From the definition of EURIBOR rate: $P(T_{i-1},T_i)=\cfrac{1}{1+\tau_i F_i(T_{i-1})}$ hence
+		\begin{equation*}
+			\mathbb{E}^{T_i}\left[\cfrac{F_i(T_{i-1})}{P(T_{i-1},T_i)}\right]=F_i(t_0)+\tau_i\mathbb{E}^{T_i}[F_i^2(T_{i-1})]
+		\end{equation*}
+		\item<2-> Note that although $F_i(T_{i-1})$ is a martingale under the $T_i$-forward measure, \textbf{its square is not}.
+		\item<3-> Indeed applying \ito~lemma to $F_i^2$ with the  dynamics $dF_i(t) = \sigma F_i(t)dW(t)$, give us
+		\begin{equation*}
+			dF_i^2=\sigma^2F_i^2dt+2\sigma F_i^2dW
+		\end{equation*}
+		which has a drift term, so it is not a martingale.
+	\end{itemize}
+\end{frame}
+
+\subsection{In Arrears Swap}
+\begin{frame}{In-Arrears Swap}
+	\begin{itemize}
+		\item<1-> An \emph{in-arrears swap} is an IRS that resets and pays at the same dates $\{T_{\alpha+1},\ldots, T_\beta\}$ and with fixed-leg rate $K$. More precisely, the value of an payer IAS is
+		\begin{equation}
+			\textbf{IAS}=\expect{Q}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i)-K)\right]
+		\end{equation}
+		\item<2-> To compute the expectation we can proceed as follows
+		\begin{equation*}
+			\begin{aligned}
+				\expect{Q}\Bigg[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}&(F_{i+1}(T_i)-K)\Bigg] = \\ 
+				&=\expect{Q}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\left(\cfrac{1}{P(T_i,T_{i+1})}-(1+\tau_{i+1}K)\right)\right]=\ldots
+			\end{aligned}
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{In-Arrears Swap}
+	\begin{itemize}
+		\item<1-> To further simplify the expression it is convenient to use the following result from the \emph{tower property} of the expectation:
+		\begin{equation*}
+			\begin{aligned}
+				&\mathbb{E}_t\left[\cfrac{XD(t,S)}{P(T,S)} \right]=\mathbb{E}_t\left[\mathbb{E}_T\left[\cfrac{XD(t,T)D(T,S)}{P(T,S)} \right]\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}\mathbb{E}_T[D(T,S)]\right]= \\ 
+				& =\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}P(T,S)\right]=\mathbb{E}_t[XD(t,T)],\quad (t<T<S)
+			\end{aligned}
+		\end{equation*}
+		\item<2-> The previous expression then becomes (with $T=T_i$ and $S=T_{i+1}$):
+		\begin{equation*}
+			\begin{aligned}
+				\ldots=\expect{Q}\Bigg[\sum_{i=\alpha+1}^{\beta}&\left(\cfrac{D(0,T_i)}{P(T_i,T_{i+1})}-D(0,T_i)(1+\tau_{i+1}K)\right)\Bigg] = \\
+				&=\expect{Q}\left[\sum_{i=\alpha+1}^{\beta}\left(\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}-D(0,T_i)(1+\tau_{i+1}K)\right)\right] = \ldots
+			\end{aligned}
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{In-Arrears Swap}
+	\begin{itemize}
+		\item<1-> From the linearity of the expectation operator:
+		\begin{equation*}
+			\begin{aligned}
+				\ldots &=\sum_{i=\alpha+1}^{\beta}\left(\expect{Q}\left[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\right]-\expect{Q}\left[D(0,T_i)(1+\tau_{i+1}K)\right]\right) = \\
+				&=\sum_{i=\alpha+1}^{\beta}\left(\expect{Q}\left[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right) = \ldots\\
+			\end{aligned}
+		\end{equation*}
+		the second one follows from the ZCB definition.
+		\item<2-> Before computing the remaining expectation let's make a change of measure from the risk-neutral to $P(\cdot, T_{i+1})$
+		\only<2-2>{
+			\begin{equation*}
+				\ldots=\sum_{i=\alpha+1}^{\beta}\Bigg(\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\cfrac{D(T_{i+1},T_{i+1})P(0,T_{i+1})}{D(0,T_{i+1})P(T_{i+1},T_{i+1})}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
+				%&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[\cfrac{1}{P(T_i,T_{i+1})^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right] = \\
+				%&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[(1+\tau_{i+1}F_{i+1}(T_i))^2\right]-P(0,T_i)(1+\tau_{i+1}K)\right]
+				%\end{aligned}
+		\end{equation*}}
+		\only<3->{
+			\begin{equation*}
+				\ldots=\sum_{i=\alpha+1}^{\beta}\Bigg(\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{\cancel{D(0,T_{i+1})}}{P(T_i,T_{i+1})^2}\cfrac{\overbrace{D(T_{i+1},T_{i+1})}^{=1}P(0,T_{i+1})}{\cancel{D(0,T_{i+1})}\underbrace{P(T_{i+1},T_{i+1})}_{=1}}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
+		\end{equation*}}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{In-Arrears Swap}
+	\begin{itemize}
+		\item<1-> Finally
+		\begin{equation}
+			\textbf{IAS}=\sum_{i=\alpha+1}^{\beta}\Bigg(P(0,T_{i+1})\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{1}{P(T_i,T_{i+1})^2}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
+			\label{eq:exp_ias}
+		\end{equation}
+		\item<2-> After the last substitution $\frac{1}{P(T_i,T_{i+1})^2}=(1+\tau_{i+1}F_{i+1}(T_i))^2$, it is relatively easy to compute the expected value in Eq.~\ref{eq:exp_ias}, since under $\mathbb{Q}^{T_{i+1}}$, $F_{i+1}$ is a martingale
+		\begin{equation*}
+			dF_{i+1}(t) = \sigma_{i+1}(t)F_{i+1}(t)dW^{i+1}(t)
+		\end{equation*}
+		\uncover<3->{so that (using \ito~isometry), 
+			\begin{equation*}
+				\mathbb{E}^{T_{i+1}}[F_{i+1}^2(T_i)]=F_{i+1}^2(0)\exp\left(\int_0^{T_i}\sigma_{i+1}^2(t)dt\right) = F_{i+1}^2(0)\exp(v_{i+1}^2)
+			\end{equation*}
+			where the $v$ can be determined from cap market prices.}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{In-Arrears Swap}
+	\begin{itemize}
+		\item<1-> The final expression is
+		\begin{equation}
+			\begin{gathered}
+				\textbf{IAS} = \sum_{i=\alpha+1}^{\beta}(P(0,T_{i+1})\mathbb{E}^{T_{i+1}}[(1+\tau_{i+1}F_{i+1}(T_i))^2]-P(0,T_i)(1+\tau_{i+1}K)) \\
+				=\sum_{i=\alpha+1}^{\beta}[
+				P(0,T_{i+1}) [1+2\tau_{i+1}F_{i+1}(0) + \tau_{i+1}^2 F_{i+1}^2(0)\exp(v_{i+1}^2)]\\
+				-(1+\tau_{i+1}K)P(0,T_i)] \\
+			\end{gathered}
+			\label{eq:ias_price}
+		\end{equation}
+		\item<2-> From~\cref{eq:ias_price} it is apparent how the valuation results in a vanilla swap-like part plus the convexity correction due to the arrears feature.
+		\item<3-> Also, contrary to the plain-vanilla case, the In-Arrear Swap value depends on the volatility of forward rates through the caplet volatilities $v$. 
+		\item<4-> Notice however that correlations between different rates are not involved in this product, as expected by the nature of the contract.
+		
+		%Remark 13.1.1. If caplet prices are available in the market for each maturity
+		%Ti and strike K, we can price an in-arrears swap consistently with %theobserved caplet smile by noting that we can write
+	\end{itemize}
+\end{frame}
+
+
 \end{document}
