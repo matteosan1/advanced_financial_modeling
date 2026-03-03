@@ -11,463 +11,463 @@
 		\maketitle
 	\end{frame}
 
-%	\section{No Arbitrage Theory}
-%	\subsection{No Arbitrage Principle\ldots}
+	\section{No Arbitrage Theory}
+	\subsection{No Arbitrage Principle\ldots}
+
+		{
+		\setbeamercovered{transparent}
+		\begin{frame}{Fundamental Theorem of Asset Pricing I}
+			Harrison and Pliska proved and formalized the following results:
+			\begin{itemize}
+				\item<1-> \textbf{The market is free of arbitrage if (and only if) there exists an \textcolor{maincolor}{equivalent martingale measure} (EMM) (i.e. a risk neutral measure)}.
+				\item<0> The market is \textcolor{maincolor}{complete} if and only if the martingale measure is unique.
+
+				(Note that market completeness means that any contingent claim can be replicated by a portfolio, or in other words that every asset in every possible state of the world has a price.)
+				\item<0> In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure
+			\end{itemize}
+		\end{frame}
+	}
+
+	\begin{frame}{No Arbitrage}
+		\begin{itemize}
+			\item Arbitrage opportunities rarely exist in practice. If and when they do, gains are extremely small, are typically short-lived and difficult to spot. \textcolor{maincolor}{Arbitrage exclusion in the mathematical model is close enough to reality}.
+			\item An \textcolor{maincolor}{equivalent martingale measure} $\mathbb{Q}$ is a probability measure on the space $\Omega$ such that
+			\begin{enumerate}
+				\item $\mathbb{Q}$ is equivalent to $\mathbb{P}$ (real world measure);
+				\item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a (martingale) price $\pi_t$
+				\begin{equation*}
+					\pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
+				\end{equation*}
+				More on $D(t, T)$ later.
+			\end{enumerate}
+		\end{itemize}
+		\begin{block}{Definition}
+			A \textbf{(probability) measure} ($\mathbb{P}, \mathbb{Q}\ldots$) is a mapping which associates a probability to each element in the sample space. Two measures are \textbf{equivalent} if they agree "on what is possible". Note the word \emph{possible}: the two measures can have different probabilities for the same event, but must have the same \emph{null-set} $\{x\in {\mathbb{P}}\mid p (x)=0\}$.
+		\end{block}
+	\end{frame}
+
+	\begin{frame}{Martingales}
+	\begin{itemize}
+		\item In finance, a martingale is a process where the best guess for the future value (given all information today) is simply the current value.
+		\item If the discounted price process $D_t S_t$ is a $\mathbb{Q}$-martingale, it guarantees that:
+		\begin{enumerate}
+			\item if the process weren't a martingale, there would be a systematic "drift" after accounting for the risk-free rate, implying a riskless profit by either borrowing to buy the asset or shorting it. The existence of $\mathbb{Q}$ ensures the market is mathematically "fair."
+			\item without the martingale property, this simple expectation wouldn't work because you'd have to adjust for the "riskiness" of the payoff, which varies from person to person.
+		\end{enumerate}
+	\end{itemize}
+	\end{frame}
+
+	\subsection{Risk Neutral Measure}
+	\begin{frame}{Risk Neutral Measure}
+		\begin{itemize}
+			\item The fundamental distinction between the \textbf{Physical Measure} ($\mathbb{P}$) and the \textbf{Risk-Neutral Measure} ($\mathbb{Q}$) lies in the \textcolor{maincolor}{drift of the underlying process}.
+
+			\item \textbf{Physical Measure ($\mathbb{P}$):} reflects historical data and subjective expectations. The expected return of a risky asset includes a \textbf{risk premium} ($\mu = r + \text{risk premium}$), which is notoriously difficult to estimate.
+
+			\item \textbf{Risk-Neutral Measure ($\mathbb{Q}$):} a mathematical construct (EMM) where all assets have an expected return equal to the \textcolor{maincolor}{risk-free rate} ($r$).
+
+			\item It allows us to price derivatives using observable market data (like implied volatility) rather than unobservable risk preferences.
+
+			\item Under the \textit{No-Arbitrage} assumption, $\mathbb{Q}$ is an \textit{implied distribution} extracted from liquid market instruments, used to ensure that the discounted price process is a \textcolor{maincolor}{$\mathbb{Q}$-martingale}.
+		\end{itemize}
+	\end{frame}
+
+%		The Bottom Line: We don't use Q to predict where the stock will go. We use Q to ensure that our price for a complex derivative is consistent with the prices of simple derivatives already trading in the market.
 %
-%		{
-%		\setbeamercovered{transparent}
-%		\begin{frame}{Fundamental Theorem of Asset Pricing I}
-%			Harrison and Pliska proved and formalized the following results:
-%			\begin{itemize}
-%				\item<1-> \textbf{The market is free of arbitrage if (and only if) there exists an \textcolor{maincolor}{equivalent martingale measure} (EMM) (i.e. a risk neutral measure)}.
-%				\item<0> The market is \textcolor{maincolor}{complete} if and only if the martingale measure is unique.
+
+	\begin{frame}{Breeden-Litzenberger Formula}
+	\begin{itemize}
+		\item Breeden and Litzenberger showed that with \emph{a continuous range of European call options} with different strikes ($K$), you can "tease out" the market's implied probability density function ($f_Q$).
+		\begin{equation*}
+		C(K,T)=e^{-rT}\int_K^{\infty}(S_T-K)f_Q(S_T)dS_T
+		\end{equation*}
+		\item Differentiate the call price $C$ with respect to $K$ (differentiating under the integral sign)
+		\begin{equation*}
+		\frac{\partial C}{\partial K}=e^{-rT}\frac{\partial}{\partial K} \int_K^{\infty}(S_T-K)f_Q(S_T)dS_T = \ldots = - e^{-rT}\int_K^{\infty}f(S_T)dS_T\,\,\text{(CDF } P(S_T > K))
+		\end{equation*}
+		\item By the Fundamental Theorem of Calculus
+		\begin{equation}
+			\frac{\partial^2 C}{\partial K^2}=-e^{-rT}\frac{\partial}{\partial K}\int_K^{\infty}f(S_T)dS_T = -e^{-rT}[-f(K)] \implies f(K)=e^{rT}\frac{\partial^2 C}{\partial K^2}
+		\end{equation}
+		\item The result tells us that the state-price density is proportional to the curvature of the call option price with respect to the strike.
+	\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Underlying PDF from Market Data}
+		\begin{itemize}
+			\item In the real world, we don't have a continuous line of strikes; we have discrete points. To find that second derivative, traders use a strategy called a \emph{Butterfly Spread}.
+			\item A butterfly spread involves buying a call at strike $K-\Delta K$, selling two calls at strike $K$, and buying one call at $K+\Delta K$.
+			\item The cost of this butterfly spread is essentially the market's "price" for the stock ending up exactly at strike $K$.
+			\item If the market thinks a certain price is more likely under $\mathbb{Q}$, the butterfly at that strike will be more expensive.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Numerical Approach}
+		Take call option prices with the same maturity but different strikes on S\&P 500 (other parameters are $T=1.6329$, $r=0.009779$, $S=\$1036.2$).
+		\begin{enumerate}
+			\item With the option prices as a function of the strike, compute $\cfrac{d^2C}{dK^2}$ which should proxy the underlying PDF.
+			\item Interpolate (with cubic-spline) the option prices, \emph{increasing} the number of points of the PDF;
+			\item Remove strikes leading to negative density (brute force approach...surely there are better ways to deal with that).
+		\end{enumerate}
+	\end{frame}
+
+	\begin{frame}{Numerical Approach (Results)}
+		\begin{center}
+			\includegraphics[width=0.75\linewidth]{images/Q_pdf_1}
+		\end{center}
+	\end{frame}
+
+%		3. Extracting the "True" Q
 %
-%				(Note that market completeness means that any contingent claim can be replicated by a portfolio, or in other words that every asset in every possible state of the world has a price.)
-%				\item<0> In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure
-%			\end{itemize}
-%		\end{frame}
-%	}
+%		When we apply this to market data, we see why the "Volatility Smile" matters.
 %
-%	\begin{frame}{No Arbitrage}
+%		In Black-Scholes the extracted $\mathbb{Q}$ distribution would be a perfect log-normal curve.
+%
+%		Because OTM Puts and Call are often "expensive" (high implied vol), the extracted $\mathbb{Q}$ distribution usually shows:
+%		A fatter left tail, meaning the market assigns a higher risk-neutral probability to a market crash than a normal distribution would suggest.
+%		"Fat tails" on both sides, suggesting "Black Swan" events are more likely than the math of the 1970s assumed.
+
+	\begin{frame}{Numerical Approach (Vol Parametrization)}
+		\begin{enumerate}
+			\item Determine the implied volatilities from the option prices;
+			\item fit the volatility surface (or a slice like in this case) with the preferred model (SVI);
+			\begin{itemize}
+				\item the name "Stochastic Volatility Inspired" comes from the fact that the model represents the asymptotic behavior of the Heston model;
+				\item while Heston describes how volatility moves over time, SVI fits the volatility smile for a specific option expiration date.
+				\begin{equation*}
+					w(k) = a+b[\rho(k-m)+\sqrt{(k-m)^2+\sigma^2}]
+				\end{equation*}
+			\end{itemize}
+			\item go back to the prices implied by the volatility fit;
+			\item compute the second derivative of the obtained price distribution.
+		\end{enumerate}
+	\end{frame}
+
+
+	\begin{frame}{Numerical Approach (SVI Model Results)}
+	\begin{center}
+		\includegraphics[width=0.75\linewidth]{images/Q_pdf_2}
+	\end{center}
+	\end{frame}
+
+
 %		\begin{itemize}
-%			\item Arbitrage opportunities rarely exist in practice. If and when they do, gains are extremely small, are typically short-lived and difficult to spot. \textcolor{maincolor}{Arbitrage exclusion in the mathematical model is close enough to reality}.
-%			\item An \textcolor{maincolor}{equivalent martingale measure} $\mathbb{Q}$ is a probability measure on the space $\Omega$ such that
-%			\begin{enumerate}
-%				\item $\mathbb{Q}$ is equivalent to $\mathbb{P}$ (real world measure);
-%				\item for any asset $A$ and for each time $t$, $0\le t\le T$ there exists a (martingale) price $\pi_t$
+%			\item  The difference between real world and risk neutral measures is in the treatment of the market price of risk.
+%			\item If you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \textcolor{red}{real or physical probability}.
+%			\item The \textcolor{red}{risk neutral measure}, instead, allows determination of a market-consistent value without making any assumption about the market price of risk. That is useful because the price of risk is not directly observable, but the market prices used to calibrate a risk-neutral generator are.
+%			\item The risk neutral measure is a direct consequence of no arbitrage assumption. It is an \emph{implied probability distribution} from observable prices of tradable instruments, and used to determine \textcolor{red}{objective fair prices} for a financial instrument.
+%		\end{itemize}
+%	\end{frame}
+
+	{
+		\setbeamercovered{transparent}
+	\begin{frame}{Fundamental Theorem of Asset Pricing II}
+		Harrison and Pliska proved and formalized the following results:
+		\begin{itemize}
+			\item<0> The market is free of arbitrage if (and only if) there exists an \textcolor{maincolor}{equivalent martingale measure} (EMM) (i.e. a risk neutral measure).
+			\item<1-> \textbf{The market is \textcolor{maincolor}{complete} if and only if the martingale measure is unique.}
+
+			(Note that market completeness means that any contingent claim can be replicated by a portfolio, or in other words that every asset in every possible state of the world has a price.)
+			\item<0> In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure
+			\begin{equation}
+				\Pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
+				\label{eq:risk_neutral_pricing}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+	}
+
+	\begin{frame}{Market Completeness}
+		\begin{itemize}
+%		\item In a complete market any derivative payoff you can dream of can be perfectly "replicated" using a combination of the underlying stock and a bank account.
+		\item  If you can build a synthetic version of a call option using $\Delta$ shares of stock and some cash, the price of the option must equal the cost of that synthetic portfolio.
+		\item If there is only one way to replicate the payoff, there can only be one fair price. This "one fair price" corresponds to a unique Risk-Neutral Measure ($\mathbb{Q}$).
+		\item In other words if you can perfectly \emph{hedge} an asset, your personal risk preference doesn't matter.
+		\item  Whether you are a thrill-seeker or terrified of risk, the price is the same because the risk can be "traded away." In this case, Risk Neutrality is a mathematical result, not an assumption about human behavior.
+	\end{itemize}
+	\begin{block}{Definition}
+		A \textbf{contingent claim} is a contract whose future payoff depends on the value of another “underlying” asset, or more generally, that is dependent on the realization of some uncertain future event $(S, X\ldots)$
+	\end{block}
+	\end{frame}
+
+%Think of the Risk-Neutral Measure as a set of "shadow prices" for every possible future state of the world.
+%
+%In a Complete Market: Every future state is "reachable" by trading the available assets. Because you can trade into any state, the market "prices" every state perfectly. There is no room for ambiguity; hence, only one Q exists.
+%
+%In an Incomplete Market: There are "hidden" risks you cannot trade or hedge (e.g., sudden jumps in price, or volatility changing unexpectedly). Because you can't hedge these risks, there are multiple "valid" ways to price them depending on how much you dislike risk. This results in infinitely many valid Q measures.
+%
+%3. The Practical Consequences
+%
+%The difference between a unique measure and multiple measures is the difference between a single price and a price range.
+%Market Status	Martingale Measure (Q)	Hedging Ability	Pricing
+%Complete	Unique	Perfect replication (Delta hedging works)	A single "Fair Price"
+%Incomplete	Infinitely Many	Residual risk remains (You can't hedge perfectly)	A "Bid-Ask" spread of theoretical prices
+%4. Real-World Reality Check
+%
+%Is the real market complete? No.
+%
+%In the Black-Scholes model, the market is complete because we assume volatility is constant and there are no jumps. In that world, Q is unique.
+%
+%In the real world:
+%
+%Vol is stochastic: You can't perfectly hedge an option just by trading the stock; you'd also need to trade other options to hedge the "volatility risk" (Vega).
+%
+%Jumps happen: If a stock gaps down 20% overnight, you couldn't have traded "during" the jump to stay hedged.
+%
+%Because the real market is incomplete, we don't have a unique Q handed to us by God. Instead, we choose a Q by calibrating our models to the prices we see on our screens (the "Calibration Loop" we discussed earlier).
+%Summary
+%
+%The theorem says: No gaps in hedging = No ambiguity in probability. If you can hedge everything, the math forces a single, unique probability distribution (Q) upon you. If you can't hedge everything, the "fair price" becomes a matter of opinion (or risk appetite), and many different Q measures could technically be "correct."
+%
+%
+%1. The Connection: Uniqueness and Risk Neutrality
+%
+%The core "trick" of risk-neutral pricing is that if you can perfectly hedge an asset, your personal risk preference doesn't matter. * In a Complete Market (Unique Q): Because you can perfectly replicate a payoff using the underlying stock and cash, the "fair price" is simply the cost of that replication. Whether you are a thrill-seeker or terrified of risk, the price is the same because the risk can be "traded away." In this case, Risk Neutrality is a mathematical result, not an assumption about human behavior.
+%
+%In an Incomplete Market (Multiple $\mathbb{Q}$s): If you cannot perfectly hedge (e.g., because of sudden price jumps or changing volatility), you are left with "residual risk." To price that risk, you suddenly need to know how much someone is willing to pay to avoid it.
+%
+%Different "Risk-Neutral" measures Q1​,Q2​,... represent different levels of market-wide risk aversion.
+%
+%The "Uniqueness" disappears because the price now depends on the "Price of Risk."
+%
+%2. Why Incompleteness creates the "Volatility Smile"
+%
+%If the market were complete (as in the original Black-Scholes model), there would be only one Q—a perfect log-normal distribution. There would be no "Smile."
+%
+%The Volatility Smile exists precisely because the market is incomplete. Here is the chain of logic:
+%
+%Unhedgeable Risks: In the real world, stocks can "jump" (Gap risk) and volatility can "spike" (Vega risk). You cannot perfectly offset these with just the underlying stock.
+%
+%Risk Aversion: Because traders cannot perfectly hedge these "Black Swan" events, they demand a higher premium to take on that risk.
+%
+%The Smile as a "Risk Map": Traders bid up the price of Out-of-the-Money (OTM) puts to protect against crashes. When we "back-solve" these higher prices into the Black-Scholes formula, the volatility (σ) looks higher for those strikes.
+%
+%The Resulting Q: The "Implied" Q measure we extract from the smile is not a bell curve; it is skewed and fat-tailed. It represents the "Unique" measure the market has settled on by aggregating everyone's collective fear.
+%
+%3. The "Market Price of Risk" (λ)
+%
+%In a complete market, there is a unique relationship between the real-world P and the risk-neutral Q, governed by the Market Price of Risk (λ).
+%
+%Under P, the stock grows at μ=r+λσ.
+%Under Q, we "subtract" that risk premium so the growth is just r.
+%
+%If the market is incomplete, λ is no longer a single number. It becomes a complex function (or even a stochastic process). This is why quantitative researchers spend so much time on Stochastic Volatility Models (like the Heston Model)—they are trying to find a mathematically consistent way to pick the "best" Q out of the infinite possibilities.
+
+	\begin{frame}{Risk Neutral Pricing Foundations}
+		Harrison and Pliska proved and formalized the following results:
+		\begin{itemize}
+			\item The market is free of arbitrage if (and only if) there exists an \textcolor{maincolor}{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).
+			\item The market is complete if and only if the martingale measure is unique;
+			\item \textbf{In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure}
+			\begin{equation}
+				\Pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
+				\label{eq:risk_neutral_pricing}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+	\begin{homework}
+		\begin{frame}{\textcolor{white}{Homework}}
+			\begin{itemize}
+				\item[white] A stock is currently priced at $S_0=100$. In one year, it can either go up to $S_u=120$ or down to $S_d=90$. The risk-free rate is $r=5\%$ (annual compounding).
+				\begin{itemize}
+					\item[white] Calculate the risk-neutral probabilities $q$ and $1-q$;
+					\item[white] If the "real-world" probability of an up-move is $p=0.7$, calculate the risk premium ($\mu - r$) that investors are demanding in the real world.
+				\end{itemize}
+				\item[white] Imagine you have to price a \emph{digital option} (a binary bet that pays \$1 if $S_T > K$), what can you do if you know PDF$_\mathbb{Q}$ ?
+				\item[white] Suppose you are in a market with one underlying stock and two different risk-neutral measures, $\mathbb{Q}^1$ and $\mathbb{Q}^2$, both of which exclude arbitrage.
+				\begin{itemize}
+					\item[white] Is the market complete? Why or why not?
+					\item[white] What does this imply for the pricing of a European Call option on that stock?
+					\item[white] How does this relate to the Harrison-Pliska results in your slides?
+				\end{itemize}
+				\item[white] Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. Is this a martingale ?
+%				\item[white]  Show that the exponential SDE
 %				\begin{equation*}
-%					\pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
+%					dX_t = A_t X_tdW_t,\quad X_0=x_0
 %				\end{equation*}
-%				More on $D(t, T)$ later.
-%			\end{enumerate}
-%		\end{itemize}
-%		\begin{block}{Definition}
-%			A \textbf{(probability) measure} ($\mathbb{P}, \mathbb{Q}\ldots$) is a mapping which associates a probability to each element in the sample space. Two measures are \textbf{equivalent} if they agree "on what is possible". Note the word \emph{possible}: the two measures can have different probabilities for the same event, but must have the same \emph{null-set} $\{x\in {\mathbb{P}}\mid p (x)=0\}$.
-%		\end{block}
-%	\end{frame}
-%
-%	\begin{frame}{Martingales}
-%	\begin{itemize}
-%		\item In finance, a martingale is a process where the best guess for the future value (given all information today) is simply the current value.
-%		\item If the discounted price process $D_t S_t$ is a $\mathbb{Q}$-martingale, it guarantees that:
-%		\begin{enumerate}
-%			\item if the process weren't a martingale, there would be a systematic "drift" after accounting for the risk-free rate, implying a riskless profit by either borrowing to buy the asset or shorting it. The existence of $\mathbb{Q}$ ensures the market is mathematically "fair."
-%			\item without the martingale property, this simple expectation wouldn't work because you'd have to adjust for the "riskiness" of the payoff, which varies from person to person.
-%		\end{enumerate}
-%	\end{itemize}
-%	\end{frame}
-%
-%	\subsection{Risk Neutral Measure}
-%	\begin{frame}{Risk Neutral Measure}
-%		\begin{itemize}
-%			\item The fundamental distinction between the \textbf{Physical Measure} ($\mathbb{P}$) and the \textbf{Risk-Neutral Measure} ($\mathbb{Q}$) lies in the \textcolor{maincolor}{drift of the underlying process}.
-%
-%			\item \textbf{Physical Measure ($\mathbb{P}$):} reflects historical data and subjective expectations. The expected return of a risky asset includes a \textbf{risk premium} ($\mu = r + \text{risk premium}$), which is notoriously difficult to estimate.
-%
-%			\item \textbf{Risk-Neutral Measure ($\mathbb{Q}$):} a mathematical construct (EMM) where all assets have an expected return equal to the \textcolor{maincolor}{risk-free rate} ($r$).
-%
-%			\item It allows us to price derivatives using observable market data (like implied volatility) rather than unobservable risk preferences.
-%
-%			\item Under the \textit{No-Arbitrage} assumption, $\mathbb{Q}$ is an \textit{implied distribution} extracted from liquid market instruments, used to ensure that the discounted price process is a \textcolor{maincolor}{$\mathbb{Q}$-martingale}.
-%		\end{itemize}
-%	\end{frame}
-%
-%%		The Bottom Line: We don't use Q to predict where the stock will go. We use Q to ensure that our price for a complex derivative is consistent with the prices of simple derivatives already trading in the market.
-%%
-%
-%	\begin{frame}{Breeden-Litzenberger Formula}
-%	\begin{itemize}
-%		\item Breeden and Litzenberger showed that with \emph{a continuous range of European call options} with different strikes ($K$), you can "tease out" the market's implied probability density function ($f_Q$).
-%		\begin{equation*}
-%		C(K,T)=e^{-rT}\int_K^{\infty}(S_T-K)f_Q(S_T)dS_T
-%		\end{equation*}
-%		\item Differentiate the call price $C$ with respect to $K$ (differentiating under the integral sign)
-%		\begin{equation*}
-%		\frac{\partial C}{\partial K}=e^{-rT}\frac{\partial}{\partial K} \int_K^{\infty}(S_T-K)f_Q(S_T)dS_T = \ldots = - e^{-rT}\int_K^{\infty}f(S_T)dS_T\,\,\text{(CDF } P(S_T > K))
-%		\end{equation*}
-%		\item By the Fundamental Theorem of Calculus
-%		\begin{equation}
-%			\frac{\partial^2 C}{\partial K^2}=-e^{-rT}\frac{\partial}{\partial K}\int_K^{\infty}f(S_T)dS_T = -e^{-rT}[-f(K)] \implies f(K)=e^{rT}\frac{\partial^2 C}{\partial K^2}
-%		\end{equation}
-%		\item The result tells us that the state-price density is proportional to the curvature of the call option price with respect to the strike.
-%	\end{itemize}
-%	\end{frame}
-%
-%	\begin{frame}{Underlying PDF from Market Data}
-%		\begin{itemize}
-%			\item In the real world, we don't have a continuous line of strikes; we have discrete points. To find that second derivative, traders use a strategy called a \emph{Butterfly Spread}.
-%			\item A butterfly spread involves buying a call at strike $K-\Delta K$, selling two calls at strike $K$, and buying one call at $K+\Delta K$.
-%			\item The cost of this butterfly spread is essentially the market's "price" for the stock ending up exactly at strike $K$.
-%			\item If the market thinks a certain price is more likely under $\mathbb{Q}$, the butterfly at that strike will be more expensive.
-%		\end{itemize}
-%	\end{frame}
-%
-%	\begin{frame}{Numerical Approach}
-%		Take call option prices with the same maturity but different strikes on S\&P 500 (other parameters are $T=1.6329$, $r=0.009779$, $S=\$1036.2$).
-%		\begin{enumerate}
-%			\item With the option prices as a function of the strike, compute $\cfrac{d^2C}{dK^2}$ which should proxy the underlying PDF.
-%			\item Interpolate (with cubic-spline) the option prices, \emph{increasing} the number of points of the PDF;
-%			\item Remove strikes leading to negative density (brute force approach...surely there are better ways to deal with that).
-%		\end{enumerate}
-%	\end{frame}
-%
-%	\begin{frame}{Numerical Approach (Results)}
-%		\begin{center}
-%			\includegraphics[width=0.75\linewidth]{images/Q_pdf_1}
-%		\end{center}
-%	\end{frame}
-%
-%%		3. Extracting the "True" Q
-%%
-%%		When we apply this to market data, we see why the "Volatility Smile" matters.
-%%
-%%		In Black-Scholes the extracted $\mathbb{Q}$ distribution would be a perfect log-normal curve.
-%%
-%%		Because OTM Puts and Call are often "expensive" (high implied vol), the extracted $\mathbb{Q}$ distribution usually shows:
-%%		A fatter left tail, meaning the market assigns a higher risk-neutral probability to a market crash than a normal distribution would suggest.
-%%		"Fat tails" on both sides, suggesting "Black Swan" events are more likely than the math of the 1970s assumed.
-%
-%	\begin{frame}{Numerical Approach (Vol Parametrization)}
-%		\begin{enumerate}
-%			\item Determine the implied volatilities from the option prices;
-%			\item fit the volatility surface (or a slice like in this case) with the preferred model (SVI);
-%			\begin{itemize}
-%				\item the name "Stochastic Volatility Inspired" comes from the fact that the model represents the asymptotic behavior of the Heston model;
-%				\item while Heston describes how volatility moves over time, SVI fits the volatility smile for a specific option expiration date.
+%				has the following solution
 %				\begin{equation*}
-%					w(k) = a+b[\rho(k-m)+\sqrt{(k-m)^2+\sigma^2}]
+%					X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
 %				\end{equation*}
-%			\end{itemize}
-%			\item go back to the prices implied by the volatility fit;
-%			\item compute the second derivative of the obtained price distribution.
-%		\end{enumerate}
-%	\end{frame}
+			\end{itemize}
+		\end{frame}
+	\end{homework}
+
+
+	\begin{frame}{Single Curve Approach}
+		\begin{block}{Disclaimer}
+			What follows is a detailed exposition of the classic \textcolor{maincolor}{single curve} approach mainly for interest rate derivatives.
+
+			Today a \textcolor{maincolor}{multi-curve approach} is
+			used in practical applications; nevertheless you need to understand
+			deeply this basic approach as a prerequisite for the extension to the
+			multi-curve model.
+		\end{block}
+	\end{frame}
+
+\subsection{Money Market Account}
+\begin{frame}{Money Market Account}
+	\begin{itemize}
+		\item<0-> The \textcolor{maincolor}{money market account} represents a risk-less investment, where profit is accrued continuously at the risk-free rate, and its value is denoted by $B(t)$.
+		\item<1-> We assume $B(0)=1$ and by definition
+		\begin{equation}
+			dB(t) = r(t)B(t)dt
+		\end{equation}
+		\item<2-> This SDE can be solved through variable separation
+		\begin{equation}
+			\begin{gathered}
+				\frac{dB_t}{B_t} = r_t dt \implies \int_0^t \frac{dB_t}{B_t} = \int_0^t r_s ds \\
+				\implies \log\frac{B_t}{B_0} = \int_0^t r_s ds \implies \boxed{B(t) = \exp\left(\int_0^t r_s ds\right)}
+			\end{gathered}
+		\end{equation}
+		where $r_t$ is referred to as \textcolor{maincolor}{instantaneous spot rate} or \textcolor{maincolor}{short rate}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Money Market Account}
+	\begin{itemize}
+		\item<0-> The \emph{short rate} $r_t$ can be modeled either by a deterministic or a stochastic process.
+		\item<1-> \textbf{Deterministic case}: from the definition of money market account, if I have $A$ units of currency at time 0, it follows that
+		\begin{equation*}
+			V(0) = A\cdot B(0) \implies V(t) = A\cdot B(t)
+		\end{equation*}
+		\item<2-> If we want to have at time $T$ exactly 1 unit of currency
+		\begin{equation*}
+			A\cdot B(T) = 1 \implies A = \frac{1}{B(T)} \implies AB(t) = \frac{B(t)}{B(T)}
+		\end{equation*}
+		hence $\frac{B(t)}{B(T)}$ is \textcolor{maincolor}{the value of one unit of currency payable at time $T$ seen from $t$}.
+			\end{itemize}
+\end{frame}
+
+\subsection{Stochastic Discount Factor and Zero Coupon Bond}
+\begin{frame}{Stochastic Discount Factor}
+	\uncover<1->{
+		\begin{block}{Definition}
+			The \textcolor{maincolor}{(stochastic) discount factor} $D(t, T)$ is the amount at time $t$ that is \emph{equivalent} to one unit of currency payable at time $T$ and is given by
+			\begin{equation}
+				D(t, T) = \frac{B(t)}{B(T)} = e^{-\int_t^T r_s ds}
+			\end{equation}
+	\end{block}}
+	\begin{itemize}
+		\item<2-> Can you guess what is the unit of measurement of a discount factor ?
+		\item<3-> In many pricing application (e.g. Black-Scholes formula) $r$ is assumed to be a \textcolor{maincolor}{deterministic} function of time, and so are $B(t)$ and $D(t,T)$:
+		\begin{itemize}
+			\item<3-> this is motivated by the small influence interest rate variations have on equity prices.
+		\end{itemize}
+		\item<4-> When dealing with interest rate products, $r$ becomes the main actor, so the deterministic assumption must be dropped.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Deterministic vs Stochastic}
+	\begin{itemize}
+		\item<0-> Recall the risk-neutral pricing formula
+		\begin{equation*}
+			\Pi_t = \expect{Q^B}[D(t,T)A|\mathcal{F}_t]
+		\end{equation*}
+		(the risk-neutral measure is often denoted by $\mathbb{Q}^0$, $\mathbb{Q}^B$ or simply $\mathbb{Q}$, and similarly for the expectations).
+		\item<1-> When \textcolor{maincolor}{interest rates are deterministic}, the exponential can be brought out of the expectation
+		\begin{equation*}
+			\Pi_t = e^{-\int_t^T r_s ds} \expect{Q}\left[A|\mathcal{F}_t\right]
+		\end{equation*}
+		\item<2-> If in addition \textcolor{maincolor}{rates are constant} (e.g. Black-Scholes or Heston models)
+		\begin{equation*}
+			\Pi_t = e^{-r(T-t)}\expect{Q}\left[A|\mathcal{F}_t\right]
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Why the Money Market Account is "Special"}
+	\begin{itemize}
+		\item A fundamental requirement of the Asset Pricing Theorems is that the \textbf{discounted price process} must be a martingale. %(since a stock that grows on average cannot be martingale; it must be "leveled out" by the risk-free rate).
+		\item You might wonder: why use $B_t$ ? Why not discount by the price of gold or another stock ?
+		\item The money market account is the only asset with \textbf{locally}$^{*}$ zero variance. It grows predictably at rate $r$. %(Choosing $B_t$ as a \emph{numeraire} defines the Risk-Neutral Measure, whereas choosing $P(t,T)$ as a numeraire would define the Forward Measure.)
+		\item When we change the measure from $\mathbb{P}$ to $\mathbb{Q}$, we are specifically looking for the probability set that makes the expected return of any asset equal to the return of $B_t$.
+	\end{itemize}
+	\vfill
+	\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+		\footnotesize
+		 $^{*}$ At time $t$, $r_t$ is known ($\mathcal{F}_t$-measurable). In $[t, t+dt]$, $B_t$ is determined only by the drift $r_t B_t dt$, no "shock" from a Brownian motion. Over $[t,T]$, $B_T=\exp{\int_t^T r_s ds}$ is random because we don't know the future path of $r_s$.
+	\end{tcolorbox}
+\end{frame}
+
+%This is a crucial technical point. In advanced stochastic calculus for finance, we distinguish between assets that are stochastic (risky) and those that are locally deterministic.
 %
+%When we say the Money Market Account ($B_t$) has locally zero variance, we are making a statement about its diffusion term (the $dW_t$ component) in a stochastic differential equation (SDE).
 %
-%	\begin{frame}{Numerical Approach (SVI Model Results)}
-%	\begin{center}
-%		\includegraphics[width=0.75\linewidth]{images/Q_pdf_2}
-%	\end{center}
-%	\end{frame}
+%Let’s look at the SDEs for a risky stock ($S_t$) and the money market account ($B_t$):
 %
+%For the Stock ($S_t$):
 %
-%%		\begin{itemize}
-%%			\item  The difference between real world and risk neutral measures is in the treatment of the market price of risk.
-%%			\item If you tried to estimate the anticipated value of a stock based on how likely it is to go up or down, considering unique factors or market conditions that influence that specific asset, you would be including risk into the equation and, thus, would be looking at \textcolor{red}{real or physical probability}.
-%%			\item The \textcolor{red}{risk neutral measure}, instead, allows determination of a market-consistent value without making any assumption about the market price of risk. That is useful because the price of risk is not directly observable, but the market prices used to calibrate a risk-neutral generator are.
-%%			\item The risk neutral measure is a direct consequence of no arbitrage assumption. It is an \emph{implied probability distribution} from observable prices of tradable instruments, and used to determine \textcolor{red}{objective fair prices} for a financial instrument.
-%%		\end{itemize}
-%%	\end{frame}
+%$dS_t=\mu S_t dt+\sigma S_t dW_t$
 %
-%	{
-%		\setbeamercovered{transparent}
-%	\begin{frame}{Fundamental Theorem of Asset Pricing II}
-%		Harrison and Pliska proved and formalized the following results:
-%		\begin{itemize}
-%			\item<0> The market is free of arbitrage if (and only if) there exists an \textcolor{maincolor}{equivalent martingale measure} (EMM) (i.e. a risk neutral measure).
-%			\item<1-> \textbf{The market is \textcolor{maincolor}{complete} if and only if the martingale measure is unique.}
+%Variance over dt: The variance of the change $dS_t$ is $\sigma^2 S_t^2 dt$. This is non-zero as long as $\sigma >0$.
 %
-%			(Note that market completeness means that any contingent claim can be replicated by a portfolio, or in other words that every asset in every possible state of the world has a price.)
-%			\item<0> In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure
-%			\begin{equation}
-%				\Pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
-%				\label{eq:risk_neutral_pricing}
-%			\end{equation}
-%		\end{itemize}
-%	\end{frame}
-%	}
+%For the Money Market Account:
+%$dB_t =r_t B_t dt + 0\cdot dW_t
+
+
+%Summary: B_t is locally riskless but globally risky (if rates are stochastic).
 %
-%	\begin{frame}{Market Completeness}
-%		\begin{itemize}
-%%		\item In a complete market any derivative payoff you can dream of can be perfectly "replicated" using a combination of the underlying stock and a bank account.
-%		\item  If you can build a synthetic version of a call option using $\Delta$ shares of stock and some cash, the price of the option must equal the cost of that synthetic portfolio.
-%		\item If there is only one way to replicate the payoff, there can only be one fair price. This "one fair price" corresponds to a unique Risk-Neutral Measure ($\mathbb{Q}$).
-%		\item In other words if you can perfectly \emph{hedge} an asset, your personal risk preference doesn't matter.
-%		\item  Whether you are a thrill-seeker or terrified of risk, the price is the same because the risk can be "traded away." In this case, Risk Neutrality is a mathematical result, not an assumption about human behavior.
-%	\end{itemize}
-%	\begin{block}{Definition}
-%		A \textbf{contingent claim} is a contract whose future payoff depends on the value of another “underlying” asset, or more generally, that is dependent on the realization of some uncertain future event $(S, X\ldots)$
-%	\end{block}
-%	\end{frame}
+%3. Why this matters for the EMM
 %
-%%Think of the Risk-Neutral Measure as a set of "shadow prices" for every possible future state of the world.
-%%
-%%In a Complete Market: Every future state is "reachable" by trading the available assets. Because you can trade into any state, the market "prices" every state perfectly. There is no room for ambiguity; hence, only one Q exists.
-%%
-%%In an Incomplete Market: There are "hidden" risks you cannot trade or hedge (e.g., sudden jumps in price, or volatility changing unexpectedly). Because you can't hedge these risks, there are multiple "valid" ways to price them depending on how much you dislike risk. This results in infinitely many valid Q measures.
-%%
-%%3. The Practical Consequences
-%%
-%%The difference between a unique measure and multiple measures is the difference between a single price and a price range.
-%%Market Status	Martingale Measure (Q)	Hedging Ability	Pricing
-%%Complete	Unique	Perfect replication (Delta hedging works)	A single "Fair Price"
-%%Incomplete	Infinitely Many	Residual risk remains (You can't hedge perfectly)	A "Bid-Ask" spread of theoretical prices
-%%4. Real-World Reality Check
-%%
-%%Is the real market complete? No.
-%%
-%%In the Black-Scholes model, the market is complete because we assume volatility is constant and there are no jumps. In that world, Q is unique.
-%%
-%%In the real world:
-%%
-%%Vol is stochastic: You can't perfectly hedge an option just by trading the stock; you'd also need to trade other options to hedge the "volatility risk" (Vega).
-%%
-%%Jumps happen: If a stock gaps down 20% overnight, you couldn't have traded "during" the jump to stay hedged.
-%%
-%%Because the real market is incomplete, we don't have a unique Q handed to us by God. Instead, we choose a Q by calibrating our models to the prices we see on our screens (the "Calibration Loop" we discussed earlier).
-%%Summary
-%%
-%%The theorem says: No gaps in hedging = No ambiguity in probability. If you can hedge everything, the math forces a single, unique probability distribution (Q) upon you. If you can't hedge everything, the "fair price" becomes a matter of opinion (or risk appetite), and many different Q measures could technically be "correct."
-%%
-%%
-%%1. The Connection: Uniqueness and Risk Neutrality
-%%
-%%The core "trick" of risk-neutral pricing is that if you can perfectly hedge an asset, your personal risk preference doesn't matter. * In a Complete Market (Unique Q): Because you can perfectly replicate a payoff using the underlying stock and cash, the "fair price" is simply the cost of that replication. Whether you are a thrill-seeker or terrified of risk, the price is the same because the risk can be "traded away." In this case, Risk Neutrality is a mathematical result, not an assumption about human behavior.
-%%
-%%In an Incomplete Market (Multiple $\mathbb{Q}$s): If you cannot perfectly hedge (e.g., because of sudden price jumps or changing volatility), you are left with "residual risk." To price that risk, you suddenly need to know how much someone is willing to pay to avoid it.
-%%
-%%Different "Risk-Neutral" measures Q1​,Q2​,... represent different levels of market-wide risk aversion.
-%%
-%%The "Uniqueness" disappears because the price now depends on the "Price of Risk."
-%%
-%%2. Why Incompleteness creates the "Volatility Smile"
-%%
-%%If the market were complete (as in the original Black-Scholes model), there would be only one Q—a perfect log-normal distribution. There would be no "Smile."
-%%
-%%The Volatility Smile exists precisely because the market is incomplete. Here is the chain of logic:
-%%
-%%Unhedgeable Risks: In the real world, stocks can "jump" (Gap risk) and volatility can "spike" (Vega risk). You cannot perfectly offset these with just the underlying stock.
-%%
-%%Risk Aversion: Because traders cannot perfectly hedge these "Black Swan" events, they demand a higher premium to take on that risk.
-%%
-%%The Smile as a "Risk Map": Traders bid up the price of Out-of-the-Money (OTM) puts to protect against crashes. When we "back-solve" these higher prices into the Black-Scholes formula, the volatility (σ) looks higher for those strikes.
-%%
-%%The Resulting Q: The "Implied" Q measure we extract from the smile is not a bell curve; it is skewed and fat-tailed. It represents the "Unique" measure the market has settled on by aggregating everyone's collective fear.
-%%
-%%3. The "Market Price of Risk" (λ)
-%%
-%%In a complete market, there is a unique relationship between the real-world P and the risk-neutral Q, governed by the Market Price of Risk (λ).
-%%
-%%Under P, the stock grows at μ=r+λσ.
-%%Under Q, we "subtract" that risk premium so the growth is just r.
-%%
-%%If the market is incomplete, λ is no longer a single number. It becomes a complex function (or even a stochastic process). This is why quantitative researchers spend so much time on Stochastic Volatility Models (like the Heston Model)—they are trying to find a mathematically consistent way to pick the "best" Q out of the infinite possibilities.
+%This unique property is why we use B_t to define the "Risk-Neutral" world.
 %
-%	\begin{frame}{Risk Neutral Pricing Foundations}
-%		Harrison and Pliska proved and formalized the following results:
-%		\begin{itemize}
-%			\item The market is free of arbitrage if (and only if) there exists an \textcolor{maincolor}{equivalent martingale measure} (EMM) (i.e. a risk-neutral measure).
-%			\item The market is complete if and only if the martingale measure is unique;
-%			\item \textbf{In a complete and arbitrage-free market the price of any derivative is uniquely given, either by the value of the associated replicating strategy, or by the expectation of the discounted payoff under the risk-neutral measure}
-%			\begin{equation}
-%				\Pi_t = \expect{Q}[D(t,T)V_A|\mathcal{F}_t]
-%				\label{eq:risk_neutral_pricing}
-%			\end{equation}
-%		\end{itemize}
-%	\end{frame}
-%
-%	\begin{homework}
-%		\begin{frame}{\textcolor{white}{Homework}}
-%			\begin{itemize}
-%				\item[white] A stock is currently priced at $S_0=100$. In one year, it can either go up to $S_u=120$ or down to $S_d=90$. The risk-free rate is $r=5\%$ (annual compounding).
-%				\begin{itemize}
-%					\item[white] Calculate the risk-neutral probabilities $q$ and $1-q$;
-%					\item[white] If the "real-world" probability of an up-move is $p=0.7$, calculate the risk premium ($\mu - r$) that investors are demanding in the real world.
-%				\end{itemize}
-%				\item[white] Imagine you have to price a \emph{digital option} (a binary bet that pays \$1 if $S_T > K$), what can you do if you know PDF$_\mathbb{Q}$ ?
-%				\item[white] Suppose you are in a market with one underlying stock and two different risk-neutral measures, $\mathbb{Q}^1$ and $\mathbb{Q}^2$, both of which exclude arbitrage.
-%				\begin{itemize}
-%					\item[white] Is the market complete? Why or why not?
-%					\item[white] What does this imply for the pricing of a European Call option on that stock?
-%					\item[white] How does this relate to the Harrison-Pliska results in your slides?
-%				\end{itemize}
-%				\item[white] Consider the process $Y(t) = 2^{W(t)}$, where $\{W(T):t\geq 0\}$ is a standard Brownian motion. Is this a martingale ?
-%%				\item[white]  Show that the exponential SDE
-%%				\begin{equation*}
-%%					dX_t = A_t X_tdW_t,\quad X_0=x_0
-%%				\end{equation*}
-%%				has the following solution
-%%				\begin{equation*}
-%%					X_t = x_0 e^{-\frac{1}{2}\int_0^t A_0^2 ds+\int_0^t A_s dB_s}
-%%				\end{equation*}
-%			\end{itemize}
-%		\end{frame}
-%	\end{homework}
-%
-%
-%	\begin{frame}{Single Curve Approach}
-%		\begin{block}{Disclaimer}
-%			What follows is a detailed exposition of the classic \textcolor{maincolor}{single curve} approach mainly for interest rate derivatives.
-%
-%			Today a \textcolor{maincolor}{multi-curve approach} is
-%			used in practical applications; nevertheless you need to understand
-%			deeply this basic approach as a prerequisite for the extension to the
-%			multi-curve model.
-%		\end{block}
-%	\end{frame}
-%
-%\subsection{Money Market Account}
-%\begin{frame}{Money Market Account}
-%	\begin{itemize}
-%		\item<0-> The \textcolor{maincolor}{money market account} represents a risk-less investment, where profit is accrued continuously at the risk-free rate, and its value is denoted by $B(t)$.
-%		\item<1-> We assume $B(0)=1$ and by definition
-%		\begin{equation}
-%			dB(t) = r(t)B(t)dt
-%		\end{equation}
-%		\item<2-> This SDE can be solved through variable separation
-%		\begin{equation}
-%			\begin{gathered}
-%				\frac{dB_t}{B_t} = r_t dt \implies \int_0^t \frac{dB_t}{B_t} = \int_0^t r_s ds \\
-%				\implies \log\frac{B_t}{B_0} = \int_0^t r_s ds \implies \boxed{B(t) = \exp\left(\int_0^t r_s ds\right)}
-%			\end{gathered}
-%		\end{equation}
-%		where $r_t$ is referred to as \textcolor{maincolor}{instantaneous spot rate} or \textcolor{maincolor}{short rate}.
-%	\end{itemize}
-%\end{frame}
-%
-%\begin{frame}{Money Market Account}
-%	\begin{itemize}
-%		\item<0-> The \emph{short rate} $r_t$ can be modeled either by a deterministic or a stochastic process.
-%		\item<1-> \textbf{Deterministic case}: from the definition of money market account, if I have $A$ units of currency at time 0, it follows that
-%		\begin{equation*}
-%			V(0) = A\cdot B(0) \implies V(t) = A\cdot B(t)
-%		\end{equation*}
-%		\item<2-> If we want to have at time $T$ exactly 1 unit of currency
-%		\begin{equation*}
-%			A\cdot B(T) = 1 \implies A = \frac{1}{B(T)} \implies AB(t) = \frac{B(t)}{B(T)}
-%		\end{equation*}
-%		hence $\frac{B(t)}{B(T)}$ is \textcolor{maincolor}{the value of one unit of currency payable at time $T$ seen from $t$}.
-%			\end{itemize}
-%\end{frame}
-%
-%\subsection{Stochastic Discount Factor and Zero Coupon Bond}
-%\begin{frame}{Stochastic Discount Factor}
-%	\uncover<1->{
-%		\begin{block}{Definition}
-%			The \textcolor{maincolor}{(stochastic) discount factor} $D(t, T)$ is the amount at time $t$ that is \emph{equivalent} to one unit of currency payable at time $T$ and is given by
-%			\begin{equation}
-%				D(t, T) = \frac{B(t)}{B(T)} = e^{-\int_t^T r_s ds}
-%			\end{equation}
-%	\end{block}}
-%	\begin{itemize}
-%		\item<2-> Can you guess what is the unit of measurement of a discount factor ?
-%		\item<3-> In many pricing application (e.g. Black-Scholes formula) $r$ is assumed to be a \textcolor{maincolor}{deterministic} function of time, and so are $B(t)$ and $D(t,T)$:
-%		\begin{itemize}
-%			\item<3-> this is motivated by the small influence interest rate variations have on equity prices.
-%		\end{itemize}
-%		\item<4-> When dealing with interest rate products, $r$ becomes the main actor, so the deterministic assumption must be dropped.
-%	\end{itemize}
-%\end{frame}
-%
-%\begin{frame}{Deterministic vs Stochastic}
-%	\begin{itemize}
-%		\item<0-> Recall the risk-neutral pricing formula
-%		\begin{equation*}
-%			\Pi_t = \expect{Q^B}[D(t,T)A|\mathcal{F}_t]
-%		\end{equation*}
-%		(the risk-neutral measure is often denoted by $\mathbb{Q}^0$, $\mathbb{Q}^B$ or simply $\mathbb{Q}$, and similarly for the expectations).
-%		\item<1-> When \textcolor{maincolor}{interest rates are deterministic}, the exponential can be brought out of the expectation
-%		\begin{equation*}
-%			\Pi_t = e^{-\int_t^T r_s ds} \expect{Q}\left[A|\mathcal{F}_t\right]
-%		\end{equation*}
-%		\item<2-> If in addition \textcolor{maincolor}{rates are constant} (e.g. Black-Scholes or Heston models)
-%		\begin{equation*}
-%			\Pi_t = e^{-r(T-t)}\expect{Q}\left[A|\mathcal{F}_t\right]
-%		\end{equation*}
-%	\end{itemize}
-%\end{frame}
-%
-%\begin{frame}{Why the Money Market Account is "Special"}
-%	\begin{itemize}
-%		\item A fundamental requirement of the Asset Pricing Theorems is that the \textbf{discounted price process} must be a martingale. %(since a stock that grows on average cannot be martingale; it must be "leveled out" by the risk-free rate).
-%		\item You might wonder: why use $B_t$ ? Why not discount by the price of gold or another stock ?
-%		\item The money market account is the only asset with \textbf{locally}$^{*}$ zero variance. It grows predictably at rate $r$. %(Choosing $B_t$ as a \emph{numeraire} defines the Risk-Neutral Measure, whereas choosing $P(t,T)$ as a numeraire would define the Forward Measure.)
-%		\item When we change the measure from $\mathbb{P}$ to $\mathbb{Q}$, we are specifically looking for the probability set that makes the expected return of any asset equal to the return of $B_t$.
-%	\end{itemize}
-%	\vfill
-%	\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
-%		\footnotesize
-%		 $^{*}$ At time $t$, $r_t$ is known ($\mathcal{F}_t$-measurable). In $[t, t+dt]$, $B_t$ is determined only by the drift $r_t B_t dt$, no "shock" from a Brownian motion. Over $[t,T]$, $B_T=\exp{\int_t^T r_s ds}$ is random because we don't know the future path of $r_s$.
-%	\end{tcolorbox}
-%\end{frame}
-%
-%%This is a crucial technical point. In advanced stochastic calculus for finance, we distinguish between assets that are stochastic (risky) and those that are locally deterministic.
-%%
-%%When we say the Money Market Account ($B_t$) has locally zero variance, we are making a statement about its diffusion term (the $dW_t$ component) in a stochastic differential equation (SDE).
-%%
-%%Let’s look at the SDEs for a risky stock ($S_t$) and the money market account ($B_t$):
-%%
-%%For the Stock ($S_t$):
-%%
-%%$dS_t=\mu S_t dt+\sigma S_t dW_t$
-%%
-%%Variance over dt: The variance of the change $dS_t$ is $\sigma^2 S_t^2 dt$. This is non-zero as long as $\sigma >0$.
-%%
-%%For the Money Market Account:
-%%$dB_t =r_t B_t dt + 0\cdot dW_t
-%
-%
-%%Summary: B_t is locally riskless but globally risky (if rates are stochastic).
-%%
-%%3. Why this matters for the EMM
-%%
-%%This unique property is why we use B_t to define the "Risk-Neutral" world.
-%%
-%%If you tried to use a stock as a numeraire, the "baseline" you are measuring against would itself be jumping around due to its own diffusion term. Because B_t has no diffusion, it acts as a "clean" filter. When we divide a risky asset S_t by B_t, we aren't adding any new sources of noise; we are simply "peeling away" the predictable growth ($r$) to see if the remaining process is a martingale.
-%
-%
-%\begin{frame}{Zero Coupon Bond}
-%	\begin{itemize}
-%		\item<1-> \textcolor{maincolor}{Zero Coupon Bond} (ZCB) is a contract that pays one unit of money at time $T$. Its price at time $t$ is denoted by $P(t,T)$, and by definition $P(T,T) = 1$.
-%		\item<1-> What is the relation between $P(t,T)$ and $D(t,T)$ ? \\
-%	\end{itemize}
-%	\uncover<2->{
-%		\begin{table}[bt]
-%			\centering
-%			\footnotesize % Professional sizing for slides
-%			\renewcommand{\arraystretch}{1.4}
-%			\begin{tabular}{|l|c|c|}
-%				\hline
-%				\textbf{Property} & \textbf{Discount Factor $D(t,T)$} & \textbf{ZC Bond $P(t,T)$} \\ \hline
-%				\textbf{Nature} & Amount equivalent to \$1 & Price of a tradable contract \\ \hline
-%				\textbf{Deterministic} & \multicolumn{2}{c|}{$D(t,T) = P(t,T) = e^{-\int_t^T r_s ds}$} \\ \hline
-%				\textbf{Stochastic} & \textcolor{maincolor}{Random} ($\mathcal{F}_T$-measurable) & \textcolor{maincolor}{Known} ($\mathcal{F}_t$-measurable) \\ \hline
-%				\textbf{Relationship} & --- & $P(t, T) = \mathbb{E}^{\mathbb{Q}}[D(t, T)|\mathcal{F}_t]$ \\ \hline
-%			\end{tabular}
-%		\end{table}}
-%\end{frame}
-%
-%\begin{frame}{Spot Interest Rate}
-%	\begin{itemize}
-%		\item  If you invest 1 unit of currency at time $t$ for a duration of $\tau = T-t$, and the annual simple interest rate is $L$, the (simply compounded) value at maturity $T$ is:
-%		\begin{equation*}
-%		V(T)=1+(L\cdot \tau)
-%		\end{equation*}
-%		\item A Zero-Coupon Bond $P(t,T)$ represents the price today ($t$) of 1 unit of currency to be received at maturity ($T$).
-%		\item If we invest $P(t,T)$ today, it must grow to exactly 1 at time $T$, so
-%		\begin{equation}
-%		P(t,T)\cdot (1+L\cdot\tau)=1 \implies L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}
-%		\end{equation}
-%		which represent the simply-compounded \textcolor{maincolor}{spot interest rate}
-%		\item The \textcolor{maincolor}{yield curve} at time $t$ is the graph of:
-%		\begin{equation*}
-%			T\rightarrowtail L(t, T)
-%		\end{equation*}
-%	\end{itemize}
-%\end{frame}
-%
-%\begin{homework}
-%	\begin{frame}{\textcolor{white}{The Expectation Paradox}}
-%		\begin{itemize}
-%			\item[white] In a stochastic interest rate world, is it true that
-%			\begin{equation*}
-%				P(t,T)=\mathbb{E}^{\mathbb{Q}}\left[ \frac{1}{e^{\int_t^T r_s ds}} |\mathcal{F}_t \right] ?
-%			\end{equation*}
-%			\textbf{Hint}: use Jensen's inequality
-%		\end{itemize}
-%	\end{frame}
-%\end{homework}
-%
+%If you tried to use a stock as a numeraire, the "baseline" you are measuring against would itself be jumping around due to its own diffusion term. Because B_t has no diffusion, it acts as a "clean" filter. When we divide a risky asset S_t by B_t, we aren't adding any new sources of noise; we are simply "peeling away" the predictable growth ($r$) to see if the remaining process is a martingale.
+
+
+\begin{frame}{Zero Coupon Bond}
+	\begin{itemize}
+		\item<1-> \textcolor{maincolor}{Zero Coupon Bond} (ZCB) is a contract that pays one unit of money at time $T$. Its price at time $t$ is denoted by $P(t,T)$, and by definition $P(T,T) = 1$.
+		\item<1-> What is the relation between $P(t,T)$ and $D(t,T)$ ? \\
+	\end{itemize}
+	\uncover<2->{
+		\begin{table}[bt]
+			\centering
+			\footnotesize % Professional sizing for slides
+			\renewcommand{\arraystretch}{1.4}
+			\begin{tabular}{|l|c|c|}
+				\hline
+				\textbf{Property} & \textbf{Discount Factor $D(t,T)$} & \textbf{ZC Bond $P(t,T)$} \\ \hline
+				\textbf{Nature} & Amount equivalent to \$1 & Price of a tradable contract \\ \hline
+				\textbf{Deterministic} & \multicolumn{2}{c|}{$D(t,T) = P(t,T) = e^{-\int_t^T r_s ds}$} \\ \hline
+				\textbf{Stochastic} & \textcolor{maincolor}{Random} ($\mathcal{F}_T$-measurable) & \textcolor{maincolor}{Known} ($\mathcal{F}_t$-measurable) \\ \hline
+				\textbf{Relationship} & --- & $P(t, T) = \mathbb{E}^{\mathbb{Q}}[D(t, T)|\mathcal{F}_t]$ \\ \hline
+			\end{tabular}
+		\end{table}}
+\end{frame}
+
+\begin{frame}{Spot Interest Rate}
+	\begin{itemize}
+		\item  If you invest 1 unit of currency at time $t$ for a duration of $\tau = T-t$, and the annual simple interest rate is $L$, the (simply compounded) value at maturity $T$ is:
+		\begin{equation*}
+		V(T)=1+(L\cdot \tau)
+		\end{equation*}
+		\item A Zero-Coupon Bond $P(t,T)$ represents the price today ($t$) of 1 unit of currency to be received at maturity ($T$).
+		\item If we invest $P(t,T)$ today, it must grow to exactly 1 at time $T$, so
+		\begin{equation}
+		P(t,T)\cdot (1+L\cdot\tau)=1 \implies L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}
+		\end{equation}
+		which represent the simply-compounded \textcolor{maincolor}{spot interest rate}
+		\item The \textcolor{maincolor}{yield curve} at time $t$ is the graph of:
+		\begin{equation*}
+			T\rightarrowtail L(t, T)
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{homework}
+	\begin{frame}{\textcolor{white}{The Expectation Paradox}}
+		\begin{itemize}
+			\item[white] In a stochastic interest rate world, is it true that
+			\begin{equation*}
+				P(t,T)=\mathbb{E}^{\mathbb{Q}}\left[ \frac{1}{e^{\int_t^T r_s ds}} |\mathcal{F}_t \right] ?
+			\end{equation*}
+			\textbf{Hint}: use Jensen's inequality
+		\end{itemize}
+	\end{frame}
+\end{homework}
+
 
 
 
@@ -607,6 +607,38 @@
 	\only<2->\myendproof
 \end{frame}
 
+\begin{frame}{A Linear Derivative}
+	\begin{itemize}
+		\item A Forward Rate Agreement (FRA) is classified as a linear derivative because its value at maturity changes in direct proportion to the change in the underlying interest rate.
+		\item Unlike options, an FRA does not have a "kink" in its payoff profile. If the market interest rate moves up by 1 basis point, the value of the FRA moves by a fixed amount\ldots($\textbf{FRA}(L)=mL+c$).
+		\item Understanding linearity is crucial for Portfolio Risk Management.
+ 		\begin{center}
+		 	\includegraphics[width=0.55\linewidth]{images/FRA_linearity}
+		 \end{center}
+
+%		2. The Greeks: Delta and Gamma
+%
+%		In the world of "Greeks" (risk measures), linearity is defined by the behavior of Delta and Gamma:
+%
+%		Delta (Δ): For an FRA, Delta is constant. This means the sensitivity to the interest rate is the same whether the rate is at 1% or 10%.
+%
+%		Gamma (Γ): For an FRA, Gamma is zero. Gamma measures the change in Delta. Since the slope (Delta) of a straight line never changes, the Gamma must be zero.
+%
+%		In contrast, an Interest Rate Cap (an option on rates) has a non-linear payoff because it only pays out if the rate exceeds a certain level, creating a "curved" or "bent" risk profile and a non-zero Gamma.
+%		3. Summary of Linear vs. Non-Linear
+%		Feature	FRA (Linear)	Cap/Floor (Non-Linear)
+%		Payoff Shape	Straight line	Hockey-stick / Curved
+%		Risk Profile	Symmetric (Gain/Loss are equal)	Asymmetric (Limited loss, unlimited gain)
+%		Gamma	Zero	Positive
+%		Replication	Simple (using two bonds)	Complex (requires dynamic hedging)
+%		Why this matters for University Students
+
+%		Understanding linearity is crucial for Portfolio Risk Management. If a bank has a portfolio of 1,000 FRAs, they can simply sum up the Deltas to know their total risk. If they have a portfolio of options, they have to worry about how their risk changes as the market moves (the "convexity" or Gamma risk), which is much harder to manage.
+
+	\end{itemize}
+\end{frame}
+
+
 %\subsection{FRA Detailed Proof}
 %\begin{frame}{FRA Detailed Proof}
 %	\begin{itemize}
@@ -716,8 +748,6 @@
 	\end{tcolorbox}
 \end{frame}
 
-
-
 \begin{frame}{FRA Reformulation}
 	\begin{itemize}
 		\item We can now re-write the value of the FRA in terms of the \emph{simply-compounded forward rate}
@@ -809,7 +839,7 @@
 \begin{frame}{IRS as Sum of FRA}
 	\begin{itemize}
 		\item The swap payoff in \cref{eq:payoff_payer_irs} can be re-interpreted as a portfolio of FRAs.
-		\item Indeed consider a \emph{Receiver IRS} and express its payoff as a sum of FRAs using \cref{eq:fram_payoff_withF}
+		\item Indeed consider a \emph{Receiver IRS} and express its payoff as a sum of FRAs using \cref{eq:fra_payoff_withF}
 		\begin{equation*}
 			\begin{aligned}
 				&\textbf{RFS}(t,T,\tau,N,K) = N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,T_i)\tau_i(K - L(T_{i-1},T_i))]=\\
@@ -829,7 +859,7 @@
 \begin{frame}{IRS as Sum of FRA}
 	\begin{itemize}
 		\item The swap payoff in \cref{eq:payoff_payer_irs} can be re-interpreted as a portfolio of FRAs.
-		\item Indeed consider a \emph{Receiver IRS} and express its payoff as a sum of FRAs using \cref{eq:fram_payoff_withF}
+		\item Indeed consider a \emph{Receiver IRS} and express its payoff as a sum of FRAs using \cref{eq:fra_payoff_withF}
 		\begin{equation}
 			\begin{aligned}
 				&\textbf{RFS}(t,T,\tau,N,K) = 	N\sum_{i=\alpha+1}^{\beta}\expect{Q}[D(t,S)\cdot\tau_i\cdot(K - L(T_{i-1},T_i))]= \ldots =\\
@@ -865,32 +895,27 @@
 	\begin{columns}
 		\column{0.65\linewidth}
 		\begin{ipython}
-from finmarkets import DiscountCurve, GlobalConst, TimeInterval
-from finmarkets import InterestRateSwap, SwapSide
-
 def makePFS(rates):
     vals = []
     today = GlobalConst.OBSERVATION_DATE
     dfs = [1/(1+rates[i])**i for i in range(1, len(rates))]
-    dc = DiscountCurve(today, [today+TimeInterval(f"{i}y") \\
-                               for i in range(1, len(rates))], dfs)
-    dummy_irs = InterestRateSwap(1, today, "5y", 0.137, "1y", side=SwapSide.Payer)
+    dc = DiscountCurve([today+TimeInterval(f"{i}y") for i in range(1, len(rates))], dfs)
+    dummy_irs = InterestRateSwap(1, today, "5y", ..., "1y", side=...)
     swap_rate = dummy_irs.swap_rate(dc)
-    irs = InterestRateSwap(1, today, "5y", swap_rate, "1y", side=SwapSide.Payer)
+    irs = InterestRateSwap(1, today, "5y", swap_rate, "1y", side=...)
     val, vals = irs.npv_with_FRA(dc)
 
 makePFS([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])
 makePFS([0.05] * 7)
 makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 		\end{ipython}
+		\begin{center}
+		\includegraphics[width=0.42\linewidth]{images/swap_fra_flat.png}
+		\end{center}
 		\column{0.35\linewidth}
-		%\begin{center}
-		\includegraphics[width=0.62\linewidth]{images/swap_fra_up.png}\\
-		\includegraphics[width=0.62\linewidth]{images/swap_fra_flat.png}\\
-		\includegraphics[width=0.62\linewidth]{images/swap_fra_down.png}\\
-		%\end{center}
+		\includegraphics[width=0.82\linewidth]{images/swap_fra_up.png}\\
+		\includegraphics[width=0.82\linewidth]{images/swap_fra_down.png}
 	\end{columns}
-
 \end{frame}
 
 \begin{homework}
@@ -956,7 +981,6 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 	\end{frame}
 \end{homework}
 
-
 \begin{frame}{Swap Curve}
 	\begin{itemize}
 		\item The \emph{swap curve} is a graphical representation of the relationship between the fixed interest rate and the IRS maturity (typically ranging from 1 to 30 years).
@@ -984,11 +1008,13 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 		\column{0.55\linewidth}
 		\item \textbf{Credit Component:} Reflects the perceived risk of the interbank sector (AA-rated banks) vs. the Sovereign.
 		\item \textbf{Liquidity Component:} Swaps are often more liquid than specific bond issues, making the swap curve a smoother benchmark for "market expectations."
-		\column{0.45\linewidth}
+		\column{0.40\linewidth}
 		\begin{center}
 			\includegraphics[width=1.\linewidth]{images/swap_spread}
 		\end{center}
 	\end{columns}
+	\item A negative swap spread was once considered an "impossible" anomaly, but it has become a frequent reality since the 2008 crisis.
+	\item Supply and Demand Imbalances is the most significant driver. If a government issues a massive amount of bonds to fund a deficit, the market becomes "flooded". High supply lowers the price of Treasuries, which pushes Treasury yields up.
 \end{itemize}
 \end{frame}
 
@@ -1009,12 +1035,12 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 		\begin{equation*}
 			\textbf{PFS}(t) = \underbrace{N(P(t,T_\alpha)-P(t,T_\beta))}_{\text{Floating Leg (FRN)}} - \underbrace{NK \sum_{i=\alpha+1}^{\beta} \tau_i P(t,T_i)}_{\text{Fixed Leg (Coupon Stream)}}
 		\end{equation*}
-		\item \textbf{Financial Interpretation:}
+		\item Financial Interpretation:
 		\begin{itemize}
-			\item The \textcolor{red}{Fixed Leg} is a stream of fixed coupons.
-			\item The \textcolor{red}{Floating Leg} is a Floating Rate Note (FRN) coupon stream (excluding the final principal).
+			\item The \textcolor{maincolor}{Fixed Leg} is a stream of fixed coupons.
+			\item The \textcolor{maincolor}{Floating Leg} is a Floating Rate Note (FRN) coupon stream (excluding the final principal).
 		\end{itemize}
-		\item \textbf{No-Arbitrage:} a Payer Swap is equivalent to being \textbf{Short a Fixed Rate Bond} and \textbf{Long a Floating Rate Note}.
+		\item No-Arbitrage: a Payer Swap is equivalent to being \textbf{Short a Fixed Rate Bond} and \textbf{Long a Floating Rate Note}.
 	\end{itemize}
 \end{frame}
 
@@ -1035,53 +1061,56 @@ makePFS(list(reversed([0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17])))
 \end{frame}
 
 \begin{frame}{The "Sawtooth" Behavior of FRN Prices}
-	\begin{itemize}
-		\item<1-> Between reset dates, the FRN price is determined by the next coupon ($\text{C}_{reset}$) already fixed:
-		\begin{equation*}
-			\textbf{FRN}(t) = P(t, T_{\text{next}}) \cdot (N + \text{C}_{\text{fixed}})
-		\end{equation*}
-		\item<1-> \textbf{Price Evolution:}
-		\begin{itemize}
-			\item Right \textbf{after} a reset: the bond trades at par ($N$).
-			\item \textbf{Towards} a reset: the price rises as the coupon "accrues."
-			\item Right \textbf{before} payment: Price = $N$+C.
-		\end{itemize}
-		\item<2-> \emph{"Why did Italian CCTs trade below par in 2011 even though they are FRNs ?"}
-		\item<3-> Because the market perceived a Credit Spread over EURIBOR. The "at par" proof assumes we discount at the same rate the bond pays. If the Issuer's risk increases, the bond trades at a discount (Price $<$ Par).
+	Between reset dates, the FRN price is determined by the next coupon ($C_{\text{fixed}}$) already fixed:
+	\begin{equation*}
+		\text{FRN}(t) = P(t, T_{\text{next}}) \cdot (N + C_{\text{fixed}})
+	\end{equation*}
 
-	\end{itemize}
+	\begin{columns}[T]
+		\begin{column}{0.5\linewidth}
+			Price Evolution:
+			\begin{itemize}
+				\item Right \textbf{after} a reset: the bond trades at par ($N$).
+				\item \textbf{Towards} a reset: the price rises as the coupon "accrues."
+				\item Right \textbf{before} payment: $\text{Price} = N + C$.
+			\end{itemize}
+		\end{column}
+
+		\begin{column}{0.5\linewidth}
+			\begin{center}
+				% Ensure the image path is correct or use a placeholder
+				\includegraphics[width=0.9\linewidth]{images/frn_sawtooth}
+			\end{center}
+		\end{column}
+	\end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Floating Rate Note Example}
-\begin{columns}
-	\column{0.5\linewidth}
-	\begin{ipython}
-import pandas as pd, numpy as np
+\begin{frame}{A Counterexample}
+	\begin{itemize}
+		\item<1-> \emph{"Why did Italian CCTs trade below par in 2011 even though they are FRNs ?"}
+		\item<2-> An FRN trades at par only if the coupon is exactly equal to the discount rate.
+		\item<2-> In 2011, the market became extremely worried about Italy's ability to repay its debt. This added a Credit Spread to the required return.
+		\item<2-> The bond was "locked" into paying a small spread, but the market now demands a huge spread.
+		\item<2-> To make up for the fact that the coupon is "too low" compared to the new risk, the Price must drop below 100.
 
-from datetime import date
-from dateutil.relativedelta import relativedelta
+\begin{equation*}
+	P = \sum_{i=1}^{n}\left(\frac{(L_i+s)\tau_i}{1+r_i\tau_i}\right) + \cdots \xrightarrow{r_i = L_i+s} \text{ Trade at Par}
+\end{equation*}
 
-frn = FloatingRateNote(date.today(), "3Y", "3m")
-pillars = [date.today()+relativedelta(months=dt_from_str(f"{t}M"))
-for t in rates['T']]
-	rates = rates['r'].values
-	prices = []
-
-	d = date.today()
-	for i in range(0, 367*2):
-		next_pillars = [p for p in pillars if p >= d]
-		dts = [(p-d).days/360 for p in next_pillars]
-		dfs = [np.exp(-dt*rates[i]) for i, dt in enumerate(dts)]
-		dc = DiscountCurve(d, next_pillars, dfs)
-
-		prices.append(frn.price(d, dc))
-		d = date.today()+relativedelta(days=i)
-\end{ipython}
-	\column{0.5\linewidth}
-	\begin{center}
-		\includegraphics[width=0.9\linewidth]{images/frn_sawtooth}
-	\end{center}
-\end{columns}
+\begin{equation*}
+	P = \sum_{i=1}^{n}\left(\frac{(L_i+s)\tau_i}{1+(L_i+s+\gamma)\tau_i}\right) + \cdots \xrightarrow{\text{credit spread $\gamma$}} \text{ Trade below Par}
+\end{equation*}
+%
+%		Because the market perceived a Credit Spread over EURIBOR. The "at par" proof assumes we discount at the same rate the bond pays. If the Issuer's risk increases, the bond trades at a discount (Price $<$ Par).
+%
+%
+%
+%
+%		The Coupon: CCTs typically paid a coupon linked to the 6-month BOT (Treasury Bill) or Euribor. This "spread" over the base rate was fixed when the bond was issued (often close to zero or very small).
+%
+%		As the crisis hit, investors demanded a much higher return to compensate for the risk of default. They wanted Euribor+500 basis points.
+%
+	\end{itemize}
 \end{frame}
 
 
@@ -1089,23 +1118,23 @@ for t in rates['T']]
 
 \begin{frame}{Trading and Hedging Strategies}
 	\begin{itemize}
-		\item \textbf{Directional Bets (Duration Exposure)}
+		\item Directional Bets
 		\begin{itemize}
-			\item \textbf{Payer Swap (Pay Fixed, Rec Float):} Effectively a "short" position. It has negative duration; you profit when rates rise because the fixed rate you pay is lower than the new market equilibrium.
-			\item \textbf{Receiver Swap (Rec Fixed, Pay Float):} Effectively a "long" position. Positive duration; you profit as rates fall because your locked-in fixed coupon becomes more valuable.
+			\item \textbf{Payer Swap:} effectively a "short" position. You profit when rates rise because the fixed rate you pay is lower than the new market equilibrium.
+			\item \textbf{Receiver Swap:} effectively a "long" position. You profit as rates fall because your locked-in fixed coupon becomes more valuable.
 		\end{itemize}
 
-		\item \textbf{Curve Trades (Slope and Carry)}
+		\item Curve Trades
 		\begin{itemize}
-			\item \textbf{Steepener (Long the Spread):} Pay 30Y / Receive 10Y.
+			\item \textbf{Steepener} (Long the Spread): pay 30Y / receive 10Y.
 			\begin{itemize}
-				\item \textit{Rationale:} Expectation of rising inflation or increased fiscal supply at the long end.
-				\item \textit{P\&L:} Profit if $(L_{30y} - L_{10y})$ increases.
+				\item \textit{Rationale:} expectation of rising inflation or increased fiscal supply at the long end.
+				\item \textit{P\&L:} profit if $(L_{30y} - L_{10y})$ increases.
 			\end{itemize}
-			\item \textbf{Flattener (Short the Spread):} Receive 30Y / Pay 10Y.
+			\item \textbf{Flattener} (Short the Spread): receive 30Y / pay 10Y.
 			\begin{itemize}
-				\item \textit{Rationale:} Expectation of aggressive central bank tightening (lifting the short/belly) or a looming recession (lowering long-term growth expectations).
-				\item \textit{P\&L:} Profit if the 30Y rate falls relative to the 10Y.
+				\item \textit{Rationale:} expectation of aggressive central bank tightening (lifting the short/belly) or a looming recession (lowering long-term growth expectations).
+				\item \textit{P\&L:} profit if the 30Y rate falls relative to the 10Y.
 			\end{itemize}
 		\end{itemize}
 	\end{itemize}
