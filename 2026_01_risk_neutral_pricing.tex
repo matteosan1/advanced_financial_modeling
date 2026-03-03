@@ -133,6 +133,13 @@
 		\begin{enumerate}
 			\item Determine the implied volatilities from the option prices;
 			\item fit the volatility surface (or a slice like in this case) with the preferred model (SVI);
+			\begin{itemize}
+				\item the name "Stochastic Volatility Inspired" comes from the fact that the model represents the asymptotic behavior of the Heston model;
+				\item while Heston describes how volatility moves over time, SVI fits the volatility smile for a specific option expiration date.
+				\begin{equation*}
+					w(k) = a+b[\rho(k-m)+(k-m)^2+\sigma^2]
+				\end{equation*}
+			\end{itemize}
 			\item go back to the prices implied by the volatility fit;
 			\item compute the second derivative of the obtained price distribution.
 		\end{enumerate}
@@ -329,7 +336,7 @@
 		\end{equation*}
 		\item<2-> If we want to have at time $T$ exactly 1 unit of currency
 		\begin{equation*}
-			AB(T) = 1 \implies A = \frac{1}{B(T)} \implies AB(t) = \frac{B(t)}{B(T)}
+			A\cdot B(T) = 1 \implies A = \frac{1}{B(T)} \implies AB(t) = \frac{B(t)}{B(T)}
 		\end{equation*}
 		hence $\frac{B(t)}{B(T)}$ is \textcolor{maincolor}{the value of one unit of currency payable at time $T$ seen from $t$}.
 			\end{itemize}
@@ -360,14 +367,14 @@
 		\begin{equation*}
 			\Pi_t = \expect{Q^B}[D(t,T)A|\mathcal{F}_t]
 		\end{equation*}
-		(the risk-neutral measure is often denoted by $\mathbb{Q}^0$ or $\mathbb{Q}^B$, and similarly for the expectations).
+		(the risk-neutral measure is often denoted by $\mathbb{Q}^0$, $\mathbb{Q}^B$ or simply $\mathbb{Q}$, and similarly for the expectations).
 		\item<1-> When \textcolor{maincolor}{interest rates are deterministic}, the exponential can be brought out of the expectation
 		\begin{equation*}
-			\Pi_t = e^{-\int_t^T r_s ds} \expect{B}\left[A|\mathcal{F}_t\right]
+			\Pi_t = e^{-\int_t^T r_s ds} \expect{Q}\left[A|\mathcal{F}_t\right]
 		\end{equation*}
 		\item<2-> If in addition \textcolor{maincolor}{rates are constant} (e.g. Black-Scholes or Heston models)
 		\begin{equation*}
-			\Pi_t = e^{-r(T-t)}\expect{B}\left[A|\mathcal{F}_t\right]
+			\Pi_t = e^{-r(T-t)}\expect{Q}\left[A|\mathcal{F}_t\right]
 		\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -434,16 +441,20 @@
 
 \begin{frame}{Spot Interest Rate}
 	\begin{itemize}
-		\item Simply-compounded \textcolor{maincolor}{spot interest rate}
+		\item  If you invest 1 unit of currency at time $t$ for a duration of $\tau = T-t$, and the annual simple interest rate is $L$, the (simply compounded) value at maturity $T$ is:
+		\begin{equation*}
+		V(T)=1+(L\cdot \tau)
+		\end{equation*}
+		\item A Zero-Coupon Bond $P(t,T)$ represents the price today ($t$) of 1 unit of currency to be received at maturity ($T$).
+		\item If we invest $P(t,T)$ today, it must grow to exactly 1 at time $T$, so
 		\begin{equation}
-			L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}
+		P(t,T)\cdot (1+L\cdot\tau)=1 \implies L(t,T)=\frac{(1-P(t,T))}{\tau(t,T)P(t,T)}
 		\end{equation}
-		represents the interest rate applicable to a single payment at a future date, calculated using simple interest
+		which represent the simply-compounded \textcolor{maincolor}{spot interest rate}
 		\item The \textcolor{maincolor}{yield curve} at time $t$ is the graph of:
 		\begin{equation*}
 			T\rightarrowtail L(t, T)
 		\end{equation*}
-		\item In the market these are the so called EURIBOR rates and are typically compounded with the actual/360 convention. They are the main rates underlying interest rate derivatives.
 	\end{itemize}
 \end{frame}
 
@@ -469,8 +480,8 @@
 		\item<2-> The FRA payout consists of an exchange of interest rate flows calculated for the time period $\tau=S-T$. At the maturity $S$, a fixed payment based on a fixed rate $K$ is exchanged against a floating payment based on the spot rate $L(T, S)$ whose value is known only in $T$.
 		\item<3-> This contract allows to lock-in the interest rate between times $T$ and $S$ at a desired value $K$.
 
-		\noindent
-		(\textbf{note:} interest rate flows are calculated using the simple compounding law).
+%		\noindent
+%		(\textbf{note:} interest rate flows are calculated using the simple compounding law).
 	\end{itemize}
 \end{frame}
 
@@ -499,7 +510,7 @@
 		\item<1-> Formally, at time $S$ one receives $N\cdot\tau(T, S)\cdot K$ units of currency and pays the amount $N\cdot\tau(T,S)\cdot L(T,S)$, where $N$ is the contract nominal value.
 		\item<2-> Thus, at time $S$, the future (and \textbf{today unknown}) payout of the contract is:
 		\begin{equation}
-			N\cdot\tau(T,S)(K-L(T,S))
+			N\cdot\tau(T,S)\cdot(K-L(T,S))
 			\label{eq:fra_payoff}
 		\end{equation}
 		\item<3-> In order to assign a \textbf{value} at this contract we have to tackle two issues:
@@ -508,6 +519,16 @@
 			\item<3-> discount the result from $S$ to today (time $t$).
 		\end{itemize}
 		\item<4-> There are several ways to arrive at the final result: \textbf{no arbitrage is the common denominator.}
+%
+%		The "Law of One Price": Whether you value the FRA by:
+%
+%		Using the Expectation under a specific probability measure (Martingale approach).
+%
+%		Building a Replicating Portfolio (using existing bonds to mimic the FRA payoff).
+%
+%		Using the Forward Price formula.
+%
+%		...you must get the same price. If different methods gave different prices, an arbitrage opportunity would exist between the methods.
 	\end{itemize}
 \end{frame}
 
@@ -533,7 +554,7 @@
 		On \textbf{Monday}, if you try to guess what your \textbf{Wednesday} prediction will be, you can only rely on what you know \textbf{now}. The "extra" information arriving on Wednesday is currently unknown and averages to zero.
 
 		\centering
-		\textit{The "Tower" collapses because you cannot predict future innovations.}
+		\textit{The "Tower" collapses because you cannot predict future news.}
 	\end{tcolorbox}
 \end{frame}
 
@@ -545,6 +566,7 @@
 			\begin{equation*}
 				\mathbb{E}\Bigg[D(t, S) N\bigg(\tau K + 1 - \frac{1}{P(T, S)}\bigg)\bigg| \mathcal{F}_t\Bigg]
 			\end{equation*}
+			\item Under no-arbitrage, the "fair" future rate $L(T,S)$ isn't just a guess; it is mathematically locked to the prices of Zero-Coupon Bonds today. If the forward rate in the FRA were different from the rate you could create by buying and selling bonds of different maturities, a trader could exploit the difference for a guaranteed profit.
 		}
 		\only<2->{
 			\item First interpret $A$ as an amount of money held at time $S$
@@ -568,7 +590,7 @@
 		\begin{equation*}
 			\mathbb{E}\Bigg[D(t, S) N\bigg(\underbrace{\tau K + 1}_{B} - \frac{1}{P(T, S)}\bigg)\bigg| \mathcal{F}_t\Bigg]
 		\end{equation*}
-		\item<1-> If you remember the payout is expressed at time $S$ it becomes, at time $t$:
+		\item<1-> Since the payout is expressed at time $S$, at time $t$ it becomes:
 		\begin{equation*}
 			K\cdot\tau\cdot P(t,S) + P(t, S)
 		\end{equation*}.
