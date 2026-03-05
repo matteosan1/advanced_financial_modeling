@@ -1208,19 +1208,104 @@ for t in rates['T']]
 \begin{frame}{Par Asset Swap: The Synthetic FRN}
 	\begin{itemize}
 		\item An \textcolor{maincolor}{Asset Swap (AS)} transforms a risky fixed-rate bond into a synthetic floating-rate note, keeping the credit risk profile unchanged.
-		\item \textbf{The Package:}
+		\item The Package:
 		\begin{enumerate}
-			\item Purchase of a risky bond at market price $\overline{\text{CBP}}$.
-			\item An Interest Rate Swap to exchange fixed coupons for $L+s_{AS}$.
+			\item purchase a risky bond at market price $\overline{\text{CBP}}$.
+			\item enter into an Interest Rate Swap to exchange fixed coupons for $L+s_{AS}$.
 		\end{enumerate}
 		\item At $t=0$, the buyer pays exactly \textbf{Par (100\%)}:
 		\begin{itemize}
-			\item If Bond price $\overline{\textbf{CBP}}<1$: Buyer pays 1 total (Bond + upfront to Seller);
-			\item If Bond price $\overline{\textbf{CBP}}>1$: Buyer pays 1 total (Bond - upfront from Seller).
+			\item if Bond price $\overline{\textbf{CBP}}<1$: buyer pays 1 total (Bond + upfront to seller);
+			\item if Bond price $\overline{\textbf{CBP}}>1$: buyer pays 1 total (Bond - upfront from seller).
 		\end{itemize}
 	\end{itemize}
 
 \end{frame}
+
+\begin{frame}{Asset Swap: Strategic Motivations \& Players}
+    \begin{itemize}
+        \item Why consider an Asset Swap ?
+        \begin{itemize}
+            \item \textcolor{maincolor}{Interest Rate Risk Decoupling}: isolate credit risk by hedging out the underlying interest rate duration.
+            \item \textcolor{maincolor}{Yield Enhancement}: access credit spreads in a floating-rate format that may offer higher returns than standard FRNs.
+            \item \textcolor{maincolor}{Customization}: synthetically create a security with a specific maturity or seniority that does not exist in the cash FRN market.
+        \end{itemize}
+        
+        \item Who are the key participants ?
+        \begin{itemize}
+            \item \textbf{Banks \& Treasury Desks}: to manage \textit{Asset-Liability Mismatch} (ALM) by converting fixed-rate assets to floating to match their funding base ($L + \text{spread}$).
+            \item \textbf{Institutional Investors}: insurance companies or pension funds looking to capture the "excess spread" of a specific corporate bond without the rate volatility.
+            \item \textbf{Arbitrageurs}: to exploit mispricings between the cash bond market and the Credit Default Swap (CDS) market (the \textit{Basis Trade}).
+        \end{itemize}
+        
+        \item The Core Objective:
+        \begin{itemize}
+            \item Transform a \textbf{directional} bet on interest rates into a \textbf{pure credit play} on the issuer.
+        \end{itemize}      
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Case Study: Transforming the Risk Profile}
+    \begin{itemize}
+        \item \textbf{The Asset}: 10Y Enel Fixed-Rate Bond at 4\% Coupon.
+        \item \textbf{The Strategy}: Pay Fixed 4\% / Receive $Euribor + 1.50\%$ (ASW Spread).
+    \end{itemize}
+
+    \begin{table}[]
+        \small
+        \centering
+        \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Scenario} & \textbf{Fixed-Rate Bond} & \textbf{Asset Swap (ASW)} \\ \hline
+        Interest Rates $\uparrow$ & \textcolor{red}{Price Drops} (Duration) & \textbf{Hedged} (Floating) \\ \hline
+        Interest Rates $\downarrow$ & \textcolor{maincolor}{Price Rises} (Duration) & \textbf{Hedged} (Floating) \\ \hline
+        Credit Quality $\uparrow$ & Price Rises slightly & \textcolor{maincolor}{Spread Tightens} (Gain) \\ \hline
+        Credit Quality $\downarrow$ & Price Drops & \textcolor{red}{Spread Widens} (Loss) \\ \hline
+        \end{tabular}
+    \end{table}
+
+    \begin{itemize}
+        \item \textbf{Key Takeaways}:
+        \begin{enumerate}
+            \item \textbf{Neutralization}: The \textcolor{maincolor}{Interest Rate Risk} (Macro) is cancelled out by the swap leg.
+            \item \textbf{Isolation}: The investor is left with a \textbf{Pure Credit Play} (Micro) on Enel's ability to pay the spread over Euribor.
+            \item \textbf{Suitability}: Best for investors who are "Bullish" on the issuer but "Bearish" on the bond market environment.
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+%\begin{frame}{A Practicle Example}
+%To explain this, let's look at a scenario involving a hypothetical 10-year Enel fixed-rate bond.
+%
+%Imagine you believe Enel is a rock-solid company that won't default, but you are terrified that the European Central Bank (ECB) will hike interest rates, causing bond prices to crash.
+%The Scenario: The "Directional" Risk
+%
+%If you simply buy the Enel bond at a fixed coupon of 4%:
+%
+%    Credit Play: If Enel stays healthy, you get your 4%. (This is what you want).
+%
+%    Directional Bet: If market interest rates jump from 3% to 5%, your 4% bond is now unattractive. Its market price will drop significantly.
+%
+%    The Result: Even though you were right about Enel’s credit, you lost money because you were wrong about the direction of interest rates.
+%
+%The Solution: The Asset Swap (The "Pure Credit Play")
+%
+%To "strip away" the interest rate risk, you enter into an Asset Swap. You keep the bond, but you pay the 4% fixed coupon to a swap desk and receive Euribor + 1.50% (the ASW Spread).
+%How this changes your P&L:
+%Scenario	Fixed-Rate Bond (Directional)	Asset Swap (Pure Credit)
+%Rates Rise +2%	Bond Price Crashes. You are stuck with a low yield.	No Impact. Your income rises automatically with Euribor.
+%Rates Fall -2%	Bond Price Soars. You gain on duration.	No Impact. Your income falls, but stays 1.5% above market.
+%Enel Credit Improves	Bond price rises slightly.	ASW Spread tightens. The value of your package increases.
+%Enel Credit Worsens	Bond price falls.	ASW Spread widens. The value of your package decreases.
+%The Result: Pure Credit Exposure
+%
+%By using the swap, you have neutralized the "direction" of the wind (interest rates). Now, the only thing that determines if you win or lose is the creditworthiness of Enel.
+%
+%    If Enel's perceived risk goes down, the 1.50% spread you locked in becomes very valuable (you could sell the package at a premium).
+%
+%    If Enel's risk goes up, the package loses value.
+%
+%You have successfully transformed a macro-economic bet into a micro-economic one.
+%\end{frame}
 
 \begin{frame}{Valuation of the Asset Swap}
 \begin{center}
@@ -1232,13 +1317,13 @@ for t in rates['T']]
 \begin{itemize}
 	\item From the perspective of the Asset Swap seller the value of the package is given by (we are considering spot trading so $T_\alpha = t = 0$)
 	\begin{equation}
-			\begin{aligned}
-					\textbf{AS}=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i)-\sum_{i=1}^{\beta}\tau_i P(0,T_i)(L(T_{i-1},T_i)+s) =\\
-					=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i)\\
-					&-\sum_{i=1}^{\beta}\tau_i P(0,T_i)L(T_{i-1},T_i)-\sum_{i=1}^{\beta}\tau_i P(0,T_i)s=0
-				\end{aligned}
-			\label{eq:asset_swap_value}
-		\end{equation}
+        \begin{aligned}
+            \textbf{AS}=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i)-\sum_{i=1}^{\beta}\tau_i P(0,T_i)(L(T_{i-1},T_i)+s) =\\
+            =1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i)\\
+            &-\sum_{i=1}^{\beta}\tau_i P(0,T_i)L(T_{i-1},T_i)-\sum_{i=1}^{\beta}\tau_i P(0,T_i)s=0
+        \end{aligned}
+    \label{eq:asset_swap_value}
+    \end{equation}
 \end{itemize}
 \end{frame}
 
@@ -1246,19 +1331,19 @@ for t in rates['T']]
 \begin{itemize}
 	\item We can replace the future rates with the forward rates definition in terms of ZCB, and by its definition (\cref{eq:forward_rate_definition})
 	\begin{equation*}
-			\begin{aligned}
-					\sum_{i=1}^\beta &\tau_i P(0,T_i)F(t;T_{i-1},T_i) =  \sum_{i=1}^\beta \cancel{\tau_i P(0,T_i)}\frac{P(0,T_{i-1})-P(0,T_i)}{\cancel{\tau_i P(0,T_i)}} = \\
-					= &P(0,0) \cancel{- P(0,T_1)} + \cancel{P(0,T_1)} \cancel{- P(0,T_2)} + \cancel{P(0,T_2)} + \\
-					&\ldots \cancel{- P(0, T_{\beta-1})} \cancel{+ P(0, T_{\beta-1})}-P(0,T_\beta) = 1-P(0,T_\beta)
-				\end{aligned}
-		\end{equation*}
+        \begin{aligned}
+            \sum_{i=1}^\beta &\tau_i P(0,T_i)F(t;T_{i-1},T_i) =  \sum_{i=1}^\beta \cancel{\tau_i P(0,T_i)}\frac{P(0,T_{i-1})-P(0,T_i)}{\cancel{\tau_i P(0,T_i)}} = \\
+            = &P(0,0) \cancel{- P(0,T_1)} + \cancel{P(0,T_1)} \cancel{- P(0,T_2)} + \cancel{P(0,T_2)} + \\
+            &\ldots \cancel{- P(0, T_{\beta-1})} \cancel{+ P(0, T_{\beta-1})}-P(0,T_\beta) = 1-P(0,T_\beta)
+        \end{aligned}
+    \end{equation*}
 	\item Substitute into \cref{eq:asset_swap_value} to get
 	\begin{equation*}
-			\begin{aligned}
-					\textbf{AS}=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i) -(1-P(0,T_\beta))
-					+ \sum_{i=1}^\beta\tau_i P(0,T_i)s=0
-				\end{aligned}
-		\end{equation*}
+        \begin{aligned}
+            \textbf{AS}=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i) -(1-P(0,T_\beta))
+            + \sum_{i=1}^\beta\tau_i P(0,T_i)s=0
+        \end{aligned}
+    \end{equation*}
 \end{itemize}
 \end{frame}
 
@@ -1290,51 +1375,6 @@ Solving for $s$ we arrive at the final expression
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Asset Swap: Credit Considerations}
-	\begin {itemize}
-		\item A trader may want to hedge anyway the credit risk carried on with the asset swap entering into a \emph{Credit Default Swap (CDS)}.
-		\item A CDS is a credit insurance contract where the protection buyer pays \emph{spread} ($s_{CDS}$) and in case of a credit event, the protection seller must pay the contingency payment so that the buyer receives no losses from the default.
-	\end{itemize}
-	\begin{center}
-		\includegraphics[width=0.7\linewidth]{images/credit-default-swaps}
-	\end{center}
-\end{frame}
-
-\begin{frame}{Hedging Credit: AS vs. CDS}
-	\begin {itemize}
-		\item Like $s_{AS}$, also $s_{CDS}$ is quoted on the market, tracking the perceived credit worthiness of the underlying reference entity.
-		\item In theory, no-arbitrage considerations, $s_{AS}$ of bond with maturity $T$ must be very close to corresponding maturity CDS spread $s_{CDS}$
-		\begin{itemize}
-			\item if $s_{AS} - s_{CDS} > 0$ the market pays you more for the risk ($s_{AS}$) than it costs to insure it ($s_{CDS}$). So the investor can buy the bond, financing the purchase, enters in AS and buying protection, making an (almost) risk free profit (\emph{negative basis trading});
-			\item if $s_{AS} - s_{CDS} < 0$ can do the opposite.
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-%\begin{frame}{Bond and Default}
-%\begin{itemize}
-%\item How does the bond price change with non-zero default probability for the issuer ?
-%\item For simplicity consider a zero coupon bond, with a flat probability of default $p_{\text{def}}$ and a recovery rate $R$.
-%The price of the bond will be
-%\begin{equation*}
-%\begin{cases}
-%	D_f\cdot R \cdot N\quad\text{ with default} \\
-%	D_f\cdot N\quad \text{ with no default}
-%\end{cases}
-%\end{equation*}
-%\begin{columns}
-%\column{0.5\linewidth}
-%\item But we know the probability of default so the price estimate will be
-%\begin{equation*}
-%	\mathbb{E}(\textbf{ZCB}) = p_{\text{def}}\cdot(D_f\cdot R\cdot N) + (1 - p_{\text{def}})(D_f\cdot N)
-%\end{equation*}
-%This formula can be easily extended to coupon bearing bonds.
-%\column{0.4\linewidth}
-%\includegraphics[width=0.9\linewidth]{images/default_tree}
-%\end{columns}
-%\end{itemize}
-%\end{frame}
-
 \begin{frame}[fragile]{ASWP Spread and Default Probability}
 Consider ASWP on a 5Y fixed rate bond (yearly coupons 3\%). If the counterparty has nonull default probability, let's see how ASWP spread varies.
 
@@ -1361,16 +1401,65 @@ spreads.append(asw.asspread(dc, pd))
 
 \end{frame}
 
+% FIXME METTERE PLOT ASWP VALUE IN THE MARKET
+
+\begin{frame}{Asset Swap: Credit Considerations}
+	\begin {itemize}
+		\item A trader may want to hedge anyway the credit risk carried on with the asset swap entering into a \emph{Credit Default Swap (CDS)}.
+		\item A CDS is a credit insurance contract where the protection buyer pays \emph{spread} ($s_{CDS}$) and in case of a credit event, the protection seller must pay the contingency payment so that the buyer receives no losses from the default.
+	\end{itemize}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{images/credit-default-swaps}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Hedging Credit: AS vs. CDS}
+	\begin {itemize}
+		\item Like $s_{AS}$, also $s_{CDS}$ is quoted on the market, tracking the perceived credit worthiness of the underlying reference entity.
+		\item In theory, no-arbitrage considerations, $s_{AS}$ of bond with maturity $T$ must be very close to corresponding maturity CDS spread $s_{CDS}$
+		\begin{itemize}
+			\item if $s_{AS} - s_{CDS} > 0$ the market pays you more for the risk ($s_{AS}$) than it costs to insure it ($s_{CDS}$). So the investor can buy the bond, financing the purchase, enters in AS and buying protection, making an (almost) risk free profit (\emph{negative basis trading});
+			\item if $s_{AS} - s_{CDS} < 0$ can do the opposite.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+% FIXME METTERE PLOT CDS vs ASWP in REAL WORLD
+
 \begin{homework}
-\begin{frame}{\textcolor{white}{Homework}}
-\begin{itemize}
-\item[white] Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increases, all the rest being equal ? What does it mean in term of credit quality expectation by the market for the bond's issuer ?
-\item[white]  Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58.
-Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond ?
-For this exercise assume that all annuity factors have a value of 10.0 for simplicity.
-\item[white] Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond ?
-\end{itemize}
+    \begin{frame}{\textcolor{white}{Homework}}
+    \begin{itemize}
+        \item[white] Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increases, all the rest being equal ? What does it mean in term of credit quality expectation by the market for the bond's issuer ?
+        \item[white]  Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58.
+        Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond ?
+        For this exercise assume that all annuity factors have a value of 10.0 for simplicity.
+        \item[white] Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond ?
+        \item[white] How does the bond price change with non-zero default probability for the issuer ? Write down the formula for a zero coupon formula when the issuer has a flat default probability of default $p_{\text{def}}$ and a recovery rate $R$.
+    \end{itemize}
 \end{frame}
 \end{homework}
+
+%\begin{frame}{Bond and Default}
+%\begin{itemize}
+%\item How does the bond price change with non-zero default probability for the issuer ?
+%\item For simplicity consider a zero coupon bond, with a flat probability of default $p_{\text{def}}$ and a recovery rate $R$.
+%The price of the bond will be
+%\begin{equation*}
+%\begin{cases}
+%	D_f\cdot R \cdot N\quad\text{ with default} \\
+%	D_f\cdot N\quad \text{ with no default}
+%\end{cases}
+%\end{equation*}
+%\begin{columns}
+%\column{0.5\linewidth}
+%\item But we know the probability of default so the price estimate will be
+%\begin{equation*}
+%	\mathbb{E}(\textbf{ZCB}) = p_{\text{def}}\cdot(D_f\cdot R\cdot N) + (1 - p_{\text{def}})(D_f\cdot N)
+%\end{equation*}
+%This formula can be easily extended to coupon bearing bonds.
+%\column{0.4\linewidth}
+%\includegraphics[width=0.9\linewidth]{images/default_tree}
+%\end{columns}
+%\end{itemize}
+%\end{frame}
 
 \end{document}
