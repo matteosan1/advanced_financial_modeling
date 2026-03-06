@@ -1,6 +1,6 @@
 \documentclass[12pt,a4paper]{exam}
 
-%\input{exercises/exam_header}
+\input{exercises/exam_header}
 \usepackage{array}
 \usepackage{tabularx}
 \title{Advanced Financial Modeling Course 25/26\\ Exercises}
@@ -332,7 +332,7 @@ Calculate:
 \begin{parts}
 	\part The annuity factor is the sum of the discounted day-count fractions for each payment date:
 \begin{equation*}
-A_{0,2}= \sum_{i=1}^2 \tau_i P(0,T_i) = $A_{0,2}=(1.0\cdot 0.9850)+(1.0\cdot 0.9600)=1.9450$
+A_{0,2}= \sum_{i=1}^2 \tau_i P(0,T_i) = A_{0,2}=(1.0\cdot 0.9850)+(1.0\cdot 0.9600)=1.9450
 \end{equation*}
 	\part Using the model-independent formula derived in your slides:
 	$S_{0,2}=\frac{[P(0,T_0)-P(0,T_2)]}{A_{0,2}}$. 
@@ -415,27 +415,6 @@ The Greek Bond trades at a massive positive spread (+503.2 bps). This compensate
 The formula $P=100+(K-S)A$ is a linear approximation of $P=\sum K\cdot P_i + 100\cdot P_n$. It is highly accurate for small differences between the coupon and the swap rate.
 \end{solution}
 
-\question \textbf{DV01} \\
-Consider a 2-year Interest Rate Swap on a notional of 1M, with a fixed rate of 5\% and paying Libor rate annually. The term-structure of interest rates is flat at 5\%.
-Estimate the DV01 of the swap numerically. 
-
-\begin{solution}
-Calculate the initial NPV, since $K$ equals the flat market rate (5\%), the Swap is at par: $NPV_0=0$.
-Bump the curve by +1 bp (aka r=5.01\%). We use the Payer Swap perspective (Pay Fixed, Receive Floating).
-\begin{align*}
-\text{Fixed Leg} &= N K [P(0,1)+P(0,2)]=1M 0.05 [e^{-0.0501\cdot 1} + e^{-0.0501\cdot 2}] \approx \\
-&\approx 95112.7 + 90465.4 = 185578.1 \\
-\text{Floating Leg} &= N [1-P(0,2)] = 1M [1-e^{-0.0501\cdot 2}] \approx 1M [1-0.904654] = 95346\\
-NPV + 1 bp &\approx 95346-185578\approx = -90232
-\end{align*}
-(Note: this logic assumes the float leg is valued via the $1-P$ shortcut).
-
-For a par swap on a flat curve, the DV01 is approximately the Annuity times the change in rate:
-\begin{equation*}
-DV01 \approx N\cdot\tau\cdot\sum P(0,T_i)\cdot 0.0001 \approx 1000000\cdot [0.9512+0.9048]\cdot 0.0001 \approx 185.60
-\end{equation*}
-\end{solution}
-
 \question \textbf{Cap-Floor Parity} \\
 Prove that the difference between the price of a Cap and a Floor with the same strike $K$ and the same maturity structure is equal to the value of a Payer Interest Rate Swap (IRS).
 
@@ -510,6 +489,99 @@ If the market enters a financial crisis and bank credit risk increases, what do 
 
 \begin{solution}
 The spread is 50 bps. In a crisis, the spread usually widens because the risk of banks (swap counterparties) increases relative to the government.
+\end{solution}
+
+\question \textbf{DV01} \\
+Consider a 2-year Interest Rate Swap on a notional of 1M, with a fixed rate of 5\% and paying Libor rate annually. The term-structure of interest rates is flat at 5\%.
+Estimate the DV01 of the swap numerically. 
+
+\begin{solution}
+	Calculate the initial NPV, since $K$ equals the flat market rate (5\%), the Swap is at par: $NPV_0=0$.
+	Bump the curve by +1 bp (aka $r=5.01\%$). We use the Payer Swap perspective (Pay Fixed, Receive Floating).
+	\begin{align*}
+		\text{Fixed Leg} &= N K [P(0,1)+P(0,2)]=1M 0.05 [e^{-0.0501\cdot 1} + e^{-0.0501\cdot 2}] \approx \\
+		&\approx 95112.7 + 90465.4 = 185578.1 \\
+		\text{Floating Leg} &= N [1-P(0,2)] = 1M [1-e^{-0.0501\cdot 2}] \approx 1M [1-0.904654] = 95346\\
+		NPV + 1 bp &\approx 95346-185578\approx = -90232
+	\end{align*}
+	(Note: this logic assumes the float leg is valued via the $1-P$ shortcut).
+	
+	For a par swap on a flat curve, the DV01 is approximately the Annuity times the change in rate:
+	\begin{equation*}
+		DV01 \approx N\cdot\tau\cdot\sum P(0,T_i)\cdot 0.0001 \approx 1000000\cdot [0.9512+0.9048]\cdot 0.0001 \approx 185.60
+	\end{equation*}
+\end{solution}
+
+\question \textbf{Vega} \\
+Calculate the analytical expressions for:
+\begin{parts}
+	\part Delta Sensitivity analytically, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
+	\part Delta Vega analytically, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
+\end{parts}
+
+
+\begin{solution}
+	The Black formula for a caplet is given by:
+	\begin{equation*}
+		\textbf{Cpl} = L\delta_k P(0,t_{k+1})[F_k N(d_1)-R_k N(d_2)]
+	\end{equation*}
+	where:
+	\begin{equation*}
+		d_1 =\cfrac{\ln(F_k/R_k)+\sigma^2_k t_k/2}{\sigma_k \sqrt{t_k}},\text{ and } d_2 = d_1-\sigma_k \sqrt{t_k}
+	\end{equation*}
+	
+	The delta will just be the first derivative of the equation above in respect to $F$, although one also has to worry about the $F$ being in the $d_1$ and $d_2$ terms.
+	
+	Ignoring the constants $L\delta_k P(0,t_{k+1})$
+	\begin{equation*}
+		\Delta =\cfrac{\partial C}{\partial F} = N(d_1) + F\cfrac{\partial N(d_1)}{\partial F} - r_k\cfrac{\partial N(d_2)}{\partial F}
+	\end{equation*}
+	Next we apply the chain rule:
+	\begin{equation*}
+		\cfrac{\partial N(d_1)}{\partial F} = \cfrac{\partial N(d_1)}{\partial d_1}\cfrac{\partial d_1}{\partial F}
+	\end{equation*}
+	and so:
+	\begin{equation*}
+		\Delta = N(d_1) + F\cfrac{\partial N(d_1)}{\partial d_1}\cfrac{\partial d_1}{\partial F} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\cfrac{\partial d_2}{\partial F}
+	\end{equation*}
+	First thing to notice is that since the $d_1$ and $d_2$ definitions:
+	\begin{equation*}
+		\cfrac{\partial d_1}{\partial F} = \cfrac{\partial d_2}{\partial F}=\cfrac{1}{F_k\sigma_k\sqrt{t_k}}
+	\end{equation*}
+	and so:
+	\begin{equation*}
+		\Delta = N(d_1) + \cfrac{1}{F_k\sigma_k\sqrt{t_k}}\left[F\cfrac{\partial N(d_1)}{\partial d_1} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\right]
+	\end{equation*}
+	Second, lets see how we can simplify the expression inside the parenthesis. Considering that:
+	\begin{equation*}
+		N(d_1) = \cfrac{1}{\sqrt{2\pi}}\int_{-\infty}^{d_1} e^{-x^2/2}dx
+	\end{equation*}	
+	it follows that:
+	\begin{equation*}
+		\cfrac{\partial N(d_1)}{\partial d_1}=N'(d_1)=\cfrac{1}{\sqrt{2\pi}}e^{-d_1^2/2}
+	\end{equation*}
+	and so:
+	\begin{equation*}
+		\left[F\cfrac{\partial N(d_1)}{\partial d_1} - R_k \cfrac{\partial N(d_2)}{\partial d_2}\right] = \left[FN'(d_1)-R_kN'(d_2)\right]
+	\end{equation*}
+	
+	Now with a substitution of $d_2$ for $d_1-\sigma_k\sqrt{t_k}$, we have:
+	\begin{equation*}
+		\begin{gathered}
+			R_kN'(d_1 - \sigma_k\sqrt{t_k}) = R_k\cfrac{1}{\sqrt{2\pi}}\exp\left(\cfrac{-(d_1-\sigma_k\sqrt{t_k}))^2}{2}\right) = \\
+			= R_k\cfrac{1}{\sqrt{2\pi}}\exp\left(\cfrac{-d_1^2}{2}\right)\exp\left(\cfrac{-2d_1\sigma_k\sqrt{t_k}-(\sigma_k\sqrt{t_k})^2}{2}\right) = \\  = R_kN'(d_1)\exp\left(\cfrac{\ln(F_k/R_k)+\sigma_k^2t_k}{\sigma_k\sqrt{t_k}}\sigma_k\sqrt{t_k}\right)\exp\left(\cfrac{-\sigma_k^2t_k}{2}\right) = \\
+			=R_kN'(d_1)\exp\left(\ln(F_k/R_k)+\sigma^2_kt_k/2-\sigma^2_kt_k/2\right) = R_kN'(d_1)\cfrac{F_k}{R_k} = F_kN'(d_1)
+		\end{gathered}
+	\end{equation*}
+	and so
+	\begin{equation*}
+		R_kN'(d_2)=F_kN'(d_1)
+	\end{equation*}
+	So finally, the delta of the caplet would be:
+	\begin{equation*}
+		\Delta = N(d_1) + \cfrac{1}{F_k\sigma_k\sqrt{t_k}}\left[FN'(d_1)-R_kN'(d_2)\right] =
+		N(d_1)
+	\end{equation*}
 \end{solution}
 
 
