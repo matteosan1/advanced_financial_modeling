@@ -1,0 +1,328 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{amssymb}
+
+\setstretch{1.15}
+\setlist[itemize]{noitemsep, topsep=4pt}
+
+% --- Section style ---
+\titleformat{\section}
+  {\large\bfseries}
+  {}
+  {0pt}
+  {}
+
+\titleformat{\section}
+{\normalfont\Large\bfseries} % Text style
+{Topic \thesection}           % Label: "Topic 1"
+{1em}                         % Space between label and title
+{}                            % Code before title
+
+% --- Title ---
+\title{\textbf{List of Topics}}
+\author{Advanced Financial Modeling}
+\date{2025/2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\vspace{1cm}
+
+\hrule
+\vspace{0.5cm}
+
+
+% =====================================================
+\section{Volatility Hedging (2 students)}
+
+\textbf{Main Idea:}  
+Analysis of the volatility smile, structural limitations of the Black--Scholes model, mechanics of discrete delta hedging, and the P\&L intuition behind Gamma trading.
+
+\medskip
+\textbf{Key Points}
+\begin{itemize}
+    \item Volatility Smile: implied volatility as a function of strike and maturity; violation of the lognormal assumption and constant $\sigma$ in Black--Scholes.
+    
+    \item Model Limitations: continuous-time replication, impact of discrete hedging and transaction costs on replication error.
+    
+    \item Delta–Gamma Decomposition: local P\&L approximation    and the role of convexity in non-linear exposure.
+    
+    \item Gamma Trading Intuition: long gamma positions benefit from realized volatility exceeding implied volatility via dynamic rebalancing; connection between gamma, theta decay, and variance.
+\end{itemize}
+
+\medskip
+\textbf{References}
+\begin{itemize}
+    \item[-] Derman, E. (2016). \textit{The Volatility Smile}. Ch. 3, 5, 6.
+    \item[-] Rebonato, R. (2004). \textit{Volatility and Correlation}. Ch. 1, 4.
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+% =====================================================
+\section{Convexity Adjustments for CMS}
+
+\textbf{Main Idea:}  
+Understanding why Constant Maturity Swap (CMS) rates require convexity adjustments, and how measure changes and volatility of swap rates affect pricing.
+
+\medskip
+\textbf{Key Points}
+\begin{itemize}
+    \item CMS Definition: swap paying a long-term swap rate (e.g. 10Y) indexed periodically; mismatch between payment frequency and underlying swap maturity.
+    
+    \item Measure Change: forward swap rate is not a martingale under the payment measure; convexity arises from the stochastic annuity term.
+    
+    \item Convexity Adjustment: pricing requires correcting the naive expectation to account for correlation between swap rate and discount factors.
+    
+    \item Volatility Impact: adjustment magnitude driven by swap rate volatility, slope of the yield curve, and rate–annuity covariance.
+\end{itemize}
+
+\medskip
+\textbf{References}
+\begin{itemize}
+    \item[-] Karouzakis N., Hatgioannides J., Andriosopoulos K. (2017). \textit{Convexity adjustment for constant maturity swaps}
+    \item[-] Brigo, D., \& Mercurio, F. (2006). \textit{Interest Rate Models – Theory and Practice}, Ch. 13.
+   
+\end{itemize}
+
+\section{Applicazion of Change of Numerarire to Margrabe's Formula}
+
+\textbf{Main Idea:}
+
+Utilizing the Change of Numeraire technique to simplify the pricing of an exchange option. By switching from the risk-neutral measure to a measure where one of the risky assets is the unit of value, we reduce a two-dimensional stochastic problem into a one-dimensional problem, effectively "eliminating" the interest rate and one source of risk.
+
+\medskip
+\textbf{Key Points}
+\begin{itemize}
+	\item Exchange Option Definition: A contract providing the right to exchange one risky asset ($S_2$) for another ($S_1$) the payoff is governed by the difference $\max(S_1(T)-S_2(T), 0)$.
+	
+	\item Change of Numeraire: Selecting $S_2$ as the numeraire and applying the \textbf{Radon-Nikodym derivative} to define a new probability measure $\mathbb{Q}^2$, under which the relative price $Z_t = S_1(t)/S_2(t)$ becomes a martingale.
+	
+	\item Volatility Dynamics: Using \textbf{Ito's Lemma} to show that the relative price $Z_t$ follows a Geometric Brownian Motion with a combined volatility $\sigma_Z = \sqrt{\sigma_1^2 + \sigma_2^2 - 2\rho\sigma_1\sigma_2}$, which accounts for the correlation $\rho$ between the two assets.
+	
+	\item Margrabe’s Closed-Form Solution: The resulting formula is strikingly similar to Black-Scholes but depends on the current prices of both assets and their relative volatility rather than a fixed strike price or the risk-free rate.
+	
+	\item Sensitivity Analysis: The price is highly sensitive to the correlation $\rho$; as $\rho \to 1$, the combined volatility $\sigma_Z$ decreases, reducing the option value, whereas $\rho \to -1$ increases the uncertainty and the option's price.
+\end{itemize}
+
+\medskip
+\textbf{References}
+\begin{itemize}
+	\item[-] Margrabe, W. (1978). "The Value of an Option to Exchange One Asset for Another". Journal of Finance.
+	\item[-] Shreve, S. E. (2004). "Stochastic Calculus for Finance II: Continuous-Time Models". (Chapter 9 on Change of Numeraire).	
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\section{Valuing American Options by Simulation}
+
+\textbf{Main Idea:}
+
+Developing a computationally efficient method to price American-style options using Monte Carlo simulation. The core innovation is the use of Least Squares Regression to estimate the conditional expectation of the "continuation value," allowing the holder to make an optimal exercise decision at any discrete time point.
+
+\medskip
+\textbf{Key Points}
+\begin{itemize}
+	\item The American Option Problem: Unlike European options, American options can be exercised at any time $t \leq T$; this creates an "optimal stopping problem" that is traditionally difficult to solve with simulation due to the forward-looking nature of the exercise decision.
+	
+	\item Dynamic Programming Framework: The study treats the option value through the lens of the Bellman equation, where at each time step, the holder compares the \textbf{immediate exercise value} (intrinsic value) against the \textbf{continuation value} (expected discounted future payoff).
+	
+	\item Least Squares Approximation: The "Key" of the article: instead of complex nested simulations, the continuation value is estimated by regressing realized future payoffs onto a basis set of current state variables (e.g., Hermite or Laguerre polynomials) using \textbf{Ordinary Least Squares (OLS)}.
+	
+	\item Path-wise Valuation: Once the regression coefficients are determined, the algorithm moves backward in time (backward induction) across all simulated paths to identify the first moment each path should be exercised.
+	
+	\item Computational Efficiency: The method is highly versatile and handles multi-factor models better than finite difference methods or binomial trees, making it a standard tool in Quantitative Finance for pricing path-dependent and early-exercise derivatives.
+	
+\end{itemize}
+\medskip
+\textbf{References}
+\begin{itemize}
+	\item[-] Longstaff, F. A., \& Schwartz, E. S. (2001). "Valuing American Options by Simulation: A Simple Least-Squares Approach". The Review of Financial Studies.
+	\item[-] Glasserman, P. (2003). "Monte Carlo Methods in Financial Engineering". (Chapter 8 on American Options).
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\section{Fractals and the Hurst Exponent (2 students)}
+
+\textbf{Main Idea:}
+
+Beyond the "Coin Flip" model: Using the Hurst Exponent to identify if markets are trending, mean-reverting, or truly random.
+
+\medskip
+\textbf{Key Points}
+\begin{itemize}
+\item \textbf{The Visual Test:} Why a 5-minute price chart looks like a 5-year price chart (Self-Similarity) and why the "Normal Distribution" fails to predict market crashes.
+
+\item \textbf{Defining $H$:} The Hurst Exponent as a measure of "Long-Term Memory."
+
+\item \textbf{The Three States of $H$:}
+    \begin{itemize}
+        \item $H=0.5$: Brownian Motion (Random/Efficient Markets).
+        \item $H>0.5$: Trending (Black-Scholes underestimates risk here).
+        \item $H<0.5$: Mean-Reverting (High "noise" and "choppiness").
+    \end{itemize}
+
+\item \textbf{Practical Implication:} How "Fat Tails" ($H \neq 0.5$) explain why 10-sigma events (like the 2008 crash) happen much more often than standard math predicts.
+
+\end{itemize}
+
+\medskip
+\textbf{References}
+\begin{itemize}
+\item[-] Mandelbrot, B. B. (1997). \textit{Fractals and Scaling in Finance}.
+\item[-] Peters, E. E. (1991). \textit{Chaos and Order in the Capital Markets}. Ch. 5 (The Hurst Exponent).
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+%\section*{Topic 2: The Expectation Hypothesis and Term Structure Dynamics (2 students)}
+%
+%\textbf{Main Idea:}
+%
+%Analysis of the relationship between short-term and long-term interest rates, the decomposition of forward rates, and the empirical failure of the Pure Expectation Hypothesis in the presence of risk premia.
+%
+%\medskip
+%\textbf{Key Points}
+%\begin{itemize}
+%\item \textbf{The Expectation Hypothesis (EH):} Theoretical framework stating that long-term rates are unbiased predictors of future short-term rates plus a constant risk premium.
+%
+%\item \textbf{Decomposition of the Yield Curve:} Breaking down the spot rate into the "Expected Path of Short Rates" and the "Term Premium"; the role of the Liquidity Preference Theory.
+%
+%\item \textbf{Empirical Anomalies:} The "Predictability Puzzle" (Campbell-Shiller evidence); why the slope of the yield curve often fails to predict the direction of future rate changes.
+%
+%\item \textbf{Policy Implications:} How Central Bank forward guidance relies on the transmission mechanism of the Expectation Theory to influence long-term borrowing costs.
+%
+%\end{itemize}
+%
+%\medskip
+%\textbf{References}
+%\begin{itemize}
+%\item[-] Campbell, J. Y., & Shiller, R. J. (1991). \textit{Yield Spreads and Future Interest Rates: An Analysis of Expectations Hypotheses}.
+%\item[-] Cochrane, J. H. (2005). \textit{Asset Pricing}. Ch. 19 (Term Structure).
+%\end{itemize}
+%
+%\vspace{0.5cm}
+%\hrule
+%\vspace{0.5cm}
+
+
+\section{The Expectation Hypothesis and No-Arbitrage (2 students)}
+
+\textbf{Main Idea:}
+
+A rigorous look at the three mathematical formulations of the Expectation Hypothesis (EH) and why Jensen’s Inequality prevents them from coexisting in a No-Arbitrage framework unless risk premia are zero.
+
+\medskip
+\textbf{Key Points}
+\begin{itemize}
+\item \textbf{The Pure Expectation Hypothesis (PEH):} The claim that the forward rate is an unbiased predictor of the future spot rate: $F(t,T,T+\tau)=E_t[L(T,T+\tau)]$.
+
+\item \textbf{The Three Faces of EH:} 
+    \begin{itemize}
+        \item \textit{Local EH:} The expected return on all bonds over a short holding period is the risk-free rate.
+        \item \textit{Return-to-Maturity EH:} The expected return from rolling over short bonds equals the return on a long-term bond.
+        \item \textit{Yield-to-Maturity EH:} The long-term yield is the average of expected future short rates.
+    \end{itemize}
+
+\item \textbf{The Role of Jensen's Inequality:} Why $E[1/X] \neq 1/E[X]$ implies that if EH holds for bond prices, it cannot mathematically hold for interest rates (yields) simultaneously.
+
+\item \textbf{Connection to No-Arbitrage:} 
+    \begin{itemize}
+        \item In a No-Arbitrage world, bond prices are martingales only under the \textit{Risk-Neutral Measure} ($\mathbb{Q}$). 
+        \item The EH only holds under the \textit{Real-World Measure} ($\mathbb{P}$) if the term premium is zero, which is empirically refuted by the "Predictability Puzzle."
+    \end{itemize}
+
+\end{itemize}
+
+\medskip
+\textbf{References}
+\begin{itemize}
+\item[-] Cox, J. C., Ingersoll, J. E., \& Ross, S. A. (1981). \textit{A Re-examination of the Expectations Hypothesis of the Term Structure of Interest Rates}.
+\item[-] Campbell, J. Y., \& Shiller, R. J. (1991). \textit{Yield Spreads and Future Interest Rates: An Analysis of Expectations Hypotheses}.
+\item[-] Back, K. (2010). \textit{Asset Pricing and Portfolio Choice Theory}. Ch. 12 (Term Structure).
+\item[-] Cochrane, J. H. (2005). \textit{Asset Pricing}. Ch. 19 (Term Structure).
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\section{The Rebonato Approximation in the LMM (2 students)}
+
+\textbf{Main Idea:}
+
+Exploration of the analytical link between the dynamics of forward LIBOR rates and European swaptions. The seminar focuses on how to approximate the swap rate volatility as a weighted average of forward rate volatilities to enable rapid model calibration.
+
+\medskip
+\textbf{Key Points}
+\begin{itemize}
+\item \textbf{The "Mapping" Problem:} Why European swaptions are not natively "lognormal" in the LMM (which assumes lognormal forward rates); the theoretical conflict between the Libor Market Model and the Black Swaption Model.
+
+\item \textbf{The Approximation Formula:} Derivation of the "frozen weights" technique, where time-dependent weights in the swap rate decomposition are assumed to be constant at their initial ($t=0$) values.
+
+\item \textbf{Volatility and Correlation Integration:} How the approximation captures the terminal correlation between different forward rate tenors and its impact on the resulting swaption price.
+
+\item \textbf{Accuracy and Limitations:} Discussion of the approximation's performance in different yield curve environments (flat vs. steep) and its reliability for long-dated vs. short-dated swaptions.
+
+\end{itemize}
+
+\medskip
+\textbf{References}
+\begin{itemize}
+\item[-] Rebonato, R. (2002). \textit{Modern Pricing of Interest-Rate Derivatives}. Ch. 9 (The Volatility of the Swap Rate).
+\item[-] Brigo, D., \& Mercurio, F. (2006). \textit{Interest Rate Models - Theory and Practice}. Section 6.3.
+\item[-] Hull, J., \& White, A. (2000). \textit{Forward Rate Volatilities, Swap Rate Volatilities, and the Implementation of the LIBOR Market Model}.
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\section{Bond Option Pricing and Jamshidian's Decomposition (2 students)}
+
+\textbf{Main Idea:}
+
+Solving the complexity of pricing options on coupon-paying bonds by decomposing them into a strip of European options on Zero-Coupon Bonds (ZCBs) within the framework of one-factor affine term structure models.
+
+\medskip
+\textbf{Key Points}
+\begin{itemize}
+\item \textbf{The Challenge of Coupon Bonds:} Unlike a ZCB, a coupon bond is a sum of payoffs. An option on a sum is generally not the same as a sum of options (due to optionality).
+
+\item \textbf{The Monotonicity Property:} In one-factor models (e.g., Vasicek, Hull-White), the price of any ZCB $P(t, T)$ is a strictly decreasing function of the short rate $r(t)$.
+
+\item \textbf{The "Strike" Decomposition:} Finding the unique critical short rate $r^*$ that makes the total value of the coupon bond equal to the option's strike price $K$.
+
+\item \textbf{The Result:} Proving that the exercise of the aggregate option is equivalent to the simultaneous exercise of individual options on each underlying ZCB, each with a strike price set to its value at $r^*$.
+
+\end{itemize}
+
+\medskip
+\textbf{References}
+\begin{itemize}
+\item[-] Jamshidian, F. (1989). \textit{An Exact Bond Option Formula}. Journal of Finance.
+\item[-] Brigo, D., \& Mercurio, F. (2006). \textit{Interest Rate Models}. Section 3.3.
+\item[-] Björk, T. (2009). \textit{Arbitrage Theory in Continuous Time}. Ch. 20 (Fixed Income Derivatives).
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\end{document}
