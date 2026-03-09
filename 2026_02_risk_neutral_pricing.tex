@@ -11,6 +11,266 @@
 		\maketitle
 	\end{frame}        
 
+
+
+\section{Credit Risk and Asset Swap}
+
+\begin{frame}{The Impact of Credit Risk}
+	\begin{itemize}
+		\item In the real world, entities (Banks/Corporates) pay a \textcolor{maincolor}{credit spread} over the risk-free rate (EURIBOR/OIS).
+		\item A "Risky" Issuer must offer higher yields to attract investors:
+		\begin{enumerate}
+			\item \textbf{Fixed Bond:} a higher coupon $K_{risky} > S_{\alpha,\beta}$;
+			\item \textbf{Floating Bond:} a spread over the variable rate ($L+s$).
+		\end{enumerate}
+		\item To hedge interest rate risk, a bank often swaps its fixed-rate risky debt into floating, leading to the Asset Swap structure.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Par Asset Swap: The Synthetic FRN}
+	\begin{itemize}
+		\item An \textcolor{maincolor}{Asset Swap (AS)} transforms a risky fixed-rate bond into a synthetic floating-rate note, keeping the credit risk profile unchanged.
+		\item The Package:
+		\begin{enumerate}
+			\item purchase a risky bond at market price $\overline{\text{CBP}}$.
+			\item enter into an Interest Rate Swap to exchange fixed coupons for $L+s_{AS}$.
+		\end{enumerate}
+		\item At $t=0$, the buyer pays exactly \textbf{Par (100\%)}:
+		\begin{itemize}
+			\item if Bond price $\overline{\textbf{CBP}}<1$: buyer pays 1 total (Bond + upfront to seller);
+			\item if Bond price $\overline{\textbf{CBP}}>1$: buyer pays 1 total (Bond - upfront from seller).
+		\end{itemize}
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{Asset Swap: Strategic Motivations \& Players}
+	\begin{itemize}
+		\item Why consider an Asset Swap ?
+		\begin{itemize}
+			\item \textcolor{maincolor}{Interest Rate Risk Decoupling}: isolate credit risk by hedging out the underlying interest rate duration.
+			\item \textcolor{maincolor}{Yield Enhancement}: access credit spreads in a floating-rate format that may offer higher returns than standard FRNs.
+			\item \textcolor{maincolor}{Customization}: synthetically create a security with a specific maturity or seniority that does not exist in the cash FRN market.
+		\end{itemize}
+		
+		\item Who are the key participants ?
+		\begin{itemize}
+			\item \textbf{Banks \& Treasury Desks}: to manage \textit{Asset-Liability Mismatch} (ALM) by converting fixed-rate assets to floating to match their funding base ($L + \text{spread}$).
+			\item \textbf{Institutional Investors}: insurance companies or pension funds looking to capture the "excess spread" of a specific corporate bond without the rate volatility.
+			\item \textbf{Arbitrageurs}: to exploit mispricings between the cash bond market and the Credit Default Swap (CDS) market (the \textit{Basis Trade}).
+		\end{itemize}
+		
+		\item The Core Objective:
+		\begin{itemize}
+			\item Transform a \textbf{directional} bet on interest rates into a \textbf{pure credit play} on the issuer.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Transforming the Risk Profile}
+	Imagine you believe \emph{SolidCompany} won't default anytime soon, but you are terrified that the ECB will hike interest rates, causing bond prices to crash.
+	
+	\begin{table}[]
+		\centering
+		\scriptsize
+		\begin{tabular}{|p{2cm}|p{6cm}|p{6cm}|}
+			\hline
+			\textbf{Scenario} & \textbf{Fixed-Rate Bond} (4\%) & \textbf{Asset Swap} Pay Fixed 4\% / Receive $Euribor + 1.50\%$ \\ \hline
+			Rates Rise $+2\%$ & Bond Price Crashes. You are stuck with a low yield. & No Impact. Your income rises automatically with Euribor. \\ \hline
+			Rates Fall $-2\%$	 & Bond Price Soars. You gain on duration. & No Impact. Your income falls, but stays 1.5\% above market. \\ \hline
+			Credit Quality Improves & Bond price rises slightly. & ASW Spread tightens. The value of your package increases. \\ \hline
+			Credit Quality Worsens & Bond price falls. & ASW Spread widens. The value of your package decreases. \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	\begin{itemize}
+		\item \textbf{Neutralization}: the \textcolor{maincolor}{Interest Rate Risk} (Macro) is cancelled out by the swap leg.
+		\item \textbf{Isolation}: investor left with \textbf{Credit Play} (Micro) on SolidCompany to pay Euribor + s.
+		\item \textbf{Suitability}: best for investors "Bullish" on issuer, "Bearish" on market environment.
+	\end{itemize}
+\end{frame}
+
+%The Solution: The Asset Swap (The "Pure Credit Play")
+%
+%To "strip away" the interest rate risk, you enter into an Asset Swap. You keep the bond, but you pay the 4% fixed coupon to a swap desk and receive Euribor + 1.50% (the ASW Spread).
+%How this changes your P&L:
+%Scenario	Fixed-Rate Bond (Directional)	Asset Swap (Pure Credit)
+%Rates Rise +2%	Bond Price Crashes. You are stuck with a low yield.	No Impact. Your income rises automatically with Euribor.
+%Rates Fall -2%	Bond Price Soars. You gain on duration.	No Impact. Your income falls, but stays 1.5% above market.
+%Enel Credit Improves	Bond price rises slightly.	ASW Spread tightens. The value of your package increases.
+%Enel Credit Worsens	Bond price falls.	ASW Spread widens. The value of your package decreases.
+%The Result: Pure Credit Exposure
+%
+%By using the swap, you have neutralized the "direction" of the wind (interest rates). Now, the only thing that determines if you win or lose is the creditworthiness of Enel.
+%
+%    If Enel's perceived risk goes down, the 1.50% spread you locked in becomes very valuable (you could sell the package at a premium).
+%
+%    If Enel's risk goes up, the package loses value.
+%
+%You have successfully transformed a macro-economic bet into a micro-economic one.
+%\end{frame}
+
+\begin{frame}{Valuation of the Asset Swap}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{images/asset_swap}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Valuation of the Asset Swap}
+	\begin{itemize}
+		\item From the perspective of the Asset Swap seller the value of the package is given by (we are considering spot trading so $T_\alpha = t = 0$)
+		\begin{equation}
+			\begin{aligned}
+				\textbf{AS}=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i)-\sum_{i=1}^{\beta}\tau_i P(0,T_i)(L(T_{i-1},T_i)+s) =\\
+				=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i)\\
+				&-\sum_{i=1}^{\beta}\tau_i P(0,T_i)L(T_{i-1},T_i)-\sum_{i=1}^{\beta}\tau_i P(0,T_i)s=0
+			\end{aligned}
+			\label{eq:asset_swap_value}
+		\end{equation}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Valuation of the Asset Swap}
+	\begin{itemize}
+		\item We can replace the future rates with the forward rates definition in terms of ZCB, and by its definition (\cref{eq:forward_rate_definition})
+		\begin{equation*}
+			\begin{aligned}
+				\sum_{i=1}^\beta &\tau_i P(0,T_i)F(t;T_{i-1},T_i) =  \sum_{i=1}^\beta \cancel{\tau_i P(0,T_i)}\frac{P(0,T_{i-1})-P(0,T_i)}{\cancel{\tau_i P(0,T_i)}} = \\
+				= &P(0,0) \cancel{- P(0,T_1)} + \cancel{P(0,T_1)} \cancel{- P(0,T_2)} + \cancel{P(0,T_2)} + \\
+				&\ldots \cancel{- P(0, T_{\beta-1})} \cancel{+ P(0, T_{\beta-1})}-P(0,T_\beta) = 1-P(0,T_\beta)
+			\end{aligned}
+		\end{equation*}
+		\item Substitute into \cref{eq:asset_swap_value} to get
+		\begin{equation*}
+			\begin{aligned}
+				\textbf{AS}=1&-\overline{\textbf{CBP}}+K\sum_{i=1}^{\beta}\tau_i P(0,T_i) -(1-P(0,T_\beta))
+				+ \sum_{i=1}^\beta\tau_i P(0,T_i)s=0
+			\end{aligned}
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Valuation of the Asset Swap}
+	\begin{itemize}
+		\item Canceling out the 1s
+		\begin{equation*}
+			\textbf{AS}=-\overline{\textbf{CBP}}+K\sum_{i=1}^\beta\tau_i P(0,T_i) + P(0,T_\beta) + \sum_{i=1}^{\beta}\tau_i P(0,T_i)s=0
+		\end{equation*}
+		\item Finally we know that
+		\begin{equation*}
+			\textbf{CBP} = P(0,T_\beta) + K\sum_{i=1}^\beta\tau_i P(0,T_i)
+		\end{equation*}
+		represents the price of coupons and principal of a  risk-free bond which can be denoted by \textbf{CBP}.
+		\item Solving for $s$ we arrive at the final expression
+		\begin{equation}
+			\boxed{s = \frac{\textbf{CBP}-\overline{\textbf{CBP}}}{\sum_{i=1}^{\beta}\tau_iP(0,T_i)} =  \frac{\textbf{CBP} - \overline{\textbf{CBP}}}{A_{\alpha,\beta}(0)}}
+		\end{equation}
+		\myendproof
+	\end{itemize}
+\end{frame}
+
+%\subsection{Asset Swap Spread}
+%\begin{frame}{Asset Swap Spread}
+%\begin{itemize}
+%	\item<2-> An asset swap enables an investor to buy a fixed rate bond and then hedge out the interest rate risk by swapping the fixed payments to floating. In doing so the investor retains the credit risk of the bond but earns a corresponding return.
+%	\item<3-> The investor is \emph{still exposed to the loss of the coupons and redemption on the bond}, i.e. the difference between bond and recovery value.
+%	\item<4-> The spread $s_{AS}$"monetizes" the price discount caused by credit risk. If the credit worthiness of the issuer reduces ($\overline{\textbf{CBP}}$ decreases), rates remain constant, so $s$ increases.
+%\end{itemize}
+%\end{frame}
+
+\begin{frame}[fragile]{ASWP Spread and Default Probability}
+	Consider ASWP on a 5Y fixed rate bond (yearly coupons 3\%). If the counterparty has nonull default probability, let's see how ASWP spread varies.
+	
+	\begin{columns}
+		\column{0.5\linewidth}
+		\begin{ipython}
+			import numpy as np
+			
+			pds = np.arange(0, 1.0, 0.01)
+			
+			bond = FixedRateBond(today, 0.03, "5y", "1y", 100)
+			asw = ParAssetSwap(bond)
+			
+			spreads = []
+			prices = []
+			for pd in pds:
+			market_price_bond = bond.npv_default(dc, pd=pd, R=0.4)
+			prices.append(market_price_bond)
+			spreads.append(asw.asspread(dc, pd))
+		\end{ipython}
+		\column{0.5\linewidth}
+		\includegraphics[width=0.9\linewidth]{images/aswp_spread}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{AAA-Rated ASW Spread}
+	Consider the bond NVIDIA 2030 2.85\% currently yielding 3.99\%. The associated ASW spread can be estimated by $\text{ASWS} = \text{yld} - \text{SOFR}$.
+	The curve can be compared to the ASWS for AAA-rated bond estimated as $(\text{OAS} + \text{5y Treasury}) - \text{SOFR}$.
+	\begin{center}
+		\includegraphics[width=0.75\linewidth]{images/nvidia_spread}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Why OIS Implies the ASW Spread}
+	\begin{itemize}
+		\item In an Asset Swap, the investor effectively exchanges fixed coupons for a floating rate (OIS/SOFR). The ASW Spread is the \textbf{residual premium} over OIS that the market demands for holding the bond's credit risk.
+		\item Discounting:
+		\[ PV_{\text{Bond}} + \text{Upfront} = PV_{\text{Floating Leg (OIS)}} + PV_{\text{ASW Spread}} \]
+		Because the OIS curve is used in the floating leg, any change in OIS rates directly shifts the breakeven ASW Spread.
+		\item Since OIS is nearly risk-free, the gap between the bond's yield and the OIS-based swap rate is the purest measure of the issuer's \textbf{Credit Risk}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Asset Swap: Credit Considerations}
+	\begin {itemize}
+	\item A trader may want to hedge anyway the credit risk carried on with the asset swap entering into a \emph{Credit Default Swap (CDS)}.
+	\item A CDS is a credit insurance contract where the protection buyer pays \emph{spread} ($s_{CDS}$) and in case of a credit event, the protection seller must pay the contingency payment so that the buyer receives no losses from the default.
+\end{itemize}
+\begin{center}
+	\includegraphics[width=0.7\linewidth]{images/credit-default-swaps}
+\end{center}
+\end{frame}
+
+\begin{frame}{Hedging Credit: AS vs. CDS}
+\begin {itemize}
+\item Like $s_{AS}$, also $s_{CDS}$ is quoted on the market, tracking the perceived credit worthiness of the underlying reference entity.
+\item In theory, the cost of protecting a bond (\textbf{CDS}) should equal the spread earned for holding it (\textbf{ASW}).
+%In theory, no-arbitrage considerations, $s_{AS}$ of bond with maturity $T$ must be very close to corresponding maturity CDS spread $s_{CDS}$
+\begin{itemize}
+	\item if $s_{AS} - s_{CDS} > 0$ the market pays you more for the risk ($s_{AS}$) than it costs to insure it ($s_{CDS}$). So the investor can buy the bond, financing the purchase, enters in AS and buying protection, making an (almost) risk free profit (\emph{negative basis trading});
+	\item if $s_{AS} - s_{CDS} < 0$ can do the opposite.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The CDS-Bond Basis}
+Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW and CDS spreads.
+
+\begin{center}
+\includegraphics[width=0.55\linewidth]{images/asw_vs_cds}
+\end{center}
+
+\begin{itemize}
+\item \textbf{Positive Basis:} CDS is more expensive than the bond spread. Suggests high demand for protection or "shorting" the credit.
+\item \textbf{Negative Basis:} bond spread is wider than CDS. Common during liquidity crises where "cash" bonds are sold off faster than derivatives.
+\end{itemize}
+\end{frame}
+
+\begin{homework}
+\begin{frame}{\textcolor{white}{Homework}}
+\begin{itemize}
+	\item[white] Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and dirty Price equal to $P(t)$. What will happen to the price if the spread increases, all the rest being equal ? What does it mean in term of credit quality expectation by the market for the bond's issuer ?
+	\item[white]  Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58.
+	Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond ?
+	For this exercise assume that all annuity factors have a value of 10.0 for simplicity.
+	\item[white] Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond ?
+	\item[white] How does the bond price change with non-zero default probability for the issuer ? Write down the formula for a zero coupon when the issuer has a flat default probability of default $p_{\text{def}}$ and a recovery rate $R$.
+	How would you extend it to a fixed coupon bond ?
+\end{itemize}
+\end{frame}
+\end{homework}
+
+
 \section{Cap and Floor}
 \begin{frame}{Caps and Floors}
 	\begin{itemize}
