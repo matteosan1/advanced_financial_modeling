@@ -608,6 +608,52 @@ Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW 
 	\end{columns}
 \end{frame}
 
+
+Once you have calibrated the SABR (Stochastic Alpha, Beta, Rho) model, you have essentially moved from "snapshot" market data to a continuous functional form of the volatility surface.
+
+In a finance lab, this is where the theory becomes an engine for risk management and pricing. Here is what you can do next with your calibrated parameters α,β,ρ, and ν:
+1. Interpolation and Extrapolation (Smoothing the Surface)
+
+Market swaption data is often "holy"—you might have quotes for 2Y, 5Y, and 10Y tenors, but nothing for 7Y.
+
+What to do: Use the SABR formula to generate the implied volatility for any strike (K) that isn't explicitly quoted in the market.
+
+Why: This allows you to price "off-the-run" swaptions or customized structures for clients without "guessing" the volatility.
+
+2. Pricing Exotic or Non-Standard Options
+
+Standard SABR calibration usually happens on European swaptions. Once calibrated, you can use those parameters to price more complex instruments:
+
+Bermudan Swaptions: Use the SABR volatility as an input for a Monte Carlo simulation or a tree-based model to price options that can be exercised on multiple dates.
+
+CMS (Constant Maturity Swaps): SABR is the industry standard for pricing CMS Caps and Floors. Since CMS payoff is non-linear, you need the "volatility smile" provided by SABR to calculate the convexity adjustment.
+
+3. Risk Sensitivity (The "Greeks")
+
+This is the most critical step for a portfolio manager. Because the SABR model is functional, you can derive how your portfolio reacts to shifts in the underlying market:
+
+Delta (Δ): Sensitivity to the underlying swap rate.
+
+Vega: Sensitivity to the at-the-money volatility (α).
+
+Vanna and Volga: Sensitivity to changes in skew (ρ) and the "volatility of volatility" (ν).
+
+4. Assessing Market "Stress" via Parameters
+
+The SABR parameters themselves tell a story about market sentiment that you can show your students:
+
+ρ (Correlation): If ρ is highly negative, the market is pricing in a "fear" of falling rates (common in equity-linked environments).
+
+ν (Vol-of-Vol): A high ν indicates the market expects the volatility surface itself to be very unstable.
+
+5. Computing the "Greeks" via SABR (Formula)
+
+In your University lecture, you can show the students how the implied volatility σ(K,F) changes as the forward rate F moves.
+The Backbone of the model describes how the ATM volatility moves when the forward rate changes:
+σATM​≈F1−βα​
+
+If β=1 (Lognormal), the ATM vol is constant regardless of where the forward rate goes. If β=0 (Normal), the vol moves inversely to the rate. This is a great way to debate "Sticky Strike" vs. "Sticky Delta" regimes.
+
 %\begin{frame}{Differences between Caps and Swaptions}
 %\begin{itemize}
 %	\item<1-> Caps can be decomposed into more elementary products: \textcolor{red}{caplets}. Value each caplet one by one and then add their prices
