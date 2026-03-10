@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \title{Interest Rate Derivatives}
-\subtitle{Let's refresh some useful concept}
+\subtitle{Part 3}
 \course{Advanced Financial Modelling}
 \author{\href{mailto:matteo.sani@unisi.it}{Matteo Sani}}
 
@@ -214,10 +214,8 @@ for pd in pds:
 
 \begin{frame}{Why OIS Implies the ASW Spread}
 	\begin{itemize}
-		\item In an Asset Swap, the investor effectively exchanges fixed coupons for a floating rate (OIS/SOFR). The ASW Spread is the \textbf{residual premium} over OIS that the market demands for holding the bond's credit risk.
-		\item Discounting:
+		\item In an Asset Swap, the investor effectively exchanges fixed coupons for a floating rate (OIS/SOFR). The ASW Spread is the \textbf{residual premium} over OIS that the market demands for holding the bond's credit risk.		
 		\[ PV_{\text{Bond}} + \text{Upfront} = PV_{\text{Floating Leg (OIS)}} + PV_{\text{ASW Spread}} \]
-		Because the OIS curve is used in the floating leg, any change in OIS rates directly shifts the breakeven ASW Spread.
 		\item Since OIS is nearly risk-free, the gap between the bond's yield and the OIS-based swap rate is the purest measure of the issuer's \textbf{Credit Risk}.
 	\end{itemize}
 \end{frame}
@@ -232,29 +230,21 @@ for pd in pds:
 \end{center}
 \end{frame}
 
-\begin{frame}{Hedging Credit: AS vs. CDS}
+\begin{frame}{Hedging Credit: AS vs. CDS \colablink{https://colab.research.google.com/drive/1I6hgddp0yYaVRWlQ0ltZQvgErERDE-zX}}
 \begin {itemize}
 \item Like $s_{AS}$, also $s_{CDS}$ is quoted on the market, tracking the perceived credit worthiness of the underlying reference entity.
-\item In theory, the cost of protecting a bond (\textbf{CDS}) should equal the spread earned for holding it (\textbf{ASW}).
-%In theory, no-arbitrage considerations, $s_{AS}$ of bond with maturity $T$ must be very close to corresponding maturity CDS spread $s_{CDS}$
+\item In theory, the cost of protecting a bond (CDS) should equal the spread earned for holding it (ASW).
 \begin{itemize}
 	\item if $s_{AS} - s_{CDS} > 0$ the market pays you more for the risk ($s_{AS}$) than it costs to insure it ($s_{CDS}$). So the investor can buy the bond, financing the purchase, enters in AS and buying protection, making an (almost) risk free profit (\emph{negative basis trading});
 	\item if $s_{AS} - s_{CDS} < 0$ can do the opposite.
 \end{itemize}
 \end{itemize}
-\end{frame}
-
-\begin{frame}{The CDS-Bond Basis \colablink{https://colab.research.google.com/drive/1I6hgddp0yYaVRWlQ0ltZQvgErERDE-zX}}
-Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW and CDS spreads.
-
-\begin{center}
-\includegraphics[width=0.55\linewidth]{images/asw_vs_cds}
-\end{center}
-
-\begin{itemize}
-\item \textbf{Positive Basis:} CDS is more expensive than the bond spread. Suggests high demand for protection or "shorting" the credit.
-\item \textbf{Negative Basis:} bond spread is wider than CDS. Common during liquidity crises where "cash" bonds are sold off faster than derivatives.
-\end{itemize}
+\begin{columns}
+	\column{0.4\linewidth}
+	The \emph{CDS-Bond Basis} can be estimated considering the HY OAS index and comparing it with CDX.NA.HY.5Y
+	\column{0.6\linewidth}
+	\includegraphics[width=0.85\linewidth]{images/asw_vs_cds}
+\end{columns}
 \end{frame}
 
 \begin{homework}
@@ -316,7 +306,7 @@ Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW 
 				& = N\cdot\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\left(1-(1+K\tau_i)\cdot P(T_{i-1},T_i)\right)^+ | \mathcal{F}_t\right]
 			\end{aligned}
 		\end{equation*}
-		\item<2-> Multiplying by $\frac{1}{1+K\tau_i}$ we finally get
+		\item<2-> Factoring out $1+K\tau_i$ we finally get
 		\begin{equation}
 			\boxed{\textbf{Cpl}=N\cdot(1+K\tau_i)\cdot\expect{Q}\left[e^{-\int_t^{T_{i-1}}r_s ds}\cdot\left(\frac{1}{1+K\tau_i}-P(T_{i-1},T_i)\right)^+ \Big\rvert \mathcal{F}_t\right]}
 		\end{equation}
@@ -339,21 +329,91 @@ Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW 
 	It highlights that a Caplet is not just a "rate option" but a Put option on the Bond price. If the bond price drops (rates rise), the Put gains value. This is a very powerful way to link interest rate volatility to bond volatility.
 \end{frame}
 
+\section{The Black Model}
+\begin{frame}{The Black Model - Overview}
+	\begin{itemize}
+		\item The \textcolor{maincolor}{Black Model} extends the Black-Scholes formula to \emph{caplets} (and \emph{swaptions}). 
+		\item The main difference with respect to the Black-Scholes set up is that \textcolor{maincolor}{forward rates $F(t;T_{i-1},T_i)$ (or swap rates $S_{\alpha\beta}(t)$) are log-normally distributed}, rather than the spot price of the equity underlying.
+		\item It should be stated that Black’s formulas \emph{did not originally correspond to prices that arise from the application of martingale pricing theory} to some particular model.
+		\item The advent of the \emph{market models} will provide a belated justification for these formulas but we shall see that the justifications are mutually inconsistent.
+		\item Indeed, it may be shown that Black’s formulas for caplets and swaptions cannot both hold within the same model.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Pricing Caps with the Black-76 Formula}
+	\begin{block}{Definition}
+		\begin{equation}
+			\begin{aligned}
+				\textbf{Cap}_{Bl}(0, \tau,N,K,\sigma_{\alpha,\beta}) &= N\sum_{i=\alpha+1}^{\beta}\textbf{Cpl}_{Bl}(T_i, \tau,K,\sigma_{\alpha,\beta}) = \\ &=N\sum_{i=\alpha+1}^{\beta}\tau P(0,T_i) \textbf{Bl}(K,F(0;T_{i-1},T_i),v_i)
+			\end{aligned}
+			\label{eq:cap_black}
+		\end{equation}
+		where
+		\begin{equation*}
+			\begin{gathered}
+				\boxed{\textbf{Bl}(K,F_i,v_i)=F\Phi(d_1(K,F_i,v_i)) - K\Phi(d_2(K,F_i,v_i))} \\
+				d_{1,2} = \frac{\log{\cfrac{F_i}{K}} \pm \cfrac{v_i^2}{2}}{v} \\[0.2cm]
+				v_i = \sigma_{\alpha,\beta}\sqrt{T_{i-1}}
+			\end{gathered}
+		\end{equation*}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Problems with the Black Model}
+	\begin{itemize}
+		\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
+		\item In the Black model \textcolor{maincolor}{negative rates are not allowed}.
+		\begin{equation*}
+			d_{1,2} = \frac{\boxed{\log{\frac{F}{K}}} \pm \cfrac{v^2}{2}}{v}
+		\end{equation*}
+		but in the last years in the inter-bank market it was not so unusual to find prices for -1\% strike floors.
+		\item Moreover in the Black model the empirical evidence of the "smile" (volatility vs $K$) is not accounted for, i.e. $\sigma$ is a constant. Two caps identical but for the strike need a different volatility to recover two different market prices if one uses Black formula.
+		
+		%		Slide: The Black Model Consistency
+		%		You make a crucial point: Log-normality cannot hold simultaneously for both Caplets and Swaptions. Since a Swap rate is a weighted average of Forward rates, and the sum of log-normals is not log-normal, the market effectively uses "inconsistent" models for different desks. This is a great "A-grade" exam question topic.
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{The Practitioner Solutions}
+	\begin{itemize}
+		\item \textbf{"Smile" issue}: the model is used with \textcolor{maincolor}{different input volatilities for different strikes}. In practice it is a mapping of implied volatilities into prices and vice versa.
+		\item \textbf{Non-positive rates}: could have switched to a different dynamics, like ABM, where negative values are "normal". But there are large differences in the tails between normal and log-normal distributions.
+		So Black model has been \textcolor{maincolor}{shifted}. The technique was already known but in the last years became crucial to shift the lower bound of prices admitted by the model.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Shifted Log-normal Model \colablink{https://colab.research.google.com/drive/1ZEEw1KP8-e6LL4l17Odoj4GjtlRyQ_I_}}
+	\begin{itemize}
+		\item The formula $\textbf{Bl}(K+\alpha,F+\alpha,v_T$) is the standard market fix. By shifting the "zero" floor to $-\alpha$, you allow $F$ to go negative while the argument inside the log stays positive.
+		\item It can be shown that Black formula provides valid solutions if strike and forward rate are \textcolor{maincolor}{shifted}. For a $(T,S)$ caplet with strike $K$ we get
+		\begin{equation}
+			\textbf{Cpl}_{Bl}(t,T,S,\tau,K,v_T,\alpha) = P(t,S) Bl(K+\alpha,F(t;T,S)+\alpha,v_T)
+		\end{equation}
+		where $d_1$ and $d_2$ read as before and instead $v_i$ is now given by
+		\begin{equation*}
+			v_i = \sigma^{\text{shifted}}\sqrt{T_{i-1}}
+		\end{equation*}
+		\item The market quotes of $\sigma^{\text{shifted}}$ referred to shifts $\alpha$ of the order of [2\%,3\%].
+	\end{itemize}
+\end{frame}
+
+
 \section{Swaptions}
 \begin{frame}{Swaptions Overview}
 	\begin{itemize}
 		\item<1-> The purchaser of an \textcolor{maincolor}{European swaption} has the right but not the obligation to enter into a swap contract, at a given future time, called the \textcolor{maincolor}{swaption maturity}.
 		\item<2-> There are two types of \textcolor{maincolor}{swaptions} (as the underlying swaps): a \emph{payer} in which at maturity the buyer could become the fixed-rate payer and a \emph{receiver} where she could become the fixed-rate receiver.
-		\item <3-> The strike price of the swaption determines the fixed rate of the underlying swap.
+		\item <3-> \emph{The strike price of the swaption determines the fixed rate of the underlying swap.}
 		\item<4-> A swaption provides protection for a borrower as it ensures a maximum fixed interest rate payable in the future. Furthermore, it gives her the flexibility, if the rate does not rise above the swaption strike rate at expiry, to choose not to exercise it and take advantage of the lower market rates.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Strategic View and Risks}
 	\begin{itemize}
-		\item<1-> Usually, the swaption maturity coincides with the first reset date of the underlying IRS (the Interest Rate Swap length is called the \textcolor{maincolor}{tenor} of the swaption).
-		\item<2-> If you are on the buyer side (you are long payer swaption) which is your view on rates ? Why ?
-		\item<2->  The buyer of a Payer Swaption is Bearish on bond prices (Bullish on rates). They want rates to rise above $K$.
+		\item<1-> Usually, the swaption maturity coincides with the first reset date of the underlying IRS (the IRS maturity is called the \textcolor{maincolor}{tenor} of the swaption).
+		\item<1-> If you are on the buyer side (you are long payer swaption) which is your view on rates ? Why ?
+		\item<2-> The buyer of a Payer Swaption is Bearish on bond prices (Bullish on rates). They want rates to rise above $K$.
 		\item<3-> Are there any risks associated with a Swaption?
 		\begin{itemize}
 			\item<4-> The primary risk with a Swaption occurs after you have exercised your right and proceeded with the Swap. Should interest rate movements be different to your expectations, the Swap may have the opposite effect to what you were trying to achieve with the transaction.
@@ -371,9 +431,6 @@ Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW 
 		\end{equation}
 		\item<2-> Unfortunately this payoff \textcolor{maincolor}{cannot} be easily decomposed into elementary parts (as done for Cap/Floor). Indeed the \emph{positive part operator} $(\cdot)^+$ is "outside" the summation (while for Caps it is "inside").
 		\item<3-> Nevertheless it can be simplified by writing it in a different way...
-		%		\begin{equation}
-			%			ND(t,T_\alpha)\left(S_{\alpha,\beta}(T_\alpha)-K\right)^+\sum_{i=\alpha+1}^\beta \tau_i P(t,T_i)
-			%		\end{equation}
 	\end{itemize}
 \end{frame}
 
@@ -386,7 +443,8 @@ Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW 
 		where $A(t)$ is the \textcolor{maincolor}{Annuity} factor.
 		\item<2-> By modeling the swap rate $S_{\alpha,\beta}(t)$ as the stochastic variable, the Swaption value at time $t$ becomes the expectation of:
 		\begin{equation}
-			\textbf{PSw} = \mathbb{E}^{\mathbb{Q}} \left[ D(t, T_\alpha)\cdot A(T_\alpha)\cdot \max(S_{\alpha,\beta}(T_\alpha) - K, 0) \right]
+			\textbf{PSw} = \mathbb{E}^{\mathbb{Q}} \left[ D(t, T_\alpha)\cdot A(T_\alpha)\cdot \max(S_{\alpha,\beta}(T_\alpha) - K, 0) \right]	
+		\label{eq:swaption_payoff_annuity}				
 		\end{equation}
 		\item<3-> This formulation is intuitive: it is an option on the swap rate, scaled by the value of the fixed-leg cash flows (the annuity).
 	\end{itemize}
@@ -449,74 +507,6 @@ Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW 
 	\end{frame}
 \end{homework}
 
-\section{The Black Model}
-\begin{frame}{The Black Model - Overview}
-	\begin{itemize}
-		\item The \textcolor{maincolor}{Black Model} extends the Black-Scholes formula to \emph{caplets} and \emph{swaptions}. % and \emph{bond options}. %It uses the forward coordinates, not the spot ones; this last is not a minor issue indeed.
-		\item The main difference with respect to the Black-Scholes set up is that \textcolor{maincolor}{forward rates $F(t;T_{i-1},T_i)$ (or swap rates $S_{\alpha\beta}(t)$) are log-normally distributed}, rather than the spot price of the underlying.
-		\item It should be stated that Black’s formulas \emph{did not originally correspond to prices that arise from the application of martingale pricing theory} to some particular model.
-		\item The advent of the \emph{market models} will provide a belated justification for these formulas but we shall see that the justifications are mutually inconsistent.
-		\item Indeed, it may be shown that if forward rates have deterministic volatilities then it is not possible for swap rates to also have deterministic volatilities. Therefore Black’s formulas for caplets and swaptions cannot both hold within the same model.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Pricing Caps with the Black-76 Formula}
-	\begin{block}{Definition}
-		\begin{equation}
-			\begin{aligned}
-				\textbf{Cap}_{Bl}(0, \tau,N,K,\sigma_{\alpha,\beta}) &= N\sum_{i=\alpha+1}^{\beta}\textbf{Cpl}_{Bl}(T_i, \tau,K,\sigma_{\alpha,\beta}) = \\ &=N\sum_{i=\alpha+1}^{\beta}\tau P(0,T_i) \textbf{Bl}(K,F(0;T_{i-1},T_i),v_i)
-			\end{aligned}
-			\label{eq:cap_black}
-		\end{equation}
-		where
-		\begin{equation*}
-			\begin{gathered}
-				\boxed{\textbf{Bl}(K,F_i,v_i)=F\Phi(d_1(K,F_i,v_i)) - K\Phi(d_2(K,F_i,v_i))} \\
-				d_{1,2} = \frac{\log{\cfrac{F_i}{K}} \pm \cfrac{v_i^2}{2}}{v} \\[0.2cm]
-				v_i = \sigma_{\alpha,\beta}\sqrt{T_{i-1}}
-			\end{gathered}
-		\end{equation*}
-	\end{block}
-\end{frame}
-
-\begin{frame}{Problems with the Black Model}
-	\begin{itemize}
-		\item It is widely used in practice as the metric by which traders translated volatilities into prices until rates became too low and the model collapsed under the assumption of positive rates.
-		\item In the Black model \textcolor{maincolor}{negative rates are not allowed}.
-		\begin{equation*}
-			d_{1,2} = \frac{\boxed{\log{\frac{F}{K}}} \pm \cfrac{v^2}{2}}{v}
-		\end{equation*}
-		but in the last years in the inter-bank market it was not so unusual to find prices for -1\% strike floors.
-		\item Moreover in the Black model the empirical evidence of the "smile" (volatility vs $K$) is not accounted for, i.e. $\sigma$ is a constant. Two caps identical but for the strike need a different volatility to recover two different market prices if one uses Black formula.
-
-		%		Slide: The Black Model Consistency
-		%		You make a crucial point: Log-normality cannot hold simultaneously for both Caplets and Swaptions. Since a Swap rate is a weighted average of Forward rates, and the sum of log-normals is not log-normal, the market effectively uses "inconsistent" models for different desks. This is a great "A-grade" exam question topic.
-
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{The Practitioner Solutions}
-	\begin{itemize}
-		\item \textbf{"Smile" issue}: the model is used with \textcolor{maincolor}{different input volatilities for different strikes}. In practice it is a mapping of implied volatilities into prices and vice versa.
-		\item \textbf{Non-positive rates}: could have switched to a different dynamics, like ABM, where negative values are "normal". But there are large differences in the tails between normal and log-normal distributions.
-		So Black model has been \textcolor{maincolor}{shifted}. The technique was already known but in the last years became crucial to shift the lower bound of prices admitted by the model.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Shifted Log-normal Model}
-	\begin{itemize}
-		\item The formula $\textbf{Bl}(K+\alpha,F+\alpha,v_T$) is the standard market fix. By shifting the "zero" floor to $-\alpha$, you allow $F$ to go negative while the argument inside the log stays positive.
-		\item It can be shown that Black formula provides valid solutions if strike and forward rate are \textcolor{maincolor}{shifted}. For a $(T,S)$ caplet with strike $K$ we get
-		\begin{equation}
-			\textbf{Cpl}_{Bl}(t,T,S,\tau,K,v_T,\alpha) = P(t,S) Bl(K+\alpha,F(t;T,S)+\alpha,v_T)
-		\end{equation}
-		where $d_1$ and $d_2$ read as before and instead $v_i$ is now given by
-		\begin{equation*}
-			v_i = \sigma^{\text{shifted}}\sqrt{T_{i-1}}
-		\end{equation*}
-		\item The market quotes of $\sigma^{\text{shifted}}$ referred to shifts $\alpha$ of the order of [2\%,3\%].
-	\end{itemize}
-\end{frame}
 
 %\begin{frame}{The Volatility Hump}
 %\begin{itemize}
@@ -558,7 +548,7 @@ Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW 
 	\begin{itemize}
 		\item Swaption volatilities are quoted for different maturities and tenors (length of the underlying swap).
 		\item Both for ATM and away from ATM on both sides ("swaption smile").
-		\item So swaptions have an additional dimension with respect to caps: the quotes are parametrized according to
+		\item The quotes are parametrized according to
 		\begin{itemize}
 			\item maturites;
 			\item tenors;
@@ -566,7 +556,7 @@ Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW 
 		\end{itemize}
 		%\item They have also a different \emph{delta} effect on your book.
 		%		\item Volatility trade between caps ans swaption: WEDGE
-		\item After we have constructed the volatility matrix we can fit the "smile" at each (expiry, tenor) pair.
+		\item After we have constructed the volatility surface we can fit the smile at each (expiry, tenor) pair.
 	\end{itemize}
 \end{frame}
 
@@ -608,51 +598,17 @@ Consider the HY OAS index and compare it with CDX.NA.HY.5Y, two proxies for ASW 
 	\end{columns}
 \end{frame}
 
+\begin{frame}{Exploiting SABR Model}
+\begin{itemize}
+\item Smoothing the volatility surface): market swaption data is often "holy"—you might have quotes for 2Y, 5Y, and 10Y tenors, but nothing for 7Y. Use the SABR formula to generate the implied volatility for any strike ($K$). This allows you to price swaptions without "guessing" the volatility.
+\item Pricing exotic options: standard calibration usually happens on European swaptions. You can use those parameters to price:
+Bermudan Swaptions (use SABR volatility for a Monte Carlo simulation to price options that can be exercised on multiple dates), 
+CMS (Constant Maturity Swaps) since SABR is the standard for pricing CMS Caps and Floors. Since CMS payoff is non-linear, you need the "volatility smile" provided by SABR to calculate the convexity adjustment.
+\item Risk sensitivity: you can derive how your portfolio reacts to shifts in the underlying market.
+\item Assessing market "stress": the SABR parameters themselves tell a story about market sentiment: e.g. highly negative $\rho$ the market is pricing in a "fear" of falling rates, a high $\nu$ indicates the market expects the volatility surface itself to be very unstable.
+\end{itemize}
+\end{frame}
 
-Once you have calibrated the SABR (Stochastic Alpha, Beta, Rho) model, you have essentially moved from "snapshot" market data to a continuous functional form of the volatility surface.
-
-In a finance lab, this is where the theory becomes an engine for risk management and pricing. Here is what you can do next with your calibrated parameters α,β,ρ, and ν:
-1. Interpolation and Extrapolation (Smoothing the Surface)
-
-Market swaption data is often "holy"—you might have quotes for 2Y, 5Y, and 10Y tenors, but nothing for 7Y.
-
-What to do: Use the SABR formula to generate the implied volatility for any strike (K) that isn't explicitly quoted in the market.
-
-Why: This allows you to price "off-the-run" swaptions or customized structures for clients without "guessing" the volatility.
-
-2. Pricing Exotic or Non-Standard Options
-
-Standard SABR calibration usually happens on European swaptions. Once calibrated, you can use those parameters to price more complex instruments:
-
-Bermudan Swaptions: Use the SABR volatility as an input for a Monte Carlo simulation or a tree-based model to price options that can be exercised on multiple dates.
-
-CMS (Constant Maturity Swaps): SABR is the industry standard for pricing CMS Caps and Floors. Since CMS payoff is non-linear, you need the "volatility smile" provided by SABR to calculate the convexity adjustment.
-
-3. Risk Sensitivity (The "Greeks")
-
-This is the most critical step for a portfolio manager. Because the SABR model is functional, you can derive how your portfolio reacts to shifts in the underlying market:
-
-Delta (Δ): Sensitivity to the underlying swap rate.
-
-Vega: Sensitivity to the at-the-money volatility (α).
-
-Vanna and Volga: Sensitivity to changes in skew (ρ) and the "volatility of volatility" (ν).
-
-4. Assessing Market "Stress" via Parameters
-
-The SABR parameters themselves tell a story about market sentiment that you can show your students:
-
-ρ (Correlation): If ρ is highly negative, the market is pricing in a "fear" of falling rates (common in equity-linked environments).
-
-ν (Vol-of-Vol): A high ν indicates the market expects the volatility surface itself to be very unstable.
-
-5. Computing the "Greeks" via SABR (Formula)
-
-In your University lecture, you can show the students how the implied volatility σ(K,F) changes as the forward rate F moves.
-The Backbone of the model describes how the ATM volatility moves when the forward rate changes:
-σATM​≈F1−βα​
-
-If β=1 (Lognormal), the ATM vol is constant regardless of where the forward rate goes. If β=0 (Normal), the vol moves inversely to the rate. This is a great way to debate "Sticky Strike" vs. "Sticky Delta" regimes.
 
 %\begin{frame}{Differences between Caps and Swaptions}
 %\begin{itemize}
@@ -689,7 +645,7 @@ If β=1 (Lognormal), the ATM vol is constant regardless of where the forward rat
 			\item \textbf{curve Jacobians}: when yield curves have been calibrated, the solver slope 'Jacobian' can be kept and used to give the change in derivative price for a change in forwards/discount factors;
 			\item \textbf{algorithmic differentiation}: is becoming the gold standard. It can be used to compute risk "automatically" along with the price. It produces "exact" and fast risk estimates, without the noise of numerical bumping.
 		\end{itemize}
-
+		
 	\end{itemize}
 \end{frame}
 
@@ -710,7 +666,7 @@ If β=1 (Lognormal), the ATM vol is constant regardless of where the forward rat
 		\item<1-> If you want to know the \emph{linear} risk associated to a Interest Rate Swap if the market actually moves, you can make a slightly different calculation than above.
 		\item<2-> The \textcolor{maincolor}{Dollar value of a basis point} measures how the NPV changes if the market rates change (an \textbf{up-shift} move of 1~bp in the forward rate curve).
 		\item<3-> In the \emph{real} scenario the fixed rate is, well, fixed and floating rates move, so you can consider what happens to the NPV if every rate $r_i$ is changed in parallel by the same amount
-
+		
 		\begin{equation*}
 			\textbf{DV01} = \sum_j \frac{\partial \textbf{PFS}}{\partial r_j} = -\sum_{j}\tau_jP_j+\sum_{j}\left(K\sum_{i=\alpha+1}^\beta\tau_i\frac{\partial P_i}{\partial r_j} - \sum_{k=\alpha+1}^\beta L_k\tau_k\frac{\partial P_k}{\partial r_j}\right)
 		\end{equation*}
@@ -741,592 +697,5 @@ If β=1 (Lognormal), the ATM vol is constant regardless of where the forward rat
 	This results in a vector of sensitivities that accounts for the fact that the curve does not always move in parallel; it may twist or butterfly.
 	Because the Swap NPV is a \textbf{convex} function of these underlying rates, the sum of these bucketed risks will closely approximate, but not perfectly match, the parallel DV01.
 \end{frame}
-
-\begin{frame}{$\Delta$ Sensitivity \colablink{https://colab.research.google.com/drive/1eUuEtedqTO6SjDN-I9vsvWOtyQyVqd3D}}
-	\begin{itemize}
-		\item In a linear world (FRAs, Swaps), your exposure is constant regardless of where the market moves.
-		\begin{itemize}
-			\item If interest rates go up by 1 bp, the value of the FRA changes by a fixed amount (the PV01). It has $\Delta=\frac{\partial V}{\partial r}$ but zero $\Gamma=\frac{\partial^2 V}{\partial r^2}$.
-		\end{itemize}
-		\item In a non-linear world (Caps, Floors), your exposure changes dynamically as rates shift.
-		\begin{itemize}
-			\item Its sensitivity to rates ($\Delta$) depends on whether the option is In-The-Money (ITM) or Out-Of-The-Money (OTM). It has $\Delta$ AND $\Gamma$.
-		\end{itemize}
-		\begin{columns}
-			\column{0.6\linewidth}
-				\item Hedging an FRA is a "set it and forget it" task.
-				\item To hedge the Cap, you must constantly buy or sell more underlying (Swaps/FRAs) as rates move. This is Dynamic Hedging.
-				\item If rates jump from 3\% to 5\% overnight, your FRA risk didn't change, but your Cap risk doubled. This "exploding risk" is what $\Gamma$ measures.
-			\column{0.4\linewidth}
-				\includegraphics[width=1\linewidth]{images/delta_sensitivity}
-		\end{columns}
-	\end{itemize}
-
-\end{frame}
-
-\begin{frame}{Volatility Sensitivity}
-	\begin{itemize}
-		\item When we add volatility to the mix, the difference between linear and non-linear portfolios becomes even more dramatic.
-		\item While a linear portfolio has a $\Delta$ "blind" to volatility, a non-linear portfolio has a $\Delta$ profile that "warps" whenever market uncertainty changes. %This interaction is known as Vanna (the change in Delta with respect to Volatility).
-		\begin{center}
-		\includegraphics[width=0.5\linewidth]{images/delta_vs_vola}
-		\end{center}
-		\item The same Cap reacts to interest rates under different volatility regimes. The FRA remains a perfectly flat, its risk is 100\% predictable regardless of volatility.
-		\item Static FRA hedge works for a 1bp move, fails for a 50bp move because Cap's $\Delta$ shifted.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Vega Sensitivity}
-	\begin{itemize}
-		\item Vega measures how much the value of your Cap portfolio will change if volatility moves by 1\%.
-		\item Unlike $\Delta$, which is highest when the option is deep in-the-money, Vega is highest when the rate is At-The-Money (ATM).
-		\item This is because when the rate is exactly at the strike, the "uncertainty" of whether the option will finish in or out of the money is at its peak.
-		\begin{center}
-		\includegraphics[width=0.5\linewidth]{images/vega_vs_vola}
-		\end{center}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Theta ($\Theta$) Sensitivity}
-	\begin{itemize}
-		\item $\Theta$ refers to the loss of value over time. For a risk manager, though, the more interesting effect is how time changes $\Delta$ profile ("Pinning Risk").
-		\item Long Time to Expiry you have $\Delta$ exposure even if the rate is 1\% away from the strike.
-		\item As you get closer to expiry, the curve becomes a cliff. If the rate is 3.99\% and the strike is 4.00\%, you have zero $\Delta$. If the rate moves to 4.01\%, you suddenly have 100\% $\Delta$.
-		\item This is where traders get "pinned." You have to hedge and re-hedge frantically as the rate dances around the strike in the final hours, because your $\Delta$ is jumping between 0 and 1 (infinite $\Gamma$).
-		\begin{center}
-			\includegraphics[width=0.45\linewidth]{images/theta}
-			\includegraphics[width=0.45\linewidth]{images/delta_vs_theta}
-		\end{center}
-	\end{itemize}
-\end{frame}
-
-\begin{homework}
-	\begin{frame}{\textcolor{white}{Homework}}
-		\begin{itemize}
-			\item[white] Consider a 2-year Interest Rate Swap on a notional of 1M, with a fixed rate of 5\% and paying Libor rate annually. The term-structure of interest rates is flat at 5\%.
-			Estimate the DV01 of the swap numerically.
-			\item[white] Calculate the analytical expressions for:
-			\begin{itemize}
-				\item[white] Delta Sensitivity analytically, that is the first derivative of caplet price w.r.t. the forward rate, using the black model to price a generic caplet;
-				\item[white] Delta Vega analytically, that is the first derivative of caplet price w.r.t. the volatility, using the black model to price a generic caplet.
-			\end{itemize}
-		\end{itemize}
-	\end{frame}
-\end{homework}
-
-%When moving from linear derivatives (Swaps) to options on those derivatives (Swaptions), calculating the Delta becomes significantly more complex. In a Swaption, the Delta measures the sensitivity of the option price to a change in the underlying swap rate.
-%\begin{frame}{The Delta of a Swaption}
-%
-%	\begin{itemize}
-%		\item Unlike a Swap, where Delta is constant (linear), a Swaption's Delta is non-linear and depends on the "moneyness" of the option.
-%		\item The value of a European Swaption is typically given by the \textbf{Black-76 formula}:
-%		\begin{equation*}
-%			V_{pay} = A_{\alpha,\beta}(t) \left[ S_{\alpha,\beta}(t) \Phi(d_1) - K \Phi(d_2) \right]
-%		\end{equation*}
-%		\item The Delta is the derivative of this price with respect to the forward swap rate S:
-%		\begin{equation*}
-%			\Delta = \frac{\partial V}{\partial S} = A_{\alpha,\beta}(t) \Phi(d_1)
-%		\end{equation*}
-%		\item \textbf{The Complication:} In the market, we often distinguish between:
-%		\begin{itemize}
-%			\item \textbf{Sticky-Strike Delta}: Assumes volatility σ stays constant as the rate moves.
-%			\item \textbf{Sticky-Delta (Shadow Delta)}: Accounts for the \emph{Volatility Smile}. As the rate moves, the implied volatility usually changes (skew), requiring an adjustment: ∂S∂V​+∂σ∂V​∂S∂σ​.
-%		\end{itemize}
-%	\end{itemize}
-%\end{frame}
-
-\begin{frame}{When to use Black vs. Affine Models?}
-	Choosing between the Black-76 formula and a Short Rate model (like Hull-White) depends on the goal of your desk:
-	\vfill
-	\begin{itemize}
-		\item \textbf{Market Standard.} Used for quoting prices and communicating implied volatilities.
-		\begin{itemize}
-			\item \emph{Use case:} pricing standard vanilla Swaptions in a "flat" vol environment.
-			\item \emph{Limitation:} it assumes the swap rate is log-normal; it cannot price path-dependent products.
-		\end{itemize}
-		\vfill
-		\item \textbf{Risk Management \& Bermudans.} Models like Hull-White ensure the whole yield curve evolves consistently.
-		\begin{itemize}
-			\item \emph{Use case:} pricing Bermudan Swaptions or managing a portfolio of mixed interest rate products.
-			\item \emph{Advantage:} allows for mean reversion and consistent pricing across different tenors.
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Swaption Pricing under Affine Models}
-	\begin{itemize}
-		\item One of the most striking properties of \emph{Affine Models} (Vasicek, Hull-White) is that the ZCB price is an exponential function of the spot rate:
-		\begin{equation*}
-			P(T_\alpha, T_k) = A(T_\alpha, T_k) e^{-B(T_\alpha, T_k) r(T_\alpha)}
-		\end{equation*}
-		\item A payer swaption (PSw) value can be calculated as:
-		\begin{equation*}
-			\textbf{PSw} = N\cdot P(t, T_\alpha)\cdot \mathbb{E}^{Q}_t \left[ \left( 1 - \sum_{k=\alpha+1}^\beta c_k P(T_\alpha, T_k) \right)^+ \right]
-		\end{equation*}
-		\item As previously said unfortunately the summation is \emph{inside} the $\max$ operator, so we cannot solve for a "swaplet" object\ldots
-%		\item By Jamshidian's Decomposition, we find $r^*$ such that $\sum c_k P(T_\alpha, T_k, r^*) = 1$.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Jamshidian's Decomposition \colablink{https://colab.research.google.com/drive/1NSytELQY4QciO4zRPGOiRro1FDtnD1N_}}
-	\begin{block}{Theorem}
-		Consider a sequence of functions $f_i$, a random variable $W$ and a constant $K\ge0$. If each $f_i$ is monotone (decreasing), that is $\cfrac{\partial f_i}{\partial W} < 0;\;\forall i$, then
-		\begin{equation*}
-			\left(K - \sum_i f_i(W)\right)^+ = \sum_i \left(K_i - f_i(W)\right)^+
-		\end{equation*}
-		In financial terms it means that the payoff of an option on a portfolio of assets can be expressed in terms of a portfolio of options on each asset.
-	\end{block}
-\end{frame}
-
-\begin{frame}{Jamshidian's Decomposition Proof}
-	\begin{itemize}
-		\item<1-> Since each $f_i$ is monotone also $\sum_i f_i$ is decreasing. Hence there is a unique solution $\hat{w}$ to
-		\begin{equation*}
-			\sum_i f_i(\hat{w}) = K
-		\end{equation*}
-		\item<2-> Each $f_i$ is decreasing so
-		\begin{columns}
-			\column{0.7\linewidth}
-			\uncover<2->{\begin{equation*}
-					\left(K - \sum_i f_i(W)\right)^+ = \left(\sum_i f_i(\hat{w}) -  \sum_i f_i(W)\right)^+ =
-			\end{equation*}}
-			\uncover<3->{\begin{equation*}
-					= \left(\sum_i (f_i(\hat{w}) -  f_i(W))\right)^+= \sum_i (f_i(\hat{w}) - f_i(W))\mathbbm{1}_{W\ge \hat{w}}
-			\end{equation*}}
-			\uncover<4->{\begin{equation*}
-					= \sum_i \left(K_i - f_i(W)\right)^+\quad\qedsymbol
-				\end{equation*}
-			}
-			\column{0.35\linewidth}
-			\uncover<1->{
-				\includegraphics[width=1\linewidth]{images/jamshidian_trick}}
-		\end{columns}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Swaption as a Portfolio of ZCB Options \colablink{https://colab.research.google.com/drive/1NSytELQY4QciO4zRPGOiRro1FDtnD1N_}}
-	\begin{itemize}
-		\item Since each ZCB price is monotone in $r$, the swaption price is the sum of European Put options on the individual Zero-Coupon Bonds:
-		\begin{equation}
-			\boxed{\textbf{PSw}(t) = N\cdot\sum_{k=\alpha+1}^\beta c_k\cdot \textbf{ZBP}(t, T_\alpha, T_k, X_k)}
-		\end{equation}
-		where $X_k = P(T_\alpha, T_k, r^*)$ is the strike of the $k$-th ZCB option.
-		\item In one-factor affine models, swaptions are not "new" products; they are simply a \textcolor{maincolor}{static portfolio of ZCB options}.
-	\end{itemize}
-	\vfill
-	\begin{block}{Efficiency Note}
-		Jamshidian's decomposition is the reason why the Hull-White model is so fast. To calibrate the model to a Swaption, we don't need a Monte Carlo simulation; we just need a sum of Black-Scholes-like formulas for ZCB options.
-	\end{block}
-\end{frame}
-
-%\subsection{Bond Options}
-%\begin{frame}{An Option to Exchange Fixed with Float}
-%\begin{itemize}
-%	\item<1-> We have seen that a Swap can be viewed as an exchange of bonds (fixed for float).
-%	\item<2-> Hence a Swaption can be regarded as an \textcolor{red}{option to exchange fixed for floating} bonds (or vice versa).
-%	\item<3-> In case it would be possible to get a simple expression for a \textcolor{red}{Coupon Bond Option} we could use to price Swaptions.
-%	\item <4-> It would be even simpler if we could express a Coupon Bond Option as a portfolio of Zero Coupon Bond Options.
-%	\item<5-> Luckily we can do that thanks to a recipe known as \textcolor{red}{Jamshidian's decomposition}.
-%\end{itemize}
-%\end{frame}
-%
-%\begin{frame}{Jamshidian's Decomposition}
-%\begin{block}{Theorem}
-%	Consider a sequence of functions $f_i$, a random variable $W$ and a constant $K\ge0$. If each $f_i$ is monotone (decreasing), that is $\cfrac{\partial f_i}{\partial W} < 0;\;\forall i$, then
-%	\begin{equation*}
-%		\left(K - \sum_i f_i(W)\right)^+ = 	\sum_i \left(K_i - f_i(W)\right)^+
-%	\end{equation*}
-%	In financial terms it means that the payoff of an option on a portfolio of assets can be expressed in terms of a portfolio of options on each asset.
-%\end{block}
-%\end{frame}
-%
-%\begin{frame}{Jamshidian's Decomposition Proof}
-%\begin{itemize}
-%	\item<1-> Since each $f_i$ is monotone also $\sum_i f_i$ is decreasing. Hence there is a unique solution $\hat{w}$ to
-%	\begin{equation*}
-%		\sum_i f_i(\hat{w}) = K
-%	\end{equation*}
-%	\item<2-> Each $f_i$ is decreasing so
-%	\begin{columns}
-%		\column{0.7\linewidth}
-%		\uncover<2->{\begin{equation*}
-%				\left(K - \sum_i f_i(W)\right)^+ = \left(\sum_i f_i(\hat{w}) -  \sum_i f_i(W)\right)^+ =
-%		\end{equation*}}
-%		\uncover<3->{\begin{equation*}
-%				= \left(\sum_i (f_i(\hat{w}) -  f_i(W))\right)^+= \sum_i (f_i(\hat{w}) - f_i(W))\mathbbm{1}_{W\ge \hat{w}}
-%		\end{equation*}}
-%		\uncover<4->{\begin{equation*}
-%				= \sum_i \left(K_i - f_i(W)\right)^+\quad\qedsymbol
-%			\end{equation*}
-%		}
-%		\column{0.35\linewidth}
-%		\uncover<1->{
-%			\includegraphics[width=1\linewidth]{images/jamshidian_trick}}
-%	\end{columns}
-%\end{itemize}
-%\end{frame}
-%%Jamshidian's Condition: You correctly identify that fi​ must be monotone. In the context of interest rates, this means the model must be a one-factor model (where the whole curve moves in one direction relative to the short rate r). If you have a two-factor model, Jamshidian’s decomposition generally fails because ZCB prices for different tenors might move in opposite directions.
-%
-%
-%\begin{frame}{Back to Coupon Bond Option}
-%\begin{itemize}
-%	\item<1-> Consider a coupon bond which pays the following cash flows $\mathcal{C}=\{c_1,\dots,c_n\}$ at dates $\mathcal{T}=\{T_1,\ldots,T_n\}$.
-%	\item<2-> Let $t\leq T_1$, the bond price is given by
-%	\begin{equation*}
-%		\textbf{CB}(t,\mathcal{C},\mathcal{T})=\sum_{i=1}^n c_i \Pi(t, T_i, r(t))
-%	\end{equation*}
-%	\item<3-> Suppose we would like to calculate the price of a put option with strike $K$ on this coupon bond. The payoff reads
-%	\begin{equation*}
-%		\textbf{CBP}=\left[K-\textbf{CB}(t,\mathcal{C},\mathcal{T})\right]^+ = \left[K-\sum_{i=1}^n c_i \Pi(t, T_i, r(t))\right]^+
-%	\end{equation*}
-%\end{itemize}
-%\end{frame}
-%
-%\begin{frame}{Coupon Bond Option}
-%\begin{itemize}
-%	\item<1-> Now apply the Jamshidian's decomposition to previous payoff.
-%	\item<2-> First need to find the interest rate value $r^*$ such that $\sum_{i=1}^n c_i \Pi(t, T_i, r^*) = K$.
-%	\item<3-> Assuming the interest rate model satisfies the required condition (which is true for Short Rate models for example)
-%	\begin{equation*}
-%		\frac{\partial \Pi(t,T_i,r(t))}{\partial r}<0,\;\forall 0<t<s
-%	\end{equation*}
-%	we can write the payoff as
-%	\begin{equation}
-%		\textbf{CBP}(t,T_i,\Pi,r^*) = \sum_{i=1}^n c_i [\Pi(t, T_i, r^*)-\Pi(t, T_i, r(t))]^+
-%		\label{eq:bond_option_payoff}
-%	\end{equation}
-%\end{itemize}
-%\end{frame}
-%
-%\begin{frame}{Coupon Bond Option}
-%\begin{itemize}
-%	\item \cref{eq:bond_option_payoff} tells us that we can price a coupon bond option as a portfolio of options on ZCBs.
-%	\item The strike of these option is calculated as the value of a ZCB given a \emph{particular} value of the short rate, determined with a root finding procedure.
-%	\item In formulas the CBO with maturity $T$ and strike $K$ reads
-%	\begin{equation}
-%		\boxed{\textbf{CBP}(t,\mathcal{T},\mathcal{C},K) = \sum_{i=1}^n c_i \textbf{ZBP}(t,T_i,\Pi,r^*)}
-%	\end{equation}
-%\end{itemize}
-%\end{frame}
-%
-%%The Affine Formula: In the slide "Swaption Pricing under Affine Models," you use τk​ inside Ar​ and Br​. Usually, these functions are defined as A(Tα​,Tk​) and B(Tα​,Tk​). Using τk​ might be confused with the year fraction. I recommend keeping the Tα​,Tk​ notation for clarity.
-%
-%%The Expected Value: You use Et​. Ensure the measure is clear (typically the Tα​-forward measure or the risk-neutral measure with the specific numeraire).
-%
-%
-%\begin{frame}{Swaption Pricing under Affine Models}
-%	\begin{itemize}
-%		\item One of the most striking properties of \emph{Affine Models} (Vasicek, Hull-White) is that the ZCB price is an exponential function of the spot rate:
-%		\begin{equation*}
-%			P(T_\alpha, T_k) = A(T_\alpha, T_k) e^{-B(T_\alpha, T_k) r(T_\alpha)}
-%		\end{equation*}
-%		\item A payer swaption (PSw) can be viewed as a Put option on a coupon bond with strike $K_{bond} = 1$:
-%		\begin{equation*}
-%			\textbf{PSw} = N P(t, T_\alpha) \mathbb{E}^{Q^{T_\alpha}}_t \left[ \left( 1 - \sum_{k=\alpha+1}^\beta c_k P(T_\alpha, T_k) \right)^+ \right]
-%		\end{equation*}
-%		\item By Jamshidian's Decomposition, we find $r^*$ such that $\sum c_k P(T_\alpha, T_k, r^*) = 1$.
-%	\end{itemize}
-%\end{frame}
-%
-%\begin{frame}{Final Result: Swaption as a Portfolio of ZCB Options}
-%	\begin{itemize}
-%		\item Since each ZCB price is monotone in $r$, the swaption price is the sum of European Put options on the individual Zero-Coupon Bonds:
-%		\begin{equation}
-%			\boxed{\textbf{PSw}(t) = N \sum_{k=\alpha+1}^\beta c_k \textbf{ZBP}(t, T_\alpha, T_k, X_k)}
-%		\end{equation}
-%		where $X_k = P(T_\alpha, T_k, r^*)$ is the strike of the $k$-th ZCB option.
-%		\item \textbf{Conclusion:} In one-factor affine models, swaptions are not "new" products; they are simply a \textcolor{red}{static portfolio of ZCB options}.
-%	\end{itemize}
-%\end{frame}
-%
-%"Jamshidian's decomposition is the reason why the Hull-White model is so fast. To calibrate the model to a Swaption, we don't need a Monte Carlo simulation; we just need a sum of Black-Scholes-like formulas for ZCB options."
-%
-%
-%%\begin{frame}{Swaption Pricing under Affine Models}
-%%\begin{itemize}
-%%	\item When interest rates are modeled using \textcolor{red}{Affine Short Rate Models} (Vasicek, Hull-White,\ldots) swpation pricing can be performed semi-analytically.
-%%	\item \cref{eq:swaption_payoff_std} can be rewritten, expressing the underlying swap in terms of bonds, as
-%%	\begin{equation*}
-%%		\textbf{PSw}=NP(t_0, T_\alpha)\mathbb{E}_t\left[\max\left(1-\sum_{k=\alpha+1}^\beta c_kP(T_\alpha,T_k), 0\right)\right]
-%%	\end{equation*}
-%%	with $c_k=K\tau_k$ for $k=\alpha+1,\ldots,\beta-1$ and $c_\beta=(1+K\tau_\beta)$.
-%%	\item One of the most striking properties of \emph{Affine Models} is that they relate ZCB price to a spot rate modeled according to
-%%	\begin{equation*}
-%%		P(t,T) = A_r(t,T)e^{-B_r(t,T)r}
-%%	\end{equation*}
-%%\end{itemize}
-%%\end{frame}
-%%
-%%\begin{frame}{Swaption Pricing under Affine Models}
-%%\begin{itemize}
-%%	\item Hence
-%%	\begin{equation*}
-%%		\textbf{PSw}=NP(t_0, T_\alpha)\mathbb{E}_t\left[\max\left(1-\sum_{k=\alpha+1}^\beta c_k A_r(\tau_k)e^{B_r(\tau_k)r(T_\alpha)}, 0\right)\right]
-%%	\end{equation*}
-%%	\item Using the Jamshidian decomposition the $\max$ operator can be swapped with the sum
-%%	\begin{equation*}
-%%		\textbf{PSw}=NP(t_0, T_\alpha)\sum_{k=\alpha+1}^\beta c_k \mathbb{E}_t\left[\max\left(\bar{K_k} - A_r(\tau_k)e^{B_r(\tau_k)r(T_\alpha)}, 0\right)\right]
-%%	\end{equation*}
-%%	whit $\bar{K_k} := A_r(\tau_k)e^{B_r(\tau_k)r^{*}}$, where the parameter $r^{*}$ is determined by solving
-%%	\begin{equation*}
-%%		\sum_{k=\alpha+1}^\beta c_k \left(A_r(\tau_k)e^{B_r(\tau_k)r^{*}}\right) = 1
-%%	\end{equation*}
-%%\end{itemize}
-%%\end{frame}
-%%
-%%\begin{frame}{Swaption Pricing under Affine Models}
-%%\begin{itemize}
-%%	\item As noted above for the bond options, each element of the sum in the formula above represents a European put option on a zero-coupon bond, which in the \emph{affine models} has a closed-form solution.
-%%	\item So a payer swaption price is thus given by
-%%	\begin{equation}
-%%		\boxed{\textbf{PSw}(t,T,N) = N\sum_{k=1}^n c_k \textbf{ZBP}(t,T_k,K_k)}
-%%	\end{equation}
-%%	while the receiver swaption price reads
-%%	\begin{equation}
-%%		\boxed{\textbf{RSw}(t,T,N) = N\sum_{k=1}^n c_k \textbf{ZBC}(t,T_k,K_k)}
-%%	\end{equation}
-%%\end{itemize}
-%%\end{frame}
-%
-%
-%
-%
-%%\begin{frame}{Adapting to Swaptions}
-%%\begin{itemize}
-%%	\item When interest rates are modeled using \textcolor{red}{Affine Short Rate Models} it is rather simple to arrive to the swaption pricing formula.
-%%	\item \emph{Affine Models} indeed relates ZCB price to a spot rate model according to
-%%	\begin{equation*}
-%%		P(t,T) = A(t,T)e^{-B(t,T)r}
-%%	\end{equation*}
-%%	\item Hence the value $r^*$ can be determined as a solution of
-%%	\begin{equation*}
-%%		\sum_{i=1}^n A(t,t_i)e^{-B(t,t_i)r^*}
-%%	\end{equation*}
-%%	%%		\item Denote as usual with $\tau_i$ the year fraction between $t_{i-1}$ and $t_i$, fix $c_i=X\tau_i$ and $c_n = 1+X\tau_i$.
-%%	%%		\item Let the swap notional be equal to N.
-%%	%%		\item Thus for the price of a payer swaption we have to calculate the following payoff
-%%	%%		\begin{equation*}
-%%		%%			\left[1-CB(t,\mathcal{C},T)\right]^+
-%%		%%		\end{equation*}
-%%	%%		\item We can calculate this payoff via the procedure outlined before.
-%%\end{itemize}
-%%\end{frame}
-%%
-%%\begin{frame}{Swaption Pricing via Affine Models}
-%%\begin{itemize}
-%%	\item Consider an option on a swap which pays a fixed rate $X$ and receives LIBOR.
-%%	\item Modeling the short rate with an affine model we can define $r^*$ at time $T$, such that
-%%	\begin{equation*}
-%%		\sum_{i=1}^n c_i A(t,T_i)e^{-B(t,T_i)r^*} = 1
-%%	\end{equation*}
-%%	where $c_i$ is the coupon value.
-%%\end{frame}
-
-
-\subsection{Bermudan Swaption}
-\begin{frame}{Bermudan Swaptions}
-	\begin{itemize}
-		\item<1-> It is a swaption in which the optionality can be exercised at a \textcolor{maincolor}{predetermined set of dates} (not only one).
-		\item<2-> It is useful for hedging callable bonds (especially if step-up, i.e. with the coupon increasing with time).
-		\item<3-> A \textcolor{maincolor}{Bermudan Swaption} gives the holder the right but not the obligation to enter in an interest rate swap contract at different dates (usually the swap reset dates) with some days of notification to the counter-party.
-		\item<4-> The interest rate swap the holder can enter into, is the same existing contract, so if the holder does not exercise at the first date in the call schedule, the option for the following periods is just written on shorter swaps.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Bermudan Swaption Example}
-	\begin{itemize}
-		\item<1-> As an example consider the following: receiver Bermudan Swaption written on a 3 years swap with the first call date $2y$ from now (we suppose semi-annual payments).
-		\item<2-> If at the end of the second year she will not exercise, six months later she will have to decide if entering or not in the same remaining swap which now has become a $2y6m$ swap.
-		\item<3-> If again she will not exercise the last possibility will involve the decision of whether or not to enter on the $2y6m-3y$~$FRA$.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Bermudan Swaption Pricing}
-	\begin{itemize}
-		\item<1-> Some interest rate instruments can be priced just looking at the term structure of interest rates (FRA and Swaps)
-		\begin{itemize}
-			\item the only problem is: which is the right term structure ? (this is a lesson from the 2008 crisis).
-		\end{itemize}
-		\item<2-> Some other instruments cannot be priced only with the yield curve: we need the future (risk-neutral) evolution of the rates.
-		\item<3-> Given the complexity of Bermudan swaption valuation (which belongs to the latter class), there is no closed form solution.
-		\item<3-> Typically tree techniques or the Longstaff-Schwartz method are used.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Longstaff-Schwartz Algorithm}
-	\begin{itemize}
-		\item Consider a Bermudan put option with strike $K$ and $n$-years maturity. Each year you can choose whether to exercise or not.
-		%Let's implement a MC which actually simulates, besides the evolution of the market, what an investor holding this option would do.
-		\item The evolution of the asset value and of the money market account gives
-		\begin{equation}
-			\begin{gathered}
-				S(t_1=1y) = S(t_0)e^{(r-\frac{1}{2}\sigma^2)(t_1-t_0)+\sigma\sqrt{t_1-t_0}\mathcal{N}(0,1)} \\
-				B(t_1=1y)=B(t_0)e^{r(t_1-t_0)}
-			\end{gathered}
-		\end{equation}
-		\item At $t_1$ the investor can:
-		\begin{itemize}
-			\item \textbf{exercise:} in this case we knows exactly the payoff;
-			\item \textbf{does not exercise:} the contract has become a European Put Option with shorter maturity.
-		\end{itemize}
-		\item \emph{At this point how does the investor know if it is convenient to exercise?}
-		\item The decision will depend on each choice convenience:
-		\begin{equation*}
-			\max[K-S_{t_1}, \textbf{Put}(t_1,T;S_{t_1},K)]
-		\end{equation*}
-		where $\textbf{Put}(t_1,T;S_{t_1},K)$ is the price of the Put (i.e. the \textbf{continuation value}, the value of holding the option instead of early exercising it).
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Longstaff-Schwartz Algorithm}
-	\begin{itemize}
-		\item So the premium of the option is the average of this discounted payoffs calculated in each Monte Carlo simulation
-		\begin{equation*}
-			\cfrac{1}{N}\sum_i\max[K-S_{t_1}, \textbf{Put}(t_1,T;S_{t_1},K)]
-		\end{equation*}
-		\item In this case we could price this product because we have an analytical pricing formula for the Put (Black formula), but what if we didn't ?
-		\item \textbf{Brute force solution:} for each realization of $S_{t_i}$ we run another Monte Carlo to price the alternative continuation value.
-		\item We need to implement nested MC which is usually a very bad idea. Its execution time grows as $N^2$, which becomes prohibitive when you deal with multiple exercise dates !
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Longstaff-Schwartz Algorithm}
-	Longstaff and Schwarz were looking for a smarter solution analyzing the relationship between the continuation value and the realizations of $S$.
-	%We can plot the discounted payoff at maturity, $P_i$ vs $S_i(t_1)$.
-	\begin{columns}
-		\column{0.5\linewidth}
-		\includegraphics[width=0.9\linewidth]{images/longstaff_simulation}
-
-		\small{They found the Put analytical price (green line) was interpolating the cloud of MC points, so \emph{the price at time $t$ can be computed as the barycentre of the discounted payoff cloud.}}
-		\column{0.5\linewidth}
-		\includegraphics[width=0.9\linewidth]{images/longstaff_scatter_1}
-	\end{columns}
-
-	\textbf{Estimating the future value of an option $(V)$ can be seen as the problem of finding the curve that best fit the cloud of discounted payoffs at the date of interest.}
-\end{frame}
-
-%\begin{frame}{Longstaff-Schwartz Algorithm}
-%
-%	\begin{itemize}
-%		\item So they found an \emph{empirical pricing formula} for the unknown contract to be used in the Monte Carlo Simulation
-%		\begin{equation}
-%			V(t_i,T,S_{t_i},K)=c_0+c_1 S(t_i) + c_2 S^2(t_i) + c_3 S^3(t_i) + c_4 S^4(t_i) + c_5 S^5(t_i)
-%		\end{equation}
-%		\begin{center}
-%			\includegraphics[width=0.35\linewidth]{images/longstaff_scatter_2}
-%		\end{center}
-%		The formula is obviously fast, the cost of the algorithm being just the best fit.
-%		\item Clearly we could have used any form for the curve (not only a polynomial), but the small improvement does not justify the increased complexity.
-%	\end{itemize}
-%\end{frame}
-
-\subsection{Callable Bonds}
-\begin{frame}{Callable Coupon Bond}
-	\begin{itemize}
-		\item<1-> A \textcolor{maincolor}{callable bond} is a bond in which, on the call date(s) (there can be more than one), the \textbf{issuer} has the right, but not the obligation, to buy back (redeem) the bonds from the bond holders at a defined call price.
-		\item<2-> We have seen that a swap can be regarded as an exchange of bonds. It is easy to guess that a replica for the callable bond price can be obtained by simply adding a (swap-)option to the swap used to price the underlying bond.
-		\item<3-> If there are multiple callability dates is clear that we need a \textbf{Bermudan} swaption.
-		\item<3-> With a receiver bermudan swaption with the same contractual conventions of the bond (i.e. the strike of the swaption is equal to the coupon of the bond) we can offset it. %; which represents the economic equivalent of calling the bond at par.
-		%\item So $\max(CCBP(T,S,K,\tau)-100, 0)$ can be represented as $\max(K-S(T_j,\beta)(T), 0)$.
-		%\item Intuition: long on the bond, short on the rates.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Callable vs Non Callable Coupon Bonds}
-	\begin{itemize}
-		\item<1-> \emph{Ceteris paribus} a non callable coupon bond has an higher price than a callable one because the callability option adds value to the issuer
-		\begin{equation*}
-			\text{price of callable bond} = \text{price of straight bond} – \text{price of call option}.
-		\end{equation*}
-		\item<2-> If interest rates decline, the issuer of a callable bond can issue new debt, at lower interest rate than the original one, and use the the proceeds from this second issue to pay off the earlier callable bond by exercising the call feature.
-		\item<2-> As a result, \textcolor{maincolor}{the company has refinanced its debt by paying off the higher-yielding callable bonds with the newly-issued debt at a lower interest rate}.
-		%	\item At inception both must be worth 100 (apart from other costs and fees which we will neglect).
-		%	\item A typical coupon bond, once credit risk is isolated and remunerated, will pay the average market rates prevailing at the time of the issue. These are related to the swap rate prevailing at that moment (remember that the swap rate is sort of average of forward rates).
-	\end{itemize}
-\end{frame}
-
-%\begin{frame}{Callable vs Non Callable Coupon Bonds}
-%\begin{itemize}
-%	\item Suppose credit risk is zero: in this ideal case the coupon bond will pay the corresponding swap rate prevailing on the market.
-%	If we price a $5y$ bond, at inception, the following must hold
-%	\begin{equation*}
-	%		CBP(0,5,K,\tau)=100-NPV_{\text5y-swap(0)}=100
-	%	\end{equation*}
-%	\item Which implies $NPV_{\text{5y-swap(0)}}=0$, hence $K=S_{\text{5y-swap(0)}}$. This means that credit consideration apart, a bank must pay the market prevailing rate when it issues a bond. %And this should not surprise anyone.
-%\end{itemize}
-%\end{frame}
-
-%\begin{frame}{Callable vs Non Callable Coupon Bonds}
-%\begin{itemize}
-%	\item Consider now the same bond with a callability option after two years each six months.
-%	\item Let us denote with $RBS(t,6m,T_{1c},T_\beta,K,N)$ the Bermudan receiver swaption with first call date $T_{1c}$ and subsequent ones every six months. The last payment date is equal to the swap maturity.
-%	\item In this case the call dates vector is $[2y,2y6m,3y,3y6m,4y,4y6m]$.
-%	\item Suppose $RBS(0,6m,T_{2y},T_{5y},K_1,N)>0$
-%	\begin{equation*}
-	%		CBP(0,5,K,\tau)=100-(NPV_{\text{5y-swap(0)}}+NPV_{RBS})=100
-	%	\end{equation*}
-%\end{itemize}
-%\end{frame}
-
-\begin{frame}{Risk Analysis of Callable Bonds}
-	\begin{itemize}
-		\item A callable bond benefits the issuer, and so investors of these bonds are compensated with a more attractive interest rate than on otherwise similar non-callable bonds.
-		%\item Paying down debt early by exercising callable bonds saves a company interest expense and prevents the company from being put in financial difficulties in the long term if economic or financial conditions worsen.
-		\item<1-> The investor might not make out as well as the company when rates decrease and the bond is called. Not only she loses the remaining interest payments but unlikely she will be able to match the original coupon.
-		\textcolor{maincolor}{This situation is known as reinvestment risk}.
-
-		%For example, let's say a 6\% coupon bond is issued and is due to mature in five years. An investor purchases 10000 worth and receives coupon payments of 6\% x 10,000 or 600 annually. Three years after issuance, the interest rates fall to 4\%, and the issuer calls the bond. The bondholder must turn in the bond to get back the principal, and no further interest is paid.
-		%In this scenario, not only does the bondholder lose the remaining interest payments but it would be unlikely they will be able to match the original 6\% coupon.
-		\item<2-> As a result, a callable bond may not be appropriate for investors seeking stable income and predictable returns.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Break-even Rate}
-	\begin{itemize}
-		\item<1-> In general, we can assume that \textbf{it is optimal for the issuer to minimize the value of the callable bond}.
-		\item<2-> She will exercise the option \emph{if the price of the callable bond exceeds the exercise price ($X$) at the notice date ($t_n$)}.
-		\item<3-> Otherwise, she will give up the option right and the callable bond price will be equal to that of the non-option bond.
-		\item<4-> Denote by $r_b$ the \emph{break-even interest rate} which represents the rate value such that the issuer is indifferent between exercising the option or not.
-		\begin{equation}
-			X\cdot D(t_n, t_c) - P(r,t_n)=0
-		\end{equation}
-		where $D(t_n, t_c)$ is the discount factor between notice and exercise dates ($t_c$) and $P(r,t_n)$ the price of the callable bond an instant before the notice date.
-		\item<4-> We know the value of the callable bond $P(r,t_n)$ since it is equal to the value of the non-option bond.
-	\end{itemize}
-	%We know the value of the callable bond $P(r,t_n)$ since it is equal to the value of the non-option bond. The solution of equation is the cross point between the two curves.
-\end{frame}
-
-\begin{frame}{Break-even Rate}
-	\textbf{The solution is the cross point between the two curves.}
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{images/callable_bond}
-	\end{center}
-\end{frame}
-
-
-\begin{homework}
-	\begin{frame}{\textcolor{white}{Homework}}
-		\begin{itemize}
-			\item[white] A pension fund holds a 3-year Bermuda Receiver Swaption on a 100 million notional. The strike rate is $K=4\%$.
-			The swaption allows the holder to enter a receiver swap (receive fixed, pay floating) at $T=1$ or $T=2$. If exercised, the swap lasts until the final maturity at $T=3$.
-
-			Current time is $T=0$. At $T=1$, the 2-year Swap Rate is predicted to be either 3\% or 5\% (50/50 probability). At $T=2$, the 1-year Swap Rate is predicted to be either 2\% or 6\%.
-			Assume a flat discount rate of $r=4\%$ for all NPV calculations.
-
-			\begin{itemize}
-				\item[white] If the holder exercises at $T=1$, what is the tenor of the resulting swap ?
-				\item[white] What if they exercise at $T=2$ ?
-				\item[white] Calculate the payoff at $T=1$ if the market swap rate is 3\%.
-				\item[white] At $T=1$, if the market rate is 3\%, the holder sees an immediate payoff but also knows there is a chance the rate drops to 2\% at $T=2$. Explain qualitatively why the holder might wait instead of exercising at $T=1$.
-			\end{itemize}
-			\item[white] An investor is looking at a 3-year Callable Bond with a 5\% annual coupon and a par value of 100. The bond is "Callable at Par" (100) at the end of Year 1 and Year 2.
-			\begin{itemize}
-				\item[white] Scenario A (Falling Rates): At $T=1$, the market yield for a 2-year bond drops to 3\%.
-				\item[white] Scenario B (Rising Rates): At $T=1$, the market yield for a 2-year bond rises to 7\%.
-			\end{itemize}
-
-		\end{itemize}
-	\end{frame}
-\end{homework}
 
 \end{document}

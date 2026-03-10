@@ -30,9 +30,9 @@ A stock is currently priced at $S_0=100$. In one year, it can either go up to $S
 \begin{solution}
 	\begin{parts}
 		\part In a risk-neutral world, the current price $S_0$ must be the expected future price discounted at the risk-free rate $r$.
-		\begin{equation}
+		\begin{equation*}
 			S_0=\frac{1}{1+r}[qS_u +(1-q)S_d]
-		\end{equation}
+		\end{equation*}
 		Plugging in the numbers:
 		\begin{gather*}
 			100=\frac{1}{1.05}[120\cdot q + 90\cdot(1-q)] \\
@@ -131,73 +131,73 @@ In a stochastic interest rate world, is it true that
 
 \begin{solution}
 The risk-neutral pricing formula states that the price of a Zero-Coupon Bond (ZCB) is:
-\begin{equation}
+\begin{equation*}
 	P(t,T) = \mathbb{E}^{\mathbb{Q}}\left[ e^{-\int_t^T r_s ds} \middle| \mathcal{F}_t \right]
-\end{equation}
+\end{equation*}
 This expression is \textbf{true} by the definition of the risk-neutral measure $\mathbb{Q}$, where the money market account $B_t = e^{\int_0^t r_s ds}$ is the numeraire.
 
 To explore the paradox, consider the function $f(x) = e^{-x}$. This function is \textcolor{red}{strictly convex} because $f''(x) = e^{-x} > 0$.
 
 By \textbf{Jensen's Inequality}, for any convex function $f$ and random variable $X$:
-\begin{equation}
+\begin{equation*}
 	f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)]
-\end{equation}
+\end{equation*}
 
 Let $X = \int_t^T r_s ds$. Applying the inequality to the bond price formula:
-\begin{equation}
+\begin{equation*}
 	\underbrace{\exp\left( -\mathbb{E}^{\mathbb{Q}}\left[ \int_t^T r_s ds \middle| \mathcal{F}_t \right] \right)}_{\text{Function of Expectation}} < \underbrace{\mathbb{E}^{\mathbb{Q}}\left[ e^{-\int_t^T r_s ds} \middle| \mathcal{F}_t \right]}_{\text{Bond Price } P(t,T)}
-\end{equation}
+\end{equation*}
 
 The actual bond price $P(t,T)$ is higher than the price calculated by simply using the expected average path of interest rates.
 
 Due to the \textcolor{red}{convexity} of the bond price-yield relationship, volatility in interest rates increases the bond's value. This is why "Convexity Adjustments" are required when moving between different interest rate products (like Eurodollar futures vs. FRAs).
 
 The "paradox" is a psychological and linguistic one rather than a mathematical error. It arises because our intuition often tricks us into thinking that the average price should be determined by the average rate.
-
-Here is why it is called a paradox in a classroom or trading floor setting:
-1. The Intuition Trap
-
-If you ask a student: "If the expected average interest rate for the next year is 5%, what is the bond price?"
-Most will answer: $e^{-0.05\cdot 1}$.
-
-But as you proved using Jensen's Inequality: $P(t,T)>e^{-\mathbb{E}[r]}$.
-
-
-The "Paradox" is that the bond is more expensive than the "average" interest rate suggests. Even if your forecast of the interest rate is perfectly correct on average, your bond price calculation will be wrong (too low) if you ignore volatility.
-2. The Jensen's Gap
-
-The paradox is essentially the existence of the Convexity Bias.
-
-If rates go down by 1%, the bond price rises by, say, $1.10.
-
-If rates go up by 1%, the bond price falls by only $0.90.
-
-Net result: If rates are volatile but stay at 5% on average, the bond price keeps gaining value from the swings.
-
-3. The Practical Paradox: Futures vs. Forwards
-
-This paradox has a multi-billion dollar consequence in the markets known as the Futures-Forward Basis.
-
-A Forward Rate Agreement (FRA) is priced directly off the expectation.
-
-A Eurodollar Future is "marked-to-market" daily.
-
-Because of the convexity paradox, the Futures rate is always higher than the Forward rate for the same period. If a trader forgets this "paradox" and treats them as equal, they will lose money on every trade because they haven't accounted for the Convexity Adjustment.
-In summary, the paradox is:
-
-"To get the right price, you must use the wrong rate (an adjusted one), because the 'correct' expected rate gives you a price that is too low."
-
-Consider a ZCB where the rate $r$ is $5\%$ on average, but volatile ($0\%$ or $10\%$ with $p=0.5$).
-\begin{itemize}
-	\item \textbf{Naive Price} (using average rate):
-	$e^{-0.05} = 0.9512$
-	\item \textbf{Market Price} (average of prices):
-	$0.5(e^{-0.10}) + 0.5(e^{0}) = 0.9524$
-\end{itemize}
-
-The bond is \textbf{more expensive} than the average rate implies.
-In markets, this is the \textcolor{red}{Convexity Bias}.
-To price correctly, we must subtract a \textit{convexity adjustment} from the expected future rate.
+%
+%Here is why it is called a paradox in a classroom or trading floor setting:
+%1. The Intuition Trap
+%
+%If you ask a student: "If the expected average interest rate for the next year is 5%, what is the bond price?"
+%Most will answer: $e^{-0.05\cdot 1}$.
+%
+%But as you proved using Jensen's Inequality: $P(t,T)>e^{-\mathbb{E}[r]}$.
+%
+%
+%The "Paradox" is that the bond is more expensive than the "average" interest rate suggests. Even if your forecast of the interest rate is perfectly correct on average, your bond price calculation will be wrong (too low) if you ignore volatility.
+%2. The Jensen's Gap
+%
+%The paradox is essentially the existence of the Convexity Bias.
+%
+%If rates go down by 1%, the bond price rises by, say, $1.10.
+%
+%If rates go up by 1%, the bond price falls by only $0.90.
+%
+%Net result: If rates are volatile but stay at 5% on average, the bond price keeps gaining value from the swings.
+%
+%3. The Practical Paradox: Futures vs. Forwards
+%
+%This paradox has a multi-billion dollar consequence in the markets known as the Futures-Forward Basis.
+%
+%A Forward Rate Agreement (FRA) is priced directly off the expectation.
+%
+%A Eurodollar Future is "marked-to-market" daily.
+%
+%Because of the convexity paradox, the Futures rate is always higher than the Forward rate for the same period. If a trader forgets this "paradox" and treats them as equal, they will lose money on every trade because they haven't accounted for the Convexity Adjustment.
+%In summary, the paradox is:
+%
+%"To get the right price, you must use the wrong rate (an adjusted one), because the 'correct' expected rate gives you a price that is too low."
+%
+%Consider a ZCB where the rate $r$ is $5\%$ on average, but volatile ($0\%$ or $10\%$ with $p=0.5$).
+%\begin{itemize}
+%	\item \textbf{Naive Price} (using average rate):
+%	$e^{-0.05} = 0.9512$
+%	\item \textbf{Market Price} (average of prices):
+%	$0.5(e^{-0.10}) + 0.5(e^{0}) = 0.9524$
+%\end{itemize}
+%
+%The bond is \textbf{more expensive} than the average rate implies.
+%In markets, this is the \textcolor{red}{Convexity Bias}.
+%To price correctly, we must subtract a \textit{convexity adjustment} from the expected future rate.
 \end{solution}
 
 \question \textbf{Forward Rate Agreement} \\
@@ -485,9 +485,9 @@ Summing these payoffs over all periods from $i = \alpha+1$ to $\beta$ and discou
 \end{equation*}
 
 Which simplifies to the fundamental parity relationship:
-\begin{equation}
+\begin{equation*}
 	\text{Cap}(t, K) - \text{Floor}(t, K) = \text{Payer Swap}(t, K)
-\end{equation}
+\end{equation*}
 \end{solution}
 
 \question \textbf{Interest Rate Hedging} \\
@@ -615,6 +615,59 @@ Calculate the analytical expressions for:
 		\Delta = N(d_1) + \cfrac{1}{F_k\sigma_k\sqrt{t_k}}\left[FN'(d_1)-R_kN'(d_2)\right] =
 		N(d_1)
 	\end{equation*}
+\end{solution}
+
+\question \textbf{Swaption Payoff}
+Derive the Swaption payoff formula
+\begin{equation*}
+	\textbf{PSw} = N\cdot P(t, T_\alpha)\cdot \mathbb{E}^{Q}_t \left[ \left( 1 - \sum_{k=\alpha+1}^\beta c_k P(T_\alpha, T_k) \right)^+ \right]	
+\end{equation*}
+
+\begin{solution}
+We begin with the standard payoff of a receiver swaption at maturity $T_\alpha$. The value of the swaption at time $t$ is the discounted expectation of the sum of the differences between the forward Libor rates and the fixed strike $K$:
+	
+\begin{equation*}
+	\textbf{PSw} = D(t, T_\alpha) \left( \sum_{i=\alpha+1}^\beta \tau_i \cdot P(T_\alpha, T_i) (F(T_\alpha; T_{i-1}, T_i) - K) \right)^+
+\end{equation*}
+	
+The forward Libor rate $F$ at time $T_\alpha$ for the accrual period $[T_{i-1}, T_i]$ is defined by the prices of Zero-Coupon Bonds (ZCBs) as follows:
+\begin{equation*}
+	F(T_\alpha; T_{i-1}, T_i) = \frac{1}{\tau_i} \left( \frac{P(T_\alpha, T_{i-1})}{P(T_\alpha, T_i)} - 1 \right)
+\end{equation*}
+	
+Substituting this definition into the summation within the payoff:
+\begin{equation*}
+	\sum_{i=\alpha+1}^\beta \tau_i \cdot P(T_\alpha, T_i) \left[ \frac{1}{\tau_i} \left( \frac{P(T_\alpha, T_{i-1})}{P(T_\alpha, T_i)} - 1 \right) - K \right]
+\end{equation*}
+	
+By distributing $P(T_\alpha, T_i)$ through the brackets, the $\tau_i$ terms cancel and the bond prices simplify:
+\begin{equation*}
+	\sum_{i=\alpha+1}^\beta \left( P(T_\alpha, T_{i-1}) - P(T_\alpha, T_i) - K \cdot \tau_i \cdot P(T_\alpha, T_i) \right)
+\end{equation*}
+	
+The first part of the sum, $\sum_{i=\alpha+1}^\beta (P(T_\alpha, T_{i-1}) - P(T_\alpha, T_i))$, is a telescoping series:
+\begin{equation*}
+	(P(T_\alpha, T_\alpha) - P(T_\alpha, T_{\alpha+1})) + \dots + (P(T_\alpha, T_{\beta-1}) - P(T_\alpha, T_\beta))
+\end{equation*}
+Since $P(T_\alpha, T_\alpha) = 1$, the sum simplifies to:
+\begin{equation*}
+	1 - P(T_\alpha, T_\beta)
+\end{equation*}
+	
+We define the coupon coefficients $c_k$ to account for the fixed leg payments and the final principal repayment:
+\begin{itemize}
+	\item For $k = \alpha+1, \dots, \beta-1$, let $c_k = K \tau_k$.
+	\item For the final maturity $k = \beta$, let $c_\beta = 1 + K \tau_\beta$.
+\end{itemize}
+The expression inside the positive part operator becomes:
+\begin{equation*}
+	\left( 1 - \sum_{k=\alpha+1}^\beta c_k P(T_\alpha, T_k) \right)^+
+\end{equation*}
+	
+Factoring in the Notional $N$ and expressing the value at time $t$ as an expectation under the risk-neutral measure $Q$ (where $P(t, T_\alpha)$ is the discount factor to the exercise date):
+\begin{equation*}
+	\textbf{PSw} = N \cdot P(t, T_\alpha) \cdot \mathbb{E}^{Q}_t \left[ \left( 1 - \sum_{k=\alpha+1}^\beta c_k P(T_\alpha, T_k) \right)^+ \right]
+\end{equation*}
 \end{solution}
 
 \question \textbf{Bermudan Swaption}
