@@ -1742,154 +1742,6 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 \end{itemize}
 \end{frame}
 
-%	\begin{frame}{Quanto Options: Motivation and Setup}
-%	\begin{itemize}
-%		\item A Quanto is a derivative where the underlying asset is denominated in a \textcolor{blue}{foreign currency}, but the payoff is paid in a \textcolor{red}{domestic currency} at a fixed exchange rate $X_{fix}$.
-%		\item The assets:
-%		\begin{itemize}
-%			\item $S_t^f$: foreign asset price (in foreign currency);
-%			\item $X_t$: exchange rate (units of domestic per unit of foreign);
-%			\item $B_d(t)$, $B_f(t)$: domestic and foreign money market accounts.
-%		\end{itemize}
-%		\item The foreign asset $S_t^f$ is a martingale under the foreign risk-neutral measure $\mathbb{Q}^f$ (when divided by $B_f$). However, the domestic investor lives in the $\mathbb{Q}^d$ world.
-%		\item To price the asset in the domestic world, we must use the domestic bank account $B_d(t)$ as numeraire, but the asset's value in domestic terms is $S_t^d = X_t S_t^f$.
-%	\end{itemize}
-%\end{frame}
-%
-%\begin{frame}{The Quanto Drift Adjustment}
-%	\begin{itemize}
-%		\item Under the domestic measure $\mathbb{Q}^d$, the process for the foreign asset $S^f$ is:
-%		\begin{equation*}
-%			\frac{dS^f_t}{S^f_t} = (r_f \textcolor{red}{-\rho\sigma_S \sigma_X} ) dt + \sigma_S dW^{d}_t
-%		\end{equation*}
-%		\item \textbf{Derivation via Numeraire Change:}
-%		\begin{enumerate}
-%			\item We move from $\mathbb{Q}^f$ (numeraire $B_f$) to $\mathbb{Q}^d$ (numeraire $B_d$).
-%			\item The Radon-Nikodym derivative is $\frac{\mathbb{Q}^d}{\mathbb{Q}^f}=\frac{B_d(T)X(0)}{B_f(T)X(T)}$.
-%			\item By Girsanov's Theorem, the drift of $S_f$ is adjusted by the covariance between the asset and the exchange rate.
-%		\end{enumerate}
-%		\item \textbf{Economic Intuition:} The term $-\rho\sigma_S\sigma_X$ is the \textcolor{red}{Quanto Adjustment}. If the foreign currency strengthens when the stock rises ($\rho > 0$), the domestic investor "loses" the currency gain due to the fixed exchange rate, so the expected return must be adjusted downwards.
-%	\end{itemize}
-%\end{frame}
-%
-%
-%	\begin{frame}{The Radon-Nikodym Derivative}
-%
-%	The Domestic investor uses $B_d(t)$ as a numeraire. Any asset $A_t$​ denominated in domestic currency must eb a\Qd-martingale when discounted by Bd​. The domestic value of the foreign bank account is Bf​(t)Xt​. Therefore, the Radon-Nikodym derivative ξt​=dQfdQd​​Ft​​ is:
-%	ξt​=Bf​(t)Xt​/(Bf​(0)X0​)Bd​(t)/Bd​(0)​=erf​t(Xt​/X0​)erd​t​
-%
-%	Applying Itô's Lemma to ξt​=Xt​X0​​e(rd​−rf​)t, we find the dynamics of the density process:
-%	dξt​=−σX​ξt​dW2,tf​
-%
-%	Crucial Step: This identifies the Girsanov kernel. The "volatility" of the RN derivative is −σX​ attached to the exchange rate's noise.
-%\end{frame}
-%\begin{frame}{Applying Girsanov's Theorem}
-%
-%	Shifting the Wind Girsanov tells us that to get the Brownian motions under Qd, we must subtract the "covariance" between the asset's noise and the density process noise.
-%
-%	Under Qd, the Brownian motions become:
-%
-%	For W2​ (Exchange Rate): dW2,td​=dW2,tf​−(−σX​)dt=dW2,tf​+σX​dt.
-%
-%	For W1​ (Asset): Since W1​ and W2​ are correlated by ρ, the shift is:
-%	dW1,td​=dW1,tf​−Cov(dW1f​,ξdξ​)
-%	dW1,td​=dW1,tf​−(−ρσX​)dt=dW1,tf​+ρσX​dt
-%
-%	The result: dW1,tf​=dW1,td​−ρσX​dt.
-%\end{frame}
-%\begin{frame}{The Final Quanto SDE}
-%
-%	The "Convexity" Adjustment Substitute dW1,tf​ back into the foreign asset SDE:
-%	Stf​dStf​​=rf​dt+σS​(dW1,td​−ρσX​dt)
-%	Stf​dStf​​=(rf​−ρσS​σX​)dt+σS​dW1,td​
-%
-%	Why did the drift change?
-%
-%	The domestic investor is exposed to Sf through the product Xt​Stf​.
-%
-%	In a domestic risk-neutral world, the product Xt​Stf​ must grow at rate rd​.
-%
-%	Because Xt​ and Stf​ are correlated, their product has an extra "covariance" term in its growth (d(XS)=XdS+SdX+dXdS).
-%
-%	If we fix the exchange rate (Xfix​), we strip away the currency's volatility but we are left with the covariance residue.
-%\end{frame}
-%\begin{frame}{Mathematical Example for the Exam}
-%
-%	The Forward Quanto Price Calculate the Forward price of a Quanto asset FQ​=EQd[STf​]. Since the drift of Sf under Qd is rq​=rf​−ρσS​σX​, the expectation is:
-%	FQ​=S0f​e(rf​−ρσS​σX​)T
-%
-%	Comparison:
-%
-%	Standard Forward (Foreign): F=S0f​erf​T
-%
-%	Quanto Forward: FQ​=F⋅e−ρσS​σX​T
-%
-%	Student takeaway: If ρ>0 (Stock and Currency rise together), the Quanto Forward is lower than the standard Forward. You are "penalized" for the fact that you don't benefit from the currency strengthening when your stock does well.
-%	Suggestions for "Challenging" additions:
-%
-%	The "Reverse" Quanto: Ask students to derive the adjustment for a domestic asset priced in a foreign currency. (The sign of ρ flips).
-%
-%	Implied Correlation: Since σS​ and σX​ are observable from options, but ρ is not, how can we use Quanto prices to "extract" the market's view on the correlation between Nikkei 225 and USD/JPY?
-%
-%	Would you like me to create a slide on "Siegel's Paradox"? It’s a classic companion to Quanto theory that explains why 1/X doesn't have the same drift as X.
-%
-%\end{frame}
-
-
-%%	Slide 1: Siegel’s Paradox - Il Problema della Simmetria
-%%
-%%	La Domanda: Se il tasso di cambio Euro/Dollaro (Xt​) è una martingala sotto una certa misura, il tasso Dollaro/Euro (1/Xt​) può essere anch'esso una martingala?
-%%
-%%	La Risposta Matematica: No. A causa della convessità della funzione f(x)=1/x, per la Disuguaglianza di Jensen:
-%%	E[XT​1​]>E[XT​]1​
-%%
-%%	Significato Finanziario: Se entrambi gli investitori (USA e EU) fossero neutrali al rischio e convinti che il cambio non abbia drift, entrambi si aspetterebbero paradossalmente di guadagnare nel lungo termine detenendo la valuta estera.
-%%	Slide 2: Derivazione tramite il Lemma di Itô
-%%
-%%	Supponiamo che sotto la misura domestica Qd, il cambio segua una dinamica GBM (senza drift per semplicità di calcolo):
-%%	Xt​dXt​​=0⋅dt+σX​dWt​
-%%
-%%	Applichiamo il Lemma di Itô a Yt​=1/Xt​:
-%%
-%%	f(X)=1/X⟹f′=−1/X2,f′′=2/X3
-%%
-%%	dYt​=−Xt2​1​(dXt​)+21​Xt3​2​(dXt​)2
-%%
-%%	dYt​=−Xt2​1​(σX​Xt​dWt​)+Xt3​1​(σX2​Xt2​dt)
-%%
-%%	Risultato:
-%%	Yt​dYt​​=σX2​dt−σX​dWt​
-%%
-%%	L'intuizione: Anche se X non ha drift, il suo inverso 1/X ha un drift positivo pari alla sua varianza σX2​. Questo è il "volatility smile" dei cambi in forma pura.
-%%	Slide 3: Girsanov e la Coerenza dei Mercati
-%%
-%%	Perché non c'è arbitraggio? Potrebbe sembrare che tutti possano guadagnare semplicemente scambiando valuta. Girsanov risolve il paradosso imponendo un cambio di misura obbligatorio quando cambiamo prospettiva.
-%%
-%%	Sotto Qd (Investitore Domestico), il cambio X (prezzo del foreign) ha drift rd​−rf​.
-%%
-%%	Quando passiamo all'investitore straniero (Qf), non cambiamo solo l'asset, cambiamo la misura di probabilità.
-%%
-%%	Il passaggio da Qd a Qf (visto nella slide del Quanto) introduce un termine di deriva che cancella esattamente il surplus di rendimento dovuto alla convessità (σX2​), rendendo i mercati internazionali coerenti.
-%%	Slide 4: Applicazione Pratica - Forward FX
-%%
-%%	In un mondo risk-neutral, il tasso Forward è definito come:
-%%	Ft,T​=EtQd​[XT​]
-%%
-%%	Se uno studente provasse a calcolare il forward inverso come 1/Ft,T​, commetterebbe un errore sistematico.
-%%
-%%	Ft,T​=Xt​e(rd​−rf​)(T−t)
-%%
-%%	EtQf​[1/XT​]=(1/Xt​)e(rf​−rd​)(T−t)
-%%
-%%	Il paradosso di Siegel spiega perché, nei mercati reali, le opzioni out-of-the-money sulle valute costano in modo diverso a seconda della valuta di riferimento (il cosiddetto Vanna-Volga pricing).
-%%	Riassunto per gli Studenti: Il "Big Picture"
-%%
-%%	Girsanov è il "traduttore" tra due mondi (valute).
-%%
-%%	Il Quanto Adjustment è il prezzo che paghi per bloccare il traduttore (fissare il cambio).
-%%
-%%	Il Paradosso di Siegel è la prova che non puoi tradurre semplicemente invertendo i numeri; devi invertire l'intera distribuzione di probabilità.
-
 \section{Convexity}
 \begin{frame}{Convexity Correction}
 	\begin{itemize}
@@ -1955,7 +1807,7 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 		\item<1-> By the change of measure technique, we can simplify the expressions above, to some extent.
 		\item<2-> Indeed moving to the $T_i$-forward measure, we find:
 		\begin{equation*}
-			\cfrac{d\mathbb{Q}^{T_i}}{d\mathbb{Q}^{T_{i-1}}}=\cfrac{P(T_{i-1},T_i)P(t_0,T_{i-1})}{P(t_0,T_i)P(T_{i-1},T_{i-1})}
+			\cfrac{d\mathbb{Q}^{T_{i-1}}}{d\mathbb{Q}^{T_i}}=\cfrac{P(t_0,T_i)P(T_{i-1},T_{i-1})}{P(T_{i-1},T_i)P(t_0,T_{i-1})}
 		\end{equation*}
 		\item<3-> The derivative value is then equal to
 		\only<3-3>{\begin{equation*}
@@ -1981,11 +1833,12 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 
 \begin{frame}{The Correction}
 	\begin{itemize}
-		\item<1-> By simply adding and subtracting $F_i(T_{i-1})$ can be rewritten as
+		\item<1-> By adding and subtracting $F_i(T_{i-1})$ and splitting the expectation can be rewritten as
 		\begin{equation*}
 			\begin{aligned}
-				V(t_0) &= N\cdot \mathbb{E}^{T_i}[F_i(T_{i-1})] + N\cdot \mathbb{E}^{T_i}\left[F_i(T_{i-1})\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\\
-				&=N\cdot\left(F_i(t_0) + \mathbb{E}^{T_i}\left[F_i(T_{i-1})\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\right)
+				V(t_0) &= N\cdot \mathbb{E}^{T_i}\left[F_i(T_{i-1}) + F_i(T_{i-1})\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)} - F_i(T_{i-1})\right] \\
+				&= N\cdot \mathbb{E}^{T_i}[F_i(T_{i-1})] + N\cdot \mathbb{E}^{T_i}\left[F_i(T_{i-1})\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]\\
+				&=N\cdot\Bigg(F_i(t_0) + \underbrace{\mathbb{E}^{T_i}\left[F_i(T_{i-1})\left(\cfrac{P(t_0,T_i)}{P(T_{i-1}, T_i)}-1\right)\right]}_{\text{convexity correction}}\Bigg)
 			\end{aligned}
 		\end{equation*}
 		\item<2-> The convexity correction can finally be expressed as
@@ -2002,19 +1855,24 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 		\begin{equation*}
 			\mathbb{E}^{T_i}\left[\cfrac{F_i(T_{i-1})}{P(T_{i-1},T_i)}\right]=F_i(t_0)+\tau_i\mathbb{E}^{T_i}[F_i^2(T_{i-1})]
 		\end{equation*}
-		\item<2-> Note that although $F_i(T_{i-1})$ is a martingale under the $T_i$-forward measure, \textbf{its square is not}.
-		\item<3-> Indeed applying \ito~lemma to $F_i^2$ with the  dynamics $dF_i(t) = \sigma F_i(t)dW(t)$, give us
+	\end{itemize}
+	\vfill
+	\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+		\footnotesize
+		Note that although $F_i(T_{i-1})$ is a martingale under the $T_i$-forward measure, \textbf{its square is not}.
+		Indeed applying \ito~lemma to $F_i^2$ with the  dynamics $dF_i(t) = \sigma F_i(t)dW(t)$, give us
 		\begin{equation*}
 			dF_i^2=\sigma^2F_i^2dt+2\sigma F_i^2dW
 		\end{equation*}
 		which has a drift term, so it is not a martingale.
-	\end{itemize}
+	\end{tcolorbox}		
+	
 \end{frame}
 
 \subsection{In Arrears Swap}
 \begin{frame}{In-Arrears Swap}
 	\begin{itemize}
-		\item<1-> An \emph{in-arrears swap} is an IRS that resets and pays at the same dates $\{T_{\alpha+1},\ldots, T_\beta\}$ and with fixed-leg rate $K$. More precisely, the value of an payer IAS is
+		\item<1-> An \emph{in-arrears swap} is an IRS that resets and pays at the same dates $\{T_{\alpha+1},\ldots, T_\beta\}$ and with fixed-leg rate $K$. More precisely, the value of a payer IAS is
 		\begin{equation}
 			\textbf{IAS}=\expect{Q}\left[\sum_{i=\alpha+1}^{\beta}D(0,T_i)\tau_{i+1}(F_{i+1}(T_i)-K)\right]
 		\end{equation}
@@ -2030,14 +1888,14 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 
 \begin{frame}{In-Arrears Swap}
 	\begin{itemize}
-		\item<1-> To further simplify the expression it is convenient to use the following result from the \emph{tower property} of the expectation:
+		\item<1-> To further simplify the previous expression it is convenient to use the following result from the \emph{tower property} of the expectation:
 		\begin{equation*}
 			\begin{aligned}
 				&\mathbb{E}_t\left[\cfrac{XD(t,S)}{P(T,S)} \right]=\mathbb{E}_t\left[\mathbb{E}_T\left[\cfrac{XD(t,T)D(T,S)}{P(T,S)} \right]\right]=\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}\mathbb{E}_T[D(T,S)]\right]= \\
 				& =\mathbb{E}_t\left[\cfrac{XD(t,T)}{P(T,S)}P(T,S)\right]=\mathbb{E}_t[XD(t,T)],\quad (t<T<S)
 			\end{aligned}
 		\end{equation*}
-		\item<2-> The previous expression then becomes (with $T=T_i$ and $S=T_{i+1}$):
+		\item<2-> Then it becomes (with $t=0$, $T=T_i$, $S=T_{i+1}$ and $X=1/P(T_i,T_{i+1})$):
 		\begin{equation*}
 			\begin{aligned}
 				\ldots=\expect{Q}\Bigg[\sum_{i=\alpha+1}^{\beta}&\left(\cfrac{D(0,T_i)}{P(T_i,T_{i+1})}-D(0,T_i)(1+\tau_{i+1}K)\right)\Bigg] = \\
@@ -2049,18 +1907,17 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 
 \begin{frame}{In-Arrears Swap}
 	\begin{itemize}
-		\item<1-> From the linearity of the expectation operator:
+		\item<1-> From the linearity of the expectation operator and the definition of ZCB price:
 		\begin{equation*}
 			\begin{aligned}
 				\ldots &=\sum_{i=\alpha+1}^{\beta}\left(\expect{Q}\left[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\right]-\expect{Q}\left[D(0,T_i)(1+\tau_{i+1}K)\right]\right) = \\
 				&=\sum_{i=\alpha+1}^{\beta}\left(\expect{Q}\left[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right) = \ldots\\
 			\end{aligned}
 		\end{equation*}
-		the second one follows from the ZCB definition.
 		\item<2-> Before computing the remaining expectation let's make a change of measure from the risk-neutral to $P(\cdot, T_{i+1})$
 		\only<2-2>{
 			\begin{equation*}
-				\ldots=\sum_{i=\alpha+1}^{\beta}\Bigg(\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\cfrac{D(T_{i+1},T_{i+1})P(0,T_{i+1})}{D(0,T_{i+1})P(T_{i+1},T_{i+1})}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
+				\ldots=\sum_{i=\alpha+1}^{\beta}\Bigg(\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{D(0,T_{i+1})}{P(T_i,T_{i+1})^2}\underbrace{\cfrac{D(T_{i+1},T_{i+1})P(0,T_{i+1})}{D(0,T_{i+1})P(T_{i+1},T_{i+1})}}_{\text{Radon-Nikodym derivative}}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
 				%&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[\cfrac{1}{P(T_i,T_{i+1})^2}\right]-P(0,T_i)(1+\tau_{i+1}K)\right] = \\
 				%&=\sum_{i=\alpha+1}^{\beta}\left[P(0,T_{i+1})\mathbb{E}^{i+1}\left[(1+\tau_{i+1}F_{i+1}(T_i))^2\right]-P(0,T_i)(1+\tau_{i+1}K)\right]
 				%\end{aligned}
@@ -2076,14 +1933,14 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 	\begin{itemize}
 		\item<1-> Finally
 		\begin{equation}
-			\textbf{IAS}=\sum_{i=\alpha+1}^{\beta}\Bigg(P(0,T_{i+1})\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{1}{P(T_i,T_{i+1})^2}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
-			\label{eq:exp_ias}
+			\begin{split}
+				\textbf{IAS}&=\sum_{i=\alpha+1}^{\beta}\Bigg(P(0,T_{i+1})\mathbb{E}^{T_{i+1}}\Bigg[\cfrac{1}{P(T_i,T_{i+1})^2}\Bigg]-P(0,T_i)(1+\tau_{i+1}K)\Bigg) \\
+				&=\sum_{i=\alpha+1}^{\beta}\Bigg(P(0,T_{i+1})\mathbb{E}^{T_{i+1}}[(1+\tau_{i+1}F_{i+1}(T_i))^2]-P(0,T_i)(1+\tau_{i+1}K)\Bigg)
+				\label{eq:exp_ias}
+			\end{split}
 		\end{equation}
-		\item<2-> After the last substitution $\frac{1}{P(T_i,T_{i+1})^2}=(1+\tau_{i+1}F_{i+1}(T_i))^2$, it is relatively easy to compute the expected value in Eq.~\ref{eq:exp_ias}, since under $\mathbb{Q}^{T_{i+1}}$, $F_{i+1}$ is a martingale
-		\begin{equation*}
-			dF_{i+1}(t) = \sigma_{i+1}(t)F_{i+1}(t)dW^{i+1}(t)
-		\end{equation*}
-		\uncover<3->{so that (using \ito~isometry),
+		\item<2-> Now it is relatively easy to compute the expectation in Eq.~\ref{eq:exp_ias}, since under $\mathbb{Q}^{T_{i+1}}$, $F_{i+1}$ is a martingale.
+		\uncover<3->{so that (using \ito's isometry),
 			\begin{equation*}
 				\mathbb{E}^{T_{i+1}}[F_{i+1}^2(T_i)]=F_{i+1}^2(0)\exp\left(\int_0^{T_i}\sigma_{i+1}^2(t)dt\right) = F_{i+1}^2(0)\exp(v_{i+1}^2)
 			\end{equation*}
@@ -2104,13 +1961,316 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 			\label{eq:ias_price}
 		\end{equation}
 		\item<2-> From~\cref{eq:ias_price} it is apparent how the valuation results in a vanilla swap-like part plus the convexity correction due to the arrears feature.
-		\item<3-> Also, contrary to the plain-vanilla case, the In-Arrear Swap value depends on the volatility of forward rates through the caplet volatilities $v$.
+		\item<3-> Also, contrary to the plain-vanilla case, the In-Arrear Swap value depends on the volatility of forward rates through the volatilities $v$.
 		\item<4-> Notice however that correlations between different rates are not involved in this product, as expected by the nature of the contract.
 
 		%Remark 13.1.1. If caplet prices are available in the market for each maturity
 		%Ti and strike K, we can price an in-arrears swap consistently with %theobserved caplet smile by noting that we can write
 	\end{itemize}
 \end{frame}
+
+
+\begin{frame}{What is a Quanto?}
+	\begin{itemize}
+		\item A \emph{quanto} is a "Quantity Adjusting" option/derivative.
+		\item An investor wants exposure to a foreign asset (e.g., Nikkei 225) but wants the payoff settled in her domestic currency (e.g., EUR) at a fixed exchange rate, 
+		to eliminate exchange rate risk while maintaining asset exposure.
+		\item The pricing challenge is that we cannot simply use the foreign risk-neutral expectation because the domestic investor lives in a different "measure".
+		\item We define two economies:
+		\begin{itemize}
+			\item Foreign ($F$): risk-free rate $r_f$. Asset price $S_t$ (in foreign currency).
+			\item Domestic ($D$): risk-free rate $r_d$.
+			\item Exchange Rate ($X_t$): units of domestic currency per 1 unit of foreign currency (e.g., EUR/USD).
+			\item The Fixed Rate ($\tilde{X}$): the pre-agreed exchange rate for the payoff.
+		\end{itemize}
+		\item The Payoff at $T$: 
+		\begin{equation}
+			V_T\tilde{X}\cdot S_T
+		\end{equation}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{The SDEs under Foreign Measure $\mathbb{Q}^F$}
+	\begin{itemize}
+	\item Under the foreign risk-neutral measure $\mathbb{Q}^F$, the asset $S_t$ grows at the foreign risk-free rate:
+	\begin{equation}
+		dS_t= r_f S_t dt + \sigma_S S_t dW_t^S
+	\end{equation}
+	\item However, the investor needs $V_t$ under the domestic measure $\mathbb{Q}^D$. To find this, we must look at how the exchange rate $X_t$ behave:
+	\begin{equation}
+		dX_t=(r_d-r_f)X_t dt + \sigma_X X_t dW_t^X
+	\end{equation}
+	Note that the exchange rate is fixed but we still need the evolution of $X$ for the change of measure.
+	\item In addition we need to take into account the correlation: $dW_t^S\cdot dW_t^X\rho dt$ between the returns of the foreign asset and the returns of the exchange rate:
+		\begin{itemize}
+			\item $\rho >0$: when the foreign stock market goes up, the foreign currency tends to strengthen against the domestic currency (e.g., S\&P 500 goes up and USD gets stronger vs EUR).
+			\item $\rho <0$: when the foreign stock market goes up, the foreign currency tends to weaken (often seen in "safe-haven" currencies like the Japanese Yen, where the currency drops when global risk appetite/stocks rise).
+		\end{itemize}
+	\end{itemize}
+\end{frame}	
+
+\begin{frame}{The Change of Measure Logic}
+	\begin{itemize}
+	\item To value the payoff in the domestic currency, we need the expectation under $\mathbb{Q}^D$. 
+	The Radon-Nikodym derivative to move from  $\mathbb{Q}^F$ to $\mathbb{Q}^D$ is linked to the volatility of the exchange rate.
+	\begin{equation}
+		\zeta_t = \frac{d\mathbb{Q}^D}{d\mathbb{Q}^F} = \frac{X_t e^{r_f t}}{X_0 e^{r_d t}} = \frac{X_t}{X_0} e^{(r_f - r_d)t}
+	\end{equation}	
+	\item Under $\mathbb{Q}^D$, the asset $S_t$ does not grow at $r_f$. It acquires a "covariance term" because the domestic investor views the foreign asset through the "lens" of the exchange rate.
+	\item Applying the Girsanov Theorem or the drift-shift formula, the new SDE under $\mathbb{Q}^D$ is:
+	\begin{equation}
+		dS_t=(r_f-\rho\sigma_S\sigma_X)S_t dt + \sigma_S S_t dW_t^D
+	\end{equation}
+	\end{itemize}
+\end{frame}	
+
+\begin{frame}{The "Quanto Adjustment": $-\rho\sigma_S\sigma_X$}
+	\begin{itemize}
+		\item If $\rho>0$: the asset is worth less to the domestic investor (drift is reduced).
+		\item If $\rho<0$: the asset is worth more to the domestic investor (drift is increased).
+		\item Imagine a Euro-based investor buying a US stock ($S$) paid in EUR at a fixed rate:
+		\item If the stock and the USD/EUR exchange rate are positively correlated ($\rho>0$), the stock tends to go up when the USD is strong.
+		\item In a standard (non-quanto) investment, the investor would benefit twice (higher stock price AND stronger currency).
+		\item In a Quanto, the investor has "given up" the currency gain (because the rate is fixed at $\tilde{X}$).
+		\item The market "charges" for this protection by adjusting the expected growth rate of the asset downward.
+	\end{itemize}
+	The value of a Quanto Forward at time $t$ is:
+	\begin{equation}
+		V_t=\tilde{X}S_t e^{r_f-\rho\sigma_S\sigma_X-r_d)(T-t)}
+	\end{equation}
+\end{frame}	
+
+
+
+%	\begin{frame}{Quanto Options: Motivation and Setup}
+	%	\begin{itemize}
+		%		\item A Quanto is a derivative where the underlying asset is denominated in a \textcolor{blue}{foreign currency}, but the payoff is paid in a \textcolor{red}{domestic currency} at a fixed exchange rate $X_{fix}$.
+		%		\item The assets:
+		%		\begin{itemize}
+			%			\item $S_t^f$: foreign asset price (in foreign currency);
+			%			\item $X_t$: exchange rate (units of domestic per unit of foreign);
+			%			\item $B_d(t)$, $B_f(t)$: domestic and foreign money market accounts.
+			%		\end{itemize}
+		%		\item The foreign asset $S_t^f$ is a martingale under the foreign risk-neutral measure $\mathbb{Q}^f$ (when divided by $B_f$). However, the domestic investor lives in the $\mathbb{Q}^d$ world.
+		%		\item To price the asset in the domestic world, we must use the domestic bank account $B_d(t)$ as numeraire, but the asset's value in domestic terms is $S_t^d = X_t S_t^f$.
+		%	\end{itemize}
+	%\end{frame}
+	%
+	%\begin{frame}{The Quanto Drift Adjustment}
+	%	\begin{itemize}
+		%		\item Under the domestic measure $\mathbb{Q}^d$, the process for the foreign asset $S^f$ is:
+		%		\begin{equation*}
+			%			\frac{dS^f_t}{S^f_t} = (r_f \textcolor{red}{-\rho\sigma_S \sigma_X} ) dt + \sigma_S dW^{d}_t
+			%		\end{equation*}
+		%		\item \textbf{Derivation via Numeraire Change:}
+		%		\begin{enumerate}
+			%			\item We move from $\mathbb{Q}^f$ (numeraire $B_f$) to $\mathbb{Q}^d$ (numeraire $B_d$).
+			%			\item The Radon-Nikodym derivative is $\frac{\mathbb{Q}^d}{\mathbb{Q}^f}=\frac{B_d(T)X(0)}{B_f(T)X(T)}$.
+			%			\item By Girsanov's Theorem, the drift of $S_f$ is adjusted by the covariance between the asset and the exchange rate.
+			%		\end{enumerate}
+		%		\item \textbf{Economic Intuition:} The term $-\rho\sigma_S\sigma_X$ is the \textcolor{red}{Quanto Adjustment}. If the foreign currency strengthens when the stock rises ($\rho > 0$), the domestic investor "loses" the currency gain due to the fixed exchange rate, so the expected return must be adjusted downwards.
+		%	\end{itemize}
+	%\end{frame}
+	%
+	%
+	%	\begin{frame}{The Radon-Nikodym Derivative}
+		%
+		%	The Domestic investor uses $B_d(t)$ as a numeraire. Any asset $A_t$​ denominated in domestic currency must eb a\Qd-martingale when discounted by Bd​. The domestic value of the foreign bank account is Bf​(t)Xt​. Therefore, the Radon-Nikodym derivative ξt​=dQfdQd​​Ft​​ is:
+		%	ξt​=Bf​(t)Xt​/(Bf​(0)X0​)Bd​(t)/Bd​(0)​=erf​t(Xt​/X0​)erd​t​
+		%
+		%	Applying Itô's Lemma to ξt​=Xt​X0​​e(rd​−rf​)t, we find the dynamics of the density process:
+		%	dξt​=−σX​ξt​dW2,tf​
+		%
+		%	Crucial Step: This identifies the Girsanov kernel. The "volatility" of the RN derivative is −σX​ attached to the exchange rate's noise.
+		%\end{frame}
+		%\begin{frame}{Applying Girsanov's Theorem}
+		%
+		%	Shifting the Wind Girsanov tells us that to get the Brownian motions under Qd, we must subtract the "covariance" between the asset's noise and the density process noise.
+		%
+		%	Under Qd, the Brownian motions become:
+		%
+		%	For W2​ (Exchange Rate): dW2,td​=dW2,tf​−(−σX​)dt=dW2,tf​+σX​dt.
+		%
+		%	For W1​ (Asset): Since W1​ and W2​ are correlated by ρ, the shift is:
+		%	dW1,td​=dW1,tf​−Cov(dW1f​,ξdξ​)
+		%	dW1,td​=dW1,tf​−(−ρσX​)dt=dW1,tf​+ρσX​dt
+		%
+		%	The result: dW1,tf​=dW1,td​−ρσX​dt.
+		%\end{frame}
+		%\begin{frame}{The Final Quanto SDE}
+		%
+		%	The "Convexity" Adjustment Substitute dW1,tf​ back into the foreign asset SDE:
+		%	Stf​dStf​​=rf​dt+σS​(dW1,td​−ρσX​dt)
+		%	Stf​dStf​​=(rf​−ρσS​σX​)dt+σS​dW1,td​
+		%
+		%	Why did the drift change?
+		%
+		%	The domestic investor is exposed to Sf through the product Xt​Stf​.
+		%
+		%	In a domestic risk-neutral world, the product Xt​Stf​ must grow at rate rd​.
+		%
+		%	Because Xt​ and Stf​ are correlated, their product has an extra "covariance" term in its growth (d(XS)=XdS+SdX+dXdS).
+		%
+		%	If we fix the exchange rate (Xfix​), we strip away the currency's volatility but we are left with the covariance residue.
+		%\end{frame}
+		%\begin{frame}{Mathematical Example for the Exam}
+		%
+		%	The Forward Quanto Price Calculate the Forward price of a Quanto asset FQ​=EQd[STf​]. Since the drift of Sf under Qd is rq​=rf​−ρσS​σX​, the expectation is:
+		%	FQ​=S0f​e(rf​−ρσS​σX​)T
+		%
+		%	Comparison:
+		%
+		%	Standard Forward (Foreign): F=S0f​erf​T
+		%
+		%	Quanto Forward: FQ​=F⋅e−ρσS​σX​T
+		%
+		%	Student takeaway: If ρ>0 (Stock and Currency rise together), the Quanto Forward is lower than the standard Forward. You are "penalized" for the fact that you don't benefit from the currency strengthening when your stock does well.
+		%	Suggestions for "Challenging" additions:
+		%
+		%	The "Reverse" Quanto: Ask students to derive the adjustment for a domestic asset priced in a foreign currency. (The sign of ρ flips).
+		%
+		%	Implied Correlation: Since σS​ and σX​ are observable from options, but ρ is not, how can we use Quanto prices to "extract" the market's view on the correlation between Nikkei 225 and USD/JPY?
+		%
+		%	Would you like me to create a slide on "Siegel's Paradox"? It’s a classic companion to Quanto theory that explains why 1/X doesn't have the same drift as X.
+		%
+		%\end{frame}
+		
+		
+		%%	Slide 1: Siegel’s Paradox - Il Problema della Simmetria
+		%%
+		%%	La Domanda: Se il tasso di cambio Euro/Dollaro (Xt​) è una martingala sotto una certa misura, il tasso Dollaro/Euro (1/Xt​) può essere anch'esso una martingala?
+		%%
+		%%	La Risposta Matematica: No. A causa della convessità della funzione f(x)=1/x, per la Disuguaglianza di Jensen:
+		%%	E[XT​1​]>E[XT​]1​
+		%%
+		%%	Significato Finanziario: Se entrambi gli investitori (USA e EU) fossero neutrali al rischio e convinti che il cambio non abbia drift, entrambi si aspetterebbero paradossalmente di guadagnare nel lungo termine detenendo la valuta estera.
+		%%	Slide 2: Derivazione tramite il Lemma di Itô
+		%%
+		%%	Supponiamo che sotto la misura domestica Qd, il cambio segua una dinamica GBM (senza drift per semplicità di calcolo):
+		%%	Xt​dXt​​=0⋅dt+σX​dWt​
+		%%
+		%%	Applichiamo il Lemma di Itô a Yt​=1/Xt​:
+		%%
+		%%	f(X)=1/X⟹f′=−1/X2,f′′=2/X3
+		%%
+		%%	dYt​=−Xt2​1​(dXt​)+21​Xt3​2​(dXt​)2
+		%%
+		%%	dYt​=−Xt2​1​(σX​Xt​dWt​)+Xt3​1​(σX2​Xt2​dt)
+		%%
+		%%	Risultato:
+		%%	Yt​dYt​​=σX2​dt−σX​dWt​
+		%%
+		%%	L'intuizione: Anche se X non ha drift, il suo inverso 1/X ha un drift positivo pari alla sua varianza σX2​. Questo è il "volatility smile" dei cambi in forma pura.
+		%%	Slide 3: Girsanov e la Coerenza dei Mercati
+		%%
+		%%	Perché non c'è arbitraggio? Potrebbe sembrare che tutti possano guadagnare semplicemente scambiando valuta. Girsanov risolve il paradosso imponendo un cambio di misura obbligatorio quando cambiamo prospettiva.
+		%%
+		%%	Sotto Qd (Investitore Domestico), il cambio X (prezzo del foreign) ha drift rd​−rf​.
+		%%
+		%%	Quando passiamo all'investitore straniero (Qf), non cambiamo solo l'asset, cambiamo la misura di probabilità.
+		%%
+		%%	Il passaggio da Qd a Qf (visto nella slide del Quanto) introduce un termine di deriva che cancella esattamente il surplus di rendimento dovuto alla convessità (σX2​), rendendo i mercati internazionali coerenti.
+		%%	Slide 4: Applicazione Pratica - Forward FX
+		%%
+		%%	In un mondo risk-neutral, il tasso Forward è definito come:
+		%%	Ft,T​=EtQd​[XT​]
+		%%
+		%%	Se uno studente provasse a calcolare il forward inverso come 1/Ft,T​, commetterebbe un errore sistematico.
+		%%
+		%%	Ft,T​=Xt​e(rd​−rf​)(T−t)
+		%%
+		%%	EtQf​[1/XT​]=(1/Xt​)e(rf​−rd​)(T−t)
+		%%
+		%%	Il paradosso di Siegel spiega perché, nei mercati reali, le opzioni out-of-the-money sulle valute costano in modo diverso a seconda della valuta di riferimento (il cosiddetto Vanna-Volga pricing).
+		%%	Riassunto per gli Studenti: Il "Big Picture"
+		%%
+		%%	Girsanov è il "traduttore" tra due mondi (valute).
+		%%
+		%%	Il Quanto Adjustment è il prezzo che paghi per bloccare il traduttore (fissare il cambio).
+		%%
+		%%	Il Paradosso di Siegel è la prova che non puoi tradurre semplicemente invertendo i numeri; devi invertire l'intera distribuzione di probabilità.
+
+	
+%
+%Why $(r_d-r_f)$ ?
+%
+%The SDE $dX_t=(r_d-r_f)X_t dt + \sigma_X X_t d_W_t^X$ is defined under the Domestic Risk-Neutral Measure $\mathbb{Q}^D$.
+%
+%The Logic:
+%In a risk-neutral world, every tradable asset must grow at the risk-free rate of the currency it is denominated in.
+%Consider a domestic investor who buys 1 unit of foreign currency.
+%
+%To hold this "asset," the investor effectively invests it in the foreign money market to earn $r_f$.
+%
+%The total domestic value of this investment at time $t$ is $V_t=X_t e^{r_f t}$.
+%
+%According to the No-Arbitrage Principle, this domestic value $V_t$ must be a martingale when discounted by the domestic rate $r_d$. Therefore, the discounted process $e^{-r_d t}X_t e^{r_f t})=X_t e^{(r_f−r_d)t} must have zero drift.
+%
+%If we assume $X_t$ follows a Geometric Brownian Motion $dX_t=\mu_X X_t dt +\sigma_X X_t dW_t$, then by Itô's Lemma on the product $X_t e^{(r_f−r_d)t}$, the drift $\mu_X$ must be exactly $(r_d−r_f)$ to cancel out the $(r_f−r_d)$ term.
+%
+%The Measure
+%As mentioned above, this SDE is strictly under the Domestic Measure $\mathbb{Q}^D$.
+%
+%Under the Foreign Measure $\mathbb{Q}^F$, the exchange rate behaves differently. In fact, under $\mathbb{Q}^F$, it is the inverse exchange rate $(1/X_t)$ that follows a drift related to $(r_f−r_d)$ plus a convexity adjustment.
+%
+%For the Quanto proof, we always work in the measure of the currency in which the final payoff is settled (the Domestic one).
+%
+
+
+
+
+%To show how the "Quanto adjustment" is born, we need to transition the asset St from the Foreign Measure QF to the Domestic Measure QD.
+%1. The Setup
+%
+%Under the Foreign Measure QF, the asset St and the exchange rate Xt are driven by two correlated Brownian motions WS and WX:
+%StdStXtdXt=rfdt+σSdWtS=μXdt+σXdWtX
+%
+%Note: μX here is the drift of X under the foreign measure, which we don't need to define explicitly because the Girsanov transformation handles it.
+%2. The Radon-Nikodym Derivative
+%
+%The change of measure from QF to QD is defined by the numeraire ratio. Let BtD=erdt and BtF=erft. The "asset" that bridges the two is the foreign money market account converted to domestic currency: Ut=XtBtF.
+%
+%The Radon-Nikodym derivative Lt is:
+%Lt=dQFdQDt=erdt/1Xterft/X0=X0Xte(rf−rd)t
+%3. Finding the Girsanov Kernel
+%
+%To use Girsanov, we need the SDE of Lt to find its volatility (the kernel). Applying Itô's Lemma to Lt (knowing Xt has volatility σX):
+%LtdLt=(…)dt+σXdWtX
+%
+%The Girsanov Theorem states that the relation between the Brownian motions under the two measures is:
+%dWtX,D=dWtX,F−σXdt
+%
+%But we care about the asset's Brownian motion WS. Since dWtS and dWtX are correlated by ρ, we can decompose WS as:
+%dWtS,F=ρdWtX,F+1−ρ2dZt
+%
+%(where Zt is an independent Brownian motion).
+%4. The Transformation
+%
+%Applying the Girsanov shift to the WX component of WS:
+%dWtS,DdWtS,D=ρ(dWtX,F−σXdt)+1−ρ2dZt=dWtS,F−ρσXdt
+%
+%Rearranging this gives us the relationship for the foreign Brownian motion:
+%dWtS,F=dWtS,D+ρσXdt
+%5. Final Substitution into the Asset SDE
+%
+%Now, take the original SDE for St (which was defined under QF) and substitute the new Brownian motion:
+%StdStStdSt=rfdt+σS(dWtS,D+ρσXdt)=(rf+ρσSσX)dt+σSdWtS,D
+%WaitWhy is the sign different?
+%
+%In my previous summary, I mentioned rf−ρσSσX.
+%
+%If X is defined as Domestic/Foreign (e.g., EUR per 1 USD): The adjustment is negative.
+%
+%If X is defined as Foreign/Domestic (e.g., USD per 1 EUR): The adjustment is positive.
+%
+%In the standard "Quanto Forward" where you pay fixed domestic currency to receive foreign returns, the drift is reduced by the covariance because the numeraire X is "inverted" relative to the domestic risk-neutral measure. Specifically, the drift of S under QD is:
+%ED[dSt]=(rf−Cov(SdS,XdX))Stdt
+%Conclusion for your Slides
+%
+%This derivation shows that the "drift" of an asset is not an intrinsic property of the asset itself, but a property of the measure (the currency) in which you are measuring it. When you change the currency, you must "pay" for the correlation between the asset and the exchange rate.
+%
+%
 
 
 \end{document}
