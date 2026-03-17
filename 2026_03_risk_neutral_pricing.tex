@@ -2002,7 +2002,7 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 		\label{eq:exchange_rate_process}
 	\end{equation}
 	\textbf{Note} that although the exchange rate is fixed we still need its evolution for the change of measure.
-	\item We also need to take into account the correlation: $dW_t^S\cdot dW_t^X\rho dt$ between the foreign asset and the exchange rate:
+	\item We also need to take into account the correlation: $dW_t^S\cdot dW_t^X = \rho dt$ between the foreign asset and the exchange rate:
 		\begin{itemize}
 			\item $\rho >0$: when the foreign stock goes up, the foreign currency tends to strengthen against the domestic currency (e.g., S\&P 500 goes up and USD gets stronger vs EUR).
 			\item $\rho <0$: when the foreign stock goes up, the foreign currency tends to weaken (often seen in "safe-haven" currencies like the Japanese Yen).
@@ -2012,11 +2012,15 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 
 \begin{frame}{Why $(r_d-r_f)$ ?}
 	\begin{itemize}
-	\item The SDE in \cref{eq:exchange_rate_process} is defined under the Domestic Risk-Neutral Measure $\mathbb{Q}^D$ and in a risk-neutral world, must grow at the risk-free rate $r_d$.
-	\item Consider a domestic investor who buys 1 unit of foreign currency. To hold this "asset," the investor effectively invests it in the foreign money market to earn $r_f$.
+	\item The explain \cref{eq:exchange_rate_process} (defined under $\mathbb{Q}^D$) consider a domestic investor who buys 1 unit of foreign currency. To hold this "asset," the investor effectively invests it in the foreign money market to earn $r_f$.
 	\item The total domestic value of this investment at time $t$ is $V_t = X_t e^{r_f t}$.
-	\item For the No-Arbitrage Principle, $V_t$ must be a martingale when discounted by $r_d$. Therefore, the discounted process $e^{-r_d t}X_t e^{r_f t})=X_t e^{(r_f-r_d)t}$ must have zero drift.
-	\item If we assume $X_t$ follows a GBM then by It$\hat{o}$'s Lemma on the product $X_t e^{(r_f-r_d)t}$, the drift $\mu_X$ must be exactly $(r_d-r_f)$ to cancel out the $(r_f-r_d)$ term.
+	\item For the No-Arbitrage Principle, $V_t$ must be a martingale when discounted by $r_d$. Therefore, the discounted process $e^{-r_d t}X_t e^{r_f t}=X_t e^{(r_f-r_d)t}$ must have zero drift.
+	\item If we assume $X_t$ follows a GBM then by It$\hat{o}$'s Lemma  to $f(X,t) = X e^{(r_f - r_d)t}$
+	\begin{itemize}
+		\item $\frac{\partial f}{\partial t} = (r_f - r_d)\tilde{V}_t$; \quad $\frac{\partial f}{\partial X} dX_t = e^{(r_f - r_d)t}(\mu_X X_t dt + \sigma_X X_t dW_t)$
+	\end{itemize}
+	\item 	The drift of $d\tilde{V}_t$ must vanish:
+	\[ (r_f - r_d) + \mu_X = 0 \implies \mu_X = r_d - r_f \]
 	\end{itemize}
 \end{frame}
 
@@ -2040,15 +2044,15 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 %		\item If $\rho<0$: the asset is worth more to the domestic investor (drift is increased).
 		\item Imagine a Euro-based investor buying a US stock ($S$) paid in EUR at a fixed rate:
 		\begin{itemize}
-			\item If the stock and the USD/EUR exchange rate are positively correlated ($\rho>0$), the stock tends to go up when the USD is strong.
-			\item In a standard (non-quanto) investment, the investor would benefit twice (higher stock price AND stronger currency).
+			\item if the stock and the USD/EUR exchange rate are positively correlated ($\rho>0$), the stock tends to go up when the USD is strong.
+			\item in a standard (non-quanto) investment, the investor would benefit twice (higher stock price AND stronger currency).
+			\item in a Quanto, the investor has "given up" the currency gain (because the rate is fixed at $\tilde{X}$).
 		\end{itemize}
-		\item In a Quanto, the investor has "given up" the currency gain (because the rate is fixed at $\tilde{X}$).
 		\item If the foreign currency strengthens when the stock rises ($\rho > 0$), the domestic investor "loses" the currency gain due to the fixed exchange rate, so the expected return must be adjusted downwards.
 	\end{itemize}
 	The value of a Quanto Forward at time $t$ is:
 	\begin{equation}
-		\boxed{V_t=\tilde{X}S_t e^{r_f-\rho\sigma_S\sigma_X-r_d)(T-t)}}
+		\boxed{V_t=\tilde{X}S_t e^{(r_f-\rho\sigma_S\sigma_X-r_d)(T-t)}}
 	\end{equation}
 \end{frame}
 
@@ -2074,20 +2078,20 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 	\emph{If the EUR/USD exchange rate ($X_t$) is a martingale under a certain measure, can the USD/EUR rate ($1/X_t$) also be a martingale ?}
 
 	\begin{itemize}
-		\item Assume that under the domestic measure $\mathbb{Q}^D$, the exchange rate $X_t$ follows a Geometric Brownian Motion (with zero drift for simplicity):
+		\item<2-> Assume that under the domestic measure $\mathbb{Q}^D$, the exchange rate $X_t$ follows a Geometric Brownian Motion (with zero drift for simplicity):
 	\[ dX_t = \sigma_X X_t dW_t \]
-	\item Applying Itô's Lemma to $Y_t = 1/X_t$ where $f(X) = 1/X$ ($f' = -1/X^2, f'' = 2/X^3$):
+	\item<2-> Applying Itô's Lemma to $Y_t = 1/X_t$ ($Y' = -1/X^2, Y'' = 2/X^3$):
 	\begin{equation*}
 		dY_t = -\frac{1}{X_t^2}(dX_t) + \frac{1}{2}\frac{2}{X_t^3}(dX_t)^2 \implies
 		dY_t = \sigma_X^2 Y_t dt - \sigma_X Y_t dW_t
 	\end{equation*}
 
-	\item Even if $X$ has no drift, its inverse $1/X$ has a \textbf{positive drift} equal to its variance $\sigma_X^2$.
+	\item<2-> Even if $X$ has no drift, its inverse $1/X$ has a \textbf{positive drift} equal to its variance $\sigma_X^2$.
 
 %
 %		\item \textbf{No.} Due to the convexity of the function $f(x) = 1/x$, Jensen's Inequality implies:
 %		\[ \mathbb{E}\left[\frac{1}{X_T}\right] > \frac{1}{\mathbb{E}[X_T]} \]
-	\item \textbf{The Paradox:} how can one side see a fair game while the other sees a winning game ? %if both US and EU investors were risk-neutral and convinced the exchange rate has no drift, both would paradoxically expect to profit in the long run simply by holding foreign currency.
+	\item<3-> \textbf{The Paradox:} how can one side see a fair game while the other sees a winning game ? %if both US and EU investors were risk-neutral and convinced the exchange rate has no drift, both would paradoxically expect to profit in the long run simply by holding foreign currency.
 	\end{itemize}
 \end{frame}
 
@@ -2188,6 +2192,36 @@ $\rho=CC'$ is the correlation matrix of $<dW^N_i,dW^N_j>$ and $\sigma^N_t$ and $
 %This derivation shows that the "drift" of an asset is not an intrinsic property of the asset itself, but a property of the measure (the currency) in which you are measuring it. When you change the currency, you must "pay" for the correlation between the asset and the exchange rate.
 %
 %
+
+\section{Libor Market Model}
+\begin{frame}{Before Market Models}
+	\begin{itemize}
+		\item<1-> For a very long time, the market practice has been to value caps, floors and swaptions (which represent the vast majority of interest rate market) by using a formal extension of the Black (1976) model.
+		\item<2-> However, this formula was applied in a completely heuristic way, under some simplifying and inexact assumptions.
+		\begin{enumerate}
+			\item<3-> despite the use of \emph{short rate models}; $r$ was assumed to be deterministic, so that the discounting could be factorized out of the expectation in the risk-neutral pricing formula;
+			\item<4-> then, inconsistently, the forward LIBOR rates were modeled as drift-less geometric Brownian motions (hence stochastic);
+			\item<5-> finally the expectation could be viewed as the price of a call option in a market with zero risk-free rate, therefore obtained through the Black’s formula.
+		\end{enumerate}
+		\item<6-> \textcolor{maincolor}{Unfortunately this is logically inconsistent.}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Market Models}
+	\begin{itemize}
+		%\item The principal idea of these approaches is to choose a different numeraire than the risk-free bank account.
+		%The interest rate market is radically different from the others, e.g. commodities or equities, thus needs a own kind of modeling.
+		\item<1-> There are three possible choices in interest rate modeling: \textcolor{maincolor}{short rate models} (that model one single variable), \textcolor{maincolor}{instantaneous forward rate models} (that model all infinite points of the term structure at once) and \textcolor{maincolor}{Market Models}.
+		\item<2-> The latter family of (arbitrage-free) models, introduced at the end of the '90, has the following characteristics:
+		\begin{itemize}
+			\item<3-> models a selection of discrete real world rates (quoted in the market) spanning the term structure;
+			\item<4-> chooses a different numeraire than the risk-free bank account such that these rates can be modeled log-normally;
+			\item<5-> produces pricing formulas of the Black-76 type for caps/floors and swaptions;
+			\item<6-> is relatively easy to calibrate to market data and can be used to price more exotic products.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+%The model we are introducing is best known generally as ”LIBOR Market Model” (LMM), or else ”Log-normal Forward LIBOR Model” or ”BraceGatarek-Musiela 1997 Model” (BGM model),
 
 
 \end{document}
