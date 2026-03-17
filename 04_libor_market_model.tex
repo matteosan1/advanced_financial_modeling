@@ -830,9 +830,21 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 \end{frame}
 
 \begin{frame}{Swaption Calibration}
-	The "Model" volatility of the Swaption that we compare against the Market is:
+	
+	From the Taylor approximation we have seen before, we know:
+	\begin{equation*}
+		\frac{dS}{S} \approx \sum w_i \frac{dF_i}{F_i}
+	\end{equation*}
+	
+	If we assume $dF_i/F_i=\sigma_i dW_i$, then the variance of the sum is the sum of the covariances:
+	\begin{align*}
+		\text{Var}\left(\frac{dS}{S}\right) &= \sum_i \sum_j w_i w_j \text{Cov} \left(\frac{dF_i}{F_i}\frac{dF_j}{F_j}\right) \\
+		\sigma_{Swap}^2 &\approx \sum_{i=m}^{n-1} \sum_{j=m}^{n-1} w_i w_j \sigma_i \sigma_j \rho_{ij}
+	\end{align*}
 
-	\[ \sigma_{Swap}^2 \approx \sum_{i=m}^{n-1} \sum_{j=m}^{n-1} w_i w_j \sigma_i \sigma_j \rho_{ij} \]
+%	The "Model" volatility of the Swaption that we compare against the Market is:
+%
+%	\[ \sigma_{Swap}^2 \approx \sum_{i=m}^{n-1} \sum_{j=m}^{n-1} w_i w_j \sigma_i \sigma_j \rho_{ij} \]
 
 	$\sigma_i,j$ have been determined from the caps.
 	A Swap Rate $S_{m,n}$ is a weighted average of forward rates $F_i$. To calibrate, we calculate the sensitivity weights $w_i$:
@@ -841,6 +853,55 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 
 	The \emph{Rebonato Weights} represent the "contribution" of each Libor rate to the total value of the swap's floating leg.
 \end{frame}
+
+
+\begin{frame}{Rebonato Weights: Linking Libor to Swaps}
+	
+	To compute a swaption volatility, we first need to express the variance of the swap rate $S_{\alpha,\beta}(t)$ in terms of the volatilities and correlations of the underlying forward rates $F_i(t)$.
+	
+	
+	A swap rate for a period starting at $T_\alpha$ and ending at $T_\beta$ is defined as:
+	\begin{equation*}
+		S_{\alpha,\beta}(t) = \frac{P(t, T_\alpha)-P(t,T_\beta)}{\sum_{j=\alpha+1}^{\beta}\tau_jP(t,T_j)}
+	\end{equation*}
+	
+	which is a non-linear function of multiple forward rates. To find how the volatility of the swap rate relates to the volatilities of the forward rates, we look at the change ($dS$, 
+	Rebonato approximates at the first order)
+	\begin{equation*}
+		{dS} \approx \sum_{i=\alpha+1}^{\beta}\frac{\partial S}{\partial F_i}dF_i
+	\end{equation*}
+	
+	To turn this into a relative change (which leads to volatility), we divide by $S$ 
+	\begin{equation*}
+		\frac{dS}{S} \approx \sum_{i=\alpha+1}^{\beta}\left(\frac{\partial S}{\partial F_i}\frac{F_i}{S}\right)\frac{dF_i}{F_i}
+	\end{equation*}
+	
+	The term in the parentheses is your weight $w_i$. It represents the elasticity of the swap rate with respect to a specific forward rate. 
+	Rebonato’s "genius" move was proving that while $F_i$ and $S$ move over time, the ratio $\frac{\partial S}{\partial F_i}\frac{F_i}{S}$ stays remarkably constant (it is "frozen"), 
+	allowing us to treat it as a constant coefficient.
+	
+	In practice, the most common analytical form for these weights (assuming t=0 or frozen weights) is:
+	\begin{equation*}
+		w_i=\frac{\tau_i \prod_{j=n+1}^{i}\frac{1}{1+\tau_j F_j}}{\sum_{k=n+1}{m}\tau_k\prod_{j=n+1}^{k}\frac{1}{1+\tau_jF_j}}
+	\end{equation*}
+	which can be derived considering that 
+	\begin{equation*}
+		S(t) = \sum\frac{\tau_iP(t, T_i)}{A(t)}F_i(t)
+	\end{equation*}
+	
+	This approximation is generally excellent for "at-the-money" (ATM) swaptions but can lose accuracy for deep out-of-the-money options where the skew becomes dominant.
+	
+	A Swap Rate $S_{m,n}$ is a weighted average of forward rates $L_i$. To calibrate, we calculate the sensitivity weights $w_i$:
+	
+	\[ w_i = \frac{\delta_i P(0, T_{i+1})}{\sum_{k=m}^{n-1} \delta_k P(0, T_{k+1})} \]
+	
+	\begin{itemize}
+		\item \textbf{$\delta_i$:} The year fraction (e.g., Act/360) for the period $[T_i, T_{i+1}]$.
+		\item \textbf{$P(0, T_{i+1})$:} The discount factor for the payment date.
+		\item \textbf{Interpretation:} The weights represent the "contribution" of each Libor rate to the total value of the swap's floating leg.
+	\end{itemize}
+\end{frame}
+
 
 \begin{frame}{Calibrating Correlation ($\rho$)}
 	From the market swap rate variance (previous formula) we can now calibrate the correlation between forward rates.

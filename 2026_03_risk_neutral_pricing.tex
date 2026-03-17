@@ -850,9 +850,9 @@
 			\item By definition of $\mathbb{Q}^N$, for every asset price $S_t$ holds
 			\begin{equation*}
 				\begin{cases}
-					\expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] = \cfrac{S_t}{N_t} \\
-					\expectt{U}{t}\left[\cfrac{S_T}{N_T}\cfrac{d\mathbb{Q}^N}{d\mathbb{Q}^U}\right] =
-					\expectt{U}{t}\left[\cfrac{U_t S_T}{N_t U_T}\right] = \cfrac{U_t}{N_t}\expectt{U}{t}\left[\cfrac{S_T}{U_T}\right] = \cfrac{\cancel{U_t} S_t}{N_t \cancel{U_t}} = \cfrac{S_t}{N_t}
+					\cfrac{S_t}{N_t} = \expectt{N}{t}\left[\cfrac{S_T}{N_T}\right] \\
+					\expectt{U}{t}\left[\cfrac{S_T}{N_T}\cfrac{d\mathbb{Q}^N}{d\mathbb{Q}^U}\right] = \cfrac{S_t}{N_t} = \cfrac{U_t S_t}{N_t U_t} 
+					= \cfrac{U_t}{N_t}\expectt{U}{t}\left[\cfrac{S_T}{U_T}\right] = \expectt{U}{t}\left[\cfrac{U_t S_T}{N_t U_T}\right]
 				\end{cases}
 			\end{equation*}
 			\item Since both equations result in $S_t/N_t$ they can be equated
@@ -882,8 +882,6 @@
 		\myendproof
 	\end{frame}
 
-
-
 	\begin{frame}{Change of Numeraire (Proof part 1)}
 		\begin{itemize}
 			\item The conditional expectation under the new measure $\mathbb{Q}^U$ is:
@@ -906,9 +904,9 @@
 			\item give a simple rule to write (the otherwise difficult to derive) Radon-Nikodym derivative;
 			\item the arbitrage-free price of a claim $V$ at time $t$ is unique. The choice of numeraire only changes the \textit{representation} of the calculation:
 			\begin{equation*}
-				V_t = B_t \mathbb{E}^{\mathbb{Q}^B} \left[ \frac{V_T}{B_T} \bigg| \mathcal{F}_t \right] = N_t \mathbb{E}^{\mathbb{Q}^N} \left[ \frac{V_T}{N_T} \bigg| \mathcal{F}_t \right]
+				V_t = B_t \mathbb{E}^{B} \left[ \frac{V_T}{B_T} \bigg| \mathcal{F}_t \right] = N_t \mathbb{E}^{N} \left[ \frac{V_T}{N_T} \bigg| \mathcal{F}_t \right]
 			\end{equation*}
-			\item find an easier expression of our process to work-out the pricing formula. It is often algebraically more tedious under the risk-neutral measure $V_t=\mathbb{Q}^{\mathbb{B}}[e^{-r(T-T)}\text{Payoff}(S_T)|\mathcal{F}_t]$. 
+			\item find an easier expression of our process to work-out the pricing formula. It is often algebraically more tedious under the risk-neutral measure $V_t=\mathbb{E}^{B}[e^{-r(T-T)}\text{Payoff}(S_T)|\mathcal{F}_t]$. 
 			The "difficulty" arises dealing with the discount factor inside or outside the expectation.
 			By switching to measure $\mathbb{Q}^N$:
 			 	\begin{itemize}
@@ -1000,7 +998,7 @@
 			\item  In some cases a better numeraire than $B(t)$ is the \textcolor{maincolor}{forward measure} $\mathbb{Q}^T$ (also called the $T$-measure), defined as the measure associated to the numeraire process $P(\cdot,T)$.
 			\item It's easy to see that using \cref{eq:radon_nikodym_der2}, the RND is given by
 			\begin{equation}
-				\zeta_t = \frac{d\mathbb{Q}^T}{d\mathbb{Q}^B} = \frac{P(t,T)\cancel{B(0)}}{B_t P(0,T)} ,\quad\left(\zeta_T=\frac{\cancel{P(T,T)}B(0)}{B(T)P(0,T)}=\frac{1}{B(T)P(0,T)}\right)
+				\zeta_t = \frac{d\mathbb{Q}^T}{d\mathbb{Q}^B} = \frac{P(t,T)\cancel{B(0)}}{B_t P(0,T)} ,\quad\left(\zeta_T=\frac{\cancel{P(T,T)}\cancel{B(0)}}{B(T)P(0,T)}=\frac{1}{B(T)P(0,T)}\right)
 				\label{eq:radon_nikodym_t_forward}
 			\end{equation}
 			\item Applying the change of numeraire to the pricing formula, we get
