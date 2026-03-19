@@ -1,5 +1,7 @@
 \documentclass{beamer}
 \usepackage{bm}
+\usepackage{booktabs}
+
 \usetheme{afm}
 
 \title{Libor Market Models}
@@ -47,7 +49,7 @@
   \item<2-> The simply-compounded forward interest rate resetting at its expiry date $T_{i-1}$ and with maturity $T_i$ is denoted by $F_i(t) = F(t; T_{i-1}, T_i)$;
   \item<3-> $\mathbb{Q}^{T_i}$ is the equivalent martingale measure (EMM) associated with the numeraire $P(\cdot, T_i)$, i.e. the $T_i$-forward measure;
   \item<4-> $\bm{W}^i$ is a $n$-dimensional \textcolor{maincolor}{correlated} Brownian motion under $\mathbb{Q}^{T_i}$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $< d\bm{W}^i(t) d\bm{W}^i(t)> = \bm{\rho} dt$.
-  
+
   \textbf{Note} that the superscript in a random variable refers to the measure, subscript to the component
   \end{itemize}
 \uncover<5->{
@@ -382,8 +384,8 @@
 	\end{block}
 	\vfill
 	While the model allows for a correlation structure between different Brownian motions ($dW^{\alpha,\beta} \cdot dW^{\gamma,\delta} = \rho_{i,j} dt$), this correlation has no impact on the pricing of standard European Swaptions.
-	
-	A European Swaption depends only on the marginal distribution of a single swap rate at its expiry, correlation only becomes "visible" when pricing path-dependent 
+
+	A European Swaption depends only on the marginal distribution of a single swap rate at its expiry, correlation only becomes "visible" when pricing path-dependent
 \end{frame}
 %%%Remark 3. In a model with M + 1 resettlement dates it is possible to model
 %%%only M swap rates as independent. The two typical choices of possible T
@@ -458,13 +460,13 @@
 	\footnotesize
 	The discrepancy grows with: \textbf{high variance}: the log-normal distribution becomes increasingly skewed as volatility increases,
 	\textbf{low correlation}: if $\rho = 1$, the sum behaves exactly like a single log-normal variable,	\textbf{long maturity}: Central Limit Theorem says that adding more variables, the sum moves toward a Normal distribution.
-	\end{tcolorbox}		
+	\end{tcolorbox}
 \end{frame}
 
 \begin{frame}{Incompatibility between LFM and LSM}
 	\begin{itemize}
 		\item<1-> Consequently, it has been argued that, in normal market conditions, the two distributions are hardly distinguishable.
-		\item<2-> Once ascertained the mathematical inconsistency of these two models, the problem left is choosing either of the two models for the whole market. 
+		\item<2-> Once ascertained the mathematical inconsistency of these two models, the problem left is choosing either of the two models for the whole market.
 		\item<3-> After that choice, the half market consistent with the model is calibrated almost automatically, thanks to the corresponding Black’s formula, but the remaining half is a little more intricate to calibrate.
 	\end{itemize}
 \end{frame}
@@ -472,7 +474,7 @@
 \begin{frame}{Proposed Solution}
 	\begin{itemize}
 		\item<1-> Although the LSM is particularly convenient when pricing a swaption, because it yields the practical Black’s formula for swaptions, for different products, even those involving the swap rate, there is no analytical formula in general.
-		\item<2-> \textcolor{maincolor}{Also since the LIBOR forward rates, rather than swap rates, are more natural and representative coordinates of the yield curve usually considered}, besides being mathematically more manageable, the better choice of modeling may be to \textcolor{maincolor}{assume as framework the Log-normal Forward Libor Model}.		
+		\item<2-> \textcolor{maincolor}{Also since the LIBOR forward rates, rather than swap rates, are more natural and representative coordinates of the yield curve usually considered}, besides being mathematically more manageable, the better choice of modeling may be to \textcolor{maincolor}{assume as framework the Log-normal Forward Libor Model}.
 		\item<3-> Thus, hereafter, we are working under the hypothesis of the LFM.
 		\item<4-> If we choose one of the discount bonds $P(\cdot, T_i)$ as a numeraire, one forward rate will be a martingale, however the swap rate, being a combination of several forward rates, will not.
 		\item<5-> We thus conclude that \textcolor{maincolor}{swaption pricing via Black’s formula is not fully correct in the LFM}.
@@ -484,7 +486,7 @@
 		\item Brigo and Mercurio (2001) looked at the exact dynamics of the swap rate. Under the LFM, the swap rate follows a stochastic differential equation (SDE) where the drift and volatility terms are \textbf{incredibly messy} because they depend on the entire correlation structure of all underlying LIBOR rates.
 		\begin{itemize}
 			\item It involves complex integrals and state-dependent terms that make it nearly impossible to use for fast, real-time trading or "Greek" calculations.
-		\end{itemize}			
+		\end{itemize}
 		\item Instead of using the exact SDE, they have developed Analytical Approximations (e.g. the Rebonato formula). These formulas "freeze" certain drift terms at their initial values ($t=0$), allowing you to map LFM volatilities to Swaption volatilities quite easily.
 		\item Even if we can't find a pretty pencil-and-paper formula, the LFM can be easily evaluated wiht a Monte Carlo simulation.
 	\end{itemize}
@@ -501,7 +503,7 @@
 		%		\item<1-> Brigo and Mercurio derived a complex expression for the swap rate dynamics under the $T$-forward measure induced by the numeraire $P(\cdot, T_i)$.
 		%		\item<2-> But it is not much manageable. There exist, however, a very good approximate formulas to the swaption volatility which can be directly used to calibrate to a matrix of quoted swaption volatilities.
 		%		\item<3-> Also, \textcolor{maincolor}{performing a Monte Carlo simulation to obtain the swaption price is anyway feasible.}
-		
+
 %		\item It is the standard for path-dependent interest rate derivatives because it is calibrated directly to market-quoted volatilities.
 %		\item Rates $F_i(t)$ are modeled as diffusion processes. Because a swaption depends on a basket of these rates, we cannot price them independently; we must simulate the whole vector of rates simultaneously.
 	\end{itemize}
@@ -554,18 +556,18 @@
 		\item Finally you can estimate the swaption value as
 		\begin{equation*}
 			\mathbf{PSw} \approx \frac{P(0, T_N)}{m} \sum_{j=1}^m \frac{\Pi_j}{P^j(T_\alpha, T_N)}
-		\end{equation*} 
+		\end{equation*}
 	\end{enumerate}
 \end{frame}
 
 \begin{frame}{LFM Calibration: From Market to Model}
 	\begin{itemize}
 		\item To get sensible results from our simulation we need to properly \textbf{calibrate} the LFM models, i.e. to find the set of parameters that best match the market values.
-		\item In this particular case \emph{to calibrate} means to find $\sigma$ and $\rho$ such that the model recovers market prices of liquid instruments.		
+		\item In this particular case \emph{to calibrate} means to find $\sigma$ and $\rho$ such that the model recovers market prices of liquid instruments.
 		\item When dealing with the pricing of swaptions under LFM the process is quite interesting and involves various steps:
 	\end{itemize}
 	\vfill
-	\begin{enumerate}			
+	\begin{enumerate}
 		\item \textbf{Caplets} provide information about the \textbf{volatility} of individual forward rates;
 		\item \textbf{Swaptions} provide information about the \textbf{correlation} between forward rates.
 	\end{enumerate}
@@ -626,7 +628,7 @@
 	\begin{itemize}
 		\item Bootstrapping is a widely used technique to derive financial quantities from others available in the market.
 		\item The algorithm relies on a set of contracts (bonds, swaps, caps,\ldots) with different maturities from which, with an iterative procedure, the unknown variable can be extracted.
-		\item As an example let's consider a set of coupon bearing bonds with annual frequency and with maturities ranging from 1 to 4Y. From the market we get their current quotes. 
+		\item As an example let's consider a set of coupon bearing bonds with annual frequency and with maturities ranging from 1 to 4Y. From the market we get their current quotes.
 		\item Then we can solve the following system of equations:
 		\begin{equation*}
 			\begin{cases}
@@ -799,29 +801,29 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 
 \begin{frame}{Instantaneous vs. Terminal Correlation}
 	\begin{itemize}
-		\item<1-> \textbf{Instantaneous Correlation ($\rho_{ij}$):} Summarizes the dependence between \textcolor{blue}{changes} (shocks) of different forward rates at time $t$.
+		\item<1-> Instantaneous Correlation ($\rho_{ij}$): summarizes the dependence between \textbf{changes} (shocks) of different forward rates at time $t$.
 		\begin{equation*}
 			\langle dW_i, dW_j \rangle = \rho_{ij} dt
 		\end{equation*}
-		\item<2-> \textbf{Terminal Correlation:} Summarizes the dependence between the \textcolor{blue}{levels} of two forward rates at a future time $T_\alpha$.
-		\item<3-> \textbf{The Problem:} In the LFM, the terminal correlation is \textbf{not} solely determined by $\rho_{ij}$. It is heavily influenced by the \textit{path} of the instantaneous volatilities $\sigma_i(t)$.
+		\item<2-> Terminal Correlation: summarizes the dependence between the \textbf{levels} of two forward rates at a future time $T_i$.
+		\item<3-> In the LFM, the terminal correlation is \textbf{not} solely determined by $\rho_{ij}$. It is heavily influenced by the \textit{path} of the instantaneous volatilities $\sigma_i(t)$.
 	\end{itemize}
-	
-	\begin{block}{Key Insight}
+	\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+		\footnotesize
 		While Caplets only care about the \textbf{average} volatility, Swaptions care about the \textbf{overlap} of volatility functions over time.
-	\end{block}
+	\end{tcolorbox}
 \end{frame}
 
-\begin{frame}{Terminal Correlation: A Mathematical Example}
+\begin{frame}{Terminal Correlation: An Example}
 	Consider a payoff $\Pi = (\log F_3(T_1) - \log F_3(T_0))(F_2(T_1) - F_2(T_0))$ under the measure $\mathbb{Q}^2$:
-	
+
 	\begin{equation*}
-		\begin{cases} 
+		\begin{cases}
 			dF_2(t) = \sigma_{2}(t)F_2(t)dW_2(t) \\
-			dF_3(t) = \text{Drift}(t)dt + \sigma_{3}(t)F_3(t)dW_3(t)
+			dF_3(t) = \mu(t)dt + \sigma_{3}(t)F_3(t)dW_3(t)
 		\end{cases}
 	\end{equation*}
-	
+
 	\uncover<2->{
 		The expectation $\mathbb{E}^2[\Pi]$ is a terminal-correlation dependent quantity:
 		\begin{equation}
@@ -836,69 +838,56 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 	}
 \end{frame}
 
-\begin{frame}{Case Study: Why Volatility Scheduling Matters}
-	Assume $F_2(0)=F_3(0)=0.05$, $\rho_{2,3}=0.75$, and $T_0 = T_1 - T_0 = 0.5$. 
+\begin{frame}{Derivation of the Expectation $\mathbb{E}^2[\Pi]$}
+	\begin{itemize}
+		\item \textbf{Step 1:} express increments as stochastic integrals:
+		\[ \Delta F_2 \approx \int \sigma_2 F_2 dW_2, \quad \Delta \log F_3 \approx \int \sigma_3 dW_3 \]
+		\item \textbf{Step 2:} use the property of \textbf{Stochastic Covariation}:
+		\[ \mathbb{E}^2[\Delta \log F_3 \cdot \Delta F_2] =
+		\mathbb{E}^2 \left[ \int \cdots dW_3 \cdot \int \cdots dW_2 \right] =
+		\mathbb{E}^2 \left[ \int_{T_0}^{T_1} \sigma_2(t) F_2(t) \sigma_3(t) \rho_{2,3} dt \right] \]
+		\item \textbf{Step 3:} Apply the Martingale property of $F_2$ under $\mathbb{Q}^2$:
+		\[ \mathbb{E}^2[F_2(t)] = F_2(0) \]
+		\item \textbf{Result:}
+		\[ \mathbb{E}^2[\Pi] = F_2(0) \rho_{2,3} \int_{T_0}^{T_1} \sigma_2(t) \sigma_3(t) dt \]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Why Volatility Scheduling Matters}
+	Assume $F_2(0)=F_3(0)=0.05$, $\rho_{2,3}=0.75$, and $\Delta T = 0.5$.
 	Compare two cases that produce the \textbf{same Caplet prices} (same total variance):
-	
-	\vspace{0.3cm}
+
+	\vspace{0.4cm}
 	\begin{center}
-		\begin{tabular}{ccccc}
+		\renewcommand{\arraystretch}{1.2} % Better spacing
+		\begin{tabular}{lcccc}
 			\toprule
-			& $\sigma_{2,1}$ & $\sigma_{3,1}$ & $\sigma_{2,2}$ & $\sigma_{3,2}$ \\ 
+			& \textbf{$\sigma_{2,1}$} & \textbf{$\sigma_{3,1}$} & \textbf{$\sigma_{2,2}$} & \textbf{$\sigma_{3,2}$} \\
 			\midrule
-			\textbf{Case A} & \textcolor{red}{0.5} & 0.1 & 0.1 & \textcolor{red}{0.5} \\ 
-			\textbf{Case B} & 0.1 & 0.1 & \textcolor{maincolor}{0.5} & \textcolor{maincolor}{0.5} \\ 
+			\textbf{Case A} & \textcolor{red}{0.50} & 0.10 & 0.10 & \textcolor{red}{0.50} \\
+			\textbf{Case B} & 0.10 & 0.10 & \textcolor{blue}{0.50} & \textcolor{blue}{0.50} \\
 			\bottomrule
 		\end{tabular}
 	\end{center}
-	\vspace{0.3cm}
-	
+	\vspace{0.4cm}
+
 	\begin{itemize}
-		\item<2-> \textbf{Case A (Low Overlap):} $F_2$ is volatile when $F_3$ is quiet. Result: $1.875 \cdot 10^{-3}$.
-		\item<3-> \textbf{Case B (High Overlap):} Both rates are highly volatile simultaneously in the second period. Result: $2.343 \cdot 10^{-4}$.
+		\item \textbf{Case A (Low Overlap):} $F_2$ is volatile while $F_3$ is quiet. They don't "move together" in the same time bucket.
+		\item \textbf{Case B (High Overlap):} Both rates spike simultaneously in the second period. This creates much higher \textbf{joint covariance}.
 	\end{itemize}
-	
-	\uncover<4->{
-		\begin{alertblock}{Conclusion}
-			The \textbf{timing} of volatility (scheduling) is a degree of freedom that must be used to calibrate to Swaptions after Caplets are matched.
-		\end{alertblock}
-	}
+
+	Even with the same correlation $\rho$, Case B will result in a \textbf{higher price} because the volatility "schedules" overlap.
 \end{frame}
-
-
-
-Let's look at the numbers again. In both Case A and Case B, the Caplets are identical because the "total energy" (∫σ2) is the same for each rate. But look at how the "Rowers" (Rates) are pulling together:
-Case A: The "Missed Connection"
-
-Period 1 (T0​): F2​ is sprinting (σ=0.5), but F3​ is barely moving (σ=0.1).
-
-Period 2 (T1​−T0​): F2​ is exhausted (σ=0.1), while F3​ starts sprinting (σ=0.5).
-
-Terminal Result: Even though they have an instantaneous correlation of ρ=0.75, they are never "strong" at the same time. The product σ2​σ3​ is always 0.5×0.1=0.05.
-
-Expectation: ≈1.8×10−3.
-
-Case B: The "Power Surge"
-
-Period 1 (T0​): Both rates are quiet (σ=0.1 and σ=0.1). The product is tiny (0.01).
-
-Period 2 (T1​−T0​): Both rates explode together (σ=0.5 and σ=0.5).
-
-Terminal Result: Now, that ρ=0.75 correlation is being multiplied by a massive product: 0.5×0.5=0.25.
-
-Expectation: ≈2.3×10−4.
-
 
 \begin{frame}{Forward Rates Correlation}
 	\begin{itemize}
-		\item Once we have calibrated the model volatilities we can move to the correlation $\rho$.
-		\item In order to do so we need to link the correlation to measurable quantity. It turns out that this link can be found with the swaption volatility.
+		\item In order to calibrate $\rho$ we need to link the correlation to measurable quantity. It turns out that this link can be found with the swaption volatility.
 		\item To compute it we need to express the variance of the swap rate $S_{\alpha,\beta}(t)$ in terms of the volatilities and correlations of the underlying forward rates $F_i(t)$.
 		\item A swap rate for a period starting at $T_\alpha$ and ending at $T_\beta$ is defined as:
 		\begin{equation*}
 			S_{\alpha,\beta}(t) = \frac{P(t, T_\alpha)-P(t,T_\beta)}{\sum_{j=\alpha+1}^{\beta}\tau_jP(t,T_j)}
 		\end{equation*}
-		which is a non-linear function of multiple forward rates. 
+		which is a non-linear function of multiple forward rates.
 		\item To find how the volatility of the swap rate relates to the volatilities of the forward rates, we look at the change $dS$ (following Rebonato first order approximation)
 		\begin{equation*}
 			{dS} \approx \sum_{i=\alpha+1}^{\beta}\frac{\partial S}{\partial F_i}dF_i
@@ -908,7 +897,7 @@ Expectation: ≈2.3×10−4.
 
 \begin{frame}{Rebonato Weights}
 	\begin{itemize}
-		\item To turn this into a relative change (which leads to volatility), we divide by $S$ 
+		\item To turn this into a relative change (which leads to volatility), we divide by $S$
 		\begin{equation*}
 			\frac{dS}{S} \approx \sum_{i=\alpha+1}^{\beta}\left(\frac{\partial S}{\partial F_i}\frac{F_i}{S}\right)\frac{dF_i}{F_i}
 		\end{equation*}
@@ -916,24 +905,24 @@ Expectation: ≈2.3×10−4.
 		\item Rebonato’s idea has been to show that while $F_i$ and $S$ move over time, $\frac{\partial S}{\partial F_i}\frac{F_i}{S}$ stays constant (it can be considered \emph{frozen}).
 	\end{itemize}
 \end{frame}
-	
+
 \begin{frame}{Rebonato Weights}
 	\begin{itemize}
 	\item In practice, the most common analytical form for these weights is:
 	\begin{equation*}
 		w_i=\frac{\tau_i \prod_{j=n+1}^{i}\frac{1}{1+\tau_j F_j}}{\sum_{k=n+1}^{m}\tau_k\prod_{j=n+1}^{k}\frac{1}{1+\tau_jF_j}}
 	\end{equation*}
-	which can be derived considering that 
+	which can be derived considering that
 	\begin{equation*}
 		S(t) = \sum\frac{\tau_iP(t, T_i)}{A(t)}F_i(t)
 	\end{equation*}
 	\item This approximation is generally excellent for "at-the-money" (ATM) swaptions but can lose accuracy for deep out-of-the-money options where the skew becomes dominant.
-	
+
 %	A Swap Rate $S_{m,n}$ is a weighted average of forward rates $L_i$. To calibrate, we calculate the sensitivity weights $w_i$:
-%	
+%
 %	\[ w_i = \frac{\delta_i P(0, T_{i+1})}{\sum_{k=m}^{n-1} \delta_k P(0, T_{k+1})} \]
-%	
-%	
+%
+%
 %		\item \textbf{$\delta_i$:} The year fraction (e.g., Act/360) for the period $[T_i, T_{i+1}]$.
 %		\item \textbf{$P(0, T_{i+1})$:} The discount factor for the payment date.
 %		\item \textbf{Interpretation:} The weights represent the "contribution" of each Libor rate to the total value of the swap's floating leg.
@@ -948,8 +937,8 @@ Expectation: ≈2.3×10−4.
 	\end{equation*}
 	\item If we assume $dF_i/F_i=\sigma_i dW_i$, then the variance of the sum is the sum of the covariances:
 	\begin{equation*}
-		\text{Var}\left(\frac{dS}{S}\right) = \sum_i \sum_j w_i w_j \text{Cov} \left(\frac{dF_i}{F_i}\frac{dF_j}{F_j}\right) = 
-		\sum_{i=m}^{n-1} \sum_{j=m}^{n-1} w_i w_j \sigma_i \sigma_j \rho_{ij} \approx \sigma_{swaption}^2 
+		\text{Var}\left(\frac{dS}{S}\right) = \sum_i \sum_j w_i w_j \text{Cov} \left(\frac{dF_i}{F_i}\frac{dF_j}{F_j}\right) =
+		\sum_{i=m}^{n-1} \sum_{j=m}^{n-1} w_i w_j \sigma_i \sigma_j \rho_{ij} \approx \sigma_{swaption}^2
 	\end{equation*}
 	where $\sigma_i$ have been determined from the caps, $w_i$ can be calculated with the Rebonato's formula and $\sigma_{swaption}$ can be read from the market.
 	\item So solving for $\rho$ we can calibrate the forward rate correlation.
@@ -966,13 +955,13 @@ Expectation: ≈2.3×10−4.
 		where the coefficient $\beta$ has the opposite meaning of $\rho$\ldots
 		\item If $\beta$ is high, rates are decoupled (low correlation).
 		\item If $\beta = 0$, all rates move perfectly together.
-		\item The calibration is performed by minimizing the error (distance between computed and market swaption volatilities) across a \textit{matrix} of swaptions with different maturities and tenors.		
+		\item The calibration is performed by minimizing the error (distance between computed and market swaption volatilities) across a \textit{matrix} of swaptions with different maturities and tenors.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Two-Factor Correlation Model}
 	\begin{itemize}
-	\item The standard exponential decay $e^{-\beta \Delta T}$ often fails to capture long-term curve dynamics; a two-factor model can be then employed. 
+	\item The standard exponential decay $e^{-\beta \Delta T}$ often fails to capture long-term curve dynamics; a two-factor model can be then employed.
 	\item We introduce a \textbf{Correlation Floor} $L$:
 	\begin{equation*}
 		\rho_{ij} = L + (1 - L)e^{-\beta |T_i - T_j|}
@@ -1007,10 +996,10 @@ Expectation: ≈2.3×10−4.
 		\item Looking at the \textbf{drift} term in the Forward Rate SDE it is apparent how the decorrelation ($\rho{ij}$) directly scales it.
 		\item If rates are highly decorrelated (low $\rho{ij}$), the "no-arbitrage" pull (the drift) exerted by the numeraire is weaker. If you assume perfect correlation when the market is actually decorrelated, your Monte Carlo simulation will overstate the drift, leading to biased prices.
 		\item Decorrelation can be managed via PCA. The first component represents \emph{perfect correlation}, the second \emph{slope/twist} where one end of the curve goes up while the other goes down, the third \emph{curvature} further decorrelation of the belly of the curve relative to the wings.
-		\item PCA reduces the original dimensions e.g. from $N\times N$ parameters in $\rho$ in the previous case you get $N\times N$ parameters only and the Euler scheme now needs three independent Brownian motions. 
+		\item PCA reduces the original dimensions e.g. from $N\times N$ parameters in $\rho$ in the previous case you get $N\times N$ parameters only and the Euler scheme now needs three independent Brownian motions.
 	\end{itemize}
 \end{frame}
-%
+
 %\begin{frame}{Instantaneous and Terminal Correlation}
 %	\begin{itemize}
 %		\item<1-> Let's consider now payoffs whose value depends on more than one rate simultaneously (e.g. swaptions).
@@ -1032,7 +1021,7 @@ Expectation: ≈2.3×10−4.
 %	%	\frac{df_i}{f_i} = \mu_i dt + \sigma_i \sum_{k=1}^m b_{ik}dZ_k
 %	%\end{equation*}
 %	%with $b_k=\frac{\sigma_{ik}}{\sqrt{\sum_{k=1}^m\sigma_{ik}^2}}$
-%	
+%
 %	\begin{block}{Definition}
 %		The \textcolor{maincolor}{instantaneous correlation} is a quantity summarizing the degree of “dependence” between \textcolor{maincolor}{changes} of different forward rates.
 %		\begin{equation*}
@@ -1060,7 +1049,7 @@ Expectation: ≈2.3×10−4.
 %		\item \textbf{Instantaneous correlation} $\rho_{ij}$ drives the dependence between increments $dW_i$ and $dW_j$.
 %		\item \textbf{Terminal correlation} (at $T_1$) depends on \textit{both} $\rho_{ij}$ and how $\sigma_i(t)$ is distributed over time.
 %	\end{itemize}
-%	
+%
 %	\begin{exampleblock}{Sensitivity Example}
 %		Consider two ways to decompose the same Caplet $v_i$ into $\sigma_{i,1}$ and $\sigma_{i,2}$:
 %		\begin{center}
@@ -1101,7 +1090,7 @@ Expectation: ≈2.3×10−4.
 %		\begin{equation}
 %			\begin{aligned}
 %				\mathbb{E}^2[\Pi] & = F_2(0)\rho_{2,3}\int_0^{T_1}\sigma_{2,\beta(t)}\sigma_{3,\beta(t)}dt = \\
-%				
+%
 %				&  = F_2(0)\rho_{2,3}(\sigma_{2,1}\sigma_{3,1}T_0+\sigma_{2,2}\sigma_{3,2}\tau_{0,1})
 %			\end{aligned}
 %			\label{eq:terminal_correlation_ex}
@@ -1236,7 +1225,7 @@ Expectation: ≈2.3×10−4.
 	\begin{equation*}
 	\Pi_{an} = \frac{A_{\alpha,\beta}(T_\alpha)\cdot\textbf{Payoff}(S_{\alpha,\beta}(T_\alpha),K))}{P(T_\alpha, T_\beta)}
 	\end{equation*}
-	\item The current market price (today) of this "proxy" is known analytically 
+	\item The current market price (today) of this "proxy" is known analytically
 		\begin{equation*}
 			\pi_{an}=PSw^{\text{Bl}}(0, S_{\alpha,\beta}, K, \sigma_{mkt})
 		\end{equation*}
