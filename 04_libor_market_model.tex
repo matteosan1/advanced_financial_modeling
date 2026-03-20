@@ -872,11 +872,11 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 	\vspace{0.4cm}
 
 	\begin{itemize}
-		\item \textbf{Case A (Low Overlap):} $F_2$ is volatile while $F_3$ is quiet. They don't "move together" in the same time bucket.
-		\item \textbf{Case B (High Overlap):} Both rates spike simultaneously in the second period. This creates much higher \textbf{joint covariance}.
+		\item \textbf{Case A (Low Overlap):} $F_2$ is volatile while $F_3$ is quiet. They don't "move together" in the same time bucket ($1.875\cdot 10^{-3}$).
+		\item \textbf{Case B (High Overlap):} Both rates spike simultaneously in the second period. This creates much higher \textbf{joint covariance} ($4.875\cdot 10^{-3}$).
 	\end{itemize}
 
-	Even with the same correlation $\rho$, Case B will result in a \textbf{higher price} because the volatility "schedules" overlap.
+	Even with the same correlation $\rho$, Case B will result in a \textbf{higher price} because the volatility "schedules" overlap (check the same exercise on Brigo-Mercurio pg. 235-236).
 \end{frame}
 
 \begin{frame}{Forward Rates Correlation}
@@ -971,7 +971,6 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 	\end{itemize}
 \end{frame}
 
-
 \begin{frame}{Decorrelation}
 	\begin{itemize}
 	\item In the context of the Libor Forward Model (LFM) and the Two-Factor Correlation model we discussed, decorrelation refers to the phenomenon where forward rates of different tenors do not move perfectly in sync.
@@ -993,11 +992,22 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 
 \begin{frame}{Relation to the Terminal Measure Drift}
 	\begin{itemize}
-		\item Looking at the \textbf{drift} term in the Forward Rate SDE it is apparent how the decorrelation ($\rho{ij}$) directly scales it.
-		\item If rates are highly decorrelated (low $\rho{ij}$), the "no-arbitrage" pull (the drift) exerted by the numeraire is weaker. If you assume perfect correlation when the market is actually decorrelated, your Monte Carlo simulation will overstate the drift, leading to biased prices.
+		\item Looking at the \textbf{drift} term in the Forward Rate SDE it is apparent how the decorrelation ($\rho_{ij}$) directly scales it.
+		\item If rates are highly decorrelated (low $\rho_{ij}$), the "no-arbitrage" pull (the drift) exerted by the numeraire is weaker. If you assume perfect correlation when the market is actually decorrelated, your Monte Carlo simulation will overstate the drift, leading to biased prices.
 		\item Decorrelation can be managed via PCA. The first component represents \emph{perfect correlation}, the second \emph{slope/twist} where one end of the curve goes up while the other goes down, the third \emph{curvature} further decorrelation of the belly of the curve relative to the wings.
 		\item PCA reduces the original dimensions e.g. from $N\times N$ parameters in $\rho$ in the previous case you get $N\times N$ parameters only and the Euler scheme now needs three independent Brownian motions.
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{PCA on Term Structure \colablink{https://colab.research.google.com/drive/1DplGpcqLJRJp_xqeQPDfUFFnuuJtp3uX}}
+	Historical data (2010-2025) tells how rates actually moved in the past. Can be used to determine the Correlation Matrix since it is generally stable.
+	\begin{center}
+	\includegraphics[width=0.65\linewidth]{images/pca_term_structure}
+	\end{center}
+	\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+	\footnotesize
+	PC1 the \emph{level} or parallel shift, explains about 70\% of the variance, PC2 the \emph{slope} or twist, explains 13\% of the variance, PC3 the \emph{curvature} or butterfly movement, explains another 9.6\% of the variance.
+	\end{tcolorbox}	
 \end{frame}
 
 %\begin{frame}{Instantaneous and Terminal Correlation}
@@ -1262,15 +1272,6 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 
 
 
-
-
-
-
-
-
-
-
-
 %\begin{frame}{The Role of Correlation and $\beta^*$}
 %	We found that the correlation between a Swaption and a single Caplet is often imperfect ($\rho \approx 0.66$).
 %
@@ -1283,17 +1284,6 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 %\end{frame}
 
 
-
-
-
-%
-%
-%
-%
-%
-%
-%
-%
 %%\begin{frame}{Advanced Variance Reduction: Control Variates}
 %%	Monte Carlo error is $O(1/\sqrt{M})$. To achieve high precision, we use:
 %%	\[ Y_{CV} = Y_{LFM} + \beta^*(E[X] - X) \]
@@ -1306,31 +1296,62 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 %%	\end{itemize}
 %%\end{frame}
 
+\begin{frame}{LFM Swaption Pricing Summary \colablink{https://colab.research.google.com/drive/1mg-yoaZaKrhCQO7p0nzBnmV1X9Rfeuse}}
+	\begin{enumerate}
+		\item Bootstrap Cap volatilities to determine $v_{caplet}$;
+		\item fit a parametric model for the volatilities to get $\sigma_i(t)$;
+		\item compute Ribonato's weights and calibrate $\rho$ to the Swaption volatilities;
+		\item reduce model parameters using a parametric expression for the correlation matrix;
+		\item using Euler schema simulate LFM paths and compute the corresponding swap rate;
+		\item improve MC efficiency using Control Variate with Swaption Black price;
+		\item calculate the swaption payoffs and average to find the price estimate.
+	\end{enumerate}
+\end{frame}
 
+\begin{frame}{LFM Simulation Checks (1/2)}
+	A first set of checks can be done on swap rate expected properties.
+	\begin{columns}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[width=0.85\linewidth]{images/lfm_martingale_check}
+		\end{center}
+		\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+			\footnotesize
+			In the Terminal Measure, the last rate $F_N$ must be a martingale, while the Swap Rate $S(t)$ will typically show a downward drift.
+		\end{tcolorbox}	
+		\column{0.5\linewidth}
+		\begin{center}
+			\includegraphics[width=0.85\linewidth]{images/lfm_log_normality_check}
+		\end{center}
+		\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+			\footnotesize
+			The comparison of a rate and the swap rate density should show a difference: the former is log-normal, the latter no.
+		\end{tcolorbox}			
+	\end{columns}
+\end{frame}
 
-%\section{LFM Implementation Pipeline}
-%
-%\begin{frame}{1. From Caplet Volatilities to Instantaneous $\sigma_i(t)$}
-%	To simulate the forward rates $F_i(t)$, we must decompose the market-bootstrapped Caplet volatilities $v_i$ into instantaneous volatility functions $\sigma_i(t)$.
-%
-%	\begin{itemize}
-%		\item \textbf{The Constraint:} The model must recover market prices: $v_i^2 T_{i-1} = \int_0^{T_{i-1}}\sigma_i^2(t)dt$.
-%		\item \textbf{Parametric Form:} To ensure a smooth term structure and reduce parameters, we often assume:
-%		\[ \sigma_i(t) = [a(T_{i-1} - t) + d]e^{-b(T_{i-1} - t)} + c \]
-%	\end{itemize}
-%
-%	\begin{center}
-%		\footnotesize
-%		\begin{tabular}{|l|c|l|}
-%			\hline
-%			\textbf{Approach} & \textbf{Form} & \textbf{Property} \\ \hline
-%			Piecewise Constant & $\sigma_{i, \beta(t)}$ & Exact match to all Caplets \\ \hline
-%			Time-to-maturity & $\eta_{i-(\beta(t)-1)}$ & Stationary volatility structure \\ \hline
-%			Full Parametric & $f(T, t; a,b,c,d)$ & Captures the empirical "hump" \\ \hline
-%		\end{tabular}
-%	\end{center}
-%\end{frame}
-%
+\begin{frame}{LFM Simulation Checks (2/2)}
+	A second set of checks can be devoted to the control variate technique.
+	\begin{columns}
+		\column{0.5\linewidth}
+		\begin{center}
+			\includegraphics[width=0.85\linewidth]{images/lfm_correlation_check}
+		\end{center}
+		\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+			\footnotesize
+			Variance improvement is proportional to $k = \frac{1}{1-\rho^2}$. In our simulation $\rho = 0.916$ so $k\approx 6.2$.
+		\end{tcolorbox}	
+		\column{0.5\linewidth}
+		\begin{center}
+			\includegraphics[width=0.85\linewidth]{images/lfm_convergence_check}
+		\end{center}
+		\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
+			\footnotesize
+			The control variate MC should converge faster to the actual swaption price.
+		\end{tcolorbox}			
+	\end{columns}	
+\end{frame}
+
 %% \subsection{Decorrelation}
 %% %\begin{frame}{Correlated Brownian Motions}
 %% %  \begin{itemize}
