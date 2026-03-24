@@ -48,7 +48,7 @@
   \item<1-> $t = 0$ is the current time and the set $\{T_0, T_1, \dots, T_n\}$ of expiry-maturity dates is the tenor structure. %with the corresponding year fractions $\tau_i$ associated with the expiry-maturity pair $(T_{i−1}, T_i)$, for all $i > 0$;
   \item<2-> The simply-compounded forward interest rate resetting at its expiry date $T_{i-1}$ and with maturity $T_i$ is denoted by $F_i(t) = F(t; T_{i-1}, T_i)$;
   \item<3-> $\mathbb{Q}^{T_i}$ is the equivalent martingale measure (EMM) associated with the numeraire $P(\cdot, T_i)$, i.e. the $T_i$-forward measure;
-  \item<4-> $\bm{W}^i$ is a $n$-dimensional \textcolor{maincolor}{correlated} Brownian motion under $\mathbb{Q}^{T_i}$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $< d\bm{W}^i(t) d\bm{W}^i(t)> = \bm{\rho} dt$.
+  \item<4-> $\bm{W}^i$ is a $n$-dimensional \textcolor{maincolor}{correlated} Brownian motion under $\mathbb{Q}^{T_i}$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $< d\bm{W}^i(t) d\bm{W}^j(t)> = \bm{\rho} dt$.
 
   \textbf{Note} that the superscript in a random variable refers to the measure, subscript to the component
   \end{itemize}
@@ -114,7 +114,7 @@
 \end{frame}
 
 \begin{frame}{Forward Rate Dynamics in LMM}
-	Now, we can ask ourselves: \emph{"what happens to the Forward Rate dynamics in the other measures ?}
+	Now, we can wonder: \emph{"what happens to the Forward Rate dynamics in the other measures ?}
  	\begin{block}{Proposition}
     Under the assumptions of the Libor Market Model, the dynamics of each $F_k$, for $k = 1,\ldots, n$, under the forward measure $\mathbb{Q}^{T_i}$ with $i \in \{1,\ldots, n\}$, is:
     \begin{equation}
@@ -200,7 +200,7 @@
 \subsection{Log-normal Forward Model}
 \begin{frame}{Log-normal Forward Libor Model}
   \begin{block}{Proposition}
-    Consider a given volatility structure $\sigma_1,\ldots, \sigma_n$, where each $\sigma_i$ is bounded, and the terminal measure $\mathbb{Q}^{T_n}$ with associated $n$-dimensional correlated Brownian motions $W^n$. If we define the processes $F_1,\ldots, F_n$ by
+    Consider a given volatility structure $\sigma_1,\ldots, \sigma_n$, where each $\sigma_i$ is bounded, and the \textbf{terminal measure} $\mathbb{Q}^{T_n}$ with associated $n$-dimensional correlated Brownian motions $W^n$. If we define the processes $F_1,\ldots, F_n$ by
     \begin{equation}
       dF_i(t) = -\sigma_i(t)F_i(t)\sum_{j=i+1}^n \rho^{ij} \frac{\tau_j\sigma_j(t)F_j(t)}{1+F_j(t)\tau_j} dt + \sigma_i(t)F_i(t)dW^n_i(t)
     \end{equation}
@@ -316,7 +316,7 @@
 	\end{equation*}
 	\item<2-> Given the linearity of the expectation operator, we can apply the change of measure technique to move to $\mathbb{Q}^{T_i}$, i.e. the $T_i$-forward measure associated to bond price $P(\cdot,T_i)$
 	\begin{equation*}
-		\textbf{Cap}= \sum_{i=\alpha+1}^\beta \tau_i P(0, T_i)\mathbb{E}^{T_i}[(F(T_{i-1}; T_{i-1}, T_i) - K)^+] = \sum_{i=\alpha+1}^\beta P(0, T_i)\textbf{Caplet}
+		\textbf{Cap}= \sum_{i=\alpha+1}^\beta \tau_i P(0, T_i)\mathbb{E}^{T_i}[(F(T_{i-1}; T_{i-1}, T_i) - K)^+] = \sum_{i=\alpha+1}^\beta \tau_i P(0, T_i)\textbf{Caplet}
 	\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -385,7 +385,7 @@
 	\vfill
 	While the model allows for a correlation structure between different Brownian motions ($dW^{\alpha,\beta} \cdot dW^{\gamma,\delta} = \rho_{i,j} dt$), this correlation has no impact on the pricing of standard European Swaptions.
 
-	A European Swaption depends only on the marginal distribution of a single swap rate at its expiry, correlation only becomes "visible" when pricing path-dependent
+	A European Swaption depends only on the marginal distribution of a single swap rate at its expiry, correlation only becomes "visible" when pricing path-dependent contracts.
 \end{frame}
 %%%Remark 3. In a model with M + 1 resettlement dates it is possible to model
 %%%only M swap rates as independent. The two typical choices of possible T
@@ -410,7 +410,7 @@
 		where
 		\begin{equation*}
 			\begin{gathered}
-				v_{\alpha,\beta}^2(T) =\frac{1}{T_\alpha}\int_0^T\sigma_{\alpha,\beta}(t)^2dt
+				v_{\alpha,\beta}^2(T) =\frac{1}{T_\alpha}\int_0^T\sigma^2_{\alpha,\beta}(t)dt
 			\end{gathered}
 		\end{equation*}
 	\end{block}
@@ -445,7 +445,7 @@
 		\item<5-> check if this distribution is log-normal, as it is under the hypothesis of the LSM.
 	\end{enumerate}
 	\uncover<6->{
-		\textcolor{maincolor}{Unfortunately, the answer is negative}.}
+		\textcolor{maincolor}{Unfortunately, the answer is negative, but\ldots}.}
 \end{frame}
 
 \begin{frame}{Incompatibility between LFM and LSM \colablink{https://colab.research.google.com/drive/1HUWsNT2K_dTYOWdMeQ_lKFu8tuXC06bY}}
@@ -488,7 +488,7 @@
 			\item It involves complex integrals and state-dependent terms that make it nearly impossible to use for fast, real-time trading or "Greek" calculations.
 		\end{itemize}
 		\item Instead of using the exact SDE, they have developed Analytical Approximations (e.g. the Rebonato formula). These formulas "freeze" certain drift terms at their initial values ($t=0$), allowing you to map LFM volatilities to Swaption volatilities quite easily.
-		\item Even if we can't find a pretty pencil-and-paper formula, the LFM can be easily evaluated wiht a Monte Carlo simulation.
+		\item Even if we can't find a pretty pencil-and-paper formula, swaptions under LFM can be easily evaluated with a Monte Carlo simulation.
 	\end{itemize}
 \end{frame}
 
@@ -511,6 +511,8 @@
 
 \begin{frame}{Monte Carlo Pricing of Swaptions (LFM)}
 	\begin{itemize}
+		\item First we need to decide which $T_i$ to use. A common (convenient) choice is to go with the \emph{Terminal Measure}, the one induced by the the bond maturing at the final tenor $P(t, T_\beta)$.
+		\item The drift formula is significantly simpler and more computationally stable (note that only the final rate is a martingale).
 		\item Recall the price of a payer swaption:
 		\begin{equation*}
 			\begin{aligned}
@@ -518,9 +520,7 @@
 				&= P(0, T_i)\mathbb{E}^{T_i}\left[(S_{\alpha, \beta}(T_i) - K)^+ \sum^\beta_{i=\alpha+1} \tau_i P(T_i, T_{i+1})\right]
 			\end{aligned}
 		\end{equation*}
-		by considering this time $P(\cdot, T_\beta)$ as numeraire.
-		\item First we need to decide which $T_i$ to use. A common (convenient) choice is to go with the \emph{Terminal Measure}, the one induced by the the bond maturing at the final tenor $P(t, T_\beta)$.
-		\item The drift formula is significantly simpler and more computationally stable (note that only the final rate is a martingale).
+		by considering $P(\cdot, T_\beta)$ the numeraire.
 	\end{itemize}
 \end{frame}
 
@@ -555,14 +555,14 @@
 		\[ \Pi_j = (S_{\alpha,\beta}^j(T_\alpha) - K)^+ \sum_{i=\alpha+1}^\beta \tau_i P^j(T_\alpha, T_i) \]
 		\item Finally you can estimate the swaption value as
 		\begin{equation*}
-			\mathbf{PSw} \approx \frac{P(0, T_N)}{m} \sum_{j=1}^m \frac{\Pi_j}{P^j(T_\alpha, T_N)}
+			\mathbf{PSw} \approx \frac{P(0, T_\beta)}{m} \sum_{j=1}^m \frac{\Pi_j}{P^j(T_\alpha, T_\beta)}
 		\end{equation*}
 	\end{enumerate}
 \end{frame}
 
 \begin{frame}{LFM Calibration: From Market to Model}
 	\begin{itemize}
-		\item To get sensible results from our simulation we need to properly \textbf{calibrate} the LFM models, i.e. to find the set of parameters that best match the market values.
+		\item To get sensible results from our simulation we need to properly \textbf{calibrate} the LFM model, i.e. to find the set of parameters that best match the market values.
 		\item In this particular case \emph{to calibrate} means to find $\sigma$ and $\rho$ such that the model recovers market prices of liquid instruments.
 		\item When dealing with the pricing of swaptions under LFM the process is quite interesting and involves various steps:
 	\end{itemize}
@@ -596,18 +596,18 @@
 
 \begin{frame}{Spot Volatilities}
 	\begin{itemize}
-		\item Conversely the \textcolor{green!50!black}{spot volatilities} cannot be observed directly but are the quantities \textcolor{maincolor}{naturally tied to forward rates as a measure of their uncertainty}.
-		\item They are the solutions ${\color{green!50!black}v_{T_1-caplet}},\ldots, \color{green!50!black}{v_{T_n-caplet}}$ of
+		\item<1-> Conversely the \textcolor{green!50!black}{spot volatilities} cannot be observed directly but are the quantities \textcolor{maincolor}{naturally tied to forward rates as a measure of their uncertainty}.
+		\item<1-> They are the solutions ${\color{green!50!black}v_{T_1-caplet}},\ldots, \color{green!50!black}{v_{T_n-caplet}}$ of
 		\begin{equation*}
 			\textbf{Caplet}(t,F_i,K) = \textbf{Caplet}^{Bl}(t, F_i, K,{\color{green!50!black}v_{T_i-caplet}}),\quad i=1, \ldots,n
 		\end{equation*}
 		so they are just the implied average volatility from a caplet over $[T_{i-1}, T_i]$.
-		\item To recover correctly cap prices according to the LFM dynamics, we need to have
+		\item<2-> To recover correctly cap prices according to the LFM dynamics, we need to have
 		\begin{equation}
 			\textbf{Cap} = \sum_{i=1}^j\textbf{Caplet}^{Bl}(t,F_i, K,{\color{blue}v_{T_j-cap}}) = \sum_{i=1}^j\textbf{Caplet}^{Bl}(t,K,F_i,{\color{green!50!black}v_{T_i-caplet}})
 		\label{eq:spot_flat_vola}
 		\end{equation}
-		\item Notice that since the same average volatility $\color{blue}{v_{T_{j-cap}}}$ is assumed for all caplets in the $T_j$-maturity cap, there is some inconsistency because the same caplet is linked to different volatilities when concurring to different caps.
+		\item<3-> Notice that since the same average volatility $\color{blue}{v_{T_{j-cap}}}$ is assumed for all caplets in the $T_j$-maturity cap, there is some inconsistency because the same caplet is linked to different volatilities when concurring to different caps.
 	\end{itemize}
 \end{frame}
 
@@ -618,7 +618,7 @@
 		\item<2-> recover the correct spot volatilities with a numerical procedure (i.e. \textbf{bootstrap}) from Eq.~\ref{eq:spot_flat_vola};
 		\item<3-> finally we can go back to the instantaneous parameter of the model through
 		\begin{equation}
-			{\color{green!50!black}v_{T_{i-1}-caplet}^2} =\cfrac{1}{T_{i-1}} \int_0^{T_{i-1}}\sigma^2_{i,j}dt%=\cfrac{1}{T_{i-1}}\sum_{j=1}^{i-1}\tau_{j-1,j}\sigma^2_{i,j}
+			{\color{green!50!black}v_{T_{i-1}-caplet}^2} =\cfrac{1}{T_{i-1}} \int_0^{T_{i-1}}{\color{red}{\sigma^2_{i,j}}}dt %=\cfrac{1}{T_{i-1}}\sum_{j=1}^{i-1}\tau_{j-1,j}\sigma^2_{i,j}
 		\end{equation}
 		\textbf{Note} that different parametrizations of the instantaneous volatility $\sigma_{i,j}^2$ lead to different evolutions of its term-structures.
 	\end{enumerate}
@@ -641,7 +641,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Caplet Volatility Bootstrapping \colablink{https://colab.research.google.com/drive/1v6RwkYOdFfE05kfax2h8A10AvBUUIZho}}
+\begin{frame}{Caplet Volatility Bootstrapping \colablink{https://colab.research.google.com/drive/1rEtK3eFSZpvjDIBzHE_1PY1H-FBRr0Uv}}
 Let's \emph{strip} caplet volatilities from the following cap (\emph{flat}) volatilities (they referred to caps with 0.013 strike over EURIBOR-6M).
 \begin{columns}
 	\column{0.5\linewidth}
@@ -692,7 +692,7 @@ Let's \emph{strip} caplet volatilities from the following cap (\emph{flat}) vola
 \sigma^{spot}_{6m}= \sigma^{spot}_{6m,1y} = \color{green!50!black}{\sigma^{flat}_{1y}}
 \end{equation*}
 
-\item Let’s now price the $1y$ forward starting caplet with $6m$ maturity. Since market cap volatilities are quoted assuming \textbf{no-arbitrage} opportunity we can build the forward starting caplet as the difference of two caps:
+\item Let’s now price the $1y$ forward starting caplet with $6m$ maturity. Since market cap volatilities are quoted assuming \textbf{no-arbitrage} opportunities we can build the forward starting caplet as the difference of two caps:
 
 \begin{equation*}
 \begin{gathered}
@@ -787,14 +787,21 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 
 \begin{frame}{Functional Form for Instantaneous Volatility}
 	One commonly used function is the parametric form specified in the previous table. This ensure a smooth term structure:
-
-	\[ \sigma_i(t) = [a(T_i - t) + b]e^{-c(T_i - t)} + d \]
-
+	\begin{equation*}
+		\sigma_i(t) = [a(T_i - t) + b]e^{-c(T_i - t)} + d
+	\end{equation*}
+	\begin{columns}
+	\column{0.5\linewidth}
 	\begin{itemize}
 		\item The parameters $\{a, b, c, d\}$ are calibrated to the entire Cap market simultaneously.
-		\item This form captures the empirical reality that volatility often peaks for 2-3 year tenors before decaying (the hump).
+		\item This form captures the empirical reality that volatility often peaks for 1-3 year tenors before decaying (the hump).
 		\item Finally it ensures that as time $t$ progresses in the Monte Carlo simulation, the volatility of the forward rates evolves realistically.
 	\end{itemize}
+	\column{0.5\linewidth}
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/caplet_spot_volatilities}
+	\end{center}
+	\end{columns}	
 \end{frame}
 
 \section{Correlated Brownian Motions}
