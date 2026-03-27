@@ -48,7 +48,7 @@
   \item<1-> $t = 0$ is the current time and the set $\{T_0, T_1, \dots, T_n\}$ of expiry-maturity dates is the tenor structure. %with the corresponding year fractions $\tau_i$ associated with the expiry-maturity pair $(T_{i−1}, T_i)$, for all $i > 0$;
   \item<2-> The simply-compounded forward interest rate resetting at its expiry date $T_{i-1}$ and with maturity $T_i$ is denoted by $F_i(t) = F(t; T_{i-1}, T_i)$;
   \item<3-> $\mathbb{Q}^{T_i}$ is the equivalent martingale measure (EMM) associated with the numeraire $P(\cdot, T_i)$, i.e. the $T_i$-forward measure;
-  \item<4-> $\bm{W}^i$ is a $n$-dimensional \textcolor{maincolor}{correlated} Brownian motion under $\mathbb{Q}^{T_i}$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $< d\bm{W}^i(t) d\bm{W}^j(t)> = \bm{\rho} dt$.
+  \item<4-> $\bm{W}^i$ is a $n$-dimensional \textcolor{maincolor}{correlated} Brownian motion under $\mathbb{Q}^{T_i}$, with \emph{instantaneous} correlation matrix $\bm{\rho}$, i.e. $< d\bm{W}^i(t) d\bm{W}^i(t)> = \bm{\rho} dt$.
 
   \textbf{Note} that the superscript in a random variable refers to the measure, subscript to the component
   \end{itemize}
@@ -560,6 +560,26 @@
 	\end{enumerate}
 \end{frame}
 
+
+\begin{frame}{Cholesky Decomposition \colablink{https://colab.research.google.com/drive/1p8aGbiX_tuetiuPx-lStR2EWDNZGCMrK}}
+	\begin{itemize}
+		\item Standard Monte Carlo generators produce \textbf{independent} random variables $Z \sim \mathcal{N}(0, I)$.
+		\item But financial assets or physical variables are often \textbf{correlated}. We need a transformation matrix $C$ such that if we multiply it by independent "noise", the output has a specific covariance structure $\Sigma$.
+	\end{itemize}
+	
+	\begin{block}{Definition}
+		The Cholesky decomposition finds a lower triangular matrix $C$ such that:
+		$$\Sigma = CC^T$$
+		This $C$ acts as the "scaling factor" for correlation and results in
+		\begin{equation*}
+			C = \begin{bmatrix}
+				1 & 0 \\
+				\rho & \sqrt{1-\rho^2}
+			\end{bmatrix}
+		\end{equation*}.
+	\end{block}
+\end{frame}
+
 \begin{frame}{LFM Calibration: From Market to Model}
 	\begin{itemize}
 		\item To get sensible results from our simulation we need to properly \textbf{calibrate} the LFM model, i.e. to find the set of parameters that best match the market values.
@@ -650,7 +670,7 @@ Let's \emph{strip} caplet volatilities from the following cap (\emph{flat}) vola
 	\hline
 	Maturity & Volatility \\
 	\hline
-	1y & $44\%$ \\
+	1y & 44\% \\
 	\hline
 	2y & 45\% \\
 	\hline
@@ -794,7 +814,7 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 	\column{0.5\linewidth}
 	\begin{itemize}
 		\item The parameters $\{a, b, c, d\}$ are calibrated to the entire Cap market simultaneously.
-		\item This form captures the empirical reality that volatility often peaks for 1-3 year tenors before decaying (the hump).
+		\item This form captures the empirical reality that volatility often peaks for 1-2 year tenors before decaying (the hump).
 		\item Finally it ensures that as time $t$ progresses in the Monte Carlo simulation, the volatility of the forward rates evolves realistically.
 	\end{itemize}
 	\column{0.5\linewidth}
@@ -815,10 +835,12 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 		\item<2-> Terminal Correlation: summarizes the dependence between the \textbf{levels} of two forward rates at a future time $T_i$.
 		\item<3-> In the LFM, the terminal correlation is \textbf{not} solely determined by $\rho_{ij}$. It is heavily influenced by the \textit{path} of the instantaneous volatilities $\sigma_i(t)$.
 	\end{itemize}
+	\only<4-> {
 	\begin{tcolorbox}[colback=gray!5, colframe=maincolor, arc=0mm, boxrule=0.5pt]
 		\footnotesize
 		While Caplets only care about the \textbf{average} volatility, Swaptions care about the \textbf{overlap} of volatility functions over time.
 	\end{tcolorbox}
+	}
 \end{frame}
 
 \begin{frame}{Terminal Correlation: An Example}
@@ -885,6 +907,14 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 
 	Even with the same correlation $\rho$, Case B will result in a \textbf{higher price} because the volatility "schedules" overlap (check the same exercise on Brigo-Mercurio pg. 235-236).
 \end{frame}
+
+\begin{frame}{Why Volatility Scheduling Matters}
+	Check the same exercise on Brigo-Mercurio pg. 235-236.
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/brigo_mercurio_pg236}
+	\end{center}
+\end{frame}
+
 
 \begin{frame}{Forward Rates Correlation}
 	\begin{itemize}
@@ -955,7 +985,7 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 \begin{frame}{Parametric Correlation}
 	\begin{itemize}
 		\item Remember that $\rho$ is a $N\times N$ squared matrix with $N$ the number of forward rates modeled with LFM.
-		\item To reduce the number of the model parameters, we often assume:
+		\item To reduce the number of the model parameters, it is often assumed:
 		\begin{equation*}
 			\rho_{ij} = \exp(-\beta |T_i - T_j|)
 		\end{equation*}
@@ -973,15 +1003,15 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 	\begin{equation*}
 		\rho_{ij} = L + (1 - L)e^{-\beta |T_i - T_j|}
 	\end{equation*}
-	\item $L$ (Level): represents the "Parallel Shift." Even for rates very far apart, correlation never drops below $L$.
+	\item $L$ (Level): represents the "Parallel Shift". Even for rates very far apart, correlation never drops below $L$.
 	\item $\beta$ (Decay): represents the "Twist." How quickly the curve decouples as tenors diverge.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Decorrelation}
 	\begin{itemize}
-	\item In the context of the Libor Forward Model (LFM) and the Two-Factor Correlation model we discussed, decorrelation refers to the phenomenon where forward rates of different tenors do not move perfectly in sync.
-	\item If $\rho_{ij}=1$, the rates are perfectly correlated. Decorrelation is the "slack" or "twist" in the curve.
+	\item In the context of the Libor Forward Model (LFM) and the Two-Factor Correlation model we discussed, \textbf{decorrelation} refers to the phenomenon where forward rates of different tenors do not move perfectly in sync.
+	\item If $\rho_{ij}=1$, rates are perfectly correlated. Decorrelation is the "slack" or "twist" in the curve.
 	\item Recall the correlation structure: $\rho_{ij}=L+(1-L)e^{-\beta|T_i-T_j|}$, $\beta$ is the "decorrelation speed."
 	\item If $\beta>0$, then as the distance between two tenors ($|T_i-T_j|$) increases, the correlation $\rho_{ij}$ drops.
 	\item $L$ prevents "total decorrelation," ensuring that even the 1Y and 30Y rates maintain some fundamental connection.
@@ -1177,7 +1207,7 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 					P\left(\bigg|\frac{\sum_{j=1}^m\Pi_j}{m}-\mathbb{E}^T[\Pi]\bigg|<\epsilon\right) = P\left(|\mathcal{N}(0,1)|<\epsilon\frac{\sqrt{m}}{\text{Std}(\Pi)}\right) =
 					2\Phi\left(\epsilon\frac{\sqrt{m}}{\text{Std}(\Pi)}\right)-1
 				\end{equation*}
-			where $\Phi$ denotes the c.d.f. of the standard Gaussian distribution.
+			where $\Phi$ denotes the CDF of the standard Gaussian distribution.
 			\begin{equation*}
 					P(|x|<\epsilon) = \Phi(\epsilon) - \Phi(-\epsilon) = \Phi(\epsilon) - (1 - \Phi(\epsilon)) = 2\Phi(\epsilon) - 1
 				\end{equation*}
@@ -1231,13 +1261,15 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 					\sqrt{1 - \text{Corr}(\Pi, \Pi_{an}; m)^2}
 				\end{equation*}
 		\end{enumerate}
-		This technique is quite general and the \textcolor{maincolor}{choice of $\Pi_{an}$ is theoretically free}.
-		In the case of the pricing of swaptions in the LFM, we select as $\Pi_{an}$ one of the simplest choice, the Black price of the swaption.
+		\only<3->{
+			This technique is quite general and the \textcolor{maincolor}{choice of $\Pi_{an}$ is theoretically free}.
+			In the case of the pricing of swaptions in the LFM, we select as $\Pi_{an}$ one of the simplest choice, the Black price of the swaption.
+		}
 \end{frame}
 
 \begin{frame}{The "Black Formula" as Control Variate}
 	\begin{itemize}
-	\item While the LFM doesn't perfectly match the Black formula (due to the swap rate not being strictly log-normal), they are highly correlated (>99\%).
+	\item While the LFM doesn't perfectly match the Black formula (due to the swap rate not being strictly log-normal), they are highly correlated ($>90\%$).
 	\item We define the control variate based on the terminal payoff predicted by the Black model:
 	\begin{equation*}
 	\Pi_{an} = \frac{A_{\alpha,\beta}(T_\alpha)\cdot\textbf{Payoff}(S_{\alpha,\beta}(T_\alpha),K))}{P(T_\alpha, T_\beta)}
@@ -1249,21 +1281,21 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Why it works}
-	\begin{itemize}
-	\item The discounted payoff of the Black-style swaption (under the LFM measure) is a "martingale-like" variable if we use the same numeraire.
-	\item The goal is to use the difference between the Simulated Black Payoff and the Analytical Black Price.
-	\item We define the zero-mean control variate as:
-		\begin{equation*}
-			\hat{\Pi}_{an} = \left(\frac{\text{Payoff}(T_\alpha)}{P(T_\alpha, T_\beta)}\right) - \frac{PSw^{\text{Bl}}(0)}{P(0, T_\beta)}
-		\end{equation*}
-	\item Since the analytical price is our "best guess" for the expectation of the payoff, then:
-	\begin{equation*}
-		\mathbb{E}^{T_N}[\hat{\Pi}_{an}] \approx 0
-	\end{equation*}
-	\item Any "error" the Monte Carlo makes in pricing the Black-style payoff will likely be the same "error" it makes in pricing the LFM payoff, allowing us to cancel it out.
-	\end{itemize}
-\end{frame}
+%\begin{frame}{Why it works}
+%	\begin{itemize}
+%	\item The discounted payoff of the Black-style swaption (under the LFM measure) is a "martingale-like" variable if we use the same numeraire.
+%	\item The goal is to use the difference between the Simulated Black Payoff and the Analytical Black Price.
+%	\item We define the zero-mean control variate as:
+%		\begin{equation*}
+%			\hat{\Pi}_{an} = \left(\frac{\text{Payoff}(T_\alpha)}{P(T_\alpha, T_\beta)}\right) - \frac{PSw^{\text{Bl}}(0)}{P(0, T_\beta)}
+%		\end{equation*}
+%	\item Since the analytical price is our "best guess" for the expectation of the payoff, then:
+%	\begin{equation*}
+%		\mathbb{E}^{T_N}[\hat{\Pi}_{an}] \approx 0
+%	\end{equation*}
+%	\item Any "error" the Monte Carlo makes in pricing the Black-style payoff will likely be the same "error" it makes in pricing the LFM payoff, allowing us to cancel it out.
+%	\end{itemize}
+%\end{frame}
 
 \begin{frame}{Implementation \& Efficiency}
 	\begin{itemize}
@@ -1272,8 +1304,8 @@ Once "estimated" $\sigma^{flat}_{1y6m}$ We will be able to solve a single volati
 		\Pi_c(\gamma) = \Pi_{LFM} + \gamma(\Pi_{an} - \pi_{an})
 	\end{equation*}
 	\item Use the Black-76 formula with an approximate swap volatility (e.g., Rebonato’s formula) as $\pi_{an}$.
-	\item To minimize variance, we set $\gamma^*=-\frac{\text{Cov}(\Pi_{LFM}, \Pi_{an})}{-\text{Var}(\Pi_{an})}$. In practice, since they are so similar, $\gamma\approx -1$ is often used.
-	\item The variance is reduced by $(1-\rho^2)$. Because the LFM swap rate is "nearly" log-normal, the correlation $\rho$ is nearly 1, making the Monte Carlo converge significantly faster than the FRA-based approach.
+	\item To minimize variance, we set $\gamma^*=-\frac{\text{Cov}(\Pi_{LFM}, \Pi_{an})}{-\text{Var}(\Pi_{an})}$. %In practice, since they are so similar, $\gamma\approx -1$ is often used.
+	\item The variance is reduced by $(1-\rho^2)$. Because the LFM swap rate is "nearly" log-normal, the correlation $\rho$ is nearly 1, making the Monte Carlo converge significantly faster.
 	\end{itemize}
 \end{frame}
 
