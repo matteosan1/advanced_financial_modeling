@@ -366,7 +366,7 @@ The result match the previously calculated value. The rationale is that the swap
 \end{solution}
 
 \question \textbf{Swap Curve} \\
-If the 10-year Swap Rate is 3\% and the 10-year Government Bond yield is 2.5\%, what is the Swap Spread ? 
+If the 10-year Swap Rate is 3\% and the 10-year Government Bond yield is 2.5\%, what is the Swap Spread ?
 If the market enters a financial crisis and bank credit risk increases, what do you expect to happen to this spread ?
 
 \begin{solution}
@@ -375,57 +375,60 @@ The spread is 50 bps. In a crisis, the spread usually widens because the risk of
 
 
 \question \textbf{Asset Swap} \\
-Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and a market price equal to $P(t)$. What will happen to the price if the spread increases, all the rest being equal ? What does it mean in term of credit quality expectation by the market for the bond's issuer ?
+\begin{parts}
+	\part Describe the asset swap contract for a coupon bond with coupons equal to \textbf{C} and a market price equal to $P(t)$. What will happen to the price if the spread increases, all the rest being equal ? What does it mean in term of credit quality expectation by the market for the bond's issuer ?
+	\part Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a price of 104.58.
 
-Consider the 10-year German Bund DBR 0.5\% 2026 which is currently trading at a clean price of 104.58.
-
-Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond ?
-For this exercise assume that all annuity factors have a value of 10.0 for simplicity.
-
-Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a clean price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond ?
+	Given that the 10-year EUR swap rate is 0.44\% what is the par-par asset swap spread for this bond ?
+	For this exercise assume that the annuity has a value of 10.0 for simplicity.
+	\part Consider the 10-year Greek Government Bond GGB 3.0\% 2026 which is currently trading at a price of 75.280. Given that the 10-year EUR swap rate is 0.440\% what is the par-par asset swap spread for this bond ?
+\end{parts}
 
 \begin{solution}
-The Asset Swap (AS) for a coupon bond is a package consisting of:
-\begin{itemize}
-\item Buying the risky bond at its dirty price $P(t)$.
-\item Entering a swap where you pay the bond's fixed coupons C and receive floating LIBOR/EURIBOR plus a spread $s$.
-\item An upfront payment (or exchange of notional) such that the net initial outlay for the investor is exactly Par (100).
-\end{itemize}
+\begin{parts}
+	\part The Asset Swap (AS) for a coupon bond is a package consisting of:
+	\begin{itemize}
+		\item Buying the risky bond at its dirty price $P(t)$.
+		\item Entering a swap where you pay the bond's fixed coupons \textbf{C} and receive floating LIBOR/EURIBOR plus a spread $s$.
+		\item An upfront payment (or exchange of notional) such that the net initial outlay for the investor is exactly Par (100).
+	\end{itemize}
 
-The Asset Swap Spread $s$ is the "price of risk." Using the simplified relationship:
-\begin{equation*}
-s = \text{AnnuityRisk} -  \text{Free Price} - \text{Market Risky Price}
-\end{equation*}
+	The Asset Swap Spread $s$ is the "price of risk." Using the simplified relationship:
+	\begin{equation*}
+		s = \frac{\text{Free Price} - \text{Market Risky Price}}{\text{AnnuityRisk}}
+	\end{equation*}
 
-If $s$ increases (all else being equal), the Price $P(t)$ must decrease.
-An increasing spread indicates a deterioration in credit quality expectations. The market is demanding a higher premium to hold the issuer's debt because the perceived probability of default has risen or the liquidity of the bond has dried up.
+	If $s$ increases (all else being equal), the Risky Price $P(t)$ must decrease.
+	An increasing spread indicates a deterioration in credit quality expectations. The market is demanding a higher premium to hold the issuer's debt because the perceived probability of default has risen or the liquidity of the bond has dried up.
+	\part First, we need to determine what the bond would be worth if we discounted its cash flows at the 10-year swap rate (0.44\%).
 
-Clean Price = 104.58 (Since we aren't given accrued interest, we assume Dirty$\approx$Clean for the calculation), Fixed Coupon $K_{bond}=0.5\%$, Swap Rate $S_{10y}=0.44\%$ and Annuity $A=10.0$.
+	Since the coupon (0.5\%) is slightly higher than the swap rate (0.44\%), the bond should trade at a premium over par in the risk-free world. Using the annuity approximation:
+	\begin{equation*}
+	\text{RiskFree}=Par+(C-S)\cdot A = 100+(0.5\%-0.44\%)\cdot 10 = 100.60
+	\end{equation*}
+	\begin{equation*}
+		s=\frac{(CBP - \overline{CBP})}{A} = -0.398\%
+	\end{equation*}
 
-The "Risk-Free" price is the price the bond would have if it were priced exactly at the swap curve ($K=S$): $CBP=100+(Coupon-Swap Rate)\cdot A = 100+(0.5\%-0.44\%)\cdot 10=100.60$.
+	The Asset Swap Spread is -39.8 bps.
+	Note: It is normal for Bunds to have a negative spread because they are often considered "safer" than the interbank swap market.
+	\part Price = 75.28, Fixed Coupon $K_{bond}=3.0\%$, Swap Rate $S_{10y}=0.44\%$, Annuity $A=10.0$.
 
-\begin{equation*}
-s=A\cdot (CBP - CBP) = 10\cdot (100.6-104.58) = -0.398\%
-\end{equation*}
+	Calculate the Bond Price
+	\begin{equation*}
+		CBP=100+(3.0\%-0.44\%)\cdot 10=100+(2.56\cdot 10)=125.60
+	\end{equation*}
 
-The Asset Swap Spread is -39.8 bps.
-Note: It is normal for Bunds to have a negative spread because they are often considered "safer" than the interbank swap market.
+	Solve for the Asset Swap Spread
+	\begin{equation*}
+		s=\frac{(125-60-75.28)}{10}=5.032\%
+	\end{equation*}
+	The Asset Swap Spread is +503.2 bps.
 
-Clean Price = 75.28, Fixed Coupon $K_{bond}=3.0\%$, Swap Rate $S_{10y}=0.44\%$, Annuity $A=10.0$ (assuming the same for comparison).
-
-Calculate the "Risk-Free" Bond Price $CBP=100+(3.0\%-0.44\%)\cdot 10=100+(2.56\cdot 10)=125.60$
-
-Solve for the Asset Swap Spread
-\begin{equation*}
-s=10\cdot (125-60-75.28)=5.032\%
-\end{equation*}
-The Asset Swap Spread is +503.2 bps.
-
-The Bund trades at a negative spread (-39.8 bps). This means the bond is so expensive (trading at 104.58 despite a tiny coupon) that you actually "give up" yield to the swap counterparty to hold it. It is a flight-to-quality asset.
-
-The Greek Bond trades at a massive positive spread (+503.2 bps). This compensates the investor for the high credit risk and the fact that the bond is trading at a deep discount (75.28).
-
-The formula $P=100+(K-S)A$ is a linear approximation of $P=\sum K\cdot P_i + 100\cdot P_n$. It is highly accurate for small differences between the coupon and the swap rate.
+	The Bund trades at a negative spread (-39.8 bps). This means the bond is so expensive (trading at 104.58 despite a tiny coupon) that you actually "give up" yield to the swap counterparty to hold it.
+	The Greek Bond trades at a massive positive spread (+503.2 bps). This compensates the investor for the high credit risk.% and the fact that the bond is trading at a deep discount (75.28).
+	%The formula $P=100+(C-S)A$ is a linear approximation of $P=\sum C\cdot P_i + 100\cdot P_n$. It is highly accurate for small differences between the coupon and the swap rate.
+\end{parts}
 \end{solution}
 
 \question \textbf{Default Probability} \\
@@ -529,12 +532,12 @@ Consider a 2-year Interest Rate Swap on a notional of 1M, paying a fixed rate of
 
 \begin{solution}
 	Calculate the initial NPV, since $K$ equals the flat market rate (5\%), the Swap is at par: $NPV_0=0$.
-	
+
 	Bump the curve by +1 bp, i.e. $r=5.01\%$. We use the Payer Swap perspective (Pay Fixed, Receive Floating).
 	\begin{align*}
 		\text{Fixed Leg} &= N\cdot K\cdot \left[\frac{1}{1+0.0501}+\frac{1}{(1+0.0501)^2}\right] \approx 92838.95 \\
 		\text{Fixed Leg} &= N\cdot L\cdot \left[\frac{1}{1+0.0501}+\frac{1}{(1+0.0501)^2}\right] \approx 93024.63 \\
-		NPV_{+1 \text{bp}} &\approx 93024.63-92838.95\approx = 186.68
+		NPV_{+1 \text{bp}} &\approx 93024.63-92838.95\approx 186.68
 	\end{align*}
 
 	For a par swap on a flat curve, the DV01 is approximately the Annuity times the change in rate:
@@ -618,31 +621,31 @@ Calculate the analytical expressions for:
 \question \textbf{Swaption Payoff}
 Derive the Swaption payoff formula
 \begin{equation*}
-	\textbf{PSw} = N\cdot P(t, T_\alpha)\cdot \mathbb{E}^{Q}_t \left[ \left( 1 - \sum_{k=\alpha+1}^\beta c_k P(T_\alpha, T_k) \right)^+ \right]	
+	\textbf{PSw} = N\cdot P(t, T_\alpha)\cdot \mathbb{E}^{Q}_t \left[ \left( 1 - \sum_{k=\alpha+1}^\beta c_k P(T_\alpha, T_k) \right)^+ \right]
 \end{equation*}
 
 \begin{solution}
 We begin with the standard payoff of a receiver swaption at maturity $T_\alpha$. The value of the swaption at time $t$ is the discounted expectation of the sum of the differences between the forward Libor rates and the fixed strike $K$:
-	
+
 \begin{equation*}
 	\textbf{PSw} = D(t, T_\alpha) \left( \sum_{i=\alpha+1}^\beta \tau_i \cdot P(T_\alpha, T_i) (F(T_\alpha; T_{i-1}, T_i) - K) \right)^+
 \end{equation*}
-	
+
 The forward Libor rate $F$ at time $T_\alpha$ for the accrual period $[T_{i-1}, T_i]$ is defined by the prices of Zero-Coupon Bonds (ZCBs) as follows:
 \begin{equation*}
 	F(T_\alpha; T_{i-1}, T_i) = \frac{1}{\tau_i} \left( \frac{P(T_\alpha, T_{i-1})}{P(T_\alpha, T_i)} - 1 \right)
 \end{equation*}
-	
+
 Substituting this definition into the summation within the payoff:
 \begin{equation*}
 	\sum_{i=\alpha+1}^\beta \tau_i \cdot P(T_\alpha, T_i) \left[ \frac{1}{\tau_i} \left( \frac{P(T_\alpha, T_{i-1})}{P(T_\alpha, T_i)} - 1 \right) - K \right]
 \end{equation*}
-	
+
 By distributing $P(T_\alpha, T_i)$ through the brackets, the $\tau_i$ terms cancel and the bond prices simplify:
 \begin{equation*}
 	\sum_{i=\alpha+1}^\beta \left( P(T_\alpha, T_{i-1}) - P(T_\alpha, T_i) - K \cdot \tau_i \cdot P(T_\alpha, T_i) \right)
 \end{equation*}
-	
+
 The first part of the sum, $\sum_{i=\alpha+1}^\beta (P(T_\alpha, T_{i-1}) - P(T_\alpha, T_i))$, is a telescoping series:
 \begin{equation*}
 	(P(T_\alpha, T_\alpha) - P(T_\alpha, T_{\alpha+1})) + \dots + (P(T_\alpha, T_{\beta-1}) - P(T_\alpha, T_\beta))
@@ -651,7 +654,7 @@ Since $P(T_\alpha, T_\alpha) = 1$, the sum simplifies to:
 \begin{equation*}
 	1 - P(T_\alpha, T_\beta)
 \end{equation*}
-	
+
 We define the coupon coefficients $c_k$ to account for the fixed leg payments and the final principal repayment:
 \begin{itemize}
 	\item For $k = \alpha+1, \dots, \beta-1$, let $c_k = K \tau_k$.
@@ -661,7 +664,7 @@ The expression inside the positive part operator becomes:
 \begin{equation*}
 	\left( 1 - \sum_{k=\alpha+1}^\beta c_k P(T_\alpha, T_k) \right)^+
 \end{equation*}
-	
+
 Factoring in the Notional $N$ and expressing the value at time $t$ as an expectation under the risk-neutral measure $Q$ (where $P(t, T_\alpha)$ is the discount factor to the exercise date):
 \begin{equation*}
 	\textbf{PSw} = N \cdot P(t, T_\alpha) \cdot \mathbb{E}^{Q}_t \left[ \left( 1 - \sum_{k=\alpha+1}^\beta c_k P(T_\alpha, T_k) \right)^+ \right]
@@ -669,7 +672,7 @@ Factoring in the Notional $N$ and expressing the value at time $t$ as an expecta
 \end{solution}
 
 \question \textbf{Bermudan Swaption}
-A pension fund holds a 3-year Bermuda Receiver Swaption on a 100 million notional. The strike rate is $K=4\%$.
+A pension fund holds a 3-year Bermudan Receiver Swaption on a 100 million notional. The strike rate is $K=4\%$.
 The swaption allows the holder to enter a receiver swap (receive fixed, pay floating) at $T=1$ or $T=2$. If exercised, the swap lasts until the final maturity at $T=3$.
 
 Current time is $T=0$. At $T=1$, the 2-year Swap Rate is predicted to be either 3\% or 5\% (50/50 probability). At $T=2$, the 1-year Swap Rate is predicted to be either 2\% or 6\%.
@@ -686,7 +689,7 @@ Assume a flat discount rate of $r=4\%$ for all NPV calculations.
 	\begin{parts}
 		\part Exercise at $T=1$: the holder enters a 2-year swap (for $T=1$ to $T=3$).
 		\part Exercise at $T=2$: the holder enters a 1-year swap (from $T=2$ to $T=3$).
-		In a Bermuda swaption, the "tenor" of the underlying swap decreases as time passes.
+		In a Bermudan swaption, the "tenor" of the underlying swap decreases as time passes.
 		\part The Exercise Value (EV) is the present value of the difference between the strike rate ($K$) and the market swap rate ($S$), multiplied by the annuity of the remaining swap.
 		Using the flat discount rate of $r=4\%$, $K=0.04$, $S=0.03$:
 		\begin{align*}
@@ -707,7 +710,7 @@ An investor is looking at a 3-year Callable Bond with a 5\% annual coupon and a 
 \end{itemize}
 \begin{parts}
 	\part Calculate the price of a standard (non-callable) 3-year bullet bond at $T=1$ under Scenario A.
-	\part In Scenario A, will the issuer call the bond ? Why ? What is the maximum price an investor should be willing to pay for this bond at $T=1$ in Scenario A ?
+	\part In Scenario A, will the issuer call the bond ? Why ? What is the maximum price an investor should be willing to pay for this bond at $T=1$ ?
 	\part Sketch (or describe) the price-yield relationship for this callable bond. Why does the price "flatten out" as yields drop toward 3\% ?
 \end{parts}
 
@@ -720,11 +723,17 @@ An investor is looking at a 3-year Callable Bond with a 5\% annual coupon and a 
 	The bond would trade at 103.83 if it were not callable.
 	\part The issuer will call. She is currently paying 5\% on this bond but could issue new debt at 3\%. By calling the bond at 100, they save 2\% in interest costs.
 
-	Since the investor knows the bond will be taken away at 100 at $T=1$, they will not pay 103.83. The market price will gravitate toward the Call Price (100). Maximum Price: 100 (plus any accrued interest).
+	Since the investor knows the bond will be taken away at 100 at $T=1$, they will not pay 103.83. The market price will gravitate toward the Call Price (100).
 
-	\part As yields fall, the price of a normal bond rises at an increasing rate (curving upward). However, for a callable bond, as the yield approaches the coupon rate, the price "levels off" and stays near 100.
+	\part %As yields fall, the price of a normal bond rises at an increasing rate (curving upward). However, for a callable bond, as the yield approaches the coupon rate, the price "levels off" and stays near 100.
 
-	The upside is capped by the issuer's right to call. This creates a "concave" shape in the price-yield graph.
+	%The upside is capped by the issuer's right to call. This creates a "concave" shape in the price-yield graph.
+
+	While a standard bond has positive convexity, a callable bond exhibits negative convexity when yields drop below the coupon rate.
+
+	As yields fall, the value of the issuer's embedded call option increases. Since the investor is "short" this option, the bond price decrease to offset the increasing value of the option held by the issuer.
+
+	As the yield approaches 3\% (Scenario A), the probability of the bond being called at 100 becomes almost certain. Therefore, the market will not pay much more than 100, because any premium paid would be lost immediately upon the call.
 \end{parts}
 \end{solution}
 
@@ -737,22 +746,22 @@ Calculate in details and explain the rationale of the change of measure techniqu
 	\begin{equation*}
 		V_0=\mathbb{E}^Q\left[e^{-\int_0^T r_s ds} V_T\right]
 	\end{equation*}
-		
+
 	The "problem" with this formula is that the discount factor is often a stochastic variable correlated with the payoff $V_T$. Taking the expectation of a product of two correlated random variables is mathematically difficult.
-	
+
 	By switching to the T-Forward Measure, we use the Zero-Coupon Bond $P(t,T)$ as the numeraire. Since $P(T,T)=1$ at maturity, the discounting becomes "deterministic" under this new measure, and the $P(0,T)$ term pulls out of the expectation.
-	
+
 	Let $(\Omega, \mathcal{F}, \mathbb{Q})$ be the risk-neutral probability space.
 	\begin{itemize}
 		\item \textbf{Bank Account (Numeraire $\mathbb{Q}$):} $B_t = \exp\left( \int_0^t r_s ds \right)$
 		\item \textbf{Zero-Coupon Bond (Numeraire $\mathbb{Q}^T$):} $P(t, T)$
 	\end{itemize}
-	
+
 	The density process $\zeta_t$ for the change of measure is defined by the ratio of the two numeraires:
 	\begin{equation*}
 		\zeta_t = \frac{d\mathbb{Q}}{d\mathbb{Q}^T} = \frac{B_t / B_0}{P(t, T) / P(0, T)} = \frac{P(0, T) e^{\int_0^t r_s ds}}{P(t, T)}
 	\end{equation*}
-	
+
 	The value of a generic payoff $V_T$ at time $t=0$ is given by:
 	\begin{equation*}
 		V_0 = \mathbb{E}^\mathbb{Q} \left[ \frac{V_T}{B_T} \right]
@@ -769,8 +778,24 @@ Calculate in details and explain the rationale of the change of measure techniqu
 	\begin{equation*}
 		V_0 = P(0, T) \mathbb{E}^{\mathbb{Q}^T} [ V_T ]
 	\end{equation*}
-	
+
 	Under the $T$-forward measure, the current price is simply the discounted expected value of the payoff, where the discount factor $P(0, T)$ is known at time $t=0$. This decouple the interest rate risk from the payoff risk.
+
+
+	To solve the expectation under the T-forward measure, you can find the probabilities (or the density) in this new measure, with the Girsanov Theorem to shift from the Risk-Neutral measure.
+
+	To compute the integral, you need the stochastic differential equation of your underlying asset under the new measure.
+
+	According to Girsanov's theorem, if the volatility of the bond price $P(t,T)$ is $\sigma_P$, the Brownian motion under the forward measure is related to the risk-neutral Brownian motion by:
+	\begin{equation*}
+		dW_t^T=dW_t-\sigma_P dt
+	\end{equation*}
+
+	The drift of your underlying asset will shift by an amount equal to the volatility of the new numeraire.
+
+	Once you have the new drift, you have two main paths to "get the probabilities". If the underlying asset is log-normal under $\mathbb{Q}^T$ the probability density function is simply a Log-normal distribution with the adjusted drift.
+	Otherwise you simulate the paths of the asset using the drift corrected for the T-forward measure with Monte Carlo simulations.
+
 \end{solution}
 
 
@@ -781,14 +806,14 @@ Consider a contract paying at time $T=4$ the 4$^{th}$ power of the forward rate 
 	\part Solve the following pricing problem, discussing the role of hypotheses (and tools needed and used) under which you are
 	working, on a unit notional:
 	\begin{equation*}
-		\text{Price}(0;L(3;4);K) = \mathbb{E}^Q\left[D(0;4)\max(F^4(3;3;4)+K,0)\right]		
+		\text{Price}(0;L(3;4);K) = \mathbb{E}^Q\left[D(0;4)\max(F^4(3;3;4)+K,0)\right]
 	\end{equation*}
-	with 
+	with
 	\begin{equation*}
-		dF(t;3;4) = \sigma F(t;3;4)dW^{Q^4}
+		dF(t;3;4) = \sigma F(t;3;4)dW^{T^4}
 	\end{equation*}
 	\part Does the price depend on volatility? If the answer is yes, where would you get an estimate of $\sigma$ ?
-	\part At which point of time $\sigma = 0$ in this contract ?
+	\part At which point in time $\sigma = 0$ in this contract ?
 	\part Discuss how this pricing problem would change if the payment would be at time 3 instead of 4 (so there is a \ldots time
 	lag)
 \end{parts}
@@ -808,13 +833,15 @@ Consider a contract paying at time $T=4$ the 4$^{th}$ power of the forward rate 
 			\mathbb{E}^{\mathbb{Q}^4}[F(3)^4] = F(0)^4 \exp\left( \frac{4(4-1)}{2} \sigma^2 \cdot 3 \right) = F(0)^4 e^{18\sigma^2}
 		\end{equation*}
 		\textbf{Final Price:} $P(0,4) [F(0)^4 e^{18\sigma^2} + K]$.
-		\part \textbf{Does it depend on volatility?} Yes. The convexity of the $F^4$ function means higher volatility increases the expected value (Jensen's Inequality). \textbf{Source of $\sigma$:} One would calibrate $\sigma$ to the \textbf{Caplet Market}, specifically the implied volatility of a caplet with maturity $T=3$.
-		\part The uncertainty vanishes at \textbf{$t=3$}. At this point, the forward rate $F(3,3,4)$ is fixed (determined by the market). From $t=3$ to $t=4$, the payoff is a known constant, and its present value only changes due to the deterministic pull-to-par of the discount bond.		
-		\part If paid at $T=3$, the numeraire changes to $P(t,3)$. Under $\mathbb{Q}^3$, $F(t)$ is no longer a martingale. Using the Radon-Nikodym derivative $\frac{d\mathbb{Q}^3}{d\mathbb{Q}^4} = \frac{P(0,4)}{P(0,3)}(1+\tau F(t))$, Girsanov's Theorem yields a drift:
+		\part \textbf{Does it depend on volatility?} Yes. The convexity of the $F^4$ function means higher volatility increases the expected value.
+
+		One would calibrate $\sigma$ to the \textbf{Caplet Market}, specifically the implied volatility of a caplet with maturity $T=3$.
+		\part The uncertainty vanishes at \textbf{$t=3$}. At this point, the forward rate $F(3,3,4)$ is fixed (determined by the market). From $t=3$ to $t=4$, the payoff is a known constant, and its present value only changes due to the deterministic discount factor.
+		\part If paid at $T=3$, the numeraire changes to $P(t,3)$. Under $\mathbb{Q}^3$, $F(t)$ is no longer a martingale. Using the Radon-Nikodym derivative $\frac{d\mathbb{Q}^3}{d\mathbb{Q}^4} = \frac{P(0,4)}{P(0,3)}(1+\tau F(t))$, the Girsanov's Theorem yields a drift:
 		\begin{equation*}
 			dF(t) = \frac{\tau \sigma^2 F(t)^2}{1 + \tau F(t)} dt + \sigma F(t) dW_t^{\mathbb{Q}^3}
 		\end{equation*}
-		This introduces a \textbf{convexity adjustment}. The expected value under $\mathbb{Q}^3$ will be higher than under $\mathbb{Q}^4$ because of the positive correlation between the rate and the relative value of the $T=3$ bond.
+		This introduces a \textbf{convexity adjustment}. %The expected value under $\mathbb{Q}^3$ will be higher than under $\mathbb{Q}^4$ because of the positive correlation between the rate and the relative value of the $T=3$ bond.
 	\end{parts}
 \end{solution}
 
@@ -822,32 +849,31 @@ Consider a contract paying at time $T=4$ the 4$^{th}$ power of the forward rate 
 \begin{parts}
 	\part Discuss the change of measure technique and provide an example of a possible application in option pricing theory
 	\part Describe the Libor market model and explain is relation with Black Formula.
-	\part Specify under which measure is the forward rate $F(0;15;16)$ a martingale in the multicurve model.
+	%\part Specify under which measure is the forward rate $F(0;15;16)$ a martingale in the multicurve model.
 	%\part For some combinations of the parameters, the SABR implied volatility approximation displays the so-called “smile shape”, that is a dependence from the strike of the option. What are the implications for Delta-hedging and Vega-hedging European options ?
 	%\part When the volatility smile is parametrized according to the SABR model, we can quantify the exposure (and therefore devise an hedging strategy) to the risks of non-parallel movements of the volatility curve. Describe intuitively these risks.
-	\part What is the mathematical relation between a discount factor $P(t;T)$ and the short-rate $r(t)$? The entire derivation is not needed,
-but provide $P(t;T) = f (r(t))$ considering both the cases where $r(t)$ is a generic deterministic function of time and where $r(t)$ is
+	\part What is the mathematical relation between a discount factor $P(t;T)$ and the short-rate $r(t)$? The entire derivation is not needed, but provide $P(t;T) = f (r(t))$ considering both the cases where $r(t)$ is a generic deterministic function of time and where $r(t)$ is
 a random variable (possibly described by a stochastic process).
-	\part We discussed the opportunity of hedging forward contracts by means of spot contracts with the same underlying. Is there any
+	\part Imagine the opportunity of hedging forward contracts by means of spot contracts with the same underlying. Is there any
 need to rebalance the hedging portfolio once it has been set up?
-	\part How can we obtain the parameters of the drift of a stochastic volatility process? What is going to happen to the
-replicating portfolio if the functional form of the stochastic volatility process is misspecified?
+	%\part How can we obtain the parameters of the drift of a stochastic volatility process? What is going to happen to thevreplicating portfolio if the functional form of the stochastic volatility process is misspecified?
 \end{parts}
 
 \begin{solution}
 	\begin{parts}
-		\part The Change of Measure technique allows us to shift the drift of a stochastic process to make a specific asset-numeraire ratio a martingale. 
+		\part The Change of Measure technique allows us to shift the drift of a stochastic process to make a specific asset-numeraire ratio a martingale.
+
 		\textbf{Example:} in pricing a European Call option, we move from the Risk-Neutral Measure $\mathbb{Q}$ (numeraire: Bank Account $B_t$) to the $T$-Forward Measure $\mathbb{Q}^T$ (numeraire: Bond $P(t,T)$). This simplifies the calculation by removing the correlation between the stochastic interest rate and the stock price, as the exercise probability becomes the "forward" exercise probability.
 		\part The LMM models the evolution of a set of forward rates $F_j(t)$. Under the $(T_{j+1})$-forward measure, the forward LIBOR $F_j(t)$ is a martingale with zero drift. If volatility is deterministic, the LMM price for a caplet reduces exactly to the \textbf{Black Formula}. Thus, LMM provides a theoretical justification for using Black's formula across an entire term structure.
-		\part In a multi-curve framework, the forward rate $F(t; 15, 16)$ is a martingale under the T=16 Forward Measure ($\mathbb{Q}^{16}$) associated with the \textbf{discount curve} numeraire $P(t, 16)$. Note that the forward rate is derived from a "forwarding curve" but must be a martingale under the "discounting" measure to prevent arbitrage.
-%		
+		%\part In a multi-curve framework, the forward rate $F(t; 15, 16)$ is a martingale under the T=16 Forward Measure ($\mathbb{Q}^{16}$) associated with the \textbf{discount curve} numeraire $P(t, 16)$. Note that the forward rate is derived from a "forwarding curve" but must be a martingale under the "discounting" measure to prevent arbitrage.
+%
 %		\subsection*{4. SABR Smile: Delta and Vega Hedging}
 %		The "smile" implies that volatility $\sigma$ is a function of the strike $K$ and the underlying $F$.
 %		\begin{itemize}
 %			\item \textbf{Delta Hedging:} You must use the \textit{SABR Delta}, which includes the "sticky-delta" or "sticky-sigma" adjustments. It accounts for how the smile shifts as the underlying moves ($\frac{\partial \text{Vol}}{\partial \text{Underlying}}$).
 %			\item \textbf{Vega Hedging:} Vega is no longer a single number; you must hedge against the \textit{at-the-money} vol and the \textit{skew/smile} curvature.
 %		\end{itemize}
-%		
+%
 %		\subsection*{5. Non-parallel Volatility Risks}
 %		SABR identifies risks beyond just a parallel shift in vol (Vega):
 %		\begin{itemize}
@@ -859,12 +885,30 @@ replicating portfolio if the functional form of the stochastic volatility proces
 			\item \textbf{Deterministic:} $P(t,T) = \exp\left( -\int_t^T r(s) ds \right)$
 			\item \textbf{Stochastic:} $P(t,T) = \mathbb{E}^{\mathbb{Q}} \left[ \exp\left( -\int_t^T r(s) ds \right) \mid \mathcal{F}_t \right]$
 		\end{itemize}
-		\part \textbf{Yes}, there is a need to rebalance. Even if the underlying is the same, the \textit{basis} between the spot and forward (the cost of carry/interest rates) is stochastic. Furthermore, the Delta of the forward contract relative to the spot remains 1, but the \textit{discounting} of the payoff changes over time, requiring periodic adjustment to stay "delta neutral" in present value terms.
-		\part 
-		\begin{itemize}
-			\item \textbf{Estimation:} Drift parameters of stochastic vol (like mean reversion speed) are obtained via \textbf{historical estimation} (Time Series) or \textbf{calibration} to the prices of exotic options (VIX options or Barrier options).
-			\item \textbf{Misspecification:} If the functional form is wrong, the replicating portfolio will accumulate a "hedging error" or "leakage." You will find that your Delta-hedged gains/losses do not sum to zero, as the realized variance will differ systematically from the model-predicted variance.
-		\end{itemize}
+		\part \textbf{Yes}, there is a need to rebalance. Even if the underlying is the same, the \textit{basis} between the spot and forward is stochastic. Furthermore, the Delta of the forward contract relative to the spot remains 1, but the \textit{discounting} of the payoff changes over time, requiring periodic adjustment to stay "delta neutral" in present value terms.
+
+		Assuming a constant risk-free rate $r$ and no dividends for simplicity, the forward price $F(t,T)$ at time $t$ for delivery at $T$ is:
+		\begin{equation*}
+			F(t,T)=S_t e^{r(T-t)}
+		\end{equation*}
+
+		The value of a long forward contract $V_t$ (with strike $K$) is:
+		\begin{equation*}
+			V_t=e^{-r(T-t)}(F(t,T)-K)=S_t-K e^{-r(T-t)}
+		\end{equation*}
+
+		If you calculate the Delta of the contract value $V_t$ with respect to the spot price $S_t$ it results 1. This suggests a "static" hedge (buy 1 unit of spot to hedge 1 forward).
+
+		However, this is where the rebalancing becomes necessary due to two factors: if interest rates $r$ are not constant $
+		\frac{\partial V_t}{\partial r}=K(T-t)e^{-r(T-t)}$.
+		As time $t$ passes or rates fluctuate, the present value of the strike $K$ changes. To remain truly "delta-neutral" in a world where $r$ is a stochastic process, you must account for the fact that the spot price and the bond price $P(t,T)$ move differently.
+		Also , even with constant $r$, if you hedge a forward by buying the spot, you have to finance that spot purchase.
+		You borrow $S_t$ to buy the asset. Over time $dt$, your debt grows at the rate $r$, but your forward contract's sensitivity to the spot remains 1.
+		%\part
+		%\begin{itemize}
+			%\item \textbf{Estimation:} Drift parameters of stochastic vol (like mean reversion speed) are obtained via \textbf{historical estimation} (Time Series) or \textbf{calibration} to the prices of exotic options (VIX options or Barrier options).
+			%\item \textbf{Misspecification:} If the functional form is wrong, the replicating portfolio will accumulate a "hedging error" or "leakage." You will find that your Delta-hedged gains/losses do not sum to zero, as the realized variance will differ systematically from the model-predicted variance.
+		%\end{itemize}
 	\end{parts}
 \end{solution}
 
