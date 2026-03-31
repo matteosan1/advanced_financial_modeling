@@ -57,9 +57,14 @@ Suppose you are in a market with one underlying stock and two different risk-neu
 
 \begin{solution}
 \begin{parts}
-\part No. According to the Second Fundamental Theorem of Asset Pricing, a market is complete if and only if there is a unique risk-neutral measure $\mathbb{Q}$. Since we have two measures ($\mathbb{Q}^1$ and $\mathbb{Q}^2$), the market is incomplete.
-\part There is no single "fair" price. In a complete market, you can perfectly replicate the option with a portfolio of the stock and a bond. In an incomplete market, you cannot perfectly replicate it. Therefore, the price is not uniquely determined by the underlying. There exists a range of arbitrage-free prices: any price between $\mathbb{E}^{\mathbb{Q}^1}[payoff]$ and $\mathbb{E}^{\mathbb{Q}^2}[payoff]$ could technically be valid.
-\part This highlights that "No Arbitrage" (First Theorem) only ensures that at least one $\mathbb{Q}$ exists. It doesn't guarantee there is only one. Incompleteness usually arises because there are more sources of randomness (e.g., jumps or stochastic volatility) than there are assets to trade.
+\part No, the market is incomplete. According to the Second Fundamental Theorem of Asset Pricing, a market is complete if and only if there exists a unique equivalent martingale measure (EMM). The existence of two distinct risk-neutral measures $\mathbb{Q}^1$ and $\mathbb{Q}^2$ implies that any convex combination $\mathbb{Q}^\lambda=\lambda \mathbb{Q}^1+(1-\lambda)\mathbb{Q}^2 (\text{for } \lambda\in[0,1])$ is also a valid risk-neutral measure. Therefore, there are infinitely many such measures, which is the hallmark of an incomplete market where not every contingent claim can be perfectly replicated.
+\part In an incomplete market, there is no unique "fair" price determined by replication (arbitrage). Instead, there is an interval of arbitrage-free prices. Any price $C$ within this range is consistent with the absence of arbitrage. Because we cannot perfectly hedge the option using only the underlying stock and a bond, the "price" depends on the specific measure (or utility function) chosen by the market.
+\part This relates to the Harrison-Pliska framework, which formalizes the two Fundamental Theorems of Asset Pricing: the existence of at least one risk-neutral measure $\mathbb{Q}$ is equivalent to the absence of arbitrage. Here, since both $\mathbb{Q}^1$ and $\mathbb{Q}^2$ exist, the market is arbitrage-free.
+
+The uniqueness of that measure is equivalent to market completeness. Since uniqueness fails here, the Harrison-Pliska result tells us that there are unattainable payoffs—claims that cannot be synthesized by a trading strategy.
+
+In practical terms, this usually means the "filtration" (the information flow) contains more "shocks" (sources of uncertainty) than there are tradable assets to neutralize them.
+
 \end{parts}
 \end{solution}
 
@@ -93,7 +98,7 @@ Substituting these into the expression (recalling that $(dW_t)^2 = dt$):
 \begin{equation*}
 	dY_t = Y_t \left( \frac{(\ln 2)^2}{2} dt + (\ln 2) dW_t \right)
 \end{equation*}
-For a process to be a martingale, the drift ($dt$) term must be zero. Since $\frac{(\ln 2)^2}{2} \neq 0$, the process \textbf{is not a martingale}. (Specifically, it is a submartingale).
+For a process to be a martingale, the drift ($dt$) term must be zero. Since $\frac{(\ln 2)^2}{2} \neq 0$, the process \textbf{is not a martingale}.
 
 \vspace{1em}
 
@@ -123,81 +128,38 @@ Exponentiating both sides yields the final solution:
 \end{solution}
 
 \question \textbf{The Expectation Paradox} \\
-In a stochastic interest rate world, is it true that
-\begin{equation*}
-	P(t,T)=\mathbb{E}^{\mathbb{Q}}\left[ \frac{1}{e^{\int_t^T r_s ds}} |\mathcal{F}_t \right] ?
-\end{equation*}
+In a stochastic interest rate framework prove that the price of a Zero-Coupon Bond $P(t,T)$ is strictly greater than the exponential of the expected integrated short rate.
+Explain the financial intuition behind this 'paradox' and its implications for convexity adjustments."
+
 \textbf{Hint}: use Jensen's inequality
 
 \begin{solution}
-The risk-neutral pricing formula states that the price of a Zero-Coupon Bond (ZCB) is:
+Under the risk-neutral measure $\mathbb{Q}$ (with the bank account as numeraire), the bond price is the expectation of the discount factor:
+
 \begin{equation*}
 	P(t,T) = \mathbb{E}^{\mathbb{Q}}\left[ e^{-\int_t^T r_s ds} \middle| \mathcal{F}_t \right]
 \end{equation*}
-This expression is \textbf{true} by the definition of the risk-neutral measure $\mathbb{Q}$, where the money market account $B_t = e^{\int_0^t r_s ds}$ is the numeraire.
 
-To explore the paradox, consider the function $f(x) = e^{-x}$. This function is \textcolor{red}{strictly convex} because $f''(x) = e^{-x} > 0$.
+By identifying $f(x)=e^{-x}$ as a strictly convex function ($f''(x)>0$), and using Jensen's Inequality (\emph{"for a convex function, the "expectation of the function" is greater than the "function of the expectation"}):
 
-By \textbf{Jensen's Inequality}, for any convex function $f$ and random variable $X$:
 \begin{equation*}
-	f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)]
+\mathbb{E}[f(X)]\geq f(\mathbb{E}[X]) \implies \mathbb{E}^Q[e^{-X}]>e^{-\mathbb{E}^Q[X]}
 \end{equation*}
+with $X=\int_t^T r_s ds$ you can prove that the Bond Price is higher than the price you would get if you simply "plugged in" the average interest rate path.
 
-Let $X = \int_t^T r_s ds$. Applying the inequality to the bond price formula:
-\begin{equation*}
-	\underbrace{\exp\left( -\mathbb{E}^{\mathbb{Q}}\left[ \int_t^T r_s ds \middle| \mathcal{F}_t \right] \right)}_{\text{Function of Expectation}} < \underbrace{\mathbb{E}^{\mathbb{Q}}\left[ e^{-\int_t^T r_s ds} \middle| \mathcal{F}_t \right]}_{\text{Bond Price } P(t,T)}
-\end{equation*}
+Intuitively, we expect the "average" outcome of the rates to dictate the "average" price. However, a standard bond price-yield curve is not a straight line; it is "bowed" toward the origin. Because the function $f(r)=e^{-rT}$ is convex: when rates fall the price increases at an accelerating rate, when rates rise the price decreases at a decelerating rate.
 
-The actual bond price $P(t,T)$ is higher than the price calculated by simply using the expected average path of interest rates.
+Imagine a Zero-Coupon Bond with a current yield of 5\%. Suppose there is volatility in the market, and there is a 50/50 chance that rates will either move up to 7\% or down to 3\%.
 
-Due to the \textcolor{red}{convexity} of the bond price-yield relationship, volatility in interest rates increases the bond's value. This is why "Convexity Adjustments" are required when moving between different interest rate products (like Eurodollar futures vs. FRAs).
+Rates stay at 5\%: $P=e^{-0.05\cdot 10}\approx 60.65$
 
-The "paradox" is a psychological and linguistic one rather than a mathematical error. It arises because our intuition often tricks us into thinking that the average price should be determined by the average rate.
-%
-%Here is why it is called a paradox in a classroom or trading floor setting:
-%1. The Intuition Trap
-%
-%If you ask a student: "If the expected average interest rate for the next year is 5%, what is the bond price?"
-%Most will answer: $e^{-0.05\cdot 1}$.
-%
-%But as you proved using Jensen's Inequality: $P(t,T)>e^{-\mathbb{E}[r]}$.
-%
-%
-%The "Paradox" is that the bond is more expensive than the "average" interest rate suggests. Even if your forecast of the interest rate is perfectly correct on average, your bond price calculation will be wrong (too low) if you ignore volatility.
-%2. The Jensen's Gap
-%
-%The paradox is essentially the existence of the Convexity Bias.
-%
-%If rates go down by 1%, the bond price rises by, say, $1.10.
-%
-%If rates go up by 1%, the bond price falls by only $0.90.
-%
-%Net result: If rates are volatile but stay at 5% on average, the bond price keeps gaining value from the swings.
-%
-%3. The Practical Paradox: Futures vs. Forwards
-%
-%This paradox has a multi-billion dollar consequence in the markets known as the Futures-Forward Basis.
-%
-%A Forward Rate Agreement (FRA) is priced directly off the expectation.
-%
-%A Eurodollar Future is "marked-to-market" daily.
-%
-%Because of the convexity paradox, the Futures rate is always higher than the Forward rate for the same period. If a trader forgets this "paradox" and treats them as equal, they will lose money on every trade because they haven't accounted for the Convexity Adjustment.
-%In summary, the paradox is:
-%
-%"To get the right price, you must use the wrong rate (an adjusted one), because the 'correct' expected rate gives you a price that is too low."
-%
-%Consider a ZCB where the rate $r$ is $5\%$ on average, but volatile ($0\%$ or $10\%$ with $p=0.5$).
-%\begin{itemize}
-%	\item \textbf{Naive Price} (using average rate):
-%	$e^{-0.05} = 0.9512$
-%	\item \textbf{Market Price} (average of prices):
-%	$0.5(e^{-0.10}) + 0.5(e^{0}) = 0.9524$
-%\end{itemize}
-%
-%The bond is \textbf{more expensive} than the average rate implies.
-%In markets, this is the \textcolor{red}{Convexity Bias}.
-%To price correctly, we must subtract a \textit{convexity adjustment} from the expected future rate.
+Rates are volatile $P = (e^{-0.03\cdot10} + e^{-0.07\cdot10})/2 \approx 61.87$
+
+The "Volatile" price is higher than the "Stable" price (60.65).
+The gain from the rate drop is larger than the loss from the rate rise. This "net gain" is the value added by volatility.
+
+In stochastic calculus, use Ito's Lemma to the Bond Price as a function of the integrated short rate to show this more formally. If the short rate follows a process like $dr_t=\mu dt+\sigma dW_t$, the price of the bond $P$ will have a "drift" term that includes $\frac{1}{2}\sigma^2\frac{\partial^2 P}{\partial r^2}$.
+Since there is a positive convexity, the higher the volatility, the higher the expected value of the bond.
 \end{solution}
 
 \question \textbf{Forward Rate Agreement} \\
@@ -206,14 +168,13 @@ Suppose we have a $1\times 4$ FRA with a notional principal of €1 million.  At
 \begin{solution}
 Using the standard FRA settlement formula:
 \begin{equation*}
-	\text{Value} = N \times \frac{(L - K) \times \tau}{1 + L \times \tau}
+	\text{Value} = N \times \frac{(L - K) \times \tau}{1 + L \times \tau} = 1,231.53
 \end{equation*}
-Where $\tau = \frac{90}{360} = 0.25$.
-\begin{enumerate}
-	\item \textbf{Interest Difference:} $1,000,000 \times (0.06 - 0.055) \times 0.25 = 1,250$
-	\item \textbf{Discounting to Settlement:} $\frac{1,250}{1 + (0.06 \times 0.25)} = \frac{1,250}{1.015}$
-	\item \textbf{Final Value:} \boxed{1,231.53}
-\end{enumerate}
+where $\tau = \frac{90}{360} = 0.25$.
+\begin{itemize}
+	\item numerator: $1,000,000 \times (0.06 - 0.055) \times 0.25 = 1,250$
+	\item discounting: $\frac{1,250}{1 + (0.06 \times 0.25)} = \frac{1,250}{1.015}$
+\end{itemize}
 The long position (the buyer) receives this amount because the market rate ($6\%$) is higher than the contract rate ($5.5\%$).
 \end{solution}
 
@@ -225,39 +186,39 @@ The 1-year spot rate on US treasury bonds is 9\%, the 2-year spot rate is 9.5\% 
 \end{parts}
 
 \begin{solution}
-To solve this exercise, we use the no-arbitrage relationship between spot rates ($s_n$) and forward rates ($F(0;m,n)$). We assume annual discrete compounding for the US Treasury bonds.
+To solve this exercise, we use the no-arbitrage relationship between spot rates ($L_n$) and forward rates ($F(0;m,n)$). We assume annual discrete compounding for the US Treasury bonds.
 \begin{parts}
-	\part The relationship between the 1-year spot rate ($s_1$=9\%), the 2-year spot rate ($s_2$=9.5\%), and the forward rate is:
+	\part The relationship between the 1-year spot rate ($L_1$=9\%), the 2-year spot rate ($L_2$=9.5\%), and the forward rate is:
 	\begin{equation*}
-		(1+s_2)^2=(1+s_1)^1\cdot (1+F(0;1,2))
+		(1+L_2)^2=(1+L_1)^1\cdot (1+F(0;1,2))
 	\end{equation*}
 
 	Solving for $F(0;1,2)$:
 	\begin{gather*}
-		1+F(0;1,2)=\frac{(1+s_2)^2}{(1+s_1)}=\frac{(1+0.095)^2}{(1+0.09)}=\frac{1.199025}{1.09}\approx 1.100023 \\
+		1+F(0;1,2)=\frac{(1+L_2)^2}{(1+L_1)}=\frac{(1+0.095)^2}{(1+0.09)}=\frac{1.199025}{1.09}\approx 1.100023 \\
 		F(0;1,2)\approx 10.0023\%
 	\end{gather*}
 
 	The implied forward rate of about 10\% is the only rate consistent with the current spot rates that prevents arbitrage.
-	If the market forward rate were 9.6\%, it would be "too low" compared to the synthetic forward rate derived from the spot market.
-	An arbitrageur could synthesize a loan to "lend" at the higher implied rate (10\%) and "borrow" at the lower market forward rate (9.6\%). Specifically, one could sell a 1-year bond and buy a 2-year bond (creating a synthetic lending at 10\% for the second year) while simultaneously entering a forward contract to borrow at 9.6\%. This would lock in a risk-free profit. In an efficient market, such opportunities are eliminated by trading, forcing the forward rate to equal the implied rate.
+	If the market forward rate were, say, 9.6\%, it would be "too low" compared to the value derived from the spot market.
+	One could sell a 1-year bond and buy a 2-year bond (creating a synthetic lending at 10\% for the second year) while simultaneously entering a forward contract to borrow at 9.6\%. This would lock in a risk-free profit. In an efficient market, such opportunities are eliminated by trading, forcing the forward rate to equal the implied rate.
 
 	\part This is the 1-year forward rate starting 2 years from now. The formula is:
 	\begin{gather*}
-		(1+s_3)^3=(1+s_2)^2\cdot (1+F(0;2,3)) \\
-		1+F(0;2,3)=\frac{(1+s_3)^3}{(1+s_2)^2}=\frac{1.10^3}{1.095^2}=1\frac{1.331}{1.199025}\approx 1.110069 \\
+		(1+L_3)^3=(1+L_2)^2\cdot (1+F(0;2,3)) \\
+		1+F(0;2,3)=\frac{(1+L_3)^3}{(1+L_2)^2}=\frac{1.10^3}{1.095^2}=1\frac{1.331}{1.199025}\approx 1.110069 \\
 		F(0;2,3) \approx 11.0069\%
 	\end{gather*}
 
 	This is the annualized 2-year forward rate starting 1 year from now. The formula is:
 	\begin{gather*}
-		(1+s_3)^3=(1+s_1)^1\cdot (1+F(0;1,3))^2 \\
+		(1+L_3)^3=(1+L_1)^1\cdot (1+F(0;1,3))^2 \\
 		1+F(0;1,3)^2=1\frac{1.331}{1.091}\approx 1.221101 \\
 		F(0;1,3)=\sqrt{1.221101-1} \approx 1.105034
 		F(0;1,3) \approx 10.5034\%
 	\end{gather*}
 
-	There is a geometric link. The total return of an investment from year 1 to year 3 can be viewed as one 2-year period or two consecutive 1-year periods:
+	The total return of an investment from year 1 to year 3 can be viewed as one 2-year period or two consecutive 1-year periods:
 	\begin{equation*}
 		(1+F(0;1,3))^2=(1+F(0;1,2))\cdot(1+F(0;2,3))
 	\end{equation*}
@@ -267,24 +228,28 @@ To solve this exercise, we use the no-arbitrage relationship between spot rates 
 \end{solution}
 
 \question \textbf{Forward Rate Agreement} \\
-If the yield curve is upward sloping, will the FRA rate $K$ be higher or lower than the current 6-month EURIBOR ?
+If the yield curve is upward sloping, will the 6M FRA rate $K$ be higher or lower than the current 6-month EURIBOR ?
 
 The value of a FRA at time $t$ can be expresses as $V_t=N\tau P(t, T_2)[F(t;T_1, T_2)-K]$. Given that the stochastic bank account $B_t$ is the numeraire for the risk-neutral measure $\mathbb{Q}$, explain why it no longer appears explicitly in this valuation formula. What does this "disappearance" imply about the relationship between FRAs and the replication of interest rate risk ?
 
 \begin{solution}
-In a market characterized by an upward-sloping yield curve, the FRA rate $K$ (which is the forward rate $F(t; T_1, T_2)$ will be higher than the current spot 6-month EURIBOR. This is due to the term structure of interest rates: when the curve is normal (upward-sloping), the market anticipates higher future short-term rates or demands a liquidity premium for longer-dated maturities. Consequently, the discount factor $P(0, T_2)$ decays more rapidly than $P(0, T_1)$, resulting in a forward rate that sits above the current spot rate.
+In a market characterized by an upward-sloping yield curve, the FRA rate $K$ (which is the forward rate $F(t; T_1, T_2)$ will be higher than the current spot 6-month EURIBOR. When the curve is normal (upward-sloping), the market anticipates higher future short-term rates.
 
 The fact that $B_t$ vanishes from the final expression is not just an algebraic convenience; it carries three fundamental messages in financial engineering:
+
 \begin{itemize}
-	\item The disappearance of $B_t$ proves that a FRA is a linear instrument that can be perfectly replicated using only traded bonds ($P(t,T_1)$ and $P(t,T_2)$). Since the bank account $B_t$ represents the "path-dependent" cost of rolling over overnight financing, its absence shows that the value of a FRA depends only on the endpoints ($T_1$ and $T_2$) and not on the specific path interest rates take in between.
-	\item In the starting formula, $B_{T_2}$ is a stochastic variable, i.e. we don't know what the bank account value will be in the future. By simplifying the expression, we move from a probabilistic world (expectations of unknown paths) to a market-price world (observed bond prices). This allows a trader to mark-to-market a position using only the current yield curve without needing a complex volatility model (like Vasicek or Hull-White).
-	\item The disappearance of $B_t$ is the "smoking gun" that suggests the existence of the Forward Measure. In the Risk-Neutral measure, we discount by $B_t$, which is stochastic and correlated with the interest rates in the payoff. This correlation makes the expectation hard to compute. The disappearance tells us that there exists a specific "coordinate system" (the T-Forward Measure) where the bond price $P(t,T)$ acts as the discount factor, effectively "absorbing" the randomness of the interest rates.
-	\item Mathematically, $B_t$ disappears because the FRA payoff is linear. If you were valuing an Interest Rate Caplet (which is a call option on the rate), $B_t$ would not disappear so easily. It would remain "trapped" inside the expectation, requiring a volatility adjustment. The disappearance is the mathematical proof that FRAs have zero convexity bias relative to the forward curve.
+	\item A FRA is a linear instrument that can be perfectly replicated using only traded bonds ($P(t,T_1)$ and $P(t,T_2)$):
+	\begin{equation*}
+	\textbf{FRA} = N[K\tau P(t, S) + P(t, S) - P(t, T)]
+	\end{equation*}
+	 Since $B_t$ is the "path-dependent" cost, FRA's depend only on the endpoints ($T_1$ and $T_2$) and not on the specific path interest rates take in between.
+	\item $B_{T}$ is a stochastic variable; by simplifying the expression, we move from a probabilistic world (expectations of unknown paths) to a market-price world (observed bond prices). This allows a trader to mark-to-market a position using only the current yield curve without needing an interest rate model.
+	\item The disappearance of $B_t$ is the "smoking gun" that suggests the existence of the Forward Measure. In the Risk-Neutral measure, we discount by $B_t$ which is stochastic and correlated with the interest rates in the payoff. This correlation makes the expectation hard to compute. The disappearance tells us that there exists a specific "coordinate system" (the T-Forward Measure) where the bond price $P(t,T)$ acts as the discount factor, effectively "absorbing" the randomness of the interest rates.
 \end{itemize}
 \end{solution}
 
 \question \textbf{Forward Rate Agreement} \\
-Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interest payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. Assume that interest rates are continuously compounded. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A. Determine the value of the swap using the relationship between interest rate swap and FRA.
+Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interests payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A.
 
 Which of the following strategies is (are) appropriate ?
 \begin{itemize}
@@ -299,17 +264,19 @@ Company A is a Receiver, meaning they receive 8\% Fixed and pay 6-month LIBOR.
 
 The swap expires in 1.25 years (15 months). Since payments are every 6 months, the payment dates relative to today ($t=0$) are: $T_1=0.25$ years (3 months), $T_2=0.75$ years (9 months) and $T_3=1.25$ years (15 months).
 
-Using continuous compounding $P(0,T)=e^{-rT}$: $P(0,0.25)=e^{-0.10\cdot 0.25}\approx 0.9753$, $P(0,0.75)=e^{-0.105\cdot 0.75}\approx 0.9243$ and $P(0,1.25)=e^{-0.11\cdot 1.25}\approx 0.8715$.
+Discounting results to be: $P(0,0.25)\approx 0.9753$, $P(0,0.75)\approx 0.9243$ and $P(0,1.25)\approx 0.8715$.
 
-The fixed rate is $K=8\%$. Payments are semi-annual, so $\tau=0.5$.
+$K=8\%$, $\tau=0.5$
 \begin{equation*}
-\text{Fixed Leg Value} = K\cdot A = 100\cdot 0.5\cdot 0.08\cdot (0.9753+0.9243+0.8715) = \$11.0844 M
+\text{Fixed Leg Value} = NK\cdot A = 100\cdot 0.5\cdot 0.08\cdot (0.9764+0.9278+0.8777) = 11.0844 M
 \end{equation*}
 
-The floating leg instead has a first payment $T_1$ this rate was already "fixed" 3.75 months ago (the current LIBOR of 10.2\%) so Flow1$= N\tau 0.102\cdot 0.9753 = \$4.9740 M$.
-For the second and third payments we use the implied Forward Rates: $N[P(0,T_1)-P(0,T_3)] = 100\cdot (0.9753-0.8715)=\$10.38 M$.
+The floating leg instead has a first payment $T_1$ this rate was already "fixed" 3.75 months ago (the current LIBOR of 10.2\%) so Flow1$= N\tau 0.102\cdot 0.9753 = \$4.974 M$.
+In the single-curve framework, a floating rate bond is worth par (100) immediately after a payment.
 
-The total Swap Value to Company A $\text{Fixed Leg}-\text{Floating Leg} = 11.0844-(4.9740+10.38)=11.0844-15.354=-\$4.2696 M$
+For the second and third payments we use the implied Forward Rates: $N[P(0,T_1)-P(0,T_3)] = 100\cdot (0.9753-0.8715)=\$10.38M$.
+
+The total Swap Value to Company A $\text{Fixed Leg}-\text{Floating Leg} = 11.0844-(4.974+10.38)=-\$4.2696 M$
 
 Which strategies are appropriate?
 \begin{itemize}
@@ -339,7 +306,7 @@ Calculate:
 \begin{equation*}
 A_{0,2}= \sum_{i=1}^2 \tau_i P(0,T_i) = A_{0,2}=(1.0\cdot 0.9850)+(1.0\cdot 0.9600)=1.9450
 \end{equation*}
-	\part Using the model-independent formula derived in your slides:
+	\part The swap-rate is:
 	$S_{0,2}=\frac{[P(0,T_0)-P(0,T_2)]}{A_{0,2}}$.
 	Since we are at $t=T_0$, $P(0,T_0)=1$.
 \begin{equation*}
@@ -366,8 +333,8 @@ The result match the previously calculated value. The rationale is that the swap
 \end{solution}
 
 \question \textbf{Swap Curve} \\
-If the 10-year Swap Rate is 3\% and the 10-year Government Bond yield is 2.5\%, what is the Swap Spread ?
-If the market enters a financial crisis and bank credit risk increases, what do you expect to happen to this spread ?
+If the 10-year Swap Rate is 3\% and the 10-year Government Bond yield is 2.5\%, how much is the Swap Spread ?
+If the market enters a financial crisis what do you expect to happen to this spread ?
 
 \begin{solution}
 The spread is 50 bps. In a crisis, the spread usually widens because the risk of banks (swap counterparties) increases relative to the government.
@@ -399,10 +366,8 @@ The spread is 50 bps. In a crisis, the spread usually widens because the risk of
 	\end{equation*}
 
 	If $s$ increases (all else being equal), the Risky Price $P(t)$ must decrease.
-	An increasing spread indicates a deterioration in credit quality expectations. The market is demanding a higher premium to hold the issuer's debt because the perceived probability of default has risen or the liquidity of the bond has dried up.
-	\part First, we need to determine what the bond would be worth if we discounted its cash flows at the 10-year swap rate (0.44\%).
-
-	Since the coupon (0.5\%) is slightly higher than the swap rate (0.44\%), the bond should trade at a premium over par in the risk-free world. Using the annuity approximation:
+	An increasing spread indicates a deterioration in credit quality expectations. The market is demanding a higher premium to hold the issuer's debt because the perceived probability of default has risen.
+	\part Since the coupon (0.5\%) is slightly higher than the swap rate (0.44\%), the bond should trade at a premium over par in the risk-free world
 	\begin{equation*}
 	\text{RiskFree}=Par+(C-S)\cdot A = 100+(0.5\%-0.44\%)\cdot 10 = 100.60
 	\end{equation*}
@@ -411,7 +376,7 @@ The spread is 50 bps. In a crisis, the spread usually widens because the risk of
 	\end{equation*}
 
 	The Asset Swap Spread is -39.8 bps.
-	Note: It is normal for Bunds to have a negative spread because they are often considered "safer" than the interbank swap market.
+	Note: it is normal for Bunds to have a negative spread because they are often considered "safer" than the interbank swap market.
 	\part Price = 75.28, Fixed Coupon $K_{bond}=3.0\%$, Swap Rate $S_{10y}=0.44\%$, Annuity $A=10.0$.
 
 	Calculate the Bond Price
