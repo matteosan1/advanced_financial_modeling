@@ -131,6 +131,8 @@ Exponentiating both sides yields the final solution:
 In a stochastic interest rate framework prove that the price of a Zero-Coupon Bond $P(t,T)$ is strictly greater than the exponential of the expected integrated short rate.
 Explain the financial intuition behind this 'paradox' and its implications for convexity adjustments."
 
+Provide a numerical example for the result.
+
 \textbf{Hint}: use Jensen's inequality
 
 \begin{solution}
@@ -163,7 +165,7 @@ Since there is a positive convexity, the higher the volatility, the higher the e
 \end{solution}
 
 \question \textbf{Forward Rate Agreement} \\
-Suppose we have a $1\times 4$ FRA with a notional principal of €1 million.  At contract expiration, the 90-day LIBOR at settlement is 6\% and the contract rate is 5.5\%. Calculate the value of the FRA at maturity.
+Suppose we have a $1\times 4$ FRA with a notional principal of €1 million. We are at the settlement date, when the 90-day LIBOR is 6\% and the contract rate is 5.5\%. Calculate the value of the FRA.
 
 \begin{solution}
 Using the standard FRA settlement formula:
@@ -248,7 +250,7 @@ The fact that $B_t$ vanishes from the final expression is not just an algebraic 
 \end{itemize}
 \end{solution}
 
-\question \textbf{Forward Rate Agreement} \\
+\question \textbf{Interest Rate Swap} \\
 Assume that company A has agreed to pay a 6-month Libor and receive a fixed interest rate of 8\% per annum (with interests payable every six months) from the face value of 100 million. Swap is 1.25 years to expire. The interest rates for 3, 9 and 15 months are: 10\%, 10.5\% and 11\% respectively. The 6-month Libor is currently 10.2\%. Calculate the value of this swap for company A.
 
 Which of the following strategies is (are) appropriate ?
@@ -360,7 +362,7 @@ The spread is 50 bps. In a crisis, the spread usually widens because the risk of
 		\item An upfront payment (or exchange of notional) such that the net initial outlay for the investor is exactly Par (100).
 	\end{itemize}
 
-	The Asset Swap Spread $s$ is the "price of risk." Using the simplified relationship:
+	The Asset Swap Spread $s$ is the "price of risk." Using the relationship:
 	\begin{equation*}
 		s = \frac{\text{Free Price} - \text{Market Risky Price}}{\text{AnnuityRisk}}
 	\end{equation*}
@@ -704,7 +706,8 @@ An investor is looking at a 3-year Callable Bond with a 5\% annual coupon and a 
 
 
 \question \textbf{Change of Measure}
-Calculate in details and explain the rationale of the change of measure technique from risk neutral to T-forward measure applied to the risk pricing neutral formula of a generic payoff $V$.
+Apply the change of measure technique from risk neutral to T-forward measure to the risk neutral pricing formula of a generic payoff $V$.
+Explain also the rationale behind this strategy. 
 
 \begin{solution}
 	In the standard Risk-Neutral Pricing formula, the price of a payoff $V_T$ is:
